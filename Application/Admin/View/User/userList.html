@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>客户管理</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" />
+<script>
+// 表单全选
+function selectcheckbox(form){
+	for(var i = 0;i < form.elements.length; i++){
+		var e = form.elements[i];
+		if(e.name != 'chkall' && e.disabled != true) e.checked = form.chkall.checked;
+	}
+}
+$(function(){
+    $('input[name="export"]').click(function(){             
+            var user_check = 0;
+            $('input[name="uids[]"]:checked').each(function(){ 
+                user_check = 1;//判断已经选中了user
+            });    
+            if(user_check == 1){
+                return true;
+            }else{
+                alert('请选择要导出的客户ID！');
+                return false;   
+            }
+
+        });
+})
+</script>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：客户列表</h3>
+    </div>
+    <if condition="!in_array(7,$group) OR !in_array(8,$group)">
+    <div class="filter">
+    <form name="search" action="{:U('Admin/User/userList')}" method="get">
+    	<div class="fl">用户名：</div>
+    	<input type="text" name="username" value="{$username}" class="input"/>
+        <if condition="!$is_yewuyuan">
+        <div class="fl">所属业务员</div>
+        <select name="parent_id" class="fl">
+            <option value="0">全部</option>
+            <volist name="businessList" id="vo">
+                <option value="{$vo.user_id}" <eq name="Think.get.parent_id" value="$vo['user_id']">selected</eq>>{$vo.nickname}</option>
+            </volist>
+        </select>
+        </if>
+        <div class="fl">&nbsp;</div>
+    	<div class="fl"><input type="submit" value="查询" name="chaxun" class="button" /></div>
+		<if condition="in_array('admin/user/export',$AuthList)"><div class="fl"><input type="submit" value="导出查询" name="daochu" class="button" /></div></if>
+
+    </form>
+    </div>
+    </if>
+    <form action="{:U('Admin/User/export')}" method="POST">
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+        <tr class="top">
+        	<th width="40"><input onClick="selectcheckbox(this.form)" type="checkbox" name="chkall" id="chkall" value="All" /></th>
+            <th>客户ID</th>
+            <th>用户名</th>
+            <th>真实姓名</th>
+            <if condition="in_array('admin/user/allocationuserrank',$AuthList)">
+            <th>所属等级</th>
+            </if>
+
+            <if condition="in_array('admin/user/allocationuserbusiness',$AuthList)">
+            <th>所属业务员</th>
+            </if>
+            <th>最后登录时间</th>
+            <th>最后登录IP</th>
+            <th>是否验证</th>
+			<th>交易总额</th>			
+            <th width="220">操作</th>
+        </tr>
+        <volist name="userList" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+        	<td><input type="checkbox" name="uids[]" value="{$vo.uid}" /></td>
+            <td>{$vo.uid}</td>
+            <td>{$vo.username}</td>
+            <td>{$vo.realname|default=$vo['username']}</td>
+            <if condition="in_array('admin/user/allocationuserrank',$AuthList)">
+            <td>{$vo.name|default="无等级"}</td>
+            </if>
+
+            <if condition="in_array('admin/user/allocationuserbusiness',$AuthList)">
+            <td>{$vo.user_name|default="没分配"}</td>
+            </if>
+            <td>{$vo.last_logintime|date="Y-m-d",###}</td>
+            <td>{$vo.last_ip}</td>
+            <td>{$vo['is_validate']?'已验证':'未审核'}</td>
+			<td>{$vo.user_sum_price|default='0'}</td>			
+            <td>
+                <a href="{:U('Admin/User/userInfo?uid='.$vo['uid'])}" >编辑</a>
+                <a href="{:U('Admin/User/userDel?uid='.$vo['uid'])}" id="isDel">删除</a>
+                <a href="{:U('Admin/User/userAddList?uid='.$vo['uid'])}" >收货地址</a>
+				<a href="{:U('Admin/User/userTrecord?uid='.$vo['uid'])}" >交易记录</a>
+            </td>
+        </tr>
+        </volist>
+    </table>
+    <if condition="in_array('admin/user/export',$AuthList)"><div class="tbl_buttom"><input type="submit" name="export" value="导出选中客户" /></div></if>
+    </form>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>

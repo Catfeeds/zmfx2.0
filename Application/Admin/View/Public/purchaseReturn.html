@@ -1,0 +1,43 @@
+<notempty name="purchaseOrderReturnList">
+<div class="info">
+	<div class="title">退货信息:</div>
+	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+		<tr class="top">
+			<th width="10%">退货单id</th>
+			<th width="52%">退货产品</th>
+			<th width="10%">退货金额</th>
+			<th width="18%">退货时间</th>
+			<th width="10%">状态</th>
+		</tr>
+		<volist name="purchaseOrderReturnList" id="vo">
+		<tr>
+			<td>{$vo.delivery_id}</td>
+			<td>
+				<volist name="vo.return" id="io">
+					<div style=" text-align:left; background: #F9F9F9; border: 1px solid #D9D9D9; height: 30px; width: 95%; margin: 5px auto;">
+						<span style="width: 200px;padding-left: 10px; display: inline-block;">产品编号：{$io.certificate_no}</span>
+						<span style="width: 80px; display: inline-block;">数量：{$io.goods_number}</span>
+						<span style="width: 120px; display: inline-block;">
+							类型：
+							<eq name="io.goods_type" value="1">证书货</eq>
+							<eq name="io.goods_type" value="2">散货</eq>
+							<eq name="io.goods_type" value="3">代销-成品</eq>
+							<eq name="io.goods_type" value="4">代销-定制</eq>
+						</span>
+					</div>
+				</volist>
+			</td>
+			<td>{$vo.goods_price}</td>
+			<td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+			<td class="red">
+				<eq name="vo.status" value="0">已取消</eq>
+				<eq name="vo.status" value="1">退货中</eq>
+				<eq name="vo.status" value="2">已退货</eq>
+				<eq name="vo.status" value="3">货品确认</eq>
+			</td>
+		</tr>
+		</volist>
+	</table>
+	<div class="clear"></div>
+</div>
+</notempty>

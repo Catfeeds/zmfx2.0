@@ -1,0 +1,267 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>我的订单</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../default/css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../default/css/style-swiper.css" />
+
+    <script src="../default/js/jquery-1.12.3.js"></script>
+    <script src="../default/js/swiper.min.js"></script>
+</head>
+
+
+<body>
+    <section class="news cart order" style="margin-bottom: 2.5rem;">
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="../default/img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>我的订单</h2>
+            </div>
+        </header>
+        <section class="wrapper">
+
+            <!-- tab -->
+            <div id="news-tab">
+        		<div class="swiper-wrapper">
+        			<div class="swiper-slide active">全部</div>
+        			<div class="swiper-slide">待支付</div>
+        			<div class="swiper-slide">待发货</div>
+                    <div class="swiper-slide">待收货</div>
+        			<div class="swiper-slide">完成</div>
+        		</div>
+        	</div>
+            <!-- tab end -->
+
+            <!-- 搜索 -->
+            <div class="top-bar">
+                <input type="text" class="s-input" name="" value="" placeholder="商品编号">
+                <input type="button" class="search-btn" onclick="javasctipt:location.href='search.html'" name="" value=" ">
+            </div>
+            <!-- 搜索 end -->
+
+            <!-- content -->
+            <div id="tabs-container" class="swiper-container">
+        		<div class="swiper-wrapper">
+                    <!-- 全部 -->
+        			<div class="swiper-slide">
+        				<div class="content-slide">
+
+                            <!-- 暂无订单 -->
+                            <div class="empty-cart" style="display: none;">
+                                <p><img src="../default/img/order_noimg_03.png" alt="" class="empty-img"></p>
+                                <p>
+                                    <h2>您还没有相关订单哦~~</h2>
+                                    <h4>快去挑点宝贝吧</h4>
+                                </p>
+                                <p><a href="/" class="toindex">随便逛逛</a></p>
+                            </div>
+                            <!-- 暂无订单 end -->
+
+                            <div class="goods-item">
+                                <div class="head">订单编号：2017080311085667 <span class="fr">等确认</span></div>
+                                <div class="goods-layout clearfix">
+                                    <div class="goods-img">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                    </div>
+                                    <div class="goods-right">
+                                        共<span class="rmb">125</span>件 <img src="../default/img/alink_icon_03.png" alt="">
+                                    </div>
+                                </div>
+                                <div class="foot clearfix">
+                                    <span class="fl">合计：278431.88</span>
+                                    <span class="fr"><button type="button" class="order-list-btn">取消</button></span>
+                                </div>
+                            </div>
+
+                            <div class="goods-item">
+                                <div class="head">订单编号：2017080311085667 <span class="fr">待付款</span></div>
+                                <div class="goods-layout clearfix">
+                                    <div class="goods-img">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                    </div>
+                                    <div class="goods-right">
+                                        共<span class="rmb">5</span>件 <img src="../default/img/alink_icon_03.png" alt="">
+                                    </div>
+                                </div>
+                                <div class="foot clearfix">
+                                    <span class="fl">合计：278431.88</span>
+                                    <span class="fr"><a href="我的订单-状态.html" class="order-list-btn">查看</a></span>
+                                </div>
+                            </div>
+
+                            <div class="goods-item">
+                                <div class="head">订单编号：2017080311085667 <span class="fr">待配货</span></div>
+                                <div class="goods-layout clearfix">
+                                    <div class="goods-img">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                    </div>
+                                    <div class="goods-right">
+                                        共<span class="rmb">5</span>件 <img src="../default/img/alink_icon_03.png" alt="">
+                                    </div>
+                                </div>
+                                <div class="foot clearfix">
+                                    <span class="fl">合计：278431.88</span>
+                                    <span class="fr"><a href="我的订单-状态.html" class="order-list-btn">查看</a></span>
+                                </div>
+                            </div>
+
+
+        				</div>
+        			</div>
+                    <!-- 全部 end -->
+
+                    <!-- 待付款 -->
+        			<div class="swiper-slide">
+        				<div class="content-slide">
+
+                            <!-- 暂无订单 -->
+                            <div class="empty-cart" style="display: none;">
+                                <p><img src="../default/img/order_noimg_03.png" alt="" class="empty-img"></p>
+                                <p>
+                                    <h2>您还没有相关订单哦~~</h2>
+                                    <h4>快去挑点宝贝吧</h4>
+                                </p>
+                                <p><a href="/" class="toindex">随便逛逛</a></p>
+                            </div>
+                            <!-- 暂无订单 end -->
+
+                            <div class="goods-item">
+                                <div class="head">订单编号：2017080311085667 <span class="fr">等确认</span></div>
+                                <div class="goods-layout clearfix">
+                                    <div class="goods-img">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                    </div>
+                                    <div class="goods-right">
+                                        共<span class="rmb">125</span>件 <img src="../default/img/alink_icon_03.png" alt="">
+                                    </div>
+                                </div>
+                                <div class="foot clearfix">
+                                    <span class="fl">合计：278431.88</span>
+                                    <span class="fr"><button type="button" class="order-list-btn">取消</button></span>
+                                </div>
+                            </div>
+
+                            <div class="goods-item">
+                                <div class="head">订单编号：2017080311085667 <span class="fr">待付款</span></div>
+                                <div class="goods-layout clearfix">
+                                    <div class="goods-img">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                    </div>
+                                    <div class="goods-right">
+                                        共<span class="rmb">5</span>件 <img src="../default/img/alink_icon_03.png" alt="">
+                                    </div>
+                                </div>
+                                <div class="foot clearfix">
+                                    <span class="fl">合计：278431.88</span>
+                                    <span class="fr"><a href="我的订单-状态.html" class="order-list-btn">查看</a></span>
+                                </div>
+                            </div>
+
+                            <div class="goods-item">
+                                <div class="head">订单编号：2017080311085667 <span class="fr">待配货</span></div>
+                                <div class="goods-layout clearfix">
+                                    <div class="goods-img">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                        <img src="../default/img/goods_layou_img_03.jpg" alt="">
+                                    </div>
+                                    <div class="goods-right">
+                                        共<span class="rmb">5</span>件 <img src="../default/img/alink_icon_03.png" alt="">
+                                    </div>
+                                </div>
+                                <div class="foot">
+                                    <span class="fl">合计：278431.88</span>
+                                    <span class="fr">
+                                        <a href="#" class="order-list-btn">评价</a>
+                                        <a href="我的订单-状态.html" class="order-list-btn">查看</a>
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+
+
+        				</div>
+        			</div>
+                    <!-- 待付款 end -->
+        		</div>
+        	</div>
+            <!-- content end -->
+        </section>
+    </section>
+
+    <footer>
+        <div class="footer-box">
+            <ul>
+                <li>
+                    <a href="产品分类.html">
+                        <p><img src="../default/img/footer_icon_03.png" alt=""></p>
+                        <p>珠宝定制</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="购物车.html">
+                        <p><img src="../default/img/footer_icon_04.png" alt=""></p>
+                        <p>购物车</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="个人中心.html">
+                        <p><img src="../default/img/footer_icon_05.png" alt=""></p>
+                        <p>我的</p>
+                    </a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+    </footer>
+
+    <script>
+        //标题切换
+        var mySwiper1 = new Swiper('#news-tab', {
+            freeMode: true,
+            slidesPerView: 'auto'
+        });
+
+        //列表切换
+        var tabsSwiper = new Swiper('#tabs-container', {
+			speed: 500,
+            autoHeight: true,
+			onSlideChangeStart: function() {
+				$("#news-tab .active").removeClass('active');
+				$("#news-tab .swiper-slide").eq(tabsSwiper.activeIndex).addClass('active');
+			}
+		});
+
+        $("#news-tab .swiper-slide").on('touchstart mousedown', function(e) {
+			e.preventDefault()
+			$("#news-tab .active").removeClass('active')
+			$(this).addClass('active')
+			tabsSwiper.slideTo($(this).index());
+		})
+		$("#news-tab .swiper-slide").click(function(e) {
+			e.preventDefault()
+		});
+    </script>
+</body>
+</html>

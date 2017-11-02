@@ -1,0 +1,16 @@
+<if condition="$positionList[1]['is_show'] eq 1">
+    <if condition="$goodsCustomAdList">
+    <div class="item-box diamond-custom">
+
+        <div class="upstairs">
+            <h3 class="title">{$positionList[1]['title']}</h3>
+            <h4 class="subtitle">{$positionList[1]['english_title']}</h4>
+        </div>
+        <volist name="goodsCustomAdList" id="vo">
+            <p>
+                <a href="{$vo['url']}" title="{$vo['title']}"><img src="/Public{$vo['images_path']}" alt="{$vo['title']}"></a>
+            </p>
+        </volist>
+    </div>
+    </if>
+</if>

@@ -1,0 +1,139 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<script type="text/javascript" src="__PUBLIC__/layer/layer.js"></script>
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+<style>
+* {    -webkit-box-sizing: initial !important; box-sizing: initial !important;	}
+    .query-main { background: url('/Application/Home/View/b2c_new/Styles/Img/report_detail_bg.jpg') no-repeat center center; padding-bottom: 30px; line-height: 25px; color: #000;}
+    .query-main .container { max-width: 950px;}
+    .query-main .container button { padding: 5px 20px;}
+    .query-main .gia-input { width: 85%; margin-left: 5px;}
+    .query-main .pullleft { margin-right: 15px; float: left; line-height: 35px; font-size: 14px;}
+    .query-main .h3title { font-weight: bold; font-size: 16px; color: #000;}
+    .query-main .selectbox { margin-top: 20px;}
+    .query-main .pullleft img { border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; -ms-border-radius: 10px; -o-border-radius: 10px; width: 50px; height: 50px;}
+    .query-main .twocol { float: left;}
+    .query-main .twocol .form-control { width: 70%;}
+    .datalsit { margin-top: 20px;}
+    .datalsit table { background: #FFF;}
+    .datalsit table span { font-family: "微软雅黑"; color: #000;}
+    .datalsit table td { padding-left: 25px !important;}
+    .datalsit .table-title { font-size: 14px; color: #000;}
+  </style>
+  <div class="certificate-query">
+    <div class="query-main">
+      <div class="container">
+
+        <div class="selectbox">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-3 col-sm-12 col-xs-12">
+				 <span class="pullleft">
+					<if condition="$_GET['zs_type'] eq '1'">
+						<img src="__IMG__/GIA-icon.png" alt="">				  </span> <span class="h3title">GIA证书查询</span><br> GIA Report Check
+						<elseif condition="$_GET['zs_type'] eq '2'" />
+						<img src="__IMG__/IGI-icon.png" alt="">				  </span> <span class="h3title">IGI证书查询</span><br> IGI Report Check
+						<elseif condition="$_GET['zs_type'] eq 3" />
+						<img src="__IMG__/HRD-icon.png" alt="">				  </span> <span class="h3title">HRD证书查询</span><br> HRD Report Check
+						<elseif condition="$_GET['zs_type'] eq 4" />
+						<img src="__IMG__/NGCT-icon.png" alt="">				  </span> <span class="h3title">NGCT证书查询</span><br> NGCT Report Check
+					</if>
+                </div>
+                <div class="col-md-7 col-sm-10 col-xs-12">
+                  <div class="twocol col-md-6 col-xs-12">
+                    <span class="pullleft">证书号:</span>
+				    <input type="text" value="<?php print_r(empty(I('get.zs_id'))?' ':I('get.zs_id'));?>"  name="zs_id"  />
+				    <input type="hidden" value="3" name="zs_type" />
+                  </div>
+                  <div class="twocol col-md-6 col-xs-12">
+                    <span class="pullleft">钻&nbsp;&nbsp;&nbsp;重:</span>
+					<input type="text" value="<?php print_r(empty(I('get.zs_weight'))?' ':I('get.zs_weight'));?>" name="zs_weight"  />
+                  </div>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                  <button class="btn btn-warning" onclick="select_reportdata('self','self')">查询</button>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="datalsit">
+      <div class="container">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered">
+			 <tr class="title"><th colspan="4"><h1>数据查询中，请稍等！</h1></th></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+  var id ='<?php echo empty(I('get.zs_id'))?0:I('get.zs_id'); ?>';
+  var type =<?php echo empty(I('get.zs_type'))?0:I('get.zs_type'); ?>;
+  if(id && type){	select_reportdata(id,type); }
+  function select_reportdata(id,type){
+		if(id=='self'){
+			id=$('input[name="zs_id"]').val();
+			type =<?php echo empty(I('get.zs_type'))?0:I('get.zs_type'); ?>;
+		}
+		var html="";
+		var index = layer.load(2, {shade: false}); //0代表加载的风格，支持0-2
+			$.post("/Home/Search/detail",{Action:"POST",zs_id:id,zs_type:type},function(data){
+				if(data){
+				layer.close(index);
+						if(data.status==1){
+								$.each(data.data ,function(c ,b) {
+										html += "<tr>";
+										$.each(b,function(e,f) {
+												if(f==null){	f='无';	}
+												html += "<th width='18%'>"+e+"</th>";
+												if(type=='3')	{
+													html += "<td width='32%'>"+f.replace(">","")+"</td>";
+												}else			{
+													html += "<td width='32%'>"+f+"</td>";
+												}
+										});
+										html += "</tr>";
+								});
+						}else{
+							html +="<tr class='title'><th colspan='4'><h1>没有查询到相关数据或网络延迟时间过长，请稍后重试！</h1></th></tr>"
+						}
+						$(".table-bordered").html(html);
+				}else{
+						alert('网络错误！');
+				}
+			});
+  }
+  
+  
+  	function download_pdf_ajax(id){
+	  layer.msg('后台准备下载中！',{	time: 1500,	shift:6,	});
+	  var index = layer.load(2, {shade: false}); //0代表加载的风格，支持0-2	  
+	  $.post("/Home/Search/giaReportPDF",{Action:"POST",reportNumber:id},function(data){	
+	 
+		if(data){
+			layer.close(index);
+			if(data){
+				window.location.href=data;
+			}else{
+				layer.msg('未找到下载文件。',{	shift:6,	});
+			}
+		}else{
+				layer.msg('网络错误！',{	shift:6,	});			
+		}
+	  });
+	}
+
+  </script>
+  </block>
+  <block name="footer">
+      <include file=".:Base:layout_footer" />
+  </block>

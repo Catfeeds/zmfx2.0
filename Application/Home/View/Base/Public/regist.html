@@ -1,0 +1,142 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+
+<script type="text/javascript" src="__PUBLIC__/Js/jquery.validator.js"></script>
+<div class="registr">
+    <div class="regMain">
+        <block name="left">
+          <div class="regleft">
+              <span>新用户注册</span>
+              <form id="regist" name="regist" action="regist" method="post">
+                  <table class="regist">
+                      <tr><td width="30%" class="tdRight"><span style="color:red">*</span>{$Think.lang.L801}：</td><td><input name="User[username]" type="text"></td></tr>
+                      <tr><td class="tdRight"><span style="color:red">*</span>{$Think.lang.L9102}：</td><td><input minlength="6" type="password" name="User[password]"></td></tr>
+                      <tr><td class="tdRight"><span style="color:red">*</span>确认密码：</td><td><input type="password" name="User[new_password]"></td></tr>					  
+                      <tr><td class="tdRight">电子邮件：</td><td><input type="text" name="User[email]"></td></tr>
+                      <tr><td class="tdRight"><span style="color:red">*</span>手 机 号：</td><td><input type="text" name="User[phone]"></td></tr>
+                      <tr><td colspan="2" class="tdCenter">请阅读<a href="#">《网站服务条款及隐私条款》</a></td></tr>
+                      <tr><td colspan="2" class="tdCenter"><input id="result" type="submit" class="regBtn" value="{$Think.lang.L9103}"></td></tr>
+                  </table>
+              </form>
+          </div>
+        </block>
+        <block name="right">
+          <div class="regright">
+             我已有账号，马上去登录<br/><br/>
+              <a href="{:U('Home/Public/login')}" class="logBtn">{$Think.lang.L863}</a><br/>
+              <p>如果你已经是{:C('site_name')}会员，
+              即可通过手机号/Email与初始密码登录，并完善个人信息。</p><br/>
+              <ul>
+                  <li><a href="#">*【如何成为会员】</a></li>
+                  <li><a href="#">*【会员积分规则】</a></li>
+                  <li><a href="#">*【会员等级升降规则】</a></li>
+              </ul>
+          </div>
+        </block>
+    </div>
+</div>
+<script>
+//验证初始化
+$('#regist').validator({
+    theme: 'simple_right',
+    focusCleanup: true,
+    stopOnError:false,
+    //debug: true,
+    timely: 2,
+    //自定义规则（PS：建议尽量在全局配置中定义规则，统一管理）
+    rules: {
+        username: [/^[a-zA-Z0-9\u4e00-\u9fa5]+$/,'无效! 不能包含空格或特殊字符'],
+        phone: [/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/,'手机号码不正确'],
+        email:[/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})$/, '邮箱格式不正确'],
+        limitPwd:
+        	function(element){
+        		if(element.value.length<6){
+        			return false;
+        		}else{
+        			return true;
+        		}
+        	},
+        limitusername:
+        	function(element){
+        		if(element.value.length<3){
+        			return false;
+        		}else{
+        			return true;
+        		}
+        	},
+        remote:
+        	function(element){
+	            return $.ajax({
+	                url: '/Home/Public/checkusername',
+	                type: 'post',
+	                data: element.name +'='+ element.value,
+	                dataType: 'json',
+	                success: function(d){
+	                    window.console && console.log(d);
+	                }
+	            });
+		}
+    },
+
+    fields: {
+        "User[username]": {
+            rule: "required;limitusername;remote;username;",
+            tip: "输入你的用户名",
+            ok: "",
+            msg: {required: "请输入用户名",limitusername:"用户名最小长度为3",remote:"用户名已存在"}
+        },
+        "User[password]": {
+            rule: "required;limitPwd",
+            tip: "输入你的登录密码",
+            ok: "",
+            msg: {required: "请输入登录密码",limitPwd:"请输入至少6位的字符"}
+        },
+        "User[new_password]": {
+            rule: "required;limitPwd",
+            tip: "输入你的确认登录密码",
+            ok: "",
+            msg: {required: "输入你的确认登录密码",limitPwd:"请输入至少6位的字符"}
+        },
+        "User[phone]": {
+            rule: "required;phone",
+            tip: "输入你的手机号码。",
+            ok: "",
+            msg: {required: "请输入手机号!"}
+        }
+    },
+
+	
+    //验证成功
+    valid: function(form) {
+
+ 
+		if($('[name="User[password]"]').val() !=  $('[name="User[new_password]"]').val()){
+			alert('输入的登录密码和确认登录密码不一致！');
+			return false;
+		}
+ 
+		if($('[name="User[email]"]').val()){
+			if(!/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/.test($('[name="User[email]"]').val())){
+				alert('输入的邮箱格式有误！');
+				return false;
+			}
+		}
+	
+        $.ajax({
+            url: '/Home/Public/regist',
+            type: 'POST',
+            data: $(form).serialize(),
+            success: function(d){
+              	alert(d.msg);
+              	window.location.href=d.url;
+            }
+        });
+    },
+
+});
+</script>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

@@ -1,0 +1,76 @@
+<include file="Public:header" />
+<!--导航-->
+    <form >
+
+<div class="search-ee">
+		<span class="am-input-group-btn">
+				<button class="am-btn am-icon-chevron-left" type="button" onclick="javascript:history.go(-1);"></button>
+		</span>
+
+		<input type="text" class="text" value="{$search}" name="search" placeholder="search">
+		<input type="submit" value="搜索" class="search-but">
+
+</div>
+		</form>
+<!--内容-->
+<div class="wrap">
+    <br>
+    <div class="sign-list">
+        <dl>
+          <dd><big>定情戒指</big></dd>
+          <dd>PROPOSAL RING ROR LOVE</dd>
+          <dd>铭刻永恒的时刻</dd>
+        </dl>
+    </div>
+     <!--产品-->
+    <div class="product-list">
+<?php if ($goodsList == true): ?>
+      <volist name="goodsList" id="vo" mod="2">
+		<eq name="mod" value="0">
+			<span>
+			<ul>
+			<li>
+				<a href="{:U('Goods/goodsInfo?goods_id='.$vo['goods_id'].'&type='.$vo['goods_type'])}"><img src="{$vo.thumb}" alt="" width="140" height="140" ></a>
+				<p></p>
+				<p>{$vo.goods_name}</p>
+				<big>&yen;
+					<in name="vo['activity_status']" value="0,1">
+						{$vo.activity_price}
+					<else/>
+						{$vo.goods_price}
+					</in>
+				</big>
+			</li>
+		</eq>
+		<neq name="mod" value="0">
+			<li>
+				<a href="{:U('Goods/goodsInfo?goods_id='.$vo['goods_id'].'&type='.$vo['goods_type'])}"><img src="{$vo.thumb}" alt="" width="140" height="140" ></a>
+				<p></p>
+				<p>{$vo.goods_name}</p>
+				<big>&yen;
+					<in name="vo['activity_status']" value="0,1">
+						{$vo.activity_price}
+					<else/>
+						{$vo.goods_price}
+					</in>
+				</big>
+			</li>
+			</ul>
+			</span>
+		</neq>
+	  </volist>
+<?php else: ?>
+	<p style="text-align:center;margin:0 auto;width:200px;">没有搜索到<a style="color:red"> <?php echo $search?></a> 关键词商品，请换个关键词吧。</p>
+<?php endif; ?> 
+    </div>
+    <!--更多在底部-->
+<?php if ($goodsList == true): ?>
+	<div class="am-list-news-ft ">
+		<button type="button" class="am-btn am-radius am-list-news-more mond-btn" data-page="1" data-href="goodsSearch"  data-par="&search={$search}" data-type="product-list" data-More="1">更多</button>
+	</div>
+<?php endif; ?> 	
+</div>
+
+
+
+<include file="Public:footer" />

@@ -1,0 +1,138 @@
+    <!-- footer -->
+    <div class="footer">
+        <div class="container">
+            <div class="ensure center-block text-center hidden-xs">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-md-5ths"><img src="__IMG__/index_86.png" alt="...">一钻双证</div>
+                    <div class="col-xs-12 col-sm-4 col-md-5ths"><img src="__IMG__/index_88.png" alt="...">全国免费配送</div>
+                    <div class="col-xs-12 col-sm-4 col-md-5ths"><img src="__IMG__/index_90.png" alt="...">珠宝协会会员</div>
+                    <div class="col-xs-12 col-sm-6 col-md-5ths"><img src="__IMG__/index_93.png" alt="...">15天免费退换</div>
+                    <div class="col-xs-12 col-sm-6 col-md-5ths"><img src="__IMG__/index_95.png" alt="...">全程保险</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="foot-desc">
+            <div class="container">
+                <div class="foot-desc-list">
+                    <div class="col-xs-12 col-md-2 hidden-xs">
+                        <if condition="C('contact_weixin')">
+                        <img src="__PUBLIC__/{:C('contact_weixin')}" width="100" alt="">
+                        </if>
+                    </div>
+                    <div class="foot-nav col-xs-6 col-md-2">
+                        <h5>用户指南</h5>
+                        <i class="glyphicon pull-right glyphicon-plus-sign"></i>
+                        <ul class="list-group">
+                            <li><a href="{:U('Home/Article/help/name/注册用户')}" target="_blank">注册用户</a></li>
+                            <li><a href="{:U('Home/Article/help/name/购买流程')}" target="_blank">购买流程</a></li>
+                            <li><a href="{:U('Home/Article/help/name/支付方式')}" target="_blank">支付方式</a></li>
+                        </ul>
+                    </div>
+                    <div class="foot-nav col-xs-6 col-md-2">
+                        <h5>关于配送</h5>
+                        <i class="glyphicon pull-right glyphicon-plus-sign"></i>
+                        <ul class="list-group">
+                            <li><a href="{:U('Home/Article/help/name/商品包装')}" target="_blank">商品包装</a></li>
+                            <li><a href="{:U('Home/Article/help/name/配送方式')}" target="_blank">配送方式</a></li>
+                            <li><a href="{:U('Home/Article/help/name/配送流程')}" target="_blank">配送流程</a></li>
+                        </ul>
+                    </div>
+                    <div class="foot-nav col-xs-6 col-md-2">
+                        <h5>售后服务</h5>
+                        <i class="glyphicon pull-right glyphicon-plus-sign"></i>
+                        <ul class="list-group">
+                            <li><a href="{:U('Home/Article/help/name/会员细节')}" target="_blank">会员细节</a></li>
+                            <li><a href="{:U('Home/Article/help/name/售后保障')}" target="_blank">售后保障</a></li>
+                            <li><a href="{:U('Home/Article/help/name/退换流程')}" target="_blank">退换流程</a></li>
+                        </ul>
+                    </div>
+                    <div class="foot-nav col-xs-6 col-md-2">
+                        <h5>常见问题</h5>
+                        <i class="glyphicon pull-right glyphicon-plus-sign"></i>
+                        <ul class="list-group">
+                            <li><a href="{:U('Home/Article/help/name/珠宝常识')}" target="_blank">珠宝常识</a></li>
+                            <li><a href="{:U('Home/Article/help/name/配送问题')}" target="_blank">配送问题</a></li>
+                            <li><a href="{:U('Home/Article/help/name/联系客服')}" target="_blank">联系客服</a></li>
+                        </ul>
+                    </div>
+                    <div class="foot-fwtime col-xs-12 col-md-2 gstime">
+                        <!-- <img src="__IMG__/footer-phone.png" alt=""> -->
+                        <div class="lx" style="margin-top: 10px;">
+                          <i class="glyphicon glyphicon-phone-alt pull-left phone-icon" style="font-size: 28px; margin-right: 8px;"></i>
+                          <div class="phone-text">CUSTOMER CENTER <br> 全国服务热线</div>
+                          <div class="clearfix"></div>
+                        </div>
+                        <strong><h4>{:C('site_contact')}</h4></strong>
+                        <span>服务时间：&nbsp;9: 00-23: 00</span>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <script>
+              $(function(){
+                $('.foot-nav').bind('click', function(){
+                  var nav_item = $(this).find('.list-group');
+                  var i = $(this).find('i');
+                  if($(window).width() < 768){
+                    if(nav_item.css('display') == "none"){
+                      nav_item.css('display', 'block');
+                      i.removeClass('glyphicon-plus-sign').addClass('glyphicon-minus-sign');
+                    }else{
+                      nav_item.css('display', 'none');
+                      i.removeClass('glyphicon-minus-sign').addClass('glyphicon-plus-sign');
+                    }
+                  }
+                });
+              });
+            </script>
+            <div class="copyright">
+                <p class="copy-link">友情链接：
+                    <volist name="linkList" id="vo">
+                        <a href="{$vo['link_url']}" target="{$vo['link_target']}" title="{$vo['link_description']}">{$vo['link_name']}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </volist>
+                </p>
+                <p class="text-center">© 2010-2016 {:C('site_name')} 版权所有,并保留所有权利  <a href="http://www.miibeian.gov.cn" target="_blank">{:C('case_number')}</a></p>
+            </div>
+        </div>
+    </div>
+    <a href="javascript:void(0)" class="back_top" style="display:none">Top</a>
+
+    <!-- qq -->
+    <div class="main-im">
+        <div id="open_im" class="open-im">&nbsp;</div>
+        <div class="im_main" id="im_main">
+            <div id="close_im" class="close-im"><a href="javascript:void(0);" title="点击关闭">&nbsp;</a></div>
+            <span class="im-qq qq-a" title="在线QQ客服">
+                <div class="qq-container"></div>
+                <div class="qq-hover-c"><img class="img-qq" src="__IMG__/qq.png"></div>
+                <span> QQ在线咨询</span>
+            </span>
+            <div class="im-tel">
+        <if condition="$contact_qq">
+          <volist name="contact_qq" id="vo">
+          <div class="tel-num">
+            <a href="tencent://message/?Menu=yes&uin={$vo[1]}&Site=80fans&Service=300&sigT=45a1e5847943b64c6ff3990f8a9e644d2b31356cb0b4ac6b24663a3c8dd0f8aa12a545b1714f9d45" target="_blank" title="在线QQ客服">{$vo[0]}:{$vo[1]}</a>
+          </div>
+          </volist>
+        </if>
+            </div>
+            <div class="im-tel">
+                <div>咨询热线</div>
+                <div class="tel-num"><a href="tel:{:C('site_contact')}">{:C('site_contact')}</a></div>
+            </div>
+            <div class="im-footer" style="position:relative">
+                <div class="weixing-container">
+                    <div class="weixing-show">
+                        <div class="weixing-txt">微信扫一扫<br>关注{:C('site_name')}</div>
+                        <img class="weixing-ma" src="__PUBLIC__/{:C('contact_weixin')}">
+                        <div class="weixing-sanjiao"></div>
+                        <div class="weixing-sanjiao-big"></div>
+                    </div>
+                </div>
+                <div class="go-top"><a href="javascript:;" title="返回顶部"></a> </div>
+                <div style="clear:both"></div>
+            </div>
+        </div>
+    </div>
+    <!-- qq END -->

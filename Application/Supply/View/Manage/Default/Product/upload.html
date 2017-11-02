@@ -1,0 +1,777 @@
+<extend name="Manage:Default:base" />
+<block name="title">{$L['login_title']}</block>
+<block name="desc">{$L['login_description']}</block>
+<block name="body">
+	<style>
+		#luozuan_info table, #sanhuo_info table{
+			margin-bottom: 0;
+		}
+		#luozuan_info td,#sanhuo_info td{
+			min-width:190px;
+			padding-top:5px;
+			padding-bottom:0;
+		}
+		.form-inline label{
+			min-width: 55px;
+			text-align: right;
+			float: left;
+			display: block;
+			line-height: 24px;
+			width: 60px;
+		    margin-right: 5px;
+		}
+		.form-inline input[type="text"],.form-inline select{
+			max-width: 100px;
+			float: left;
+			line-height: 24px;
+			height: 24px;
+			padding: 2px 6px;
+		}
+		.form-inline .dropdown-toggle{
+			padding: 1px 6px;
+		}
+		#sanhuo_info .cc-input{
+			height: 28px;;
+		}
+		#sanhuo_info .col-xs-6{
+			bottom: 2px;;
+		}
+		#sanhuo_info .input-group-addon{
+			min-width: 100px;
+			height: 28px;;
+			padding: 1px;
+			font-size: 10px;
+			line-height: 1px;
+		}
+	</style>
+	<script>		
+		$(function(){
+			$('#ve').on('click', function () {
+				var src = "{:U('/Index/Verify/v/"+Math.random()+"')}";
+				$('#ve').attr('src',src);
+				return false;
+			});
+		});
+	</script>
+	<div class="wrapper">
+		<div class="row">
+			<div class="sign">
+				<span><img src="__IMG__/left-top.jpg"></span>
+				<ul>
+					<li>{$L['heading_product_manage']}:</li>
+					<li><a href="{:GetSupplyUrl('Product','index')}">{$L['heading_product_list']}</a></li>
+					<li><a class="active" href="javascript:void(0);">{$L['heading_product_upload']}</a></li>
+				</ul>
+			</div>
+			<!--温馨提示-->
+			<div class="prompt">
+				<h4>
+					{$L['error_msg_012']}
+				</h4>
+			</div>
+			<!--内容-->
+			<div class="upload">
+				<section class="panel">
+					<header class=" custom-tab ">
+						<ul class="nav nav-tabs">
+							<li>
+								<a href="javascript:void(0);" >{$L['text_business_type_luozuan']} {$L['text_bulk_upload']}</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);" id="func_luozuan_add">{$L['text_business_type_luozuan']} {$L['text_product_upload']}{$L['text_for_single']}</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);" id="func_sanhuo_add">{$L['heading_product_sanhuo']} {$L['text_product_upload']}</a>
+							</li>
+							<li >
+								<a href="javascript:void(0);" id="func_goods_add" >{$L['heading_product_chengpin']} {$L['text_product_upload']}</a>
+							</li>
+						</ul>
+					</header>
+					<div class="panel-body">
+						<div class="tab-content">
+							<div class="tab-pane active" id="naked">
+								<div class="col-lg-4 pull-left">
+									<h5>{$L['upload_msg_001']}</h5>
+									<a href="__PUBLIC__/diamond.csv">{$L['text_certificate_template_download']}</a>
+									<form name="luozuan_file" action="{:U('Product/importLuozuan')}" enctype="multipart/form-data" method="post">
+										<div class="form-group hide">
+											<label class="text-right">{$L['text_file_Description']}：</label>
+											<input type="text" name="desc" class="form-control" placeholder="{$L['upload_msg_002']}">
+										</div>
+										<div class="form-group">
+											<label for="luozuan_file" class="text-right">{$L['text_file_upload']}：</label>
+											<input type="file" name="luozuan_file" id="luozuan_file" />
+										</div>
+										<div class="form-group">
+											<input type="text" name="verification_code" placeholder="{$L['entry_verification_code']}">
+											
+											<img id= 've' src="{:U('/Index/Verify/v/"+Math.random()+"')}" style="width:inherit;height:inherit;width: 80px;height:36px;padding:0px;">
+											
+
+										</div>
+										<div class="form-group text-center">
+											<button type="submit" class="btn btn-warning con">{$L['text_confirm_upload']}</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="tab-pane">
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="luozuan_edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" rel="nofollow">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close"
+							data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title">
+						{$L['text_luozuan_edit']}
+					</h4>
+				</div>
+				<div class="modal-body">
+					<form id="luozuan_info" class="form-inline">
+						<div class="table-responsive">
+							<table class="table table-bordered table-condensed" style="text-align: left;">
+								<tr>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_type']}:</label>
+											{:getSelectHtml(array('class'=>'form-control','name'=>'shape'),'goods_luozuan_shape',array('value'=>'shape','text'=>'shape'))}
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_diamond_name']}:</label>
+											<input type="text" class="form-control" name="goods_name" value="">
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_GIA_type']}:</label>
+											{:getSelectHtml(array('class'=>'form-control','name'=>'certificate_type'),'supply_goods_luozuan_attr_type',array('value'=>'value','text'=>'value'),array('type'=>array('eq','certificate_type')))}
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_certificate_sn']}:</label>
+											<input type="text" class="form-control" name="certificate_number" value="">
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_address']}:</label>
+											<input type="text" class="form-control"  name="location" value="">
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_stock']}:</label>
+											<input type="text" name="goods_number" class="form-control" value="">
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_weight']}:</label>
+											<input type="text" name="weight" class="form-control" value="">
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_color']}:</label>
+											{:getSelectHtml(array('class'=>'form-control','name'=>'color'),'supply_goods_luozuan_attr_type',array('value'=>'value','text'=>'value'),array('type'=>array('eq','color')))}
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_clarity']}:</label>
+											{:getSelectHtml(array('class'=>'form-control','name'=>'clarity'),'supply_goods_luozuan_attr_type',array('value'=>'value','text'=>'value'),array('type'=>array('eq','clarity')))}
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_cut']}:</label>
+											{:getSelectHtml(array('class'=>'form-control','name'=>'cut'),'supply_goods_luozuan_attr_type',array('value'=>'value','text'=>'value'),array('type'=>array('eq','cut')))}
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_polish']}:</label>
+											{:getSelectHtml(array('class'=>'form-control','name'=>'polish'),'supply_goods_luozuan_attr_type',array('value'=>'value','text'=>'value'),array('type'=>array('eq','polish')))}
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_symmetry']}:</label>
+											{:getSelectHtml(array('class'=>'form-control','name'=>'symmetry'),'supply_goods_luozuan_attr_type',array('value'=>'value','text'=>'value'),array('type'=>array('eq','symmetry')))}
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_fluor']}:</label>
+											{:getSelectHtml(array('class'=>'form-control','name'=>'fluor'),'supply_goods_luozuan_attr_type',array('value'=>'value','text'=>'value'),array('type'=>array('eq','fluor')))}
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_milk']}:</label>
+											<input type="text" name="milk" class="form-control" value="">
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_coffee']}:</label>
+											<input type="text" name="coffee" class="form-control" value="">
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_dia_table']}:</label>
+											<input type="text" name="dia_table" class="form-control" value="">
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_dia_depth']}:</label>
+											<input type="text" name="dia_depth" class="form-control" value="">
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_size']}:</label>
+											<input type="text" name="dia_size" class="form-control" value="">
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_dia_global_price']}:</label>
+											<input type="text" name="dia_global_price" class="form-control" value="">
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_dia_discount']}:</label>
+											<input type="text" name="dia_discount" class="form-control" value="">
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_discount_sales']}:</label>
+											<input type="text" name="discount_sales" class="form-control" value="">
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<div class="col-xs-8">
+						<span id="luozuan_edit_msg"></span>
+					</div>
+					<div class="col-xs-4">
+						<button type="button" class="btn btn-primary" id="but_modify_luozuan_submit">
+							{$L['text_submit_change']}
+						</button>
+					</div>
+				</div>
+			</div><!-- /.modal-content -->
+		</div>
+	</div>
+	<div class="modal fade" id="sanhuo_edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" rel="nofollow">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close"
+							data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title">
+						{$L['text_sanhuo_edit']}
+					</h4>
+				</div>
+				<div class="modal-body">
+					<form id="sanhuo_info" class="form-inline">
+						<div class="table-responsive">
+							<table class="table table-bordered table-condensed" style="text-align: left;">
+								<tr>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_diamond_type']}:</label>
+											<if condition="LANG_SET eq 'en-us' ">
+												{:getSelectHtml(array('class'=>'form-control','name'=>'tid'),'goods_sanhuo_type',array('value'=>'tid','text'=>'type_name_en'), array('type_name_en'=>array('neq','')) )}
+											<else />
+												{:getSelectHtml(array('class'=>'form-control','name'=>'tid'),'goods_sanhuo_type',array('value'=>'tid','text'=>'type_name'))}
+											</if>
+
+											
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_sanhuo_sn']}:</label>
+											<input type="text" class="form-control" name="goods_sn" value="">
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_place_origin']}:</label>
+											<select name="location" class="form-control">
+												<option value="" >{$L['text_please_chose']}</option>
+												<option value="深圳" >{$L['text_shenzhen']}</option>
+												<option value="上海" >{$L['text_shanghai']}</option>
+												<option value="北京" >{$L['text_beijing']}</option>
+												<option value="香港" >{$L['text_xianggang']}</option>
+												<option value="国外" >{$L['text_china_other']}</option>
+											</select>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_cut']}:</label>
+											{:getSelectHtml(array('class'=>'form-control','name'=>'cut'),'goods_sanhuo_cut',array('value'=>'cut_name','text'=>'cut_name'))}
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_color']}:</label>
+											{:getSelectHtml(array('class'=>'form-control','name'=>'color'),'goods_sanhuo_color',array('value'=>'color_name','text'=>'color_name'))}
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_product_clarity']}:</label>
+											{:getSelectHtml(array('class'=>'form-control','name'=>'clarity'),'goods_sanhuo_clarity',array('value'=>'clarity_name','text'=>'clarity_name'))}
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="form-group">
+											<label>{$L['price']}:</label>
+											<input type="text" name="goods_price" class="form-control" value="">
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_total_weight']}:</label>
+											<input type="text" name="goods_weight" class="form-control" data-old-value value="">
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['number']}: </label>
+											<input type="text" class="form-control" name="goods_quantity" value="">
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_special_offer']}:</label>
+											<input type="text" name="goods_price2" class="form-control" value="">
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<label>{$L['text_sale_mode']}:</label>
+											<select name="goods_sellway" class="form-control">
+												<option value="" >{$L['text_please_chose']}</option>
+												<option value="统包走" >{$L['text_turnkey_package']}</option>
+												<option value="称重" >{$L['text_sale_weight']}</option>
+											</select>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<div class="row">
+											<div class="col-xs-4" style="padding-right: 0; text-align: right">
+											<div class="form-group">
+												<label style="width: 120px !important;">{$L['text_add_4cattr']}:</label>
+												<select id="select_4c_type" class="form-group" style="display: inline-block; width: 88px;">
+													<option value="color">{$L['text_product_color']}</option>
+													<option value="clarity">{$L['text_product_clarity']}</option>
+													<option value="cut">{$L['text_product_cut']}</option>
+													<option value="weights">{$L['text_diamond_fraction']}</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-xs-6" style="padding: 2px">
+											<select id="select_weights_parent" name="weights" class="form-group" style="padding:0;margin-left:2px;display:none;">
+											</select>
+											&nbsp;
+											<select id="select_cc_value" class="form-group" style="padding:0;margin-right:2px;">
+											</select>
+											<input type="text" id="input_cc_ku" data-4c-max-value="0" class="form-control" onpaste="return false" ondragenter="return false" oncontextmenu="return false;" style="ime-mode:disabled;" />
+										</div>
+										<div class="col-xs-2 pull-left">
+											<button type="button" id="add_4c" class="btn btn-primary" style="line-height:12px;" disabled >{$L['add']}</button>
+										</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="form-group">
+											<label style="width: 100%;" class="bla">{$L['text_product_color']}({$L['text_not_assigned']}:<span id="color_4c_count" style="word-wrap: break-word; word-break: normal;">0</span>)</label>
+										</div>
+									</td>
+									<td colspan="2" id="sanhuo_4c_color_panel">
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="form-group">
+											<label style="width: 100%;" class="bla">{$L['text_product_clarity']}({$L['text_not_assigned']}:<span id="clarity_4c_count" style="word-wrap: break-word; word-break: normal;">0</span>)</label>
+										</div>
+									</td>
+									<td colspan="2" id="sanhuo_4c_clarity_panel">
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="form-group">
+											<label style="width: 100%;" class="bla">{$L['text_product_cut']}({$L['text_not_assigned']}:<span id="cut_4c_count" style="word-wrap: break-word; word-break: normal;">0</span>)</label>
+										</div>
+									</td>
+									<td colspan="2" id="sanhuo_4c_cut_panel">
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="form-group">
+											<label style="width: 100%;" class="bla">{$L['text_diamond_fraction']}({$L['text_not_assigned']}:<span id="weights_4c_count" style="word-wrap: break-word; word-break: normal;">0</span>)</label>
+										</div>
+									</td>
+									<td colspan="2" id="sanhuo_4c_weights_panel">
+									</td>
+								</tr>
+							</table>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<div class="col-xs-8">
+						<span id="sanhuo_edit_msg"></span>
+					</div>
+					<div class="col-xs-4">
+						<button type="button" class="btn btn-primary" id="but_modify_sanhuo_submit">
+							{$L['text_submit_change']}
+						</button>
+					</div>
+				</div>
+			</div><!-- /.modal-content -->
+		</div>
+	</div>
+</block>
+<block name="my_js">
+	<include file="./Application/Supply/View/Manage/Default/Product/product_js.html" />
+	<script>
+		function flush4Ccount(){
+			$('#clarity_4c_count').html(cc.data.clarity);
+			$('#weights_4c_count').html(cc.data.weights);
+			$('#color_4c_count').html(cc.data.color);
+			$('#cut_4c_count').html(cc.data.cut);
+			console.log(cc);
+		}
+		function get_4c_input_html(cc_value,cc_ku,baifenbi,cc_type){
+			html = '<div class="col-xs-6" style="margin-top: 2px;padding:0;">'+
+					'<div class="input-group">'+
+					'<span class="input-group-addon">'+cc_value+'-'+baifenbi+'%</span>'+
+					'<input type="text" class="form-control cc-input" data-cc-type="'+cc_type+'" data-cc-value="'+cc_value+'" data-old-value="'+cc_ku+'" value="'+cc_ku+'"/>'+
+					'<span class="input-group-btn" style="height: 28px; float: left">'+
+					'<button class="btn btn-default remove_4c" data-cc-type="'+cc_type+'" data-cc-value="'+cc_value+'" data-cc-ku="' +cc_ku+ '" type="button" style="height: 28px;">X</button>'+
+					'</span>'+
+					'</div>'+
+					'</div>';
+			return html;
+		}
+		function clearSanhuoInfo(){
+			$('#select_weights_parent').hide();
+			$('#select_4c_type').val('color');
+			var html = "";
+			var data = cc.get_sanhuo_4c('color',0);
+			_.each(data,function(v,k){
+				html +="<option value='"+ v.color_name+"'>" + v.color_name+"</option>";
+			});
+			$("#select_cc_value").html(html);
+			$("#sanhuo_4c_clarity_panel").html('');
+			$("#sanhuo_4c_weights_panel").html('');
+			$("#sanhuo_4c_color_panel").html('');
+			$("#sanhuo_4c_cut_panel").html('');
+			$('#sanhuo_info .form-control').each(function(){
+				$(this).val('');
+				$(this).attr('data-old-value','');
+			});
+			cc.data.clarity = 0;
+			cc.data.weights = 0;
+			cc.data.color   = 0;
+			cc.data.cut     = 0;
+			cc.goods_weight = 0;
+			flush4Ccount();
+		}
+		$(function(){
+
+			var html = "";
+			var w_data = cc.get_sanhuo_4c('weights',0);
+			_.each(w_data,function(v,k){
+				html +="<option value='"+v.weights_name+"' data-value='"+ v.weights_id+"'>" + v.weights_name+"</option>";
+			});
+			$('#select_weights_parent').html(html);
+
+			$('#func_sanhuo_add').click(function(){
+				clearSanhuoInfo();
+				$('#sanhuo_edit').modal();
+			});
+
+			$('#func_luozuan_add').click(function(){
+				$("#luozuan_edit_msg").html('');
+				$('#luozuan_edit').modal();
+			});
+
+			$('#func_goods_add').click(function(){
+				//openWindows('{:U('Goods/productInfo')}','1050','650');
+				//window.open('{:U('Goods/productInfo')}');
+				window.location.href="/Goods/productInfo";
+				return false;
+			});
+
+			$("#but_modify_luozuan_submit").live('click',function(){
+				var data = $('#luozuan_info').serialize();
+				var res  = luozuan.add_luozuan(data);
+				$("#luozuan_edit_msg").html(res.msg);
+				if(res.ret==100) {
+					$("#luozuan_edit_msg").css({opacity: '1'}).animate({opacity: 0}, 2500);
+					$('#luozuan_info .form-control').each(function () {
+						$(this).val('');
+					});
+				}
+			});
+
+			$("#but_modify_sanhuo_submit").live('click',function(){
+				if(cc.data['cut'] != 0 || cc.data['clarity'] != 0 || cc.data['color'] != 0 || cc.data['weights'] != 0){
+					$("#sanhuo_edit_msg").html('{$L['upload_msg_003']}');
+					return false;
+				}else{
+					var clarity_input_object =  $("#sanhuo_4c_clarity_panel input");
+					var weights_input_object =  $("#sanhuo_4c_weights_panel input");
+					var cut_input_object     =  $("#sanhuo_4c_cut_panel input");
+					var color_input_object   =  $("#sanhuo_4c_color_panel input");
+					var data                 = {};
+					data.clarity = new Array();
+					data.cut     = new Array();
+					data.weights = new Array();
+					data.color   = new Array();
+					$(clarity_input_object).each(function(){
+						var _d = {};
+						_d.cc_ku    = $(this).val();
+						_d.cc_value = $(this).attr('data-cc-value');
+						_d.cc_type  = $(this).attr('data-cc-type');
+						data.clarity.push(_d);
+					});
+					$(weights_input_object).each(function(){
+						var _d = {};
+						_d.cc_ku    = $(this).val();
+						_d.cc_value = $(this).attr('data-cc-value');
+						_d.cc_type  = $(this).attr('data-cc-type');
+						data.weights.push(_d);
+					});
+					$(cut_input_object).each(function(){
+						var _d = {};
+						_d.cc_ku    = $(this).val();
+						_d.cc_value = $(this).attr('data-cc-value');
+						_d.cc_type  = $(this).attr('data-cc-type');
+						data.cut.push(_d);
+					});
+					$(color_input_object).each(function(){
+						var _d = {};
+						_d.cc_ku    = $(this).val();
+						_d.cc_value = $(this).attr('data-cc-value');
+						_d.cc_type  = $(this).attr('data-cc-type');
+						data.color.push(_d);
+					});
+					var cc_str = JSON.stringify(data);
+					data = $('#sanhuo_info').serialize();
+					data = data + '&cc=' + cc_str;
+					var res = sanhuo.add_sanhuo(data);
+					$("#sanhuo_edit_msg").html(res.msg);
+					if(res.ret==100){
+						$("#sanhuo_edit_msg").css({opacity:'1'}).animate({opacity:0},2500);
+						$('#sanhuo_info .form-control').each(function(){
+							$(this).val('');
+						});
+						clearSanhuoInfo();
+					}
+				}
+			});
+
+			//监听4c输入
+			$("#input_cc_ku").keyup(function() {
+				var v       = this.value;
+				$('#add_4c').prop('disabled',true);
+				var cc_type = $('#select_4c_type').val();
+				if(cc.check_input_4c_data(v,cc_type,0) === false){
+					this.value = v.substring(0,v.length-1);
+				}
+				if( this.value !== '' && $('#select_cc_value').val() && cc.check_input_4c_data(this.value,cc_type,0) ){
+					$('#add_4c').prop('disabled',false);
+				}
+			});
+			$('.cc-input').live('keyup',function(){
+				var v       = this.value;
+				var ov      = $(this).attr('data-old-value');
+				var cc_type = $(this).attr('data-cc-type');
+				if( v == '' ){
+					this.value = ov;
+					return false;
+				}
+				if(cc.check_input_4c_data(v,cc_type,ov) === false){
+					this.value = v.substring(0,v.length-1);
+				}else{
+					$(this).attr('data-old-value',v);
+					cc.set_cc_value('-'+ov,cc_type);
+					var baifenbi = cc.set_cc_value(v,cc_type);
+					$(this).prev().html($(this).attr('data-cc-value')+'-'+baifenbi+'%');
+					$(this).next().children().attr('data-cc-ku',v);
+					flush4Ccount();
+				}
+			});
+
+			$('input[name="goods_weight"]').live('keyup change',function(){
+				var old_goods_weight = $(this).attr('data-old-value');
+				var goods_weight     = this.value;
+				if(sanhuo.check_goods_weight(goods_weight)==true){
+					cc.set_goods_weight(goods_weight);
+					var d = accAdd(goods_weight,-old_goods_weight);
+					cc.set_cc_value(-d,'cut');
+					cc.set_cc_value(-d,'clarity');
+					cc.set_cc_value(-d,'color');
+					cc.set_cc_value(-d,'weights');
+					$(this).attr('data-old-value',goods_weight);
+					flush4Ccount();
+				}else{
+					this.value  = v.substring(0,this.value.length-1);
+				}
+			});
+            
+			$('#add_4c').on('click',function(){
+				var cc_ku    = $("#input_cc_ku").val();
+				var cc_type  = $('#select_4c_type').val();
+				var cc_value = $('#select_cc_value').val();
+				var en_cc_value   =  $('<div />').text(cc_value).html();
+				if(cc.check_input_4c_data(cc_ku,cc_type,0) === false || !cc_value){
+					return false;
+				}
+				var baifenbi = cc.set_cc_value(cc_ku,cc_type);
+				var html     = get_4c_input_html(en_cc_value,cc_ku,baifenbi,cc_type);
+				var cc_type  = $('#select_4c_type').val();
+				switch(cc_type){
+					case "cut":
+						$("#sanhuo_4c_cut_panel").append(html);
+						break;
+					case "color":
+						$("#sanhuo_4c_color_panel").append(html);
+						break;
+					case "clarity":
+						$("#sanhuo_4c_clarity_panel").append(html);
+						break;
+					case "weights":
+						$("#sanhuo_4c_weights_panel").append(html);
+						break;
+				}
+				$('#select_cc_value option[value="'+cc_value+'"]').remove();
+				flush4Ccount();
+				return;
+			});
+
+			$('.remove_4c').live('click',function(){
+				var data_cc_value = $(this).attr('data-cc-value');
+				var data_cc_ku    = $(this).attr('data-cc-ku');
+				var data_cc_type  = $(this).attr('data-cc-type');
+				cc.set_cc_value('-'+data_cc_ku,data_cc_type);
+				if( $('#select_4c_type').val() ==  data_cc_type ){
+					$('#select_cc_value').append('<option value="'+data_cc_value+'">'+data_cc_value+'</option>')
+				}
+				$(this).closest('.col-xs-6').remove();
+				flush4Ccount();
+			});
+
+			$('#select_4c_type').on('change',function(){
+				var type      = $(this).val();
+				var data,html = "";
+				switch(type){
+					case "cut":
+						$('#select_weights_parent').hide();
+						data = cc.get_sanhuo_4c('cut',0);
+						_.each(data,function(v,k){
+							html +="<option value='"+ v.cut_name+"'>" + v.cut_name+"</option>";
+						});
+						break;
+					case "color":
+						$('#select_weights_parent').hide();
+						data = cc.get_sanhuo_4c('color',0);
+						_.each(data,function(v,k){
+							html +="<option value='"+ v.color_name+"'>" + v.color_name+"</option>";
+						});
+						break;
+					case "clarity":
+						$('#select_weights_parent').hide();
+						data = cc.get_sanhuo_4c('clarity',0);
+						_.each(data,function(v,k){
+							html +="<option value='"+ v.clarity_name+"'>" + v.clarity_name+"</option>";
+						});
+						break;
+					case "weights":
+						var w_id = $('#select_weights_parent option:selected').attr('data-value');
+						data = cc.get_sanhuo_4c('weights',w_id);
+						html = "";
+						_.each(data,function(v,k){
+							html +="<option value='"+ v.weights_name+"'>" + v.weights_name+"</option>";
+						});
+						$('#select_weights_parent').show();
+						break;
+				}
+				$("#select_cc_value").html(html);
+			});
+
+			$('#select_weights_parent').on('change',function(){
+				var w_id = $('#select_weights_parent option:selected').attr('data-value'),html='';
+				var data = cc.get_sanhuo_4c('weights',w_id);
+				_.each(data,function(v,k){
+					html +="<option value='"+ v.weights_name+"'>" + v.weights_name+"</option>";
+				});
+				$("#select_cc_value").html(html);
+				if(!$('#select_cc_value').val()){
+					$('#add_4c').prop('disabled',true);
+					cc.data.weights = 0;
+				}else{
+					cc.data.weights = cc.goods_weight;
+				}
+				flush4Ccount();
+				$("#sanhuo_4c_weights_panel").html('');
+			});
+		});
+	</script>
+</block>

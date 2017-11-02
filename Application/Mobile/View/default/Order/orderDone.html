@@ -1,0 +1,29 @@
+<include file="Public:header" />
+<div class="admin-content head">
+	<ul>
+		<li class="head-bg"><a href="{:U('Index/index')}">{:C('site_name')}</a></li>
+		<li class="head-rl">确认订单</li>
+	</ul>
+	<div class="sign"><h4>恭喜您，您的订单提交成功！</h4></div>
+	<div class="am-content">
+		<ul class="content">
+			<li>
+				<label> 订 单 号&nbsp;：</label><input type="text" value="">
+			</li>
+			<li>
+				<label>配送方式：</label><input type="text" value="上门自取">
+			</li>
+			<li>
+				<label>支付方式：</label><input type="text" placehloder="" value="现金支付">
+			</li>
+			<li>
+				<label>订单金额：</label><input type="text" placehloder="">
+			</li>
+			<li class="am-pace">
+				<a href="{:U('Index/index')}" class="am-btn am-btn-blue am-radius">继续购买</a>
+				<a href="{:U('User/orderList')}" class="am-btn am-btn-blue am-radius">我的订单</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<include file="Public:footer" />

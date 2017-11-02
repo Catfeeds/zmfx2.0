@@ -1,0 +1,33 @@
+<div class="col-md-3">
+	<ul class="list-group text-center">
+	  <li class="list-group-item">个人中心</li>
+	  <li class="list-group-item <eq name='ACTION_NAME' value='userInfo'> list-group-item-warning </eq> "><a href="{:U('User/userInfo')}">用户资料<a/><eq name='ACTION_NAME' value='userInfo'> <span  class="caret pull-right" ></span> </eq></li>
+	  <li class="list-group-item <eq name='ACTION_NAME' value='shopAddress'> list-group-item-warning </eq> "><a href="{:U('User/shopAddress')}">地址管理</a><eq name='ACTION_NAME' value='shopAddress'> <span  class="caret pull-right" ></span> </eq></li>
+	  <li class="list-group-item <in name='ACTION_NAME' value='olist,oeval,odeta'> list-group-item-warning </in> "><a href="{:U('User/olist')}">我的订单</a><in name='ACTION_NAME' value='olist,oeval,odeta'> <span  class="caret pull-right" ></span> </in></li>
+	  <li class="list-group-item <eq name='ACTION_NAME' value='updatePassword'> list-group-item-warning </eq> "><a href="{:U('User/updatePassword')}">账户安全</a><eq name='ACTION_NAME' value='updatePassword'> <span  class="caret pull-right" ></span> </eq></li>
+	  <li class="list-group-item <eq name='ACTION_NAME' value='userMessages'> list-group-item-warning </eq> "><a href="{:U('User/userMessages')}">消息中心</a><eq name='ACTION_NAME' value='userMessages'> <span  class="caret pull-right" ></span> </eq>
+        <if condition="$count_message"><span class="new_message">{$count_message}</span></if>
+      </li>
+	</ul>
+</div>
+<script>
+	//动态改变提示消息框的大小
+	var new_message = $('.new_message').html();
+	
+	if(new_message > '999'){
+			$('.new_message').html('999+');
+	}
+
+	if(new_message){
+		
+		if( new_message.length == 1 ){
+			$('.new_message').css({'width': '23px', 'height': '22px', 'line-height': '16px'});
+		}else if( new_message.length == 2 ){
+			$('.new_message').css({'width': '23px', 'height': '22px', 'line-height': '16px'});
+		}else if( new_message.length == 3 ){
+			$('.new_message').css({'width': '26px', 'height': '25px', 'line-height': '20px'});
+		}else if( new_message.length >= 4 ){
+			$('.new_message').css({'width': '35px', 'height': '27px', 'line-height': '20px'});
+		}
+	}
+</script>

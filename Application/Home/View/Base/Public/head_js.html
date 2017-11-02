@@ -1,0 +1,64 @@
+<script type="text/javascript" src="__PUBLIC__/Js/jquery.10.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/Jquery/Jquery.Cookie.js"></script>
+<script type="text/javascript" src="__PUBLIC__/layer/layer.js"></script>
+<script src="__JS__/fxs.js" type="text/javascript"></script>
+<script src="__JS__/public.js"></script>
+<script type="text/javascript">
+	// 用户退出 --> ken
+	function loginout() {
+		$.ajax({
+			url: '/Home/Public/loginout',
+			type: 'get',
+			dataType: 'json',
+			success: function (result) {
+				if (result.success) {
+					alert(result.msg);
+					delCookie('password');
+					delCookie('autologin');
+					window.location.href = '/Home/Index/index.html';
+				}
+			},
+			error: function (e) {
+				console.log(e);
+			}
+		});
+	}
+	$(document).ready(function(){
+		$(function(){
+			var url= '__SELF__';
+			if(url=='/' || url.indexOf("goodsList/keyword") > 0 || url.indexOf("Home/Public/") > 0 || url.indexOf("Home/Index/") > 0){
+				$('.homepage').addClass('action');
+			}else if(url.indexOf("Search/detail") > 0  ||  url.indexOf("Goods/goodsDiyColor") > 0){
+				$('a[href="'+'/Home/Goods/goodsDiy.html'+'"]').parent('.openNav').addClass('action');
+			}else{
+				var attr_id = [];
+				$(".openNav").each(function(i){
+					attr_id[i] = $(this).find('a').attr("href");
+				});
+				if(attr_id){
+					$.each(attr_id ,function(k ,v) {
+						if(v.replace(/[\d]/g,"")==url.replace(/[\d]/g,"")){
+							$('a[href="'+v+'"]').parent('.openNav').addClass('action');	 	return false;
+						}else if(url.indexOf("goods_type/3/") > 0 && v.indexOf("/Goods/goodsCat") > 0){
+							$('a[href="'+v+'"]').parent('.openNav').addClass('action');	 	return false;
+						}else if(url.indexOf("goods_type/4/") > 0 && v.indexOf("/Goods/goodsCategory/gcid") > 0){
+							$('a[href="'+v+'"]').parent('.openNav').addClass('action');	 	return false;
+						}else if(url.indexOf("Article") > 0 && v.indexOf("Article") > 0){
+							$('a[href="'+v+'"]').parent('.openNav').addClass('action');	 	return false;
+						}else{
+							$('a[href="'+url+'"]').parent('.openNav').addClass('action');
+						}
+					})
+				}
+			}
+		})
+		$(".openNav").mousemove(function(e){
+			$(this).find("ul").css("display","block");
+		}).mouseout(function(e){
+			$(this).find("ul").css("display","none");
+		});
+		$(".nav_zi").mouseout(function(e){
+		   $(this).css("display","none");
+		});
+	});
+</script>

@@ -1,0 +1,560 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>模板颜色配置</title>
+</head>
+<style type="text/css">
+/*选项框部分css**/
+#tabbox{ width:1200px; overflow:hidden; margin:0 auto;}
+.tab_conbox{border: 0px solid #999;border-top: none; height:90px;}
+.tab_con{ display:none; }
+.tabs{height: 32px;border-bottom:1px solid #999;border-left: 1px solid #999;width: 100%;}
+.tabs li{height:31px;line-height:31px;float:left;border:1px solid #999;background: #e0e0e0;overflow: hidden;position: relative;}
+.tabs li a {display: block;padding: 0 20px;border: 0px solid #fff;outline: none;}
+.tabs li a:hover {background: #ccc;}    
+.tabs .thistab,.tabs .thistab a:hover{background: #E1FBFF;border-bottom: 1px solid #999;}
+.tab_con {padding:12px;font-size: 14px; line-height:175%; width:100%;}
+li.tab_con{width:100%;}
+</style>
+<script type="text/javascript">
+$(function(){
+	//切换颜色
+	$('select[name="color"]').change(function(){
+		color = $(this).val();
+		template_path = $('input[name="template_path"]').val();
+		//获取文件
+		$.get($.getCssColorFile,{'color':color,'template_path':template_path},function(data){
+			$('#cssFile').val(data.content);
+			setTimeout(function (){ $("form[name='cssForm']")[0].submit();}, 1000);//使用切换的颜色组
+		});
+	})
+	//恢复默认的css
+	$('.hfmr').click(function(){
+		if (!confirm("是否将" + $('select[name="color"] option:selected').text() + "恢复成默认颜色？")) {
+		   return false;
+   		}	
+		color = $('select[name="color"]').val();
+		template_path = $('input[name="template_path"]').val();
+		//获取文件
+		$.get($.getCssColorFile,{'color':color,'template_path':template_path,'isNoId':1},function(data){
+			$('#cssFile').val(data.content);
+			setTimeout(function (){ $("form[name='cssForm']")[0].submit();}, 1000);//使用默认css
+		});
+		
+	})
+})
+</script>
+<body>
+	<div class="page-main edit">
+		<div class="subMenu">
+			<h3>当前操作：模板颜色配置</h3>
+			<ul>
+				<li><a href="{:U('Admin/System/templateManage')}">返回模板管理</a></li>
+			</ul>
+		</div>
+		<div class="template">
+			<form name="cssForm" onSubmit="return createCss()"  action="{:U('Admin/System/templateSys?template_id='.$templateInfo['template_id'])}" method="post">
+			<if condition="$templateInfo['template_id'] neq '8' ">
+			<div class="info">
+				<div class="title">使用颜色组:</div>
+				<select name="color">
+					<volist name="template_color" id="vo">
+					<option value="{$vo.key}" <eq name="templateInfo['color']" value="$vo['key']">selected=""</eq>>{$vo.val}颜色组</option>
+					</volist>
+				</select>				
+				<span class="hfmr">变成默认样式</span>
+				<input type="hidden" name="template_path" value="{$templateInfo.template_path}" />
+			</div>
+			<div class="info">
+				<iframe src="http://{$Think.SERVER.HTTP_HOST}" id="head_foot" width="100%" height="418px"></iframe>  
+			</div>
+			<div class="info">
+				<ul class="tabs" id="tabs" style=" margin-bottom:0px; border:0px;">
+				   <li><a href="#" tab="tab1">用户信息栏</a></li>
+				   <li><a href="#" tab="tab2">搜索栏</a></li>
+				   <li><a href="#" tab="tab3">导航栏</a></li>
+				   <li><a href="#" tab="tab4">页尾</a></li>
+				 </ul>  
+			    <ul class="tab_conbox" style="border-top: 0px;">
+					<li id="tab1" class="tab_con" style="width:100%;">
+						<table>
+							<tr>
+								<td>页面头部背景色</td>
+								<td><input id="header_bg" type="text"> </td>
+								<td>用户信息栏背景颜色</td>
+								<td><input id="user_info_bg" type="text"></td>
+								<td>用户信息栏分割线颜色</td>
+								<td><input id="user_info_fenge" type="text"></td>
+							</tr>
+							
+							<tr>
+								<td>用户信息栏文字大小</td>
+								<td>
+									<SELECT id="user_info_font_size">
+										<option value="9px">9px</option>
+										<option value="10px">10px</option>
+										<option value="11px">11px</option>
+										<option value="12px">12px</option>
+										<option value="13px">13px</option>
+										<option value="14px">14px</option>
+										<option value="15px">15px</option>
+										<option value="16px">16px</option>
+										<option value="12px">默认</option>
+									</SELECT>
+								</td>
+								<td>用户信息栏文字颜色</td>
+								<td><input id="user_info_font_color" type="text"></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
+					</li>
+						
+					<li id="tab2" class="tab_con" style="width:100%;">
+						<table>
+							<tr>
+								<td>搜索栏背景颜色</td>
+								<td><input id="search_bg" type="text"> </td>
+								<td>搜索栏文字颜色</td>
+								<td><input id="search_font_color" type="text"> </td>
+								<td>搜索栏文字大小</td>
+								<td><SELECT id="search_font_size">
+										<option value="9px">9px</option>
+										<option value="10px">10px</option>
+										<option value="11px">11px</option>
+										<option value="12px">12px</option>
+										<option value="13px">13px</option>
+										<option value="14px">14px</option>
+										<option value="15px">15px</option>
+										<option value="16px">16px</option>
+										<option value="12px">默认</option>
+									</SELECT>
+								</td>
+								<td>搜索栏链接覆盖时颜色</td>
+								<td><input id="search_font_hover_color" type="text"> </td>
+							</tr>
+							<tr>
+								<td>搜索文本框，按钮背景颜色</td>
+								<td><input id="search_input_bg" type="text"></td>
+								<td>搜索文本框，按钮文字颜色</td>
+								<td><input id="search_input_font_color" type="text"></td>
+								<td>搜索文本框，按钮文字大小</td>
+								<td>
+									<SELECT id="search_input_font_size">
+										<option value="9px">9px</option>
+										<option value="10px">10px</option>
+										<option value="11px">11px</option>
+										<option value="12px">12px</option>
+										<option value="13px">13px</option>
+										<option value="14px">14px</option>
+										<option value="15px">15px</option>
+										<option value="16px">16px</option>
+										<option value="12px">默认</option>
+									</SELECT>
+								</td>
+								<td></td><td></td>
+							</tr>
+						</table>
+					</li>
+				
+					<li id="tab3" class="tab_con" style="width:100%;">
+						<table>
+							<tr>
+								<td>菜单栏背景颜色</td>
+								<td><input id="nav_bg" type="text"> </td>
+								<td>菜单栏分隔线颜色</td>
+								<td><input id="nav_fenge_color" type="text"> </td>
+								<td>菜单栏文字大小</td>
+								<td><SELECT id="nav_font_size">
+										<option value="9px">9px</option>
+										<option value="10px">10px</option>
+										<option value="11px">11px</option>
+										<option value="12px">12px</option>
+										<option value="13px">13px</option>
+										<option value="14px">14px</option>
+										<option value="15px">15px</option>
+										<option value="16px">16px</option>
+										<option value="12px">默认</option>
+									</SELECT>
+								</td>
+								<td>覆盖时菜单背景颜色</td>
+								<td><input id="nav_menu_bg" type="text"> </td>
+							</tr>
+							<tr>
+								<td>主菜单文字颜色</td>
+								<td><input id="nav_menu_font_color" type="text"></td>
+								<td>子菜单背景颜色</td>
+								<td><input id="nav_xiala_bg" type="text"></td>
+								<td>子菜单分隔线颜色</td>
+								<td><input id="nav_xiala_fenge_color" type="text"> 									
+								</td>
+								<td></td><td></td>
+							</tr>
+						</table>				
+					</li>
+				
+					<li id="tab4" class="tab_con" style="width:100%;">
+						<table>
+							<tr>
+								<td>底部背景色</td>
+								<td><input id="footer_bg" type="text"> </td>
+								<td>文字颜色</td>
+								<td><input id="footer_color" type="text"> </td>
+								<td>标题文字大小</td>
+								<td><SELECT id="footer_font_size">
+										<option value="12px">12px</option>
+										<option value="13px">13px</option>
+										<option value="14px">14px</option>
+										<option value="15px">15px</option>
+										<option value="16px">16px</option>
+										<option value="17px">17px</option>
+										<option value="18px">18px</option>
+										<option value="16px">默认</option>
+									</SELECT>
+								</td>
+								
+							</tr>
+							<tr>
+								<td>电话文字大小</td>
+								<td><SELECT id="footer_tel_size">
+										<option value="20px">20px</option>
+										<option value="21px">21px</option>
+										<option value="22px">22px</option>
+										<option value="23px">23px</option>
+										<option value="24px">24px</option>
+										<option value="25px">25px</option>
+										<option value="26px">26px</option>
+										<option value="22px">默认</option>
+									</SELECT></td>
+								<td>版权颜色</td>
+								<td><input id="footer_banquan_color" type="text"></td>
+								<td>版权文字大小</td>
+								<td>
+									<SELECT id="footer_banquan_size">
+										<option value="12px">12px</option>
+										<option value="13px">13px</option>
+										<option value="14px">14px</option>
+										<option value="15px">15px</option>
+										<option value="16px">16px</option>
+										<option value="17px">17px</option>
+										<option value="18px">18px</option>
+										<option value="14px">默认</option>
+									</SELECT>
+								
+								</td>
+							</tr>
+						</table>					
+					</li>
+			</ul>
+			
+			
+			</div>
+			
+			<div class="info" style="display:none;">				
+				<div class="title">样式文件:</div>
+				<textarea id="cssFile" style="min-width: 70%; min-height: 300px; padding: 5px;"  name="css">{$cssContent}</textarea>
+			</div>
+			</if>
+			<div class="info">				
+				<div class="title">当前颜色组自定义样式:</div>
+				<textarea id="cssFile_zidingyi" style="min-width: 70%; min-height: 300px; padding: 5px; line-height: 23px; background: #FFF; border-radius: 5px; border: 1px solid #d4cac6; -webkit-box-shadow: inset 0 1px 6px #eeeeee;"  name="css_zidingyi"><if condition="$templateInfo['template_id'] neq '8' ">{$cssContent_zidingyi}<else />{$templateInfo['style']}</if></textarea>
+			</div>
+			<div class="info">
+				<div class="title">&nbsp;</div>
+				<input type="submit" value="保存样式" class="button fl" />
+				&nbsp;&nbsp;&nbsp;
+				<span style="font-size:16px; color:red;">
+				<if condition="$templateInfo['template_id'] neq '8' ">
+				*如果保存后看不到效果，请用ctrl+F5强制浏览器刷新
+				<else />
+				*如果保存后看不到效果，请用ctrl+F5强制浏览器刷新
+				</if>	
+				</span>
+			</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
+
+<script type="text/javascript">
+
+//////////////选项卡操作
+$(document).ready(function() {
+    jQuery.jqtab = function(tabtit,tabcon) {
+        $(tabcon).hide();
+        $(tabtit+" li:first").addClass("thistab").show();
+        $(tabcon+":first").show();
+    
+        $(tabtit+" li").click(function() {
+            $(tabtit+" li").removeClass("thistab");
+            $(this).addClass("thistab");
+            $(tabcon).hide();
+            var activeTab = $(this).find("a").attr("tab");
+            $("#"+activeTab).fadeIn();
+            return false;
+        });
+        
+    };
+    /*调用方法如下：*/
+    $.jqtab("#tabs",".tab_con");
+    
+});
+
+////////判断前台页面加载完毕
+$(function(){
+    $("#head_foot").on("load",function(){
+		$("#head_foot").contents().find("#ckSlide_3").css('display','none');	//页面幻灯片
+		//$("#head_foot").contents().find(".index").css('display','none');	//页面主题
+		//$("#head_foot").contents().find(".main-im").css('display','none');//服务栏
+		$("#head_foot").contents().find("a").click(function(){  return false; });
+		$("#head_foot").contents().find("input").click(function(){  return false; });
+		getcss();
+    });
+});
+/*
+*传入一个字符串
+*用css属性来风格
+*用分号来分割
+*/
+function searchCss(){
+	var str = arguments[0] ? arguments[0] : ":";
+    var fenge = arguments[1] ? arguments[1] : ";";
+	var str1 = str.split(fenge);
+	var str2 = str1[1].split(';');
+	return str2[0];
+}
+
+function getcss(){
+		//用户信息栏的设置
+		var header_bg = $("#head_foot").contents().find(".header").css('background-color');  //头部背景		
+		var user_info_bg = $("#head_foot").contents().find(".header .userInfo").css('background-color');//用户信息栏背景
+		var user_info_fenge = $("#head_foot").contents().find(".header .userInfo").css('border-bottom-color');//用户信息栏分割线颜色
+		var user_info_font_color = $("#head_foot").contents().find(".header .userInfo ul li span").css('color');//用户信息栏文字颜色
+		var user_info_font_size = $("#head_foot").contents().find(".header .userInfo ul li span").css('font-size');//用户信息栏文字大小
+		
+		$("#header_bg").spectrum({color: header_bg, preferredFormat: "rgb", showInput: true,});
+		$("#header_bg").val(header_bg);
+		$("#user_info_bg").spectrum({color: user_info_bg, preferredFormat: "rgb", showInput: true,});
+		$("#user_info_bg").val(user_info_bg);
+		$("#user_info_fenge").spectrum({color: user_info_fenge, preferredFormat: "rgb", showInput: true,});
+		$("#user_info_fenge").val(user_info_fenge);
+		$("#user_info_font_color").spectrum({color: user_info_font_color, preferredFormat: "rgb", showInput: true,});
+		$("#user_info_font_color").val(user_info_font_color);
+		$("#user_info_font_size").val( user_info_font_size);
+		
+		//搜索栏设置
+		var search_bg = $("#head_foot").contents().find(".header .search").css('background-color');//搜索栏背景
+		var search_font_color = $("#head_foot").contents().find(".header .search ul a").css('color');//搜索栏文字颜色
+		var search_font_size= $("#head_foot").contents().find(".header .search ul a").css('font-size');//搜索栏文字大小
+		var search_input_bg = $("#head_foot").contents().find(".header .search input").css('background-color');//搜索栏 input背景颜色
+		var search_input_font_color = $("#head_foot").contents().find(".header .search input").css('color');//搜索栏input文字颜色
+		var search_input_font_size = $("#head_foot").contents().find(".header .search input").css('font-size');//搜索栏input文字大小		
+		
+		
+		var reg =  /\{[^\}]+\}/g;
+        var hover = $ ('#cssFile:contains(":hover")');
+		///覆盖链接颜色有问题	
+		var search_font_hover_color1 = hover.text().match(reg)[11].split("color:");//用颜色来分割		
+		var search_font_hover_color2 = search_font_hover_color1[1].split(";");//用颜色分割后的;来分割
+		var search_font_hover_color  = search_font_hover_color2[0];
+		
+	
+		
+		
+		$("#search_bg").spectrum({color: search_bg, preferredFormat: "rgb", showInput: true,});
+		$("#search_bg").val(search_bg);
+		$("#search_font_color").spectrum({color: search_font_color, preferredFormat: "rgb", showInput: true,});
+		$("#search_font_color").val(search_font_color);
+		$("#search_font_hover_color").spectrum({color: search_font_hover_color, preferredFormat: "rgb", showInput: true,});
+		$("#search_font_hover_color").val(search_font_hover_color);
+		$("#search_input_bg").spectrum({color: search_input_bg, preferredFormat: "rgb", showInput: true,});
+		$("#search_input_bg").val(search_input_bg);
+		$("#search_input_font_color").spectrum({color: search_input_font_color, preferredFormat: "rgb", showInput: true,});
+		$("#search_input_font_color").val(search_input_font_color);
+		$("#search_font_size").val(search_font_size);
+		$("#search_input_font_size").val(search_input_font_size);
+		
+		var nav_bg = $("#head_foot").contents().find(".nav").css('background-color'); //主菜单目录
+		var nav_fenge_color = $("#head_foot").contents().find(".nav").css('border-top-color');//菜单分割颜色
+		var nav_menu_bg = $("#head_foot").contents().find(".nav .menu li.action a").css('background-color');//菜单背景
+		var nav_menu_font_color = $("#head_foot").contents().find(".nav .menu li a").css('color');//菜单字体颜色
+		var nav_xiala_bg = $("#head_foot").contents().find(".nav .nav_zi li").css('background-color');//子菜单背景颜色
+		var nav_xiala_fenge_color = $("#head_foot").contents().find(".nav .nav_zi li").css('border-bottom-color')//子菜单分割颜色
+		var nav_font_size =  $("#head_foot").contents().find(".nav .menu li a").css('font-size');//菜单字体大小
+
+		$("#nav_bg").spectrum({color: nav_bg, preferredFormat: "rgb", showInput: true,});
+		$("#nav_bg").val(nav_bg);
+		$("#nav_fenge_color").spectrum({color: nav_fenge_color, preferredFormat: "rgb", showInput: true,});
+		$("#nav_fenge_color").val(nav_fenge_color);
+		$("#nav_menu_bg").spectrum({color: nav_menu_bg, preferredFormat: "rgb", showInput: true,});
+		$("#nav_menu_bg").val(nav_menu_bg);
+		$("#nav_menu_font_color").spectrum({color:nav_menu_font_color, preferredFormat: "rgb", showInput: true,});
+		$("#nav_menu_font_color").val(nav_menu_font_color);
+		$("#nav_xiala_bg").spectrum({color: nav_xiala_bg, preferredFormat: "rgb", showInput: true,});
+		$("#nav_xiala_bg").val(nav_xiala_bg);
+		$("#nav_xiala_fenge_color").spectrum({color: nav_xiala_fenge_color, preferredFormat: "rgb", showInput: true,});
+		$("#nav_xiala_fenge_color").val(nav_xiala_fenge_color);
+		$("#nav_font_size").val(nav_font_size);
+
+		var footer_bg = $("#head_foot").contents().find(".footer").css('background-color');  //页尾背景颜色
+		var footer_color = $("#head_foot").contents().find(".footer .help span").css('color');//页尾字体颜色
+		var footer_banquan_color = $("#head_foot").contents().find(".footer .copyright p").css('color');//版权颜色
+		var footer_font_size =$("#head_foot").contents().find(".footer .help ul.info .infoLi .title").css('font-size');//字体大小
+		var footer_banquan_size = $("#head_foot").contents().find(".footer .copyright p").css('font-size');//版权字体大小
+		var footer_tel_size = $("#head_foot").contents().find(".footer .help .contact span").css('font-size');//电话字体大小
+
+		$("#footer_bg").spectrum({color: footer_bg, preferredFormat: "rgb", showInput: true,});
+		$("#footer_bg").val(footer_bg);
+		$("#footer_color").spectrum({color: footer_color, preferredFormat: "rgb", showInput: true,});
+		$("#footer_color").val(footer_color);
+		$("#footer_banquan_color").spectrum({color: footer_banquan_color, preferredFormat: "rgb", showInput: true,});
+		$("#footer_banquan_color").val(footer_banquan_color);
+		$("#footer_font_size").val(footer_font_size);
+		$("#footer_banquan_size").val(footer_banquan_size);
+		$("#footer_tel_size").val(footer_tel_size);
+}
+
+
+
+$("#header_bg").change(function(){$("#head_foot").contents().find(".header").css('background-color',$("#header_bg").val());})//背景颜色
+//用户信息栏背景颜色
+$("#user_info_bg").change(function(){$("#head_foot").contents().find(".header .userInfo").css('background-color',$("#user_info_bg").val());})
+//用户信息栏分割线颜色
+$("#user_info_fenge").change(function(){$("#head_foot").contents().find(".header .userInfo").css('border-bottom-color',$("#user_info_fenge").val());})
+//用户信息栏字体大小
+$("#user_info_font_size").change(function(){
+	$("#head_foot").contents().find(".header .userInfo ul li span").css('font-size',$("#user_info_font_size").val());
+	$("#head_foot").contents().find(".header .userInfo ul li a").css('font-size',$("#user_info_font_size").val());
+})
+//用户信息栏字体颜色
+$("#user_info_font_color").change(function(){
+	$("#head_foot").contents().find(".header .userInfo ul li span").css('color',$("#user_info_font_color").val());
+	$("#head_foot").contents().find(".header .userInfo ul li a").css('color',$("#user_info_font_color").val());
+})
+
+//搜索栏背景
+$("#search_bg").change(function(){$("#head_foot").contents().find(".header .search").css('background-color',$("#search_bg").val());})
+//
+$("#search_font_hover_color").change(function(){
+	$("#head_foot").contents().find(".header .search a").hover(
+		function(){$(this).css('color',$("#search_font_hover_color").val());},function(){$(this).css('color',$("#search_font_color").val());})
+})
+//搜索栏文字颜色
+$("#search_font_color").change(function(){
+	$("#head_foot").contents().find(".header .search ul span").css('color',$("#search_font_color").val());
+	$("#head_foot").contents().find(".header .search ul a").css('color',$("#search_font_color").val());
+})
+//搜索栏文字大小
+$("#search_font_size").change(function(){
+	$("#head_foot").contents().find(".header .search ul span").css('font-size',$("#search_font_size").val());
+	$("#head_foot").contents().find(".header .search ul a").css('font-size',$("#search_font_size").val());
+})
+//搜索栏 input背景颜色
+$("#search_input_bg").change(function(){$("#head_foot").contents().find(".header .search input").css('background-color',$("#search_input_bg").val());})
+//搜索栏input文字颜色
+$("#search_input_font_color").change(function(){$("#head_foot").contents().find(".header .search input").css('color',$("#search_input_font_color").val());})
+//搜索栏input文字大小
+$("#search_input_font_size").change(function(){$("#head_foot").contents().find(".header .search input").css('font-size',$("#search_input_font_size").val());})
+
+
+$("#nav_bg").change(function(){$("#head_foot").contents().find(".nav").css('background-color',$("#nav_bg").val());})//背景颜色
+$("#nav_fenge_color").change(function(){$("#head_foot").contents().find(".nav").css('border-top-color',$("#nav_fenge_color").val());})//分割线颜色
+$("#nav_menu_bg").change(function(){
+	$("#head_foot").contents().find(".nav .menu li.action a").css('background-color',$("#nav_menu_bg").val());
+	$("#head_foot").contents().find(".nav .menu li a").hover(
+		function(){$(this).css('background-color',$("#nav_menu_bg").val());},function(){$(this).css('background-color',$("#nav_bg").val());})
+})
+$("#nav_font_size").change(function(){$("#head_foot").contents().find(".nav .menu li a").css('font-size',$("#nav_font_size").val());})//字体大小
+$("#nav_menu_font_color").change(function(){$("#head_foot").contents().find(".nav .menu li a").css('color',$("#nav_menu_font_color").val());})//字体颜色
+//下拉菜单背景颜色
+$("#nav_xiala_bg").change(function(){$("#head_foot").contents().find(".nav .nav_zi li").css('background-color',$("#nav_xiala_bg").val());})
+//下拉菜单分割线
+$("#nav_xiala_fenge_color").change(function(){$("#head_foot").contents().find(".nav .nav_zi li").css('border-bottom-color',$("#nav_xiala_fenge_color").val());})
+
+$("#footer_bg").change(function(){$("#head_foot").contents().find(".footer").css('background-color',$("#footer_bg").val());})
+$("#footer_color").change(function(){
+	$("#head_foot").contents().find(".footer .help span").css('color',$("#footer_color").val());
+	$("#head_foot").contents().find(".help a").css('color',$("#footer_color").val());
+	$("#head_foot").contents().find(".help div").css('color',$("#footer_color").val());
+})
+$("#footer_banquan_color").change(function(){$("#head_foot").contents().find(".footer .copyright p").css('color',$("#footer_banquan_color").val());})
+$("#footer_font_size").change(function(){$("#head_foot").contents().find(".footer .help ul.info .infoLi .title").css('font-size',$("#footer_font_size").val() );})
+$("#footer_banquan_size").change(function(){$("#head_foot").contents().find(".footer .copyright p").css('font-size',$("#footer_banquan_size").val());})
+$("#footer_tel_size").change(function(){$("#head_foot").contents().find(".footer .help .contact span").css('font-size',$("#footer_tel_size").val());})
+
+
+function createCss()
+{
+	var css = '';
+	css = css + '@utf-8;' + "\r\n" ;
+	css = css + '/* 头部 */' + "\r\n" ;
+	css = css + '.header { background-color: ' + $("#header_bg").val() + ';min-width: 1200px;}' + "\r\n" ;//背景颜色
+	css = css + '.header .userInfo { height: 30px; background-color: ' + $("#user_info_bg").val() + '; border-bottom: 1px solid ' + $("#user_info_fenge").val() + '; }' + "\r\n" ;//用户信息栏背景颜色  //用户信息栏分割线颜色
+	css = css + '.header .userInfo ul { width: 1200px; margin: 0 auto; }' + "\r\n" ;
+	css = css + '.header .userInfo ul li { margin: 2px 0px 0px; padding: 0 5px;}' + "\r\n" ;
+	//用户栏字体颜色与大小
+	css = css + '.header .userInfo ul li span { color: '+ $("#user_info_font_color").val() +'; font-size: '+ $("#user_info_font_size").val() +';}' + "\r\n";
+	css = css + '.header .userInfo ul li a { font-size: '+ $("#user_info_font_size").val() +'; color: '+ $("#user_info_font_color").val() +'; height: 20px; }' + "\r\n";
+	css = css + '.header .headerTop { height: 100px; width: 1200px; margin: 0 auto; padding-left: 10px; }' + "\r\n" ;
+	css = css + '.header .headerTop .logo { width: 230px; float: left; padding: 5px 0; }' + "\r\n" ;
+	css = css + '.header .headerTop .logo a { display: block; height: 85px; }' + "\r\n" ;
+	css = css + '.header .headerTop .logo img { height: 85px; width: 230px; }' + "\r\n" ;
+	css = css + '.header .search { background-color: ' + $("#search_bg").val() + '; height: 405px; height: 60px; float: left; padding: 30px 10px 10px 150px; }' + "\r\n" ;
+	
+	css = css + '.header .search a:hover{ text-decoration:underline;color:'+$("#search_font_hover_color").val()+';}' + "\r\n" ;//搜索栏覆盖链接时的颜色?????????
+	css = css + '.header .search input { background-color: ' + $("#search_input_bg").val() + '; border: none; padding: 0px; line-height: 21px;font-size:14px }' + "\r\n" ;//搜索栏input背景颜色
+	//input文字颜色与大小
+	css = css + '.header .search input { width: 300px; height: 21px; padding: 2px 5px;font-size:' + $("#search_input_font_size").val() + '; color:' + $("#search_input_font_color").val() + '}' + "\r\n" ;
+	css = css + '.header .search input[type=submit] { height: 25px; width: 60px;}' + "\r\n" ;
+	css = css + '.header .search #go{height: 25px; width: 60px; }' + "\r\n" ;
+	//搜索栏文字颜色,大小
+	css = css + '.header .search ul span, .header .search ul a { color: ' + $("#search_font_color").val() +'; font-size: ' + $("#search_font_size").val() +'; }' + "\r\n" ;
+	css = css + '.header .search ul li { float: left; padding-right: 10px; height: 30px; line-height: 30px; }' + "\r\n" ;
+	css = css + '/* 导航*/'  + "\r\n" ;
+	css = css + '.nav { background-color: ' + $("#nav_bg").val() + '; height: 40px; border-top: 1px solid ' + $("#nav_fenge_color").val() + '; position: relative; }' + "\r\n" ;//菜单背景颜色，分割线颜色
+	css = css + '.nav .navContent { width: 1180px; margin: 0 auto;position: relative;  }' + "\r\n" ;
+	css = css + '.nav .menu {position: relative;  }' + "\r\n" ;
+	css = css + '.nav .menu li { float: left; height: 40px; line-height: 40px;text-align:center;width:138px;}' + "\r\n" ;
+	//字体颜色 字体大小
+	css = css + '.nav .menu li a { font-size: '+$("#nav_font_size").val()+'; color: '+$("#nav_menu_font_color").val()+'; display: block;text-align:center;}' + "\r\n" ;
+	css = css + '.nav .menu li.action a { background-color: '+$("#nav_menu_bg").val()+'; }' + "\r\n" ;
+	css = css + '.nav .menu li a:hover {  background-color: '+$("#nav_menu_bg").val()+'; }' + "\r\n" ;
+	
+	css = css + '.nav .menu li a:visited{text-decoration: none;}' + "\r\n" ;
+	css = css + '.nav .nav_zi li{z-index:999;position:relative;background-color:'+$("#nav_xiala_bg").val()+';height:37px;border-bottom:1px solid '+$("#nav_xiala_fenge_color").val()+';}' + "\r\n" ;
+	css = css + '.nav_zi{display:none;}' + "\r\n" ;
+	css = css + '/*页面按钮*/'  + "\r\n" ;
+	css = css + '.filter .clearFilter {cursor: pointer;height:28px;line-height:28px;border:1px solid #38066A;margin-top:3px;width: 120px;font-weight:bold; background: -moz-linear-gradient(top, #12000B, #91007F); background: -webkit-linear-gradient(top, #12000B, #91007F);background: -ms-linear-gradient(top, #12000B, #91007F); color:#FFF;}' + "\r\n" ;
+	css = css + '.info .fr a{ margin-top:3px; height:28px;width:100px;line-height:28px;cursor: pointer; background: -moz-linear-gradient(top, #12000B, #91007F); background: -webkit-linear-gradient(top, #12000B, #91007F);background: -ms-linear-gradient(top, #12000B, #91007F); color:#FFF;text-align: center;display: block;}' + "\r\n" ;
+	css = css + '.sanhuo .btn_search { height:28px;width:100px;line-height:28px;cursor: pointer; background: -moz-linear-gradient(top, #12000B, #91007F); background: -webkit-linear-gradient(top, #12000B, #91007F);background: -ms-linear-gradient(top, #12000B, #91007F); color:#FFF;}' + "\r\n" ;
+	css = css + '.bnt_blue_3{ height:28px;width:100px;line-height:28px;cursor: pointer; background: -moz-linear-gradient(top, #12000B, #91007F); background: -webkit-linear-gradient(top, #12000B, #91007F);background: -ms-linear-gradient(top, #12000B, #91007F); color:#FFF;text-align: center;}' + "\r\n" ;
+	css = css + '/* 底部 */' + "\r\n" ;
+	//底部背景颜色
+	css = css + '.footer { background-color:'+$("#footer_bg").val()+'; max-height: 339px; width: 100%; min-width: 1200px;}' + "\r\n" ;
+	css = css + '.footer .footerTop { width: 1000px;margin:0 auto;height: 52px; background: url(../../Img/footerTopBg.gif) no-repeat; margin-top:30px;}' + "\r\n" ;
+	css = css + '.footer .footerBottom { width: 970px; margin: 0 auto; }' + "\r\n" ;
+	css = css + '.footer .help { padding: 60px 0 20px; }' + "\r\n" ;
+	css = css + '.footer .help span, .help a, .help div { color: '+$("#footer_color").val()+' }' + "\r\n" ;//底部文字颜色
+	css = css + '.footer .help .contact { /*background: url(../../Img/service.png) no-repeat; */width: 250px; float: left; }' + "\r\n" ;
+	css = css + '.footer .help .contact span { font-size:'+$("#footer_tel_size").val()+';  display: block; width: 250px; text-align: center; }' + "\r\n" ;
+	css = css + '.footer .help .info { width: 720px; float: left; }' + "\r\n" ;
+	css = css + '.footer .help .info .infoLi { width: 80px; float: left; padding: 0px 50px; }' + "\r\n" ;
+	css = css + '.footer .help .info .infoLi { background: url(../../Img/footerHelpBg.gif) no-repeat; }' + "\r\n" ;	
+	//title字体大小
+	css = css + '.footer .help ul.info .infoLi .title { font-size: '+$("#footer_font_size").val()+'; font-weight: bold; }' + "\r\n" ;
+	css = css + '.footer .copyright { text-align: center; padding: 20px 0; }' + "\r\n" ;
+	//版权颜色 ,大小
+	css = css + '.footer .copyright p { font-size: '+$("#footer_banquan_size").val()+'; color:'+$("#footer_banquan_color").val()+'; }' + "\r\n" ;
+	
+	//当前颜色组自定义样式
+	css = css + "\r\n /*@@@@*/" ;
+	css = css + $("#cssFile_zidingyi").val()
+	$("#cssFile").val(css);
+	return true;
+}
+
+</script>
+<script src='__JS__/spectrum.js'></script>
+<link rel='stylesheet' href='__CSS__/spectrum.css' />

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>提交订单-成功</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/user.css">
+	<link rel="stylesheet" href="__CSS__/cart.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+
+</head>
+<body>
+	<!-- Header -->
+	<header class="header text-center">
+    	提交订单
+        <a href="/Cart" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    </header>
+    <!-- Header END //-->
+
+	<!-- Main -->
+	<div class="container wrap cart-submit-order-successful">
+    	<div class="empty">
+    		<div class="row">
+    			<div class="col-xs-12">
+    				<p><img src="__IMG__/cuss_03.png" alt="" class="cussimg"><strong>己提交成功！</strong></p>
+    			</div>
+    			<div class="col-xs-12">
+    				<p>订单总额：<span class="red">￥{$order_total}</span></p>
+    			</div>
+    			<div class="col-xs-12 col-md-offset-5" >
+
+    				<div class="succebox">
+						<p class="text-left">订单号:	{$order.order_sn} </p>
+						<volist name="LinePayMode" id="vo">
+							<p class="text-left">账户名称：	{$vo.aname}</p>
+							<p class="text-left">账号：		{$vo.abank}</p>
+							<p class="text-left">开户行：	{$vo.tback}</p>
+							<br/> 
+						</volist>
+
+						<p class="text-left">电话：		{:C('site_contact')}</p>
+		            </div>
+ 
+			            <p class="text-left">提示：</p>				
+						<p class="text-left">可在“个人中心”我的订单管理 查看订单信息</p>
+    			</div>
+    			<div class="col-xs-12">
+    				<p><a href="/Userorder" class="blue">去看看</a></p>
+    			</div>
+    		</div>
+   		</div>
+	</div>
+    <!-- Main END //-->
+
+</body>
+</html>

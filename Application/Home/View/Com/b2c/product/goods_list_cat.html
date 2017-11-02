@@ -1,0 +1,51 @@
+<div class="sorting">
+    <div class="row">
+        <div class="col-md-10">
+            <ul>
+                <li class='orderby'>按价格 <i class="glyphicon" data-value='goods_price'></i></li>
+                <li class='orderby'>按时间 <i class="glyphicon" data-value='goods_id'></i></li>
+                <li class='orderby'>按分类 <i class="glyphicon" data-value='category_id'></i></li>
+                <div class="clearfix"></div>
+            </ul>
+        </div>
+        <div class="col-md-2 text-right">
+            共<span class="red" id="count">0</span>件商品
+        </div>
+    </div>
+</div>
+
+<div class="goods-list fadeIn animated">
+    <div class="row" id="listbox"></div>
+</div>
+
+<div id="pages" class="pages text-center"></div>
+
+<script>
+    $(function(){
+		chengpin.load_condition_cookies();
+		chengpin.get_attributes(func_display_attributes_data);
+		chengpin.get_goods_list(func_display_goods_list);
+		$('.orderby').click(function(){
+			if( $(this).find('i').hasClass('glyphicon-arrow-down') || $(this).find('i').hasClass('glyphicon-arrow-up') ){
+				if( $(this).find('i').hasClass('glyphicon-arrow-down') ){
+					$('.orderby').find('i').removeClass('glyphicon-arrow-down');
+					$(this).find('i').addClass('glyphicon-arrow-up');
+					var order = $(this).find('i').attr('data-value');
+					chengpin.set_orderby(order,'asc');
+				} else {
+					$('.orderby').find('i').removeClass('glyphicon-arrow-up');
+					$(this).find('i').addClass('glyphicon-arrow-down');
+					var order = $(this).find('i').attr('data-value');
+					chengpin.set_orderby(order,'desc');
+				}
+			}else{
+				$('.orderby').find('i').removeClass('glyphicon-arrow-down');
+				$('.orderby').find('i').removeClass('glyphicon-arrow-up');
+				$(this).find('i').addClass('glyphicon-arrow-down');
+				var order = $(this).find('i').attr('data-value');
+				chengpin.set_orderby(order,'desc');
+			}
+			chengpin.get_goods_list(func_display_goods_list);
+		});
+    });
+</script>

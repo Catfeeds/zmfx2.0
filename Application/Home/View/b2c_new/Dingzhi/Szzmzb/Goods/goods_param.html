@@ -1,0 +1,118 @@
+<style>
+    .icon-head,.icon-head1{
+        background: #fff;
+        display: inline-block;
+        border: 1px solid #C1C1C1;
+        margin: 0;
+        margin-left: -1px;
+        text-align: center;
+        /* width: 160px; */
+        height: 28px;
+        overflow: hidden;
+        line-height: 31px;
+        padding: 0px 2px;
+        margin-left: 5px;
+        padding-left: 5px;
+        position: relative;
+        cursor: pointer;
+    }
+    .icon-head .fh,.icon-head1 .fh {
+        height: 25px;
+        font-size: 12px !important;
+        padding: 0 !important;
+    }
+    .symbols-select span {
+        line-height: 24px !important;
+    }
+    .icon-head .fh img,.icon-head1 .fh img  {
+        max-height: 100%;
+    }
+    .caret {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        margin-left: 2px;
+        vertical-align: middle;
+        border-top: 4px dashed;
+        border-top: 4px solid\9;
+        border-right: 4px solid transparent;
+        border-left: 4px solid transparent;
+        margin-right: 2px;
+        margin-top: 11px;
+        float: right;
+    }
+    .symbols-name {
+        float: left;
+        margin-top: 5px;
+    }
+    .symbols-select {
+        position: relative;
+    }
+    .symbols-select-ul,.symbols-select-ul1 {
+        width: 165px;
+        height: 130px;
+        border: 1px solid #C1C1C1;
+        overflow: auto;
+        padding: 1px;
+        margin: 0;
+        text-align: left;
+        background: #fff;
+        position: absolute;
+        top: 30px;
+        left: 6px;
+        z-index: 999;
+        overflow: auto;
+    }
+    .symbols-select-ul li,.symbols-select-ul1 li {
+        width: 35px;
+        height: 35px;
+        float: left;
+        margin-right: 1px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+    }
+    .symbols-select-ul li img,.symbols-select-ul1 li img {
+        height: 100%;
+    }
+    .list-default { margin: 1em;}
+    .symbols-box { display: inline-block;}
+</style>
+<div class="itemInfo">
+</div>
+<form action="" id="goodsDetails">
+    <input type="hidden" name="gid" value="{$goodsInfo.goods_id}">
+    <input type="hidden" name="goods_type" value="{$goodsInfo.goods_type}">
+    <input type="hidden" name="goods_sn" value="{$goodsInfo.goods_sn}">
+    <input type="hidden" name="banfang_goods_id" value="{$goodsInfo.banfang_goods_id}">
+    <input type="hidden" name="gb" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['gb']}">
+    <input type="hidden" name="material_id" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['material_id']}">
+    <input type="hidden" name="activity_status" value="{$goodsInfo['dinzhi_goodsInfo']['activity_status']}">
+
+    <volist name="goodsInfo['dinzhi_goodsInfo']['associate_luozuan_data_all']" id="associate_luozuan">
+        <input type="hidden" name="checked[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['checked'][$key]}">
+        <input type="hidden" name="associate_luozuan_id[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['associate_luozuan_id'][$key]}">
+        <input type="hidden" name="luozuan_weight[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['luozuan_weight'][$key]}">
+        <input type="hidden" name="luozuan_number[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['luozuan_number'][$key]}">
+        <input type="hidden" name="technology[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['technology'][$key]}">
+        <input type="hidden" name="deputystone_type[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['deputystone_type'][$key]}">
+        <input type="hidden" name="deputystone_attribute[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['deputystone_attribute'][$key]}">
+        <input type="hidden" name="goods_number[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['goods_number'][$key]}">
+        <input type="hidden" name="hand[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['hand'][$key]}">
+        <input type="hidden" name="word[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['word'][$key]}">
+    </volist>
+</form>
+<script>
+//加载商品详情页
+ajax_goodsDetails();
+function ajax_goodsDetails(){
+    $.ajax({
+       type: "POST",
+       url: "{:U('dingzhi_ajax_goodsDetails')}",
+       data: $("#goodsDetails").serialize(),
+       success: function(data){
+        $('.itemInfo').empty();
+        $('.itemInfo').append(data);
+       }
+    });
+}
+</script>

@@ -1,0 +1,25 @@
+<div class="sidebar">
+    <h2><img src="__IMG_DZ__/user_icon.png" alt="" style="vertical-align: bottom;">&nbsp;&nbsp;个人中心</h2>
+    <dl>
+        <dt>地址管理</dt>
+    </dl>
+    <dl>
+        <dt><a href="{:U('User/orderList')}">我的订单</a></dt>
+    </dl>
+    <dl>
+        <dt class="childs">用户信息</dt>
+        <dd class="text-center"><a href="{:U('User/userInfo')}">{$Think.lang.L159}</a></dd>
+        <dd class="text-center"><a href="{:U('User/updatePwd')}">{$Think.lang.L812}</a></dd>
+        <dd class="text-center"><a href="{:U('User/logininfo')}">{$Think.lang.L9035}</a></dd>
+    </dl>
+</div>
+<script>
+    $(function(){
+        //侧边栏
+        var dt = $('.sidebar dl dt');
+        dt.bind('click', function(){
+            //dt.parents('dl').removeClass('active');
+            $(this).parents('dl').toggleClass('active');
+        });
+    });
+</script>

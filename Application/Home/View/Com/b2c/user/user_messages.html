@@ -1,0 +1,195 @@
+
+<div class="cart check-cart userdata-box user-address user-message">
+    <div class="row1">
+        <div class="check-order">
+            <div class="txlist">
+                <div class="shbg"><p><span><strong>消息中心</strong></span></p> <span class="chaozuo"><a class="btn btn-default" id="del_message">批量删除</a>&nbsp;&nbsp;<a class="btn btn-default" id="set_message">设为己读</a></span><div class="clearfix"></div></div>
+                <div class="table-responsive">
+                    <table class="table text-center message-table">
+                        <tr>
+                            <th><input id="selectThisPage" type="checkbox" class="user-message-checked"> 全选 </th>
+                            <th>发送人</th>
+                            <th>标题</th>
+                            <th>发送时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        <if condition="$messagesList">
+                        <volist name="messagesList" id="v" >
+                        <tr class="massget_lists" data-show="{$v.is_show}">
+                            <td class="checkboxtd"><input data-id="chk_{$v['msg_id']}"  name="tbSelectedId" type="checkbox"></td>
+                            <td>
+                                <if condition="$v.uid neq ''">
+                                    {$Think.lang.L9059}
+                                </if>
+                            </td>
+                            <td>{$v.title}</td>
+                            <td>{$v.create_time|date="Y-m-d H:i:s",###}</td>
+                            <td>
+                                <if condition="$v.is_show eq 0">
+                                    <img src="__IMG__/user-message_03.png" alt=""> 未读
+                                    <else/>
+                                    <img src="__IMG__/user-message_07.jpg" alt=""> 己读
+                                    </if>
+                            </td>
+                            <td class="checkboxtd"><a href="javascript:;" onclick="batch_delete('你确定要删除吗？',{$v['msg_id']})" class="btn-link">删除</a></td>
+                        </tr>
+                        <tr class="message_details" style="display: none">
+                            <td colspan="6">
+                                {$v.content}
+                            </td>
+                        </tr>
+                        </volist>
+                        <else />
+                            <tr><td colspan="6">暂无信息</td></tr>
+                        </if>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mallhot mallhot-type diamond diamond-select" id="page">
+    {$page}
+</div>
+
+<!-- user-message end //-->
+<script>
+// 消息删除ajax请求 -->
+function batch_delete(msg,data){
+	layer.confirm(msg,{
+			btn:['确定','再想想'] //按钮
+		},function(){
+			$.ajax({
+				type: "post",
+				url : "{:U('/Home/User/deleteMyMsg')}", 
+				dataType:'json',
+				data: {thisid:data}, 
+				success: function(res){
+					if(res.status == 100){
+						layer.msg(res.info,{
+							shift:6,
+							icon: 6
+						});
+						setTimeout(function(){
+							window.location.href="/Home/User/userMessages";
+						},1500)
+					}else{
+						layer.msg(res.info,{
+							shift:6,
+							icon: 5
+						});
+					}
+				},
+			});
+		}
+	);
+}
+// 设置消息为已读 type：1 单独设置，2：批量设置-->
+function set_message(type,data,a){
+  var url = '__IMG__';
+
+	$.ajax({
+		type: "post",
+		url : "{:U('/Home/User/isShow')}", 
+		dataType:'json',
+		data: {thisid:data}, 
+		success: function(res){
+			if(res.status == 100){
+				switch(type){
+					case 1:
+						var message_count = $('.new_message').html();
+						$(a).parent('tr').children('td:eq(4)').html('<img src="'+url+'/user-message_07.jpg" alt=""> 己读');
+						$(a).parent('tr').attr('data-show','1');
+						var now_count = accSub(message_count,1);
+						if(now_count > 0){
+							$('.new_message').html(now_count);
+						}else{
+							$('.new_message').remove();
+						}
+						break;
+					case 2:
+						layer.msg(res.info,{
+							shift:6,
+							icon: 6
+						});
+						setTimeout(function(){
+							window.location.href="/Home/User/userMessages";
+						},1500)
+						break;
+				}
+			}else{
+				layer.msg(res.info,{
+					shift:6,
+					icon: 5
+				});
+			}
+		},
+	});
+}
+
+$(document).ready(function(){
+	<!-- 当前选中的商品ID -->
+	function nowid(){
+		<!-- 初始化当前选中的id -->
+		thisid  = '';
+		$("input[name = tbSelectedId]:checkbox").each(function(){
+			if($(this).is(":checked")){
+				thisid += $(this).attr('data-id').replace('chk_','')+',';
+			}
+		});
+		if(!thisid){
+			layer.msg('请选择消息',{
+				shift :6,
+			});
+			return false;
+		}
+	};
+	
+	//页面显示隐藏
+	$('.massget_lists').each(function(){
+		$(this).find('td').bind('click', function(){
+			if($(this).hasClass('checkboxtd') == false){
+				if($(this).parent('tr').attr('data') == "hide" || $(this).parent('tr').attr('data') == undefined){
+					var data_show = $(this).parent('tr').attr('data-show');
+					var id = $(this).parent('tr').children('td:eq(0)').children('input').attr('data-id').replace('chk_','');
+					if(data_show == 0){
+						set_message(1,id,this);
+					}
+					$('.message_details').hide();
+					$('.massget_lists').attr('data','hide');
+					$(this).parent('tr').attr('data','show');
+					$(this).parent('tr').next('.message_details').show();
+				}else{
+					$(this).parent('tr').attr('data','hide');
+					$('.message_details').hide();
+				}
+			}
+		});
+	});
+	
+	// 批量删除 -->
+	$('#del_message').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+		var msg="你确定要删除吗？";
+		batch_delete(msg,thisid);
+	})
+	
+	// 批量设置已读 -->
+	$('#set_message').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+		var msg="你确定要设为已读吗？";
+		layer.confirm(msg, {
+			  btn: ['确定','再想想'] //按钮
+			}, function(){
+				set_message(2,thisid);
+			}
+		);
+	})
+	
+})
+</script>

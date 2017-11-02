@@ -1,0 +1,110 @@
+<include file="Public:header" />
+
+<body>
+    <section class="orders-status product-evaluation apply-after">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="location='/User/AfterSer'" class="back-img" alt="">
+                </div>
+                <h2>申请售后</h2>
+            </div>
+        </header>
+
+        <section class="wrapper">
+
+            <!-- 商品类型 -->
+            <!-- <div class="item-box">
+                <p>证书号:GIA7256506195</p>
+                <p>4G属性:(0.17/D/VVS1/EX)无奶--无咖</p>
+                <p class="clearfix">
+                    <span class="fl rmb">￥ 2673.22</span>
+                    <span class="fr">X1</span>
+                </p>
+            </div> -->
+            <!-- 商品类型 end -->
+ 
+            <div class="goods-item">
+                <div class="goods-layout clearfix">
+                    <div class="goods-img">
+                        <a href="/Goods/detail/gid/<?php echo $info['goods_id'];?>/goods_type/<?php echo $info['goods_type'];?>"><img src="{$info.thumb}" alt=""></a>
+                    </div>
+                    <div class="goods-right">
+                        <h2><a href="/Goods/detail/gid/<?php echo $info['goods_id'];?>/goods_type/<?php echo $info['goods_type'];?>">{$info.goods_name}</a></h2>
+                        <p class="goods-title"></p>
+                        <div class="goods-fangshi clearfix">
+                            <span class="fl c9"><small style="color: #212121">数量 x{$info.goods_number}</small></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 商品类型二 end -->
+
+            <div class="no-evaluation">
+                <div class="item-box">
+                    <div class="desc">
+                        <h2>问题描述</h2>
+                        <textarea name="description" maxlength="500" placeholder="请详细描述商品问题（最多500字之内）"></textarea>
+                    </div>
+                    <p>温馨提示：非质量问题不支付退货</p>
+                </div>
+
+                <!-- 售后类型 -->
+                <div class="item-box">
+                    <div class="desc">
+                        <h2>售后类型</h2>
+                        <div class="after-type">
+                            <span class="types active" data-value="1">换货</span>
+                            <span class="types"		   data-value="2">退货退款</span>
+                            <span class="types" 	   data-value="0">其它</span>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    $(function(){
+                        var obj = $('.after-type .types');
+                        obj.bind('click', function(){
+                            obj.removeClass('active');
+                            $(this).addClass('active');
+                        });
+                    });
+                </script>
+                <!-- 售后类型 end -->
+            </div>
+
+            <!-- 提交评价 -->
+            <div class="operation">
+                <p><button type="button" class="operation-btn">提交</button></p>
+            </div>
+            <!-- 提交评价 end -->
+
+        </section>
+
+    </section>
+
+<script>
+			var ASCondition = {
+				'description'	: '',
+				'service_type'	: '',	
+				'order_id'		: '<?php echo $info['order_id'];?>',
+				'og_id'			: '<?php echo $info['og_id'];?>',
+			}
+
+
+			$('button').click(function(){
+				ASCondition.description  = $('textarea[name="description"]').val();
+				ASCondition.service_type = $('.active').attr('data-value');
+				if(!(/^\S{1,500}$/.test(ASCondition.description))){
+					CommonFunction.Prompt.Tan('请填写1-500以内的问题描述！');
+					return false;
+				}
+				BringAjax.IntendData.SwitchMain  = 1;
+				BringAjax.IntendData.SuccessEvet = function(){ CommonFunction.Link.Href('/User/Schedule');};
+				EasyTransition(ASCondition);
+			});	
+</script>
+	
+	<include file="Public:foot" />	
+</body>
+</html>

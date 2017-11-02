@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>个人信息-加入分销</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/user.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script type="text/javascript" src="__JS__/common.js"></script>
+	<script src="__JS__/user.js"></script>
+	<script src="__JS__/common.js"></script>
+	<script src="__JS__/public.js"></script> 
+	<script src="/Application/App/View/default/js/layer-mobile/layer.js"></script> 
+</head>
+<body class="wrap-bg">
+	<!-- Header -->
+	<header class="header text-center">
+    	加入分销
+        <a href="/user/" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    </header>
+    <!-- Header END //-->
+
+	<!-- Main -->
+    <div class="container-fluid user-info join_distribution">
+		<form id="form_1">
+		<div class="panel-body username usbox"><h6>温馨提示：以下资料均为保密资料，请放心填写。</h6></div>
+		<div class="panel-body username">
+			<ul class="list-group">
+			  <li class="list-group-item">分销商 <span class="pull-right"><input type="text" class="text-right" name="trader_name" placeholder="请输入分销商名称"></span></li>
+			  <li class="list-group-item">公司名称 <span class="pull-right"><input type="text" class="text-right" name="company_name" placeholder="请输入公司名称"></span></li>
+			  <li class="list-group-item">站点域名 <span class="pull-right" ><input type="text" placeholder="非必填 " name="domain" class="text-right"></span></li> 
+			  <li class="list-group-item">联系人 <span class="pull-right"><input type="text" class="text-right" name="contacts" placeholder="输入联系人姓名"></span></li>
+			  <li class="list-group-item">联系电话 <span class="pull-right"><input type="text" class="text-right" name="phone" placeholder="输入手机号码"></span></li>
+			</ul>
+		</div>
+
+		<div class="panel-body username">
+			<ul class="list-group">
+			  <li class="list-group-item">营业执照 <span class="pull-right"><input type="text" class="text-right" name="business_license" placeholder="请输入营业执照"></span></li>
+			 			  <li class="list-group-item" style="height: 60px">注册资金 
+				  <span class="pull-right" style="text-align: right">
+					<select name="funds" id="reg_price">
+						<option value="0">请选择</option>
+						<option value="1">20-50万</option>
+						<option value="2">50-100万</option>
+						<option value="3">100-500万</option>
+						<option value="4">500-1000万</option>
+						<option value="5">1000万以上</option>
+					</select>
+				  </span>
+			  </li>
+			  <!-- <li class="list-group-item">实收资本 <i class="glyphicon glyphicon-chevron-right pull-right blue"></i></li>
+			  <li class="list-group-item">营业执照复印件 <i class="glyphicon glyphicon-chevron-right pull-right blue"></i></li>
+			  <li class="list-group-item">税务登记证复印件 <i class="glyphicon glyphicon-chevron-right pull-right blue"></i></li>
+			  <li class="list-group-item">机构代码证复印件 <i class="glyphicon glyphicon-chevron-right pull-right blue"></i></li> -->
+			  <li class="list-group-item">分销地区 
+				<span class="select-box">
+					<select name="province_id" id="selProvinces">
+						<option value="0">请选择</option>
+							<volist name="province" id="vo">
+							<option value="{$vo.region_id}" <eq name="addOnce.province_id" value="$vo.region_id">selected</eq>>{$vo.region_name}</option>
+							</volist>
+					</select>
+					<select name="city_id" id="selCities">
+						<option value="0">请选择</option>
+					</select>
+					<div class="clear"></div>
+				</span>
+			  </li>
+			</ul>
+		</div>
+		
+		<div class="panel-body username">
+			<ul class="list-group">
+				<li class="list-group-item"><textarea id="note" name="note" class="form-control" rows="3" placeholder="我要申请加入"></textarea></li>
+			</ul>
+		</div>
+
+		<div class="panel-body username"><button type="button" id="btn_submit" class="btn btn-primary exit-button">提交</button></div>
+		</form>
+	</div>
+    <!-- Main END //-->
+<script>
+	function address(sel, hl) {
+		var parent_id = $(sel).children('option:selected').val(), html, i;
+		if (parent_id !== 0) {
+            $.get("{:U('/Public/getRegion')}", {'parent_id': parent_id}, function (data) {
+                for (i = 0; i < data.length; i++) {
+                    html += '<option value="' + data[i].region_id + '">' + data[i].region_name + '</option>';
+                }
+                $(hl).html(html);
+            });
+		}
+	}
+	$('#selProvinces').change(function () { address('#selProvinces', '#selCities'); });
+	$(function(){
+		$("#btn_submit").click(function(){
+			var trader_name = $("input[name=trader_name]").val().trim();
+			if(trader_name.length<1){
+				tan("请输入分销商名称");
+				$("input[name=trader_name]").focus();
+				return false;
+			}
+			
+			var company_name = $("input[name=company_name]").val().trim();
+			if(company_name.length<3){
+				//alert("请输入公司名称（至少 3 个字符）");
+				//$("input[name=company_name]").focus();
+				//return false;
+			}
+
+			var contacts = $("input[name=contacts]").val().trim();
+			if(contacts.length<3){
+				tan("请输入联系人（至少 3 个字符）");
+				$("input[name=contacts]").focus();
+				return false;
+			}
+
+			var phone = $("input[name=phone]").val().trim();
+			if(!check_mobilephone(phone)){
+				tan("请输入正确的手机号码");
+				$("input[name=phone]").focus();
+				return false;
+			}
+
+			var business_license = $("input[name=business_license]").val().trim();
+			if(business_license.length<1){
+				tan("请输入营业执照");
+				$("input[name=business_license]").focus();
+				return false;
+			}
+			
+			var selProvinces = $("#selProvinces").val();
+			var selCities = $("#selCities").val();
+			if(selProvinces == 0 || !selProvinces){
+				tan("请选择省份");
+				$("#selProvinces").focus();
+				return false;
+			}
+			if(selCities == 0 || !selCities){
+				tan("请选择城市");
+				$("#selCities").focus();
+				return false;
+			}
+			$.ajax({
+				url:"/user/trader.html",
+				type: 'POST',
+				data: $('#form_1').serialize(),
+				success: function(d){
+					if(d.ret==100){
+						tan('提交成功，等待审核中！');
+							setTimeout("window.location.href='/user'",2000);
+					}else{
+						tan(d.msg);
+					}
+				}
+			});
+
+		});
+	});
+</script>
+</body>
+</html>

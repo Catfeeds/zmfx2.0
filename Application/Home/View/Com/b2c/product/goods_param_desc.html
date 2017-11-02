@@ -1,0 +1,11 @@
+<ul>
+    <if condition="$goodsInfo['attributes']">
+        <volist name="goodsInfo['attributes']" id="vo">
+            <if condition="!empty(trim($vo['attr_value_name']))">
+                <li><span>{$vo.attr_name}：{$vo.attr_value_name}</span></li>
+                <elseif condition="!empty(trim($vo['attr_value']))"/>
+                <li><span>{$vo.attr_name}：{$vo.attr_value}</span></li>
+            </if>
+        </volist>
+    </if>
+</ul>

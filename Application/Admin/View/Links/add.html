@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>友情链接管理</title>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：友情链接列表</h3>
+        <ul>
+        	<li><a href="{:U('Admin/Links/index')}" >链接列表</a></li>
+			<li class="active"><a href="{:U('Admin/Links/add')}" >添加链接</a></li>
+        </ul>
+    </div>
+    <form name="addLink" action="{:U('Admin/Links/add_post')}" method="post">   
+    <div style="padding:10px 20px;"> 
+    	<div class="info"><div class="title">链接名称：</div><input type="text" name="link_name"/></div>  
+    	<div class="info"><div class="title">链接地址：</div><input type="text" name="link_url"/></div>  
+    	<div class="info"><div class="title">打开方式：</div>
+    		<select name="link_target" class="normal_select">
+    		<volist name="targets" id="vo">
+    		<option value="{$key}">{$vo}</option>
+    		</volist>
+    	</select></div>  
+    	<div class="info"><div class="title">描述：</div><textarea name="link_description"></textarea></div>  
+    	<div class="info"><div class="title">&nbsp;</div><input class="button" type="submit" value="添加" /></div>
+    </div>
+    </form> 
+</div>
+</body>
+</html>

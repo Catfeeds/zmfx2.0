@@ -1,0 +1,12 @@
+<style>
+  .cyimg img { max-width: 1004px;}
+</style>
+<div id='public_goods_desc_down'>
+	<p><strong>公共内容(详情补充)</strong>&nbsp;<a href="{:U('Admin/Goods/setPublicGoodsDesc')}?goods_type={$goods_type}&category_id={$category_id}">编辑</a></p>
+	<div class="info">
+		<div class="title">&nbsp;</div>
+		<div class="fl cyimg" style="max-width: 1004px;">
+			{$public_content|htmlspecialchars_decode}
+		</div>
+	</div>
+</div>

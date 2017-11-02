@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品编辑</title>
+<script type="text/javascript" src="__JS__/ajaxfileupload.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/Jquery/jquery.form.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" src="__JS__/Jquery.SkuAction.js"></script>
+<script type="text/javascript" src="__JS__/product.js"></script>
+</head>
+<style>
+  #productMain .thumbImg:hover .deleteImg { display: block;}
+</style>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：产品编辑</h3>
+    </div>
+	
+	<form action="" method="post" enctype="multipart/form-data" >
+        <div id="productMain" style="padding:10px 50px;">
+            
+			<div class="info">
+				<div class="title">大系列:</div>
+				<div>{$info["largeSeries"]}</div>	
+            </div>
+			<div class="info">
+				<div class="title">小系列:</div>
+				<div>{$info["smallSeriesInfo"]}</div>
+            </div>
+			<div class="info">
+				<div class="title">产品分类:</div>
+				<div>{$info["classificationInfo"]}</div>
+            </div>
+			<div class="info">
+				<div class="title">产品款式:</div>
+				<div>{$info["styleInfo"]}</div>	
+			</div>	
+			<div class="info">
+				<div class="title">产品名称:</div>
+				<div>{$info["goods_name"]}</div>	
+			</div>	
+			<div class="info">
+				<div class="title">公司款号:</div>              
+				<div>{$info["goods_sn"]}</div>
+			</div>
+
+			<!--属性数据-->
+            <div class="info" id="attrDiv">
+                <div class="title">产品属性:</div>
+                <div style="float:left;">
+					<volist name="attrsList" id="val">
+						{$val["ca_name"]}：
+						<volist name="val.sub" id="v" key="k">
+							{$v["ca_name"]}<?php if($k<count($val["sub"])){ ?>、<?php } ?>
+						</volist>
+						<br />
+					</volist>
+				</div>
+                <div class="clear"></div>
+            </div>
+			
+			<!--产品定制规格-->
+            <div class="info <?php if(empty($BGMList) && empty($BGMList)){ echo 'dn'; } ?>" id="attrDiv">
+                <div class="title">产品定制规格:</div>
+                <div style="float:left;">
+					可选材质为：
+					<volist name="BGMList" id="val" key="ma">
+						<?php if($ma<count($BGMList)){ ?>{$val.name}、<?php }else{ ?>{$val.name}<?php } ?>
+					</volist><br />
+					预估金重为：
+					<volist name="BFList" id="val" key="m">
+						<?php if($m<count($BFList)){ ?>{$val['material_weight']}、<?php }else{ ?>{$val['material_weight']}<?php } ?>
+					</volist><br />
+					副石：
+					<volist name="BFList" id="val" key="zs">
+						<if condition="($val['fushi_from'] neq 0) || ($val['fushi_to'] neq 0)">
+						<?php if($zs<count($BFList)){ ?>{$val['fushi_from']}-{$val['fushi_to']}、<?php }else{ ?>{$val['fushi_from']}-{$val['fushi_to']}<?php } ?>
+						</if>
+					</volist>
+				</div>
+                <div class="clear"></div>
+            </div>
+			
+			
+			<div class="info">
+				<div class="title">预估价格:</div>              
+				<div>{$info["goods_price"]}</div>
+			</div>
+			<div class="info">
+				<div class="title">销量:</div>              
+				<div>{$info["sell_num"]}</div>
+			</div>
+
+			<!-- 金工石 -->
+            <div class="dingzhi_div info dn metalworking_box">
+	            <div class="title">
+                    &nbsp;
+                </div>
+    			<div class="luozuanMatchBox" id="luozuanMatchBox">
+                </div>
+                <div class="clear"></div>
+            </div>
+			
+            <script>
+                $(function(){
+					$("input[name='price_model']").change(function(){
+						var v = $("input[name='price_model']:checked").val();
+						if( v == '1' ){
+							$.addLuozuanMatch  = "{:U('Admin/Public/addLuozuanMatch',array('price_model'=>'1'))}";//添加裸钻匹配记录
+							$.addMaterial      = "{:U('Admin/Public/addMaterial',array('price_model'=>'1'))}";//添加材质数据
+							$.addLuozuanMatch2 = "{:U('Admin/Public/addLuozuanMatch2',array('price_model'=>'1'))}";
+                            $.loadAttSpe       = "{:U('Admin/Public/getGoodsAttribute',array('price_model'=>'1'))}";//获取分类下面的属性
+						} else {
+							$.addLuozuanMatch  = "{:U('Admin/Public/addLuozuanMatch')}";//添加裸钻匹配记录
+							$.addMaterial      = "{:U('Admin/Public/addMaterial')}";//添加材质数据
+							$.addLuozuanMatch2 = "{:U('Admin/Public/addLuozuanMatch2')}";//添加匹配副石
+                            $.loadAttSpe       = "{:U('Admin/Public/getGoodsAttribute')}";//获取分类下面的属性
+						}
+                        var html = $('#attrDivContent').html();
+                        SetAttrSpec( html );
+					});
+                });
+                <if condition=" $info['price_model'] ">
+                    $('input[name="price_model"][value="1"]').attr('checked',true);
+                <else />
+                    $('input[name="price_model"][value="0"]').attr('checked',true);
+                </if>
+            </script>
+
+			<div class="info" id='firstImgDiv'>
+				<div class="title">产品图片:</div>
+				<div id="imgsDiv">
+					<volist name="imgsList" id="img">
+						<div class="thumbImg">
+							<a value="{$img.images_id}" id="deleteImg"><img src="__IMG__/mail_delete.png"/ width="25"></a>
+							<input type="hidden" value="{$img.images_id}" name="images[]">
+							<img src="{$img.small_path}" width="100%" />
+						</div>
+					</volist>
+					<a href="#" id="firstImg">
+						<img src="__IMG__/list_add.png" width="100" />
+						<input type="file" name="product_img">
+					</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="info">
+				  <div class="title">&nbsp;&nbsp;</div>
+				  <div class="red">注释：参考尺寸800*800px，等比例放大缩小，大小不得超过3M，支持jpg/png，六张以内效果最佳。</div> <!-- 商品详情产品图片 -->
+			</div>
+			
+			<div class="info">
+				<div class="title">商品详情:</div>
+				<div class="fl" style="width: 60%;">
+					<textarea style="width: 100%;" name="content" id="content">{$info.content}</textarea>	
+				</div>
+				<div class="clear"></div>
+			</div>
+
+			<div class="info">
+				<div class="title">&nbsp;</div>
+				<input type="hidden" id="goods_id"	name="goods_id" value="{$info.goods_id}" />
+				<input type="submit" class="button fl" value="保存修改">
+				<input type="button" class="button fl ml10" value="返回" onClick="window.history.back();">
+				<div class="clear"></div>
+			</div>
+		</div>
+	</form>		
+</div>	
+</body>
+</html>

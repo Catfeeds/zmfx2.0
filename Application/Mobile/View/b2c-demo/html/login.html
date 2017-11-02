@@ -1,0 +1,130 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-swiper.css" /> <!-- tab -->
+    <link rel="stylesheet" type="text/css" href="../css/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="../css/style-layer.css" /> <!-- 提示 -->
+
+    <script src="../js/jquery-1.12.3.js"></script>
+    <script src="../js/swiper.min.js"></script> <!-- tab -->
+    <script src="../js/mobileSelect.js"></script> <!-- ios下弹式菜单选择 -->
+    <script src="../js/layer.js"></script> <!-- 提示 -->
+</head>
+
+
+<body>
+
+    <section class="login">
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="../img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>登录</h2>
+            </div>
+        </header>
+
+        <section class="wrapper">
+            <form class="form-box">
+                <ul>
+                    <li>
+                        <span class="user-icon">
+                            <img
+                            src="../img/user.png"
+                            data-src="../img/user.png"
+                            data-active="../img/user_active.png"
+                            alt="" class="icon">
+                        </span>
+                        <input type="text" name="" value="" class="text-input username" placeholder="手机号/邮箱/用户名">
+                        <img src="../img/login_close.png" class="login-close" alt="" style="display: none;">
+                    </li>
+                    <li>
+                        <span class="pass-icon">
+                            <img
+                            src="../img/pass_icon.png"
+                            data-src="../img/pass_icon.png"
+                            data-active="../img/pass_icon_active.png"
+                            alt="" class="icon">
+                        </span>
+                        <input type="password" name="" value="" class="text-input password" placeholder="请输入登录密码">
+                        <img src="../img/hide_pass.png" alt="" class="pass-start" style="display: none;">
+                        <img src="../img/login_close.png" class="login-close" alt="" style="display: none;">
+                    </li>
+                </ul>
+
+                <div class="pass-help">
+                    <div class="fl"><input type="checkbox" class="zdy-checkbox" name="" id="record" value=""> <label for="record">记住密码</label></div>
+                    <div class="fr"><a href="找回密码.html">忘记密码？</a></div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="login-btn-box">
+                    <button type="button" class="ripple login-btn">登录</button>
+                </div>
+
+                <div class="toreg">
+                    还没有账户？现在<a href="reg.html">去注册</a>
+                </div>
+            </form>
+            <script>
+                $(function(){
+
+                    //获取焦点
+                    $('.text-input').focus(function(){
+                        var img = $(this).parents('li').find('.icon');
+                        img.attr('src', img.attr('data-active'));
+                    });
+
+                    //失去焦点
+                    $('.text-input').blur(function(){
+                        var img = $(this).parents('li').find('.icon');
+                        img.attr('src', img.attr('data-src'));
+                    });
+
+                    //显示清空文本按钮
+                    $('.form-box li').mouseenter(function(){
+                        $(this).find('.login-close, .pass-start').show();
+                    });
+
+                    //隐藏清空文本按钮
+                    $('.form-box li').mouseleave(function(){
+                        $(this).find('.login-close, .pass-start').hide();
+                    });
+
+                    //清空文本框
+                    $('.login-close').bind('click', function(){
+                        $(this).parents('li').find('.text-input').val('');
+                    });
+
+                    //显示隐藏密码切换
+                    $('.pass-start').bind('click', function(){
+                        if($(this).attr('data-show') == 'show'){
+                            $(this).attr('src', '../img/hide_pass.png');
+                            $(this).parents('li').find('.password').attr('type', 'password');
+                            $(this).attr('data-show', 'hide');
+                        }else{
+                            $(this).attr('src', '../img/show_pass.png');
+                            $(this).parents('li').find('.password').attr('type', 'text');
+                            $(this).attr('data-show', 'show');
+                        }
+                    });
+                })
+            </script>
+        </section>
+    </section>
+    <!-- Zdy Input UI -->
+<script src="../js/zdy-input-ui.js"></script>
+
+</body>
+</html>

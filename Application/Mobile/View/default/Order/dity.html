@@ -1,0 +1,89 @@
+<include file="Public:header" />
+<!--导航-->
+<div class="am-g ">
+  <div class="am-u-lg-6 search-ee">
+    <div class="am-input-group">
+      <span class="am-input-group-btn">
+        <button class="am-btn search-default" type="button"> </button>
+      </span>
+      <input type="text" class="text" placeholder="search"><input type="submit" value="搜索" class="search-but">
+    </div>
+  </div>
+<div class="wrap">
+      <div class="show">
+          <ul>
+            <li class="head-bg"><a href="{:U('Index/index')}">{:C('site_name')}</a></li>
+            <li class="head-lf">戒指</li>
+            <li class="head-rl">钻石戒指</li>
+          </ul>
+      </div>
+      <p class="clear"></p>
+<!-- 轮播-->
+<div class="am-slider am-slider-default" data-am-flexslider id="demo-slider-0">
+  <ul class="am-slides">
+    <li><img src="__IMG__/bg_02.png" /></li>
+    <li><img src="__IMG__/bg-bio.jpg" /></li>
+    <li><img src="__IMG__/bg-bo.jpg" alt=""></li>
+    <li><img src="__IMG__/bg-der.jpg" alt=""></li>
+  </ul>
+</div>
+    <div class="list-default">
+      <h3>&nbsp;编号 W5203020630</h3>
+      <p>等级 0.43克拉 E色 VVS2净度 VVS2切工</p>
+      <p>价格:<big>￥22482.00元</big></p>
+    </div>  
+    <div class="am-pace">
+      <button type="button" class="am-btn am-btn-blue am-radius">加入购物车</button>
+      <button type="button" class="am-btn am-btn-blue am-radius">立即购买</button>
+    </div>
+    <div class="sign">
+          <h3>钻石分级报告 </h3>
+    </div>
+     <!--产品参数详情-->
+  <div data-am-widget="list_news" class="am-list-news list-news-default">
+     <div class="am-list-news-bd">
+          <ul class="am-list list">
+            <li class="am-g am-list-item-dated top">形状（Shape）：圆形</li>
+            <li class="am-g am-list-item-dated">重量(Carat)：0.43 克拉</li>
+            <li class="am-g am-list-item-dated">净度(Clarity)：VVS2</li>
+            <li class="am-g am-list-item-dated">颜色(Color)：E</li>
+            <li class="am-g am-list-item-dated">荧光(Fluorescence)：F</li>
+            <li class="am-g am-list-item-dated">切工（Cut）：EX</li>
+            <li class="am-g am-list-item-dated">对称(Symmetry)：EX</li>
+            <li class="am-g am-list-item-dated">抛光(Polish)：EX</li>
+            <li class="am-g am-list-item-dated">尺寸(Measurements)：4.84</li>
+            <li class="am-g am-list-item-dated">深度台分比：62.5 %</li>
+            <li class="am-g am-list-item-dated">台面台分比：56.0 %</li>
+            <li class="am-g am-list-item-dated">证书：GIA  5203020630</li>
+          </ul>
+        </div>
+    </div>
+</div>
+<!--底部-->
+<footer>
+        <p>copy©2013—2015 蒙克珠宝版权所有</p>
+        <p> 粤ICP备案 11102294</p>
+  </footer>
+<script>
+  $(function() {
+    var $slider = $('#demo-slider-0');
+    var counter = 0;
+    var getSlide = function() {
+      counter++;
+      return '<li><img src="http://s.amazeui.org/media/i/demos/bing-' +
+        (Math.floor(Math.random() * 4) + 1) + '.jpg" />' +
+        '<div class="am-slider-desc">动态插入的 slide ' + counter + '</div></li>';
+    };
+
+    $('.js-demo-slider-btn').on('click', function() {
+      var action = this.getAttribute('data-action');
+      if (action === 'add') {
+        $slider.flexslider('addSlide', getSlide());
+      } else {
+        var count = $slider.flexslider('count');
+        count > 1 && $slider.flexslider('removeSlide', $slider.flexslider('count') - 1);
+      }
+    });
+
+  });
+</script>

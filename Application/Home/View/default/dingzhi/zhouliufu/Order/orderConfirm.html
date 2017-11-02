@@ -1,0 +1,388 @@
+<include file=".:Base:layout_header" />
+
+<div class="w1160">
+    <!-- 步骤 -->
+    <div class="steps-box">
+        <img src="__IMG_DZ__/steps_04.png" alt="">
+    </div>
+    <!-- 步骤 end -->
+
+    <form action="{:U('Home/Order/orderSubmit')}" method="post" id="submit_order_my">
+    <!-- 核对订单信息 -->
+    <div class="check-order">
+        <h3>填写并核对订单信息</h3>
+        <div class="box-head">
+            <h4>业务信息</h4>
+        </div>
+        <div class="box-main" >
+            <div class="cont">
+
+                <h4 style="margin-bottom: 10px;"><!--收货人信息-->
+                    <!--<a href="javascript:;" class="add-address">
+                        <img src="__IMG_DZ__/qr_order_img_07.png" alt="">
+                        <small>添加新地址</small>
+                    </a>-->
+                </h4>
+                <!--<ul>
+                    <li>
+                        <input type="radio" name="radio" value="" checked>
+                        中国 安徽 蚌埠 东市区 asd asd 15327412587
+                        <span class="edit czbtn">编辑</span>
+                        <span class="delete czbtn">删除</span>
+                    </li>
+                    <li>
+                        <input type="radio" name="radio" value="">
+                        体验中心自取
+                    </li>
+                </ul>-->
+
+                <!-- 添加/编辑地址 -->
+                <div class="address-box" >
+                    <ul>
+                        <!--<li>
+                            <h2>地址标注</h2>
+                            <div class="address-input">
+                                <input type="text" name="" value="">
+                                例如家里、公司、最多8个字符
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <h2>配送地址</h2>
+                            <div class="address-input">
+                                <select class="" name="">
+                                    <option value="">省</option>
+                                </select>
+                                <select class="" name="">
+                                    <option value="">市</option>
+                                </select>
+                                <select class="" name="">
+                                    <option value="">区</option>
+                                </select>
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <h2>详情地址</h2>
+                            <div class="address-input">
+                                <input type="text" name="" value="">
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <h2>邮政编码</h2>
+                            <div class="address-input">
+                                <input type="text" name="" value="">
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>-->
+                        <li>
+                            <h2>联系人</h2>
+                            <div class="address-input">
+                                <input type="text" name="lxr" value="">
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <h2>联系电话</h2>
+                            <div class="address-input">
+                                <input type="text" name="lxfs" value="">
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <!--<li>
+                            <h2>设为默认</h2>
+                            <div class="address-input">
+                                <div class="radio-box">
+                                    <input type="radio" name="default" checked value=""> 是
+                                    <input type="radio" name="default" value=""> 否
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <h2>&nbsp;</h2>
+                            <div class="address-input">
+                                <div class="radio-box">
+                                    <button type="button" class="zlf-btn">确定</button>
+                                    <button type="button" class="zlf-btn">取消</button>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>-->
+                    </ul>
+                </div>
+                <script>
+                    $(function(){
+                        //添加/编辑地址
+                        $(document).delegate('.add-address, .edit', 'click', function(){
+                            $('.address-box').slideToggle();
+                        });
+                        //删除地址
+                        $(document).delegate('.delete', 'click', function(){
+                            $(this).closest('li').remove();
+                        });
+                    })
+                </script>
+                <!-- 添加/编辑地址 end -->
+            </div>
+        </div>
+        <!--<div class="box-main">
+            <div class="cont">
+                <h4>支付配送方式</h4>
+                <div class="guild">
+                    <span class="title">支付方式</span>
+                    <input type="radio" name="pay-type" class="xianxia" value=""> 线下转账
+                    &nbsp;&nbsp;
+                    <input type="radio" name="pay-type" value=""> 在线转账
+                </div>
+                <div class="pay-data" style="display: none;">
+                    <p>账户名称：支付宝专用</p>
+                    <p>账号： 622202155824555200</p>
+                    <p>开户行： 广东省深圳市罗湖区水贝布心路中国银行布心支行</p>
+                </div>
+                <div class="guild">
+                    <span class="title">配送方式</span>
+                    <input type="radio" name="distribution-type" value=""> 上门自取
+                    &nbsp;&nbsp;
+                    <input type="radio" name="distribution-type" value=""> 第三物流
+                </div>
+            </div>
+            <script>
+                $(function(){
+                    $('input[name="pay-type"]').change(function(){
+                        if($(this).hasClass('xianxia')){
+                            $('.pay-data').show();
+                        }else{
+                            $('.pay-data').hide();
+                        }
+                    });
+                })
+            </script>
+        </div>-->
+        <style>
+            .wdsearch { width: 765px; position: relative;}
+            .wdsearch .wd-list-box { width: 765px; background: #FFF; position: absolute; top: 27px; left: 0; border: 1px solid #ccc;}
+            .wdsearch .wd-list-box ul { width: 100%; max-height: 200px; overflow: auto;}
+            .wdsearch .wd-list-box li { padding: 6px; margin: 0;}
+            .wdsearch .wd-list-box li:hover { background: #F86B61; color: #FFF; cursor: pointer;}
+        </style>
+        <div class="box-main">
+            <div class="cont">
+                <div class="zlf-md">
+                    <div class="pull-left">
+                        <strong class="pull-left">网点名称：</strong>
+                        <!-- <select class="w188 js_shop_address" name="shop_id" >
+
+                            <option value="">请选择网点</option>
+                            <volist name="shop_address" id="addres" >
+                                <option value="{$addres['shop_id']}">{$addres['shop_name']}</option>
+                            </volist>
+
+                        </select> -->
+                        <div class="wdsearch pull-left">
+                            <input type="text"  name="shop_name" value="{$my_shop_arr['shop_name']}" class="wd-test js_shop_address_juti" style="width: 765px; background: none">
+                            <div class="wd-list-box" style="display: none">
+                                <ul class="js_my_wangdian_lists">
+
+                                </ul>
+                            </div>
+                        </div>
+                        <input type="hidden" id="shop_hidden_id" name="shop_code" value="">
+                        <script>
+                            $(function(){
+                                $('.wd-test').bind('click keyup', function(){
+                                    ajax_get_wangdian();
+                                });
+
+                                $('.wdsearch').mouseleave(function(){
+                                    $('.wd-list-box').hide();
+                                });
+                                $(document).delegate('.wd-list-box ul li', 'click', function(){
+                                    $('.js_shop_address_juti').val($(this).html());
+                                    $('.wd-list-box').hide();
+                                    $('#shop_hidden_id').val($(this).attr('shop_code'))
+                                });
+                            });
+                        </script>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="pull-right">
+                        <strong>订单类型：</strong>
+                        <select class="w188" name="order_type">
+                            <option value="1">客户订货</option>
+                            <option value="2">公司订货</option>
+                        </select>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <p class="mt15">
+                    <strong class="vat pull-left">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</strong>
+                    <textarea name="note" id="" rows="4" class="w1046 pull-left"></textarea>
+                    <div class="clearfix"></div>
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- 核对订单信息 end -->
+    </form>
+
+    <!-- 购物车商品列表 -->
+    <div class="cart-box">
+        <table class="cart-table" cellpadding="0" cellspacing="0">
+            <caption>您选购了以下商品：</caption>
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>商品名称</th>
+                    <th>数量</th>
+                    <th>总计</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <volist name="cart_data['lists']" id="info">
+            <tbody>
+
+                <tr>
+                    <td>1</td>
+                    <td>
+                        <img src="{$info['main_info']['my_img']}" class="goods-img" alt="">
+                        <!--婚戒系列 花火 个性定制婚戒-->
+                    </td>
+                    <td>{$info['goods_number']}</td>
+                    <td><span class="rmb">￥{$info['cart_money']}</span></td>
+                    <td>
+                        <span class="view-details">查看详情</span>
+                    </td>
+                </tr>
+
+                <tr class="child-details" style="display: none;">
+                    <td colspan="6" class="padnone">
+                        <!-- 情侣对戒 -->
+                        <table cellpadding="0" cellspacing="0" class="child-table ql-table">
+                            <thead>
+                                <tr>
+                                    <td>序号</td>
+                                    <td>款号</td>
+                                    <td><span class="red">*</span>材料</td>
+                                    <td>品类</td>
+                                    <td>手寸</td>
+                                    <td><span class="red">*</span>主石重</td>
+                                    <td>净度</td>
+                                    <td>颜色</td>
+                                    <td><span class="red">*</span>数量</td>
+                                    <td>预估金额</td>
+                                    <td>备注</td>
+                                </tr>
+                            </thead>
+                            <volist name="info.banfang_carts_info.lists" id="vo" key="ban_o">
+                            <tbody>
+                            <tr>
+                                <td>{$ban_o}</td>
+                                <td>{$vo['sub_info']['goods_sn']}</td>
+                                <td>{$vo['sub_info']['factory_lists'][0]['material_info']['name']}</td>
+                                <td>
+                                    {$vo['sub_info']['banfang_jewelry_info']['ca_name']}
+                                    <eq name="vo['sub_info']['factory_lists'][0]['factory_info']['sex']" value="1">
+                                        (女戒)
+                                    </eq>
+                                    <eq name="vo['sub_info']['factory_lists'][0]['factory_info']['sex']" value="2">
+                                        (男戒)
+                                    </eq>
+                                </td>
+                                <td>
+                                    <if condition="$info['main_info']['banfang_jewelry_info']['is_hand'] eq 1">
+                                        {$vo['sub_info']['factory_lists'][0]['hand_info']}
+                                    </if>
+                                </td>
+                                <td>{$vo['sub_info']['factory_lists'][0]['diamond_info']['carat']}</td>
+                                <td>{$vo['sub_info']['factory_lists'][0]['color_info']}</td>
+                                <td>{$vo['sub_info']['factory_lists'][0]['clarity_info']}</td>
+                                <td>{$vo['goods_number']}</td>
+                                <td>{$vo['sub_info']['goods_price']}</td>
+                                <td>{$vo['sub_info']['factory_lists'][0]['note_info']}</td>
+                            </tr>
+                            </tbody>
+                            </volist>
+                        </table>
+                        <!-- 情侣对戒 end -->
+                    </td>
+                </tr>
+
+            </tbody>
+            </volist>
+        </table>
+    </div>
+    <script>
+        $(function(){
+            //查看详情
+            $('.view-details').bind('click', function(){
+                $(this).closest('tr').next('.child-details').toggle();
+            });
+        });
+    </script>
+    <!-- 购物车商品列表 end -->
+
+    <div class="cart-bottom">
+        <div class="pull-right">
+            <p>共 <span class="red">{$cart_data['count_number']}</span> 件商品</p>
+            <p>订单总金额：<span class="rmb">￥{$cart_data['cart_money_all']}</span></p>
+            <p><button type="submit" class="submit-btn">提交</button></p>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<script>
+    $('.submit-btn').bind('click',function(){
+        var data_string = $('#submit_order_my').serialize();
+
+        $.ajax({
+            url: "{:U('Home/Order/orderSubmit')}",
+            type: 'POST',
+            data: data_string,
+            success: function(d){
+                if(d.status==100){
+                    location.href = '/Home/Order/orderComplete.html?order_id='+d.order_id;
+                }else{
+                    alert(d.msg);
+                }
+                //window.location.href='/Home/Order/orderConfirm';
+            }
+        });
+    })
+
+    function ajax_get_wangdian(type){
+        var data_string = {
+            shop_address:$('.js_shop_address_juti').val()
+        };
+
+        $.post("{:U('Home/Order/getUserShop')}",data_string,function(d){
+            if(type){
+                if(d.status==100 && d.count>0){
+                    //进来取第0条记录
+                    $('.js_shop_address_juti').val(d.data[0].shop_name);
+                    $('#shop_hidden_id').val(d.data[0].shop_code);
+                }
+            }else{
+                var string = '';
+                if(d.status==100){
+                    for(var i=0;i<d.count;i++){
+                        string += '<li shop_code="'+d.data[i].shop_code+'">'+d.data[i].shop_address+'</li>';
+                    }
+                }else{
+
+                }
+
+                $('.js_my_wangdian_lists').html(string);
+                $('.wd-list-box').show();
+            }
+            //window.location.href='/Home/Order/orderConfirm';
+        });
+    }
+
+    ajax_get_wangdian(1);
+
+
+</script>
+
+<include file=".:Base:layout_footer" />

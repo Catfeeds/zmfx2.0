@@ -1,0 +1,83 @@
+<include file=".:Base:layout_header" />
+        <div class="nav" style="display: none">
+            <div class="w1200">
+                <ul>
+                    <li class="active"><a href="#">首页</a></li>
+                    <li><a href="#">祼钻查询</a></li>
+                    <li><a href="#">珠宝成品</a></li>
+                    <li><a href="#">关于我们</a></li>
+                    <li><a href="#">门店预约</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- header end -->
+<div class="main user-address w1200 zlf-order">
+
+    <!-- 侧边导航 -->
+        <include file=".:Base:dingzhi:zhouliufu:orderList_public" />
+    <!-- 侧边导航 end -->
+    <div class="content">
+        <div class="order-tab">
+            <ul>
+                <foreach name="order_status" key="k" item="v">
+                    <li  class="ajax_get_data <if condition="$k eq '-2'">active</if><if condition="$k eq '-1'">brnone</if>" order_status="{$k}">{$v}
+                    </li>
+                </foreach>
+
+                <div class="search-box">
+                    <form id="ajax_get_form">
+                        <input type="text" name="search" value="" class="order-search-input" placeholder="订单号">
+                        <input type="hidden" name="order_status" value="-2"/>
+                        <button type="button" class="order-search-btn" onclick="ajax_get_data(0)">Search</button>
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+            </ul>
+        </div>
+
+        <table class="goods-title" cellpadding="0" cellspacing="0">
+            <tr>
+                <th align="left" class="pl50">商品名称</th>
+                <th>数量</th>
+                <th>总计</th>
+            </tr>
+        </table>
+
+        <div id="ajax_get_data">
+        </div>
+
+        
+    </div>
+
+    <div class="clearfix"></div>
+
+</div>
+
+<script>
+    ajax_get_data(0);
+
+    $(function(){
+        $('.ajax_get_data').click(function(event) {
+            $('.ajax_get_data').removeClass('active');
+            $(this).addClass('active');
+            $('input[name="order_status"]').val($(this).attr('order_status'));
+            ajax_get_data(0);
+        });
+    })
+
+    function ajax_get_data(p){
+        $.ajax({
+            type: 'post',
+            url: "{:U('ajax_zlf_orderList')}",
+            data: $("#ajax_get_form").serialize()+'&p='+p,
+            success: function(data) {
+                var data=eval('(' + data + ')');
+                //数据添加
+                $('#ajax_get_data').empty();
+                $('#ajax_get_data').append(data.display);
+            }
+        });
+    }
+</script>
+<include file=".:Base:layout_footer" />

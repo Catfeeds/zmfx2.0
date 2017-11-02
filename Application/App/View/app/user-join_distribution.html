@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>个人信息-加入分销</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/public.css">
+	<link rel="stylesheet" href="css/user.css">
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/user.js"></script>
+	<script src="js/PCASClass.js"></script>
+</head>
+<body class="wrap-bg">
+	<!-- Header -->
+	<header class="header text-center">
+    	加入分销
+        <a href="javascript:;" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    </header>
+    <!-- Header END //-->
+
+	<!-- Main -->
+    <div class="container-fluid user-info join_distribution">
+		<div class="panel-body username usbox"><h6>温馨提示：以下资料均为保密资料，请放心填写。</h6></div>
+		<div class="panel-body username">
+			<ul class="list-group">
+			  <li class="list-group-item">分销商 <span class="pull-right"><input type="text" class="text-right"></span></li>
+			  <li class="list-group-item">公司名称 <span class="pull-right"><input type="text" class="text-right"></span></li>
+			  <li class="list-group-item">站点域名 <span class="pull-right" style="width: 60%; font-size: 0.5em;"><input type="text" placeholder="非必填  但必须得有一个域名" class="text-right"></span></li>
+			  <li class="list-group-item">联系人 <span class="pull-right"><input type="text" class="text-right"></span></li>
+			  <li class="list-group-item">联系电话 <span class="pull-right"><input type="text" class="text-right"></span></li>
+			</ul>
+		</div>
+
+		<div class="panel-body username">
+			<ul class="list-group">
+			  <li class="list-group-item">营业执照 <span class="pull-right"><input type="text" class="text-right"></span></li>
+			  <li class="list-group-item">注册资金 <span class="pull-right"><input type="text" class="text-right"></span></li>
+			  <li class="list-group-item">实收资本 <i class="glyphicon glyphicon-chevron-right pull-right blue"></i></li>
+			  <li class="list-group-item">营业执照复印件 <i class="glyphicon glyphicon-chevron-right pull-right blue"></i></li>
+			  <li class="list-group-item">税务登记证复印件 <i class="glyphicon glyphicon-chevron-right pull-right blue"></i></li>
+			  <li class="list-group-item">机构代码证复印件 <i class="glyphicon glyphicon-chevron-right pull-right blue"></i></li>
+			  <li class="list-group-item">分销地区 
+				<span class="select-box">
+					<select name="province2" class="select-form"></select>
+					<select name="city2" class="select-form"></select>
+					<select name="area2" class="select-form"></select>
+					<div class="clear"></div>
+				</span>
+				<script>
+					new PCAS("province2","city2","area2","---","---","---");
+				</script>
+
+			  </li>
+			</ul>
+		</div>
+		
+		<div class="panel-body username">
+			<ul class="list-group">
+				<li class="list-group-item"><textarea class="form-control" rows="3" placeholder="留言内容"></textarea></li>
+			</ul>
+		</div>
+
+		<div class="panel-body username"><button type="button" class="btn btn-primary exit-button">提交</button></div>
+		
+	</div>
+    <!-- Main END //-->
+
+</body>
+</html>

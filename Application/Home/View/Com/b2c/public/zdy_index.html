@@ -1,0 +1,19 @@
+<eq name="positionList[5]['is_show']" value="1">
+<style>
+.font-family-five{
+	font-family:"{$positionList[5]['font']}" ;
+}
+</style>
+<if condition="$positionList[5]['title'] neq '自定义编辑' && $positionList[5]['english_title'] neq '--' " >
+<div class="container">
+	<div class="brand-header zdy-title">
+		<h1 class="text-center font-family-five"><strong><neq name="positionList[5]['title']" value="自定义编辑" >{$positionList[5]['title']}</neq></strong> <br /> <span class="brand-text"><neq name="positionList[5]['english_title']" value="--" >{$positionList[5]['english_title']}</neq></span></h1>
+	</div>
+</div>
+</if>
+<div class="zdy" style="margin-top: 2em;">
+  <neq name="positionList[5]['content']" value="" >
+  {$positionList[5]['content']||htmlspecialchars_decode}
+  </neq>
+</div>
+</eq>

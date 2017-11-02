@@ -1,0 +1,138 @@
+<style>
+img { max-width: none !important;}
+.goods-img img { max-width: 100% !important;}
+.tb-pic a{display:table-cell;text-align:center;vertical-align:middle;}
+.tb-pic a img{vertical-align:middle;}
+.tb-pic a{*display:block;*font-family:Arial;*line-height:1;}
+.tb-thumb{ margin:10px 0 0;overflow:hidden;}
+.tb-thumb li{background:none repeat scroll 0 0 transparent;/* float:left; height:42px;*/margin:0 6px 0 0;overflow:hidden;padding:1px;}
+.tb-s310, .tb-s310 a{height:310px;width:310px;}
+.tb-s310, .tb-s310 img{max-height:310px;max-width:310px;}
+.tb-s310 a{*font-size:271px;}
+.tb-s40 a{*font-size:35px;}
+.tb-s40, .tb-s40 a{height:40px;width:40px;}
+.tb-booth{border:1px solid #CDCDCD;position:relative;z-index:1;}
+/* .tb-thumb .tb-selected{background:none repeat scroll 0 0 #C30008;height:40px;padding:2px;}
+.tb-thumb .tb-selected div{background-color:rgb(160, 93, 60);border:medium none;} */
+.tb-thumb li div{border:1px solid #CDCDCD;}
+#thumblist img { width: 100%;}
+div.zoomDiv {z-index:999;position:absolute;top:0px;left:0px; width:400px !important; height:465px !important; background:#ffffff;border:1px solid #CCCCCC;display:none;text-align:center;overflow:hidden;}
+div.zoomMask{position:absolute;background:url("__IMG__/masks.png") repeat scroll 0 0 transparent;cursor:move;z-index:1; width: 180px !important; height: 180px !important;}
+.bigimg { max-width: 800px !important; max-height: 800px !important;}
+@media (min-width: 768px){ div.zoomDiv { width: 288px !important; height: 288px !important;}}
+@media (max-width: 767px) { .zoomDiv { display: none !important;}}
+@media (min-width: 992px){ div.zoomDiv { height: 380px !important;}}
+@media (min-width: 1220px) { div.zoomDiv { width: 400px !important; height: 465px !important;}}
+.big_overflow { width: 100%; max-width: 100%; max-height: 100%; display: none;}
+.tb-thumb li { position: relative; margin: 0 auto;}
+.tb-thumb li .video_icon { width: 40px !important; height: 40px; position: absolute; left: 50%; top: 50%; margin-left: -20px; margin-top: -20px;}
+</style>
+<script src="__JS__/jquery.imagezoom.min.js"></script>
+<div class="">
+    <div class="goods-desc-left pull-left">
+        <ul class="sp-wrap tb-thumb" id="thumblist">
+            <if condition="$vdesList">
+              <volist name="vdesList" id="video">
+
+                <?php if(strpos($video['video_adds'],'http')===false){?>
+                  <li class="Tvideo">
+                    <img src="__IMG__/video_icon.png" width="50" class="video_icon" alt="">
+                    <video style="max-width: 100%;">
+                       <source src="<?php echo '/Public/'.$video['video_adds']?>" type="video/mp4" class="mid_video">
+                       <!-- <source src="movie.ogg" type="video/ogg"> -->
+                    </video>
+                  </li>
+                <?php }else{?>
+                  <li class="Ifvideo">
+                    <img src="__IMG__/video_icon.png" width="50" class="video_icon" alt="">
+                    <iframe src="<?php echo $video['video_adds']?>" class="iframe_video"></iframe>
+                  </li>
+                <?php }?>
+
+              </volist>
+            </if>
+            <if condition="$goodsInfo['images']">
+                <volist name="goodsInfo['images']" id="vo" key="k">
+                    <li class="Timg"><img src="{$vo.small_path}" mid="{$vo.big_path}" big="{$vo.big_path}"></li>
+                </volist>
+            </if>
+
+        </ul>
+    </div>
+    <div class="goods-desc-right pull-right magnify">
+
+        <img class="jqzoom small maximg big_overflow" src="{$goodsInfo['images'][0].big_path}" rel="{$goodsInfo['images'][0].big_path}">
+
+        <video id="video-box" class="maxvideo big_overflow" controls autoplay>
+           <source src="" type="video/mp4" class="video_url">
+           <!-- <source src="movie.ogg" type="video/ogg"> -->
+           您的浏览器不支持最新的视频播放,请升级
+        </video>
+
+        <script>
+            //设置视频静音
+            var videoBox = document.getElementById("video-box");
+            videoBox ? videoBox.defaultMuted = true : '';
+
+            $(function(){
+                var viSrc = $('#thumblist li source').attr('src');
+                viSrc ? $('#video-box').attr('src', viSrc) : '';
+            });
+        </script>
+
+        <iframe src="<?php echo $video['video_adds']?>" class="iframe_max_video big_overflow" style="min-height: 400px;"></iframe>
+
+    </div>
+    <div class="clearfix"></div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+    //调用放大镜
+    $(".jqzoom").imagezoom();
+
+    //获取三个类型大图
+    var maximg = $('.maximg');
+    var maxvideo = $('.maxvideo');
+    var overflow = $('.big_overflow');
+
+
+    //视频与图片切换
+    $("#thumblist li").mouseover(function(){
+
+        $(this).addClass("tb-selected").siblings().removeClass("tb-selected");
+
+        //隐藏所有类型大图
+        overflow.hide();
+
+        //判断切换类型
+        if( $(this).hasClass('Timg') ){ //1.图片类型
+          maximg.show();
+          $(".jqzoom").attr('src',$(this).find("img").attr("mid"));
+          $(".jqzoom").attr('rel',$(this).find("img").attr("big"));
+        }else if( $(this).hasClass('Tvideo') ){ //2.video 类型
+          maxvideo.show();
+          $('.video_url').attr('src',$(this).find('.mid_video').attr('src'));
+          $('.maxvideo').load();
+        }else{ //3.iframe类型
+          $('.iframe_max_video').show();
+          $('.iframe_max_video').attr('src', $(this).find('.iframe_video').attr('src'));
+        }
+
+    });
+
+    //设置初始类型
+    var types = $('#thumblist li:first');
+    if(types.hasClass('Timg')){
+      maximg.show();
+      $(".jqzoom").attr('src',$(this).find("img").attr("mid"));
+      $(".jqzoom").attr('rel',$(this).find("img").attr("big"));
+    }else if(types.hasClass('Tvideo')){
+      maxvideo.show();
+      $('.video_url').attr('src',$(this).find('.mid_video').attr('src'));
+    }else{
+      $('.iframe_max_video').show();
+      $('.iframe_max_video').attr('src', $(this).find('.iframe_video').attr('src'));
+    }
+
+});
+</script>

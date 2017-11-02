@@ -1,0 +1,465 @@
+<include file=".:Com:b2c:product:goods_js" />
+
+<link rel="stylesheet" href="__CSS__/bootstrap-slider.css">
+<link rel="stylesheet" href="__CSS__/stm.css">
+<style>
+	.all-display-none{
+		display: none;
+	}
+	.stm-luozuan .stm-diamond-list{
+		display:none;
+	}
+	#search_price_table td {
+		cursor: pointer;
+	}
+</style>
+<script>
+	$(document).delegate('#search_price_table td', 'click', function(event) {
+		window.location.href = "#stm-diamond-list";
+		
+	});
+</script>
+<!-- jQuery slider js -->
+<script src="__JS__/bootstrap-slider.js"></script>
+<script src="__JS__/stm.js"></script>
+	<div class="stm-luozuan stm-offer">
+		<div class="stm-breadcrumb">
+			<a href="#">首页</a> > <a href="#">钻石</a> > 钻石报价
+		</div>
+		<div class="stm-query">
+			<div class="query-form">
+				克拉重量
+				<input list="weight " class="weight-input" placeholder="请输入克拉重" id="weight_input"/>
+				<datalist id="weight ">
+					<volist name="setting_param.weight_arr" id="weight_info">
+						<option value="{:$weight_info['name']}">
+					</volist>
+				</datalist>
+				<button type="button" class="query-btn" onclick="set_offer_price()">查询</button>
+			</div>
+			<p class="all-display-none" style="text-indent: 2em; color: #b6850f;border-bottom: 1px solid #AEABAB;padding-bottom: 30px;">斯特曼国际钻石报价表均采用“安特卫普优质切工”标准(即3EX切工，切工等级Excellent［完美］、对称等级Excellent［完美］、抛光等级Excellent［完美］)和极佳的“宝石风
+采”(即荧光等级为None［无］，不存在任何不合法的加热改色处理)。</p>
+		</div>
+		<div class="stm-diamond-title all-display-none">
+			<div class="text-center">
+				<span id="has_type_if">
+					<span class="weight-type spot-tltle " onclick="set_offer_price()">单粒价格</span>
+					<span class="font20">|</span>
+				</span>
+				<span class="weight-type spot-tltle" onclick="set_offer_price(1)">每克拉价格</span>
+			</div>
+			<table class="price-table" id="search_price_table">
+				<caption>钻重0.32ct</caption>
+				<thead>
+					<tr>
+						<th class="xiexian" width="120">
+							<table class="child-table">
+					            <thead>
+						            <tr>
+						                <th></th>
+						                <th>净度</th>
+						            </tr>
+						            <tr>
+						                <th>颜色</th>
+						                <th></th>
+						            </tr>
+					            </thead>
+					        </table>
+						</th>
+						<th>IF</th>
+						<th>VVS1</th>
+						<th>VVS2</th>
+						<th>VS1</th>
+						<th>VS2</th>
+						<th>SI1</th>
+						<th>SI2</th>
+						<th>SI3</th>
+						<th>I1</th>
+						<th>I2</th>
+						<th>I3</th>
+					</tr>
+				</thead>
+				<tbody class="td-data">
+					<tr>
+						<th>D</th>
+						<td>29335</td>
+						<td>22086</td>
+						<td>18266</td>
+						<td>16215</td>
+						<td>15160</td>
+						<td>13420</td>
+						<td>10005</td>
+						<td>8625</td>
+						<td>7590</td>
+						<td>5520</td>
+						<td>3795</td>
+					</tr>
+					<tr>
+						<th>E</th>
+						<td>29335</td>
+						<td>22086</td>
+						<td>18266</td>
+						<td>16215</td>
+						<td>15160</td>
+						<td>13420</td>
+						<td>10005</td>
+						<td>8625</td>
+						<td>7590</td>
+						<td>5520</td>
+						<td>3795</td>
+					</tr>
+					<tr>
+						<th>F</th>
+						<td>29335</td>
+						<td>22086</td>
+						<td>18266</td>
+						<td>16215</td>
+						<td>15160</td>
+						<td>13420</td>
+						<td>10005</td>
+						<td>8625</td>
+						<td>7590</td>
+						<td>5520</td>
+						<td>3795</td>
+					</tr>
+					<tr>
+						<th>G</th>
+						<td>29335</td>
+						<td>22086</td>
+						<td>18266</td>
+						<td>16215</td>
+						<td>15160</td>
+						<td>13420</td>
+						<td>10005</td>
+						<td>8625</td>
+						<td>7590</td>
+						<td>5520</td>
+						<td>3795</td>
+					</tr>
+					<tr>
+						<th>H</th>
+						<td>29335</td>
+						<td>22086</td>
+						<td>18266</td>
+						<td>16215</td>
+						<td>15160</td>
+						<td>13420</td>
+						<td>10005</td>
+						<td>8625</td>
+						<td>7590</td>
+						<td>5520</td>
+						<td>3795</td>
+					</tr>
+					<tr>
+						<th>I</th>
+						<td>29335</td>
+						<td>22086</td>
+						<td>18266</td>
+						<td>16215</td>
+						<td>15160</td>
+						<td>13420</td>
+						<td>10005</td>
+						<td>8625</td>
+						<td>7590</td>
+						<td>5520</td>
+						<td>3795</td>
+					</tr>
+					<tr>
+						<th>J</th>
+						<td>29335</td>
+						<td>22086</td>
+						<td>18266</td>
+						<td>16215</td>
+						<td>15160</td>
+						<td>13420</td>
+						<td>10005</td>
+						<td>8625</td>
+						<td>7590</td>
+						<td>5520</td>
+						<td>3795</td>
+					</tr>
+					<tr>
+						<th>K</th>
+						<td>29335</td>
+						<td>22086</td>
+						<td>18266</td>
+						<td>16215</td>
+						<td>15160</td>
+						<td>13420</td>
+						<td>10005</td>
+						<td>8625</td>
+						<td>7590</td>
+						<td>5520</td>
+						<td>3795</td>
+					</tr>
+					<tr>
+						<th>L</th>
+						<td>29335</td>
+						<td>22086</td>
+						<td>18266</td>
+						<td>16215</td>
+						<td>15160</td>
+						<td>13420</td>
+						<td>10005</td>
+						<td>8625</td>
+						<td>7590</td>
+						<td>5520</td>
+						<td>3795</td>
+					</tr>
+					<tr>
+						<th>M</th>
+						<td>29335</td>
+						<td>22086</td>
+						<td>18266</td>
+						<td>16215</td>
+						<td>15160</td>
+						<td>13420</td>
+						<td>10005</td>
+						<td>8625</td>
+						<td>7590</td>
+						<td>5520</td>
+						<td>3795</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<include file=".:Com:b2c:product:luozuan_list3" />
+	</div>
+
+<script>
+	$(function(){
+
+		//初始化详情媒体资源
+		$('.master-video').attr('src', $('.top-banner li:first').attr('data-url'));
+
+		//显示详情媒体资源
+		$('.top-banner li').hover(function(){
+
+			var classType = $(this).attr('class');
+			var srcUrl = $(this).attr('data-url');
+
+			$('.top-banner li').removeClass('active');
+			$(this).addClass('active');
+
+			switch(classType){
+
+				case "video-banner" :
+				$('.master-video').attr('src', srcUrl).show();
+				$('.master-img').hide();
+				break;
+
+				case "pci-banner" :
+				$('.master-video').hide();
+				$('.master-img').attr('src', srcUrl).show();
+				break;
+
+			}
+		});
+
+		//加入购物车或匹配
+		$('.join-type, .join-type-ul li').bind('click', function(){
+			if($(this).hasClass('join-type')){
+				if($(this).next('.join-type-ul').css('display') == 'block'){
+					$(this).next('.join-type-ul').hide();
+					$(this).find('img').attr('src', 'images/dowm_03.png');
+				}else{
+					$(this).next('.join-type-ul').show();
+					$(this).find('img').attr('src', 'images/dowm_up_03.png');
+				}
+			}else{
+				if($(this).parents('.join-type-ul').css('display') == 'block'){
+					$(this).parents('.join-type-ul').hide();
+					$(this).parents('.join-type-ul').prev('.join-type').find('img').attr('src', 'images/dowm_03.png');
+				}else{
+					$(this).parents('.join-type-ul').show();
+					$(this).parents('.join-type-ul').prev('.join-type').find('img').attr('src', 'images/dowm_up_03.png');
+				}
+			}
+		});
+
+		//详细参数显示切换
+		$('.desc-list h1').bind('click', function(){
+			$(this).next('ul').toggle();
+		});
+
+		//显示详情
+		$('.overflow-table tbody tr td').bind('click', function(){
+			var index = $(this).parents('tr').find('td').index(this);
+			console.log(index);
+			if( index != '0' ){
+				$('.stm-diamond-table').animate({width: '800px'},200);
+				$('.stm-diamond-xianxi').animate({width: '360px'},200);
+			}
+		});
+		$('.stm-diamond-xianxi .cz-1').bind('click', function(){
+			$('.stm-diamond-table').animate({width: '100%'},200);
+			$('.stm-diamond-xianxi').animate({width: '0px'},200);
+		});
+
+		//单选
+		$('.optioned-checkbox').bind('click', function(){
+			$('.optioned-checkbox').removeClass('active');
+			$(this).addClass('active');
+			$('.optioned-select').val('全部');
+		});
+		$('.optioned-select').change(function(event) {
+			$(this).find('option:selected').val();
+			$('.optioned-checkbox').removeClass('active');
+		});
+
+		//现货和库存切换
+		$('.tab-inventory .spot-tltle').bind('click', function(){
+			$(this).parents('.tab-inventory').find('.spot-tltle').removeClass('active');
+			$(this).addClass('active');
+		});
+
+		//价格切换
+		$('.stm-diamond-title .spot-tltle').bind('click', function(){
+			$('.stm-diamond-title .spot-tltle').removeClass('spot-color');
+			$(this).addClass('spot-color');
+		});
+
+		//国内现货和比利时库存切换
+		$('.tab-inventory .spot-tltle').bind('click', function(){
+
+			var data_type	= $(this).attr('data-type');
+
+			if($('input[name="preferential"]').is(':checked') == true ){
+				luozuan.condition['preferential'] = [1];
+			}
+			$('.screening a').removeClass('active');
+			$('.screening li').find('.avtive-img').remove();
+								
+			luozuan.condition['is_own'] = [data_type];
+			$(this).parents('.tab-inventory').find('.spot-tltle').removeClass('active');
+			$(this).addClass('active');
+			luozuan.set_page(1);
+			luozuan.condition['luozuan_type'] = [0];
+			load_selected();
+		});
+
+
+	});
+</script>
+<!--查询-->
+<script>
+	var can_ajax = 1;
+	function set_offer_price(weight_type){
+		if(can_ajax!=1){
+			return;
+		}
+		
+		var weight_input = $("#weight_input").val();
+		if(!weight_input){
+			layer.msg('请输入钻重值或选择钻重区间！',{shift:6});
+			return false;
+		}
+		/*var reg = /^\d+(?=\.{0,1}\d+$|$)/
+		if(!reg.test(weight_input)){
+			layer.msg('请输入大于零的数字！',{shift:6});
+			return true;
+		}*/ 
+		can_ajax = 0;
+		if(!weight_type){
+			weight_type = 0;
+		}
+		$.ajax({
+			type: "post",
+			url : "{:U('Home/Goods/ajaxGetOfferList')}",
+			data:{weight:weight_input,weight_type:weight_type},
+			dataType:'json',
+			async:false,
+			success: function(res){
+				if(res){
+					sele_weight_type(res.weight_type,res.weight_type_display);
+					$('#search_price_table').html(res.data);
+					$('.all-display-none').css('display','block');
+					//表格选中
+					var el = '.price-table .td-data td';
+					$(el).on({
+						click:function(){
+							$(el).removeClass('active').attr('onchecked','');
+							$(this).addClass('active');
+							$(this).attr('onchecked','true');
+						},
+						mouseover: function(){
+							$(this).addClass('active');
+							var trIndex = $(this).parents('tr').index();
+							var tdIndex = $(this).index();
+							$(this).parents('tr').find('td').addClass('vice-td');
+							$(this).parents('tr').find('th').addClass('vice-th');
+							$('.price-table tr').each(function(){
+								$(this).find('td').eq( tdIndex - 1 ).addClass('vice-td');
+								$(this).find('th').eq( tdIndex + 4 ).addClass('vice-th');
+							});
+
+						},
+						mouseout:function(){
+							if(!$(this).attr('onchecked')){
+								$(this).removeClass('active');
+							}
+							var trIndex = $(this).parents('tr').index();
+							var tdIndex = $(this).index();
+							$(this).parents('tr').find('td').removeClass('vice-td');
+							$(this).parents('tr').find('th').removeClass('vice-th');
+							$('.price-table tr').each(function(){
+								$(this).find('td').eq( tdIndex - 1 ).removeClass('vice-td');
+								$(this).find('th').eq( tdIndex + 4 ).removeClass('vice-th');
+							});
+						}
+					});
+					can_ajax = 1;
+				}else{
+					layer.msg('找不到数据',{
+						shift :6,
+						icon: 5
+					});
+					can_ajax = 1;
+					return false;
+				}
+			},
+		});
+	}
+	function sele_weight_type(weight_type,weight_type_display){
+		if(weight_type_display==1){
+			$("#has_type_if").hide();
+		}else{
+			$("#has_type_if").show();
+		}
+		$('.weight-type').removeClass('spot-color');
+		$('.weight-type').eq(weight_type).addClass('spot-color');
+	}
+	function search_info(color,clarity,weight,price){
+		
+		//if(!weight){
+		var weight = $("#weight_input").val();
+		if(weight.indexOf("-")>=0){
+			weight	= weight.replace(/ct/, '');
+		}else{
+			weight	= weight+'-'+weight;
+		}
+
+		//}
+
+		luozuan.clear_condition_all();						//重置搜索条件
+		luozuan.condition['is_own'] = [0];
+		luozuan.condition['luozuan_type'] = [0];
+		$('.tab-inventory').find('span.spot-tltle').eq(0).addClass('active');
+		$('.tab-inventory').find('span.spot-tltle').eq(1).removeClass('active');
+		luozuan.set_condition('Color',color);
+		luozuan.set_condition('Clarity',clarity);
+		luozuan.set_condition('Cut','EX');
+		luozuan.set_condition('Symmetry','EX');
+		luozuan.set_condition('Polish','EX');
+		luozuan.set_condition('Fluor','N');
+		luozuan.set_condition('Weight',weight);
+		
+		$('.stm-diamond-list').show();
+		
+		luozuan.page_size = 15;
+		load_selected();
+	}
+	
+	
+</script>
+<!--查询-->

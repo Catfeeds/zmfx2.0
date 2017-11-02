@@ -1,0 +1,120 @@
+<include file="Public:header" />
+<link rel="stylesheet" href="__CSS__/style-framework7.ios.css">
+<script src="__JS__/framework7.min.js"></script>
+
+        <body>
+            <section class="cart user notification">
+
+                <header>
+                    <div class="web-top">
+                        <div class="back-box">
+                            <img src="__IMG__/back_icon.png" onclick="location='/User/index'" class="back-img" alt="">
+                        </div>
+                        <h2>消息</h2>
+                    </div>
+                </header>
+
+                <div class="wrapper">
+
+
+
+                    <div class="page-content">
+
+                        <div class="list-block">
+                            <ul class='ajax_msg_list'>
+ 
+ 
+                            </ul>
+                        </div>
+
+                        <!-- 暂无消息 -->
+                        <div class="empty-cart empty-msg" style="display: none;">
+                            <p><img src="__IMG__/msg_img.png" alt="" class="empty-img"></p>
+                            <p>
+                                <h2 class="c666">您还没有通知消息哦~~</h2>
+                            </p>
+                        </div>
+                        <!-- 暂无消息 end -->
+                    </div>
+					
+					<div class="loading" style="display: none"><img src="__IMG__/loading.gif" alt=""></div>
+					
+					<div class="loading" style="text-align: center;padding: .5rem 0;display: none">没有了~~</div>
+					
+					
+                </div>
+						
+                <script>
+                    //可以自定义配置参数
+                    var myApp = new Framework7({
+                        //materialPageLoadDelay:0,   //延迟（在毫秒）之前的动画加载页。可以增加一点来提高性能
+                        //materialRipple:'true'       //启用/禁用特有的触摸纹波效应
+                    });
+
+ 
+                    //监听消息是否为空
+                    $('.swipeout-delete').bind('click', function(){
+                        var len = $('.swipeout').length - 1;
+                        len <= 0 ? $('.empty-msg').show() : $('.empty-msg').hide();
+                    });
+					
+					var MsgCondition = {
+						'page'			: 0,
+						'msg_id'		: '',	
+						'page_len'		: 20,
+					}
+ 	
+ 
+					BringAjax.IntendData.ChangeHtml 				= '.ajax_msg_list';
+					BringAjax.IntendData.NullHtml					= '.empty-msg';
+					EasyTransition(MsgCondition,function(){
+							$.each(BringAjax.CacheData[BringAjax.IntendData.CacheHtmlKey].data ,function(k ,v) {
+								if(v){
+									BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<li class="swipeout">';
+									BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="item-content">';
+									BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="item-inner">'+v.content+'</div>';
+									BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="time fr"><small>'+StringManage.TimeStamp(v.create_time)+'</small></div>';
+									BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="swipeout-actions-right">';
+									BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<a   class="swipeout-delete" attr_id='+v.msg_id+'>删除</a>';
+									BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+									BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+									BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</li>';
+								}
+							})
+					}); 
+ 
+ 
+ 
+ 
+ 
+				$(window).scroll(function(){ 
+					 if($(document).scrollTop() + $(window).height() >= $(document).height()){  
+						$('.loading').show();
+						BringAjax.IntendData.StopgapPage +=1 ;
+						BringAjax.Interactive[0].page  = BringAjax.Interactive[0].page_len * BringAjax.IntendData.StopgapPage;
+						BringAjax.Send();  
+					  }
+				});
+					
+ 
+				$('body').delegate('.swipeout-delete','click',function () {
+					var __this = $(this);
+					MsgCondition.msg_id = __this.attr('attr_id');
+					BringAjax.IntendData.SwitchMain = 1;
+					EasyTransition(MsgCondition,function(){
+						CommonFunction.Prompt.Tan(BringAjax.CacheData[BringAjax.IntendData.CacheHtmlKey][BringAjax.IntendData.Message]);
+						$(__this).parents('.swipeout').fadeOut(3000);
+					});
+				});
+
+
+
+					
+					
+					
+                </script>
+            </section>
+ 
+        </body>
+
+        </html>

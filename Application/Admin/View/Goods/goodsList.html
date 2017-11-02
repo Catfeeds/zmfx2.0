@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>证书货列表</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" />
+<style>
+    .theme-popover-mask{z-index: 9998;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;opacity:0.4;filter:alpha(opacity=40);display:none}
+    .theme-popover{z-index:9999;position:fixed;top:50%;left:50%;width:700px;min-height:600px;margin:-300px 0 0 -350px; border-radius:5px;border:solid 2px #666;background-color:#fff;display:none;box-shadow: 0 0 10px #666;}
+    .theme-poptit{border-bottom:1px solid #ddd;padding:12px;position: relative;}
+    .theme-poptit .close{float:right;color:#999;padding:5px;margin:-2px -5px -5px;font:bold 14px/14px simsun;text-shadow:0 1px 0 #ddd}
+    .theme-poptit .close:hover{color:#444;}
+    .btn.theme-reg{position: absolute;top: 8px;left: 43%;display: none}
+    .inp-gray,.feed-mail-inp{border:1px solid #ccc;background-color:#fdfdfd;width:220px;height:16px;padding:4px;color:#444;margin-right:6px}
+    .dform{padding:10px;text-align: center; height: 553px; overflow: auto;}
+    .dform .ipt_error{background-color:#FFFFCC;border-color:#FFCC66}
+    .dform li{padding-left: 10px;margin-bottom: 5px;float: left;width: 300px; height: 100%;}   
+    .dform p{font-size: 12px;color: #999;}
+    #luozuan_info .col-md-6 span { padding-left: 50px;}
+
+    .opention{
+        width:100%;
+        height:25px;
+        margin-top:25px;
+        line-height:25px;
+        font-size:12px;
+    }
+    .opention .cut{
+        border: 1px solid;
+        cursor: pointer;
+        float: left;
+        margin: 0 20px;
+        text-align: center;
+        width: 8%;
+        background:#E1E1E1;
+        border:1px solid #ADADAD;
+    }
+    .opention .cut a{
+        color:#000;
+    }
+    .opention .cut:hover{
+        background:#E1FBFF;
+    }
+    .chongzhi{
+        height: 20px !important;
+        line-height: 20px !important;
+        width:35px;
+        text-align:center;
+    }
+    .pull-left { float: left;}
+    .zk-input {
+    	width: 150px;
+    	height: 23px;
+    	line-height: 23px;
+    }
+    .zk-btn {
+    	width: 50px;
+    	height: 27px;
+    	line-height: 27px;
+    	margin-left: 2px;
+    }
+</style>
+<script>
+    
+    var luozuan = {
+        page_id:1,
+        page_size:50,
+        condition:{
+            Shape:    new Array(),
+            Weight:   new Array(),
+            Price:    new Array(),
+            Color:    new Array(),
+            Clarity:  new Array(),
+            Location: new Array(),
+            Cut:      new Array(),
+            Fluor:    new Array(),
+            Polish:   new Array(),
+            Symmetry: new Array(),
+            Cert:     new Array(),
+            goods_sn:'',
+            luozuan_type:[0],
+        },
+      
+        
+        get_info:function (gid,func){
+            var data  = {},func_bibao;
+            func_bibao = function(data1){
+                if( data1.ret == 100 ){
+                    data = data1.data;
+                    func(data);
+                } else {
+                    layer.msg('获取数据出错',{ shift:6, });
+                }
+            };
+            $.getJSON("{:U('Home/NewGoods/getDiamondInfo')}",{'gid':gid},func_bibao);
+            return void(0);
+        },                
+    };
+    function func_display_luozuan_info(data){
+        var html='';
+        if( !$.isEmptyObject( data ) ){
+            if(data.imageurl !='' && data.imageurl != '-' && data.imageurl != null){
+                if(data.imageurl.substr(-4)==".png" || data.imageurl.substr(-4)==".jpg" || data.imageurl.substr(-5) ==".jpeg"){
+                    html += '<li style="width:600px" ><img style="max-width:600px;max-height:300px;width:auto;height:auto;border:0px" src="'+data.imageurl+'"></li>';
+                }else{
+                    html += '<li style="width:600px" ><iframe src="'+data.imageurl+'" style="max-width:600px;max-height:300px;width:auto;height:auto;border:0px"></iframe></li>';
+                }                              
+            }
+            if(data.videourl != '-' && data.videourl != '' && data.videourl != null){  
+                html += '<li style="width:600px"><iframe  style="max-width:600px;max-height:300px;width:auto;height:auto;border:0px" id="frmMiniFramevideo" data-ng-src="'+data.videourl+'" style="border:none;height:215px;" src="'+data.videourl+'"></iframe></li>';               
+            }
+
+            html += '<li class="col-md-6"><span>证书编号：</span>'+data.certificate_number+'</li>';
+            html += '<li class="col-md-6"><span>证书类型：</span>'+data.certificate_type+'</li>';
+            html += '<li class="col-md-6"><span>形状：</span>'+data.shape_name+'</li>';
+            html += '<li class="col-md-6"><span>荧光：</span>'+data.fluor+'</li>';
+            html += '<li class="col-md-6"><span>重量：</span>'+data.weight+'</li>';
+            html += '<li class="col-md-6"><span>全深比：</span>'+data.dia_depth+'</li>';
+            html += '<li class="col-md-6"><span>颜色：</span>'+data.color+'</li>';
+            html += '<li class="col-md-6"><span>台宽比：</span>'+data.dia_table+'</li>';
+            html += '<li class="col-md-6"><span>净度：</span>'+data.clarity+'</li>';
+            html += '<li class="col-md-6"><span>奶色：</span>'+data.milk+'</li>';
+            html += '<li class="col-md-6"><span>切工：</span>'+data.cut+'</li>';
+            html += '<li class="col-md-6"><span>咖色：</span>'+data.coffee+'</li>';
+            html += '<li class="col-md-6"><span>抛光：</span>'+data.polish+'</li>';
+            html += '<li class="col-md-6"><span>编号：</span>'+data.gid+'</li>';
+            html += '<li class="col-md-6"><span>对称：</span>'+data.symmetry+'</li>';
+            html += '<li class="col-md-6"><span>价格：</span>'+data.price+'元</li>';
+            html += '<li class="col-md-6"><span>尺寸：</span>'+data.dia_size+'</li>';
+            html += '<li class="col-md-6"><span>所在地：</span>'+data.quxiang+'</li>';
+            html += '<div class="clear"></div>';
+        }
+        $('#luozuan_info').html(html);
+    };
+
+   $(function(){
+     $('.diamond-btnimg, .diamond-video, .diamond-image').bind('click',function(){
+        var gid = $(this).attr('gid');
+        luozuan.get_info(gid,func_display_luozuan_info);
+        $('.theme-popover-mask').fadeIn(100);
+        $('.theme-popover').slideDown(200);
+    });
+   });
+
+
+   
+function submitForm(){
+	if($("input[type='checkbox']").is(':checked')==false){
+		if(confirm("当没有勾选到任何证书货数据记录时，将打印满足当前查询条件的所有证书货数据记录(如果记录数据过大，将导致打印失败，请区分条件后减少打印数量)，确定打印吗？"))return true;
+		else return false;
+	}else{
+		return true;
+	}
+}
+   
+   
+   
+jQuery(document).ready(function($) {
+	var cut	= "{$cut}";
+	var clarity	= "{$clarity}";
+	$('select[name="cut"]').val(cut);
+	$('select[name="clarity"]').val(clarity);
+	
+    $('.theme-poptit .close').click(function(){
+        $('.theme-popover-mask').fadeOut(100);
+        $('.theme-popover').slideUp(200);
+    })
+    $('#selectThisPage').click(function(){
+        var status = $("#selectThisPage").is(":checked");   
+        $("input[name = tbSelectedId]:checkbox").prop("checked", status); 
+    });
+	
+	$('.batch-join-preferential').bind('click', function(){
+		var _this = $(this);
+		if($('.zhekouzh-box').css('display') == 'none'){
+			_this.html('取消加入')
+			$('.zhekouzh-box').show();
+		}else{
+			_this.html('批量加入特惠钻石')
+			$('.zhekouzh-box').hide();
+		}
+	});
+	$('.zk-btn').bind('click', function(){
+		var pre_discount	= parseFloat($('input[name="pre_discount"]').val());
+		nowid();
+		if(!thisid){
+			layer.msg('请选择证书货',{
+				shift :6,
+			});
+			return false;
+		}
+		if(!pre_discount){
+			layer.msg('特惠折扣不能为空',{
+				shift :6,
+			});
+			return false;
+		}
+        preferential_add(thisid,pre_discount);
+		
+	});
+	
+	//设置为特惠钻石
+	function preferential_add(thisid,pre_discount){
+		var msg = '确定设为特惠钻石吗？';
+        layer.confirm(msg, {
+              btn: ['确定','再想想'] //按钮
+            }, function(){
+                $.ajax({
+                    type: "post",
+                    url : "{:U('/Admin/Goods/preferential_add')}", 
+                    dataType:'json',
+                    data: {gid:thisid,pre_discount:pre_discount}, 
+                    success: function(res){
+                        if(res.status == 100){
+                            layer.msg(res.info,{
+                                shift:6,
+                                icon: 6
+                            });
+                            setTimeout(function(){
+                                window.location.href="/Admin/Goods/goodsList";
+                            },1500)
+							$('.batch-join-preferential').html('批量加入特惠钻石');
+							$('.zhekouzh-box').hide();
+                        }else{
+                            layer.msg(res.info,{
+                                shift:6,
+                                icon: 5
+                            });
+                        }
+                    },
+                });
+            }
+        );
+	}
+	
+	<!--点击提交事件-->
+	$(".tbl_buttom input").on("click",function(){ 
+		nowid();
+		if(thisid !=""){
+			$('.goodsList_hidden').remove();
+			var html ="<input class='goodsList_hidden' type='hidden' name='goodsList[]' value="+thisid+" >";
+			$('.listTbl').before(html);
+		}else{
+			$('.goodsList_hidden').remove();
+		}
+	 }); 	
+	
+	<!-- 批量删除 -->
+    $('#batch_delete').click(function(){
+        nowid();
+		if(!thisid){
+			layer.msg('请选择证书货',{
+				shift :6,
+			});
+			return false;
+		}
+        del_product(thisid);
+    });
+    <!-- 删除产品 -->
+    function del_product(thisid){
+
+        var msg = '确定要删除吗？';
+        layer.confirm(msg, {
+              btn: ['确定','再想想'] //按钮
+            }, function(){
+                $.ajax({
+                    type: "post",
+                    url : "{:U('/Admin/Goods/batchLuozuanDel')}", 
+                    dataType:'json',
+                    data: {gid:thisid}, 
+                    success: function(res){
+                        if(res.status == 100){
+                            layer.msg(res.info,{
+                                shift:6,
+                                icon: 6
+                            });
+                            setTimeout(function(){
+                                window.location.href="/Admin/Goods/goodsList";
+                            },1500)
+                        }else{
+                            layer.msg(res.info,{
+                                shift:6,
+                                icon: 5
+                            });
+                        }
+                    },
+                });
+            }
+        );
+    }
+
+    function nowid(){
+		
+        <!-- 初始化当前选中的id -->
+        thisid  = '';
+        $("input[name = tbSelectedId]:checkbox").each(function(){
+            if($(this).is(":checked")){
+                thisid += $(this).attr('data-id').replace('chk_','')+',';
+            }
+        });
+		var productList_null_val=$(".goodsList_null_val").val();				//条件搜索标识
+		if(!productList_null_val){
+			if(!thisid){
+				layer.msg('请选择证书货',{
+					shift :6,
+				});
+				return false;
+			}
+		}
+    };
+
+})
+</script>
+
+</head>
+<div class="goods page-main">
+    <div class="subMenu">
+        <h3>当前操作：证书货数据</h3>
+        <ul>
+        <if condition="in_array('admin/goods/goodsinfo',$AuthList)"><li><a href="{:U('Admin/Goods/goodsInfo')}">添加证书货</a></li></if>
+        <if condition="in_array('admin/goods/goodsimport',$AuthList)"><li><a href="{:U('Admin/Goods/goodsImport')}">导入证书货</a></li></if>
+        <if condition="in_array('admin/goods/synsupplydata',$AuthList)"><li><a href="{:U('Admin/Goods/synSupplyData')}">同步供应商数据</a></li></if>
+        </ul>
+    </div>
+    <div class="filter">
+    <form action="{:U('Admin/Goods/goodsList')}" method="get">
+        <div class="fl">证书号：</div>
+        <input class="input" type="text" name="certificate" value="{$certificate}"/>
+		<div class="fl">货品编号：</div>
+        <input class="input" type="text" name="gia_number" value="{$gia_number}"/>
+        <div class="fl">请选择裸钻分类：</div>
+        
+        <input class="fl" id="luozuanCate" name="luozuanCate" list="luozuanCates_all" value="{$luozuanCate}" type="input">
+        <datalist name="luozuanCate" id="luozuanCates_all">                
+            <volist name="luozuanCates" id="vo">
+                <option value="{$key}">{$vo}</option>
+            </volist>
+        </datalist>
+
+		<div class="fl">请选择裸钻颜色：</div>
+				<select name="luozuantype" class="fl">
+	        <option value="-1">裸钻颜色</option>
+					<option <eq name="luozuan_type" value="0"> selected </eq> value="0" >白钻</option>
+					<option <eq name="luozuan_type" value="1"> selected </eq> value="1" >彩钻</option>
+        </select>
+        <div class="fl">
+            钻重：
+        </div>
+        <input class="input" type="text" name="min_weight" value="{$min_weight}" style="width: 50px;">
+        <span class="pull-left">-</span>
+        <input class="input" type="text" name="max_weight" value="{$max_weight}" style="width: 50px;">
+         <div class="fl">
+	            净度：
+	        </div>
+	        <select name="clarity" class="fl">
+	            <option selected="" value="">请选择</option>
+	            <option value="IF">IF</option>
+	            <option value="VVS1">VVS1</option>
+	            <option value="VVS2">VVS2</option>
+	            <option value="VS1">VS1</option>
+	            <option value="VS2">VS2</option>
+	            <option value="SI1">SI1</option>
+	            <option value="SI2">SI2</option>
+	            <option value="SI3">SI3</option>
+	            <option value="I1">I1</option>
+	            <option value="I2">I2</option>
+	            <option value="I3">I3</option>
+	        </select>
+	        <div class="fl">
+	            切工：
+	        </div>
+	        <select name="cut" class="fl">
+	            <option selected="" value="">请选择</option>
+	            <option value="EX">EX</option>
+	            <option value="VG">VG</option>
+	            <option value="GD">GD</option>
+	        </select>
+        <div class="fl">&nbsp;</div>
+        <input class="button" type="submit" value="查询" />
+    </form>
+    </div>
+	
+    <form action="{:U('Admin/Excel/exportgoodsList')}" method="POST"  onsubmit="return submitForm();">
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+            <th><input id="selectThisPage" type="checkbox"></th>
+        	<th>形状</th>
+            <th>详情</th>
+            <th>去向</th>
+            <th>货品编号</th>
+            <th>证书</th>			
+            <th>证书号</th>
+            <th>重量</th>
+            <th>颜色</th>
+            <th>净度</th>
+            <th>切工</th>
+            <th>抛光</th>
+            <th>对称</th>
+            <th>荧光</th>
+            <th>国际报价</th>
+            <th>销售折扣</th>
+            <th>销售单价</th>
+
+           
+            <if condition="in_array('admin/costprofit/index',$AuthList)">
+			<th>采购折扣</th>
+            <th>采购单价</th>
+            </if>
+            <th>产地</th>
+            <th>操作</th>
+        </tr>
+		<input type="hidden"  name="goodsList_null[]" class="goodsList_null_val" value="{$goodsList_null}" />
+        <volist name="data" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+            <td><input data-id="chk_{$vo['gid']}"  name="tbSelectedId" type="checkbox"></td>
+            <td>{$vo.shape}</td>
+            <td>
+                <if condition="($vo.videourl neq '-') && ($vo.videourl neq '') " >
+                    <button type="button" gid="{$vo.gid}" class="diamond-video"  data-toggle="modal" data-target=".bs-example-modal-lg"></button>
+                <else />
+                    <if  condition="($vo.imageurl neq '-') && ($vo.imageurl neq '') ">
+                       <button type="button" gid="{$vo.gid}" class="diamond-image"  data-toggle="modal" data-target=".bs-example-modal-lg"></button>
+                    <else />
+                       <button type="button" gid="{$vo.gid}" class="diamond-btnimg" data-toggle="modal" data-target=".bs-example-modal-lg"></button>
+                    </if>
+                </if>
+            </td>
+            <td>{$vo.quxiang}</td>
+            <td>{$vo.goods_name}
+				<eq name="vo.luozuan_type" value="1">
+				(彩钻)
+				</eq>
+			</td>
+            <td>{$vo.certificate_type}</td>
+            <td>{$vo.certificate_number}</td>			
+            <td>{$vo.weight}</td>
+            <td>{$vo.color}</td>
+            <td>{$vo.clarity}</td>
+            <td>{$vo.cut}</td>
+            <td>{$vo.polish}</td>
+            <td>{$vo.symmetry}</td>
+            <td>{$vo.fluor}</td>
+			<if condition="($vo['luozuan_type'] eq 1) && ($vo['agent_id'] neq $agent_id) ">
+				<td></td>
+				<td></td>
+			<else/>
+				<td>{$vo.dia_global_price}</td>
+				<td>{$vo.dia_discount_all}</td>
+			</if>
+            <td>{$vo.xiaoshou_price}</td>
+
+<if condition="in_array('admin/costprofit/index',$AuthList)">
+			<td>{$vo.purchase_discount}</td>
+            <td>{$vo.caigou_price}</td>
+</if>
+            <td>{$vo.location}</td>
+            <td>
+                <if condition="in_array_diy('7,8',$group)">
+                	<a addOrder="1,luozuan,{$vo.certificate_number}" href="#">添加到采购单</a>
+                </if>
+                <if condition="in_array('admin/goods/goodsinfo',$AuthList) && $vo['agent_id'] eq $agent_id ">
+                 	<a  href="{:U('Admin/Goods/goodsInfo?id='.$vo['gid'])}">修改</a>
+	            </if>
+				<if condition="in_array('admin/goods/goodsdelete',$AuthList) && $vo['agent_id'] eq $agent_id ">
+                    <a id="isDel" href="{:U('Admin/Goods/goodsDelete?id='.$vo['gid'])}">删除</a>
+                </if>
+            </td>
+        </tr>
+        </volist> 
+    </table>
+	
+	<div class="tbl_buttom"><input type="submit" name="" value="导出数据" /></div>
+	</form>
+    <div class="opention" style="position: relative;">
+        <div class="cut" id="batch_delete">批量删除</div>      
+        <div class="cut batch-join-preferential">批量加入特惠钻石</div>      
+        <div class="zhekouzh-box" style="display: none;">
+        	<input type="text" name="pre_discount" placeholder="销售价格百分比折扣" class="zk-input pull-left">
+        	<button type="button" class="zk-btn">确定</button>
+        </div>
+    </div>
+    <div class="page">{$page}</div>
+</div>
+
+<!-- Large modal -->
+<div class="theme-popover-mask"></div>
+<div class="theme-popover">
+    <div class="theme-poptit">
+        <a href="javascript:;" title="关闭" class="close">×</a>
+        <h3>规格明细</h3>
+    </div>
+    <div class="theme-popbod dform">
+        <ol id="luozuan_info"></ol>
+    </div> 
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+<volist name="goodsList" id="vo" mod="2">
+	<eq name="mod" value="0">
+		<span>
+      	<ul>
+          <li>
+          	<a href="{:U('Goods/goodsInfo?goods_id='.$vo['goods_id'].'&type='.$vo['goods_type'])}"><img src="{$vo.thumb}" alt=""></a>
+            <p>{$vo.goods_name}</p>
+            <big>&yen;
+			<in name="vo['activity_status']" value="0,1">
+				{$vo.activity_price}
+			<else/>
+				{$vo.goods_price}
+			</in>
+			</big>
+          </li>
+	</eq>
+	<neq name="mod" value="0">
+		<li>
+			<a href="{:U('Goods/goodsInfo?goods_id='.$vo['goods_id'].'&type='.$vo['goods_type'])}"><img src="{$vo.thumb}" alt=""></a>
+          	<p>{$vo.goods_name}</p>
+          	<big>&yen;
+			<in name="vo['activity_status']" value="0,1">
+				{$vo.activity_price}
+			<else/>
+				{$vo.goods_price}
+			</in>
+			</big>
+		</li>
+        </ul>
+		</span>
+	</neq>
+</volist>

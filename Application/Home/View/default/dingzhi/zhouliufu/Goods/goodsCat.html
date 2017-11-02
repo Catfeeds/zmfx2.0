@@ -1,0 +1,308 @@
+<include file=".:Base:layout_header" />
+<!-- content -->
+<style>
+    /*#cebianlan dl.active{
+        color: red;
+    }*/
+</style>
+<div class="main w1200">
+
+    <!-- 侧边栏 -->
+    <include file=".:Base:dingzhi:zhouliufu:sidebar" />
+    <!-- 侧边栏 end -->
+
+    <div class="content">
+        <!-- 面包屑 -->
+        <div class="bread-crumbs">
+            您当前位置为：<!--钻石>女戒-->首页
+        </div>
+        <!-- 面包屑 end -->
+
+        <!-- 筛选 -->
+        <div class="shaixuan">
+            <ul class="conditions-box">
+                <li class="selected">
+                    <span class="xilie pull-left">已选条件</span>
+                    <span class="selected-box" id="my_conditions"></span>
+                    <span class="resets red">清空</span>
+                    <div class="clearfix"></div>
+                </li>
+                <volist name="right_attrs" id="voa">
+                    <li>
+                        <span class="xilie pull-left">{$voa.name}：</span>
+                        <div class="csbox">
+                            <volist name="voa.sub" id="vob">
+                                <a href="#" data_id="{$vob.id}">{$vob.ca_name}</a>
+                            </volist>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                </volist>
+            </ul>
+            <div class="open-more">
+                <span class="test">展开高级搜索</span> &nbsp; <img src="__IMG_DZ__/bottom_icon.png" alt="">
+            </div>
+        </div>
+
+        <!-- 筛选 end -->
+
+        <!-- 快捷操作 -->
+        <div class="shortcuts">
+            <div class="left">
+                <span class="paixu js_paixu " sort_id="1" sort_type="1" my_html="上架时间">上架时间 </span>
+                <span class="paixu js_paixu" sort_id="2" sort_type="1" my_html="价格">价格</span>
+            </div>
+            <div class="right">
+                <p>
+                    共<span class="js_page_count">0</span>款 每页显示：
+                    <a href="#" class="s-page js_page" per_page="8">8</a>
+                    <a href="#" class="s-page js_page" per_page="12">12</a>
+                    <a href="#" class="s-page js_page" per_page="16">16</a>
+                    <a href="#" class="s-page js_page active" per_page="20">20</a>
+                </p>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!-- 快捷操作 end -->
+
+        <!-- 商品列表 -->
+        <div class="goods-list" id="js_goods_lists">
+            <ul>
+
+            </ul>
+        </div>
+        <!-- 商品列表 end -->
+    </div>
+    <div class="clearfix"></div>
+    <div id="js_goods_page"></div>
+</div>
+<script>
+    $(function(){
+        //展开关闭高级搜索
+        $('.open-more').bind('click', function(){
+            $(this).toggleClass('opens');
+            $('.conditions-box').toggleClass('cond-opens');
+
+            if($(this).hasClass('opens')){
+                $(this).find('.test').html('关闭高级搜索');
+                $(this).find('img').attr('src', '__IMG_DZ__/top_icon.png');
+            }else{
+                $(this).find('.test').html('展开高级搜索');
+                $(this).find('img').attr('src', '__IMG_DZ__/bottom_icon.png');
+            }
+        });
+        //初始化高级搜索
+        if($('.shaixuan ul li').length < 2){
+            $('.open-more').addClass('opens');
+            $('.conditions-box').addClass('cond-opens');
+        }
+
+        //筛选
+        var sx = {
+            //选中
+            selected: function (_this){
+                if($(_this).attr('lock') != 'true'){
+                    var html = '<a href="#" data_id="'+$(_this).attr("data_id")+'" title="'+ $(_this).html() +'">' + $(_this).html() + ' <i class="delete">x</i></a>';
+                    $('.selected-box').append(html);
+                    $(_this).addClass('active').attr('lock', 'true');
+                }
+                sch.get_lists();
+            },
+            //删除
+            removeSelected: function (_this){
+                var name = $(_this).attr('title');
+                $('.conditions-box li:not(.selected) a').each(function(){
+                    if($(this).text() == name){
+                        $(this).removeClass('active').attr('lock', 'false');
+                        $(_this).remove();
+                    }
+                });
+                sch.get_lists();
+            },
+            //清空
+            emptying: function () {
+                $('.conditions-box li:not(.selected) a').removeClass('active').attr('lock', 'false');
+                $('.selected-box a').remove();
+                sch.get_lists();
+            }
+        }
+        //进行选择条件
+        $('.conditions-box li:not(.selected) a').bind('click', function(){
+            sx.selected(this);
+        });
+        //删除选择
+        $(document).delegate('.selected-box a', 'click', function(){
+            sx.removeSelected(this);
+        });
+        //清空
+        $(document).delegate('.resets', 'click', function(){
+            sx.emptying();
+        });
+
+        //搜索数据
+        var sch = {
+            condition:{
+
+            },
+            condition_back:{
+                p:1,
+            },
+            set_condition:function(is_old){
+                sch.condition = {
+                    search_rank_one:'{$_GET["rank_one"]}',
+                    search_rank_two:'{$_GET["rank_two"]}',
+                    search_rank_three:'{$_GET["rank_three"]}',
+                    search_attr_id:'{$_GET["attr_id"]}',
+                    search_content:'{$_GET["content"]}',
+                    p:1,                    //页码
+                    n:20,                   //每页显示条数
+                    sort_type:1,            //0 从小到大,1从到到小
+                    sort_id:0,              //0商品销量,1上架时间 2价格
+                    //cid:0,                  //分类
+                    //kid:0,                  //款式
+                    attr_id:new Array()              //属性
+                };
+                $('#my_conditions a').each(function(){
+                    var attr_id = $(this).attr('data_id');
+                    if(attr_id>0){
+                        sch.condition.attr_id.push(attr_id);
+                    }
+                });
+                $('.js_paixu').each(function(){
+                    if($(this).hasClass('active')){
+                        sch.condition.sort_type = $(this).attr('sort_type');
+                        sch.condition.sort_id = $(this).attr('sort_id');
+                    }
+                });
+                $('.js_page').each(function(){
+                    if($(this).attr('per_page')==$.cookie('goods_cat_per_page')){
+                        sch.condition.n = $(this).attr('per_page');
+                        $(this).addClass('active');
+                    }else{
+                        $(this).removeClass('active');
+                    }
+                    // if($(this).hasClass('active')){
+                        
+                    // }
+                });
+                /*var cid = $('#cebianlan dl.active').attr('data_id');
+                var kid = $('#cebianlan dl.active dd .active').attr('data_id');
+                if(cid>0){
+                    sch.condition.attr_id.push(cid);
+                }
+                if(kid>0){
+                    sch.condition.attr_id.push(kid);
+                }*/
+                /*sch.condition.cid = cid ? cid : 0;
+                sch.condition.kid = kid ? kid : 0;*/
+                if(is_old==1){
+                    sch.condition.p = sch.condition_back.p;
+                }
+            },
+            get_lists:function(is_old){
+                this.set_condition(is_old);
+                var url = '{:U("Goods/getGoodsListsNew")}';
+                var _this = this;
+                $.get(url,sch.condition,function(res){
+                    // console.log(res);
+                    var html = _this.get_html(res);
+                    $('#js_goods_lists').html(html);
+                    var page_html = _this.get_page(res);
+                    $('#js_goods_page').html(page_html);
+                    $('#js_goods_page .pagination a').on('click',function(){
+                        sch.condition_back.p = $(this).attr('data-page-id');
+                        sch.condition_back.n = $(this).attr('data-page-size');
+                        sch.get_lists(1);
+                    });
+                    $('.js_page_count').html(res.count);
+                });
+            },
+            get_html:function(res){
+                var html = '';
+                if(res.status==100 && res.count>0){
+                    html += '<ul>';
+                    for(var i=0;i<res.lists.length;i++){
+                        html += '<li>';
+                        if(res.lists[i].my_img == null){
+                            html += '<p><a href="'+'{:U("Home/Goods/goodsInfo")}?goods_id='+res.lists[i].goods_id+'"><img src="__IMG_DZ__/wait_for.jpg" class="good-img" alt=""></a></p>';
+                        }else{
+                            html += '<p><a href="'+'{:U("Home/Goods/goodsInfo")}?goods_id='+res.lists[i].goods_id+'"><img src="'+res.lists[i].my_img+'" class="good-img" alt=""></a></p>';
+                        }
+                        html += '<p class="pad10"><a href="#">'+res.lists[i].goods_name+'</a></p>';
+                        html += '<div class="rmb-box">';
+                        //html += '<span class="left rmb">￥'+res.lists[i].goods_price+'</span>';
+                        html += '<span class="left rmb">'+res.lists[i].goods_sn+'</span>';
+                        html += '<span class="right"><img src="__IMG_DZ__/zlfzb_index_15.png" alt="" class="join-cart js_join_class" goods_id="'+res.lists[i].goods_id+'"></span>';
+                        html += '<div class="clearfix"></div>';
+                        html += '</div>';
+                        html += '</li>';
+                    }
+                    html += '</ul>';
+                }
+                return html;
+            },
+            get_page:function(res){
+                var page_html;
+                page_html = page.create({PageID:sch.condition.p,PageSize:sch.condition.n,TotalNum:res.count}).getHtml();
+                return page_html;
+            }
+        };
+        //
+        $('#cebianlan dl dd a').bind('click',function(){
+            $('dd a.active').removeClass('active');
+            $(this).addClass('active');
+            sch.get_lists();
+        });
+        $(document).delegate('.js_join_class', 'click', function(){
+        	var obj = {
+        		goods_id:$(this).attr('goods_id')
+        	}
+
+	        $.ajax({
+	            url: '{:U("Home/Goods/ajaxListsAddCart")}',
+	            type: 'POST',
+	            data: obj,
+	            success: function(data){
+	                alert(data.msg);
+
+	            }
+	        });
+
+
+        });
+
+
+        //排序部分
+        $('.js_paixu').bind('click',function(){
+            $('.js_my_img').remove();
+            if($(this).hasClass('active')){
+                if($(this).attr('sort_type')=='1'){
+                    $(this).attr('sort_type',0);
+                    $(this).append('<img class="js_my_img" src="__IMG_DZ__/top_icon.png" alt="">');
+                }else{
+                    $(this).attr('sort_type',1);
+                    $(this).append('<img class="js_my_img" src="__IMG_DZ__/bottom_icon.png" alt="">');
+                }
+
+            }else{
+                $('.js_paixu').removeClass('active');
+                $(this).addClass('active');
+                $(this).attr('sort_type',1);
+                $(this).append('<img class="js_my_img" src="__IMG_DZ__/bottom_icon.png" alt="">');
+            }
+            sch.get_lists();
+
+        });
+
+        //选择每页显示数量
+        $('.js_page').bind('click',function(){
+            $('.js_page').removeClass('active');
+            $(this).addClass('active');
+            $.cookie('goods_cat_per_page',$(this).attr('per_page'));
+            sch.get_lists();
+        });
+        sch.get_lists();
+    });
+</script>
+<!-- content end -->
+<include file=".:Base:layout_footer" />

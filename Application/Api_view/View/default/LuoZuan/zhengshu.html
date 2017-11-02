@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>证书查询</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/aftersales.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+</head>
+<body class="wrap-bg">
+  <form action="{:U('LuoZuan/zhengshuInfo')}" method="GET">
+	<!-- Main -->
+    <div class="container-fluid user-info sh-progress zsquery">
+
+      <section class="shouhouxq-sub">
+        <p class="alert text-center">
+          <select name="type" class="form-control">
+            <option value="1">GIA证书查询</option>
+            <option value="2">IGI证书查询</option>
+            <option value="3">HRD证书查询</option>
+            <option value="4">NGTC证书查询</option>
+          </select>
+        </p>
+      </section>
+
+      <section class="shouhouxq-sub">
+        <p class="alert text-center"><input type="text" name="number" class="form-control" placeholder="请输入证书编号"></p>
+      </section>
+
+      <section class="shouhouxq-sub">
+        <p class="alert text-center"><button type="submit" class="btn btn-primary btn-block">查询</button></p>
+      </section>
+    </div>
+    <!-- Main END //-->
+    </form>
+
+</body>
+</html>

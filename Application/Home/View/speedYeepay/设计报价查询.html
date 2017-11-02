@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>速易宝-周六福-设计报价查询</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script src="js/jquery-1.12.3.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/public.js"></script>
+</head>
+
+<style>
+  .zlf_query .form-horizontal .qtabs,
+  .zlf_query .form-horizontal .element { background: #FFF; opacity: 1; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; box-shadow: none; margin-top: 5px;}
+  .zlf_query .form-horizontal .qtabs { border: 1px solid #E8E8E4; box-shadow: 0 0 5px #ddd; -webkit-box-shadow: 0 0 5px #ddd; -moz-box-shadow: 0 0 5px #ddd; -ms-box-shadow: 0 0 5px #ddd;}
+  .zlf_query .qtabs ul { width: 100%; padding: 0; display: table; border-bottom: 1px solid #E6E6E6;}
+  .zlf_query .qtabs ul li { display: table-cell; width: 50%; text-align: center;}
+  .zlf_query .qtabs ul li a { font-size: 14px;}
+  .zlf_query .qtabs ul li a.active { border-bottom: 2px solid red; color: red; display: inline-block; padding: 10px 0;}
+  .zlf_query .btn-bg { background: url('images/button_bg.jpg'); border: none;}
+  .zlf_query .form-horizontal .control-label,
+  .zlf_query .form-control { color: #979797;}
+  .zlf_query .form-horizontal .control-label { font-size: 15px;}
+  .zlf_query .ftitle { padding: 15px 0;}
+	.footer { margin-top: 0;}
+</style>
+<body class="index-bg">
+
+	<!-- header -->
+	<div class="header">
+		<div class="container">
+			<div class="shortcut hidden-xs">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-6 col-md-6">
+							<p class="text-left">您好，欢迎来到Munch珠宝 [<a href="#">登录</a>] [<a href="#">注册</a>]</p>
+						</div>
+						<div class="col-sm-6 col-md-6">
+							<div class="shortcut-right">
+								<ul class="list-inline text-right">
+									<li class=""><a href="#">购物车(<span class="cat-c">2件</span>)</a></li>
+									<li class="">|</li>
+									<li class=""><a href="#">我的订单</a></li>
+									<li class="">|</li>
+									<li class=""><a href="#">帮助中心</a></li>
+								</ul>   
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="top">
+				<div class="logo">
+						<div class="col-xs-12 col-sm-6 col-md-7 text-right">
+							<img src="images/logo.png" alt="logo">
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-5">
+							<form class="navbar-left pull-right">
+								<div class="form-group">
+									<div class="input-group">
+									      <input type="text" class="form-control search-text radius" placeholder="产品搜索">
+									      <span class="input-group-btn">
+									        <button type="submit" class="btn btn-default search-btn radius"><i class="glyphicon glyphicon-search"></i></button>
+									      </span>
+									</div>
+									<div class="tag">
+										热搜：
+										<a href="#">裸钻</a>
+										<a href="#">钻石</a>
+										<a href="#">对接</a>
+										<a href="#">女戒</a>
+										<a href="#">男戒</a>
+										<a href="#">女戒</a>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+		<div class="nav">
+			<nav class="navbar navbar-default border-radiusno">
+				<div class="container">
+			    <!-- Brand and toggle get grouped for better mobile display -->
+				    <div class="navbar-header">
+				      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				        <span class="sr-only">Toggle navigation</span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				      </button>
+				      <a class="navbar-brand hidden" href="#">LOGO</a>
+				    </div>
+
+				    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				      <ul class="nav navbar-nav center-nav">
+				        <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
+				        <li><a href="#">钻石定制</a></li>
+				        <li><a href="#">商城热卖</a></li>
+				        <li><a href="#">品牌系列街</a></li>
+				        <li><a href="#">珠宝资讯</a></li>
+				      </ul>
+				      <!-- <form class="navbar-form navbar-left" role="search">
+				        <div class="form-group">
+				          <input type="text" class="form-control" placeholder="Search">
+				        </div>
+				        <button type="submit" class="btn btn-default">Submit</button>
+				      </form> -->
+				    </div><!-- /.container-fluid -->
+				</div>
+			</nav>
+		</div>
+	</div>
+	<!-- header end //-->
+	
+	<!-- tab -->
+	<div class="login zlf_query" style="background: url('images/query_01.jpg')">
+		<div class="container">
+			<div class="col-md-5 col-md-offset-7 col-sm-5 col-sm-offset-7">
+				<form class="form-horizontal">
+        <h5 class="text-center ftitle">专业设计提供专属方案，尽享更多惊喜优惠！！</h5>
+				<div class="qtabs">
+          <ul>
+            <li><a href="javascript:;" class="dz active">祼钻定制</a></li>
+            <li><a href="javascript:;" class="dj">成品对戒</a></li>
+          </ul>
+  				<div class="element tab-dz">
+  					<div class="form-group">
+  						<label for="inputEmail3" class="col-md-3 control-label">形状：</label>
+  						<div class="col-md-9">
+  						  <select name="" id="" class="form-control">
+                  <option value="">不限</option>      
+                  <option value="">圆形</option>      
+                  <option value="">公主方</option>      
+                  <option value="">祖母绿</option>      
+                  <option value="">橄榄绿</option>      
+                  <option value="">椭圆形</option>      
+                  <option value="">水滴形</option>      
+                  <option value="">心形</option>      
+                  <option value="">热形</option>      
+                </select>
+  						</div>
+  					</div>
+  					<div class="form-group">
+              <label for="inputEmail3" class="col-md-3 control-label">大小：</label>
+              <div class="col-md-9">
+                <select name="" id="" class="form-control">
+                  <option value="">不限</option>      
+                  <option value="">30-50分</option>      
+                  <option value="">50-70分</option>      
+                  <option value="">70分-1克拉</option>      
+                  <option value="">1克拉以上</option>      
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="col-md-3 control-label">预算：</label>
+              <div class="col-md-9">
+                <select name="" id="" class="form-control">
+                  <option value="">不限</option>      
+                  <option value="">3000-5000</option>      
+                  <option value="">5000-8000</option>      
+                  <option value="">8000-12000</option>      
+                  <option value="">12000以上</option>          
+                </select>
+              </div>
+            </div>
+  					<div class="form-group">
+  						<div class="col-md-offset-3 col-md-9">
+  						  <button type="submit" class="btn btn-danger btn-bg" style="width: 100%;">获取专属方案</button>
+  						</div>
+  					</div>
+  				</div>
+          <div class="element tab-dj" style="display: none;">
+            <div class="form-group">
+              <label for="inputEmail3" class="col-md-3 control-label">分类：</label>
+              <div class="col-md-9">
+                <select name="" id="" class="form-control">
+                  <option value="">不限</option>      
+                  <option value="">戒指</option>      
+                  <option value="">项链</option>      
+                  <option value="">手链</option>      
+                  <option value="">吊坠</option>      
+                  <option value="">耳饰</option>      
+                  <option value="">情侣戒</option>      
+                  <option value="">手镯</option>      
+                  <option value="">耳环</option>      
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="col-md-3 control-label">材质：</label>
+              <div class="col-md-9">
+                <select name="" id="" class="form-control">
+                  <option value="">不限</option>      
+                  <option value="">时尚黄金</option>      
+                  <option value="">时尚铂金</option>      
+                  <option value="">多彩k金</option>      
+                  <option value="">黄金镶玉</option>      
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="col-md-3 control-label">预算：</label>
+              <div class="col-md-9">
+                <select name="" id="" class="form-control">
+                  <option value="">不限</option>      
+                  <option value="">3000-5000</option>      
+                  <option value="">5000-8000</option>      
+                  <option value="">8000-12000</option>      
+                  <option value="">12000以上</option>          
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-offset-3 col-md-9">
+                <button type="submit" class="btn btn-danger btn-bg" style="width: 100%;">获取专属方案</button>
+              </div>
+            </div>
+          </div>
+        </div>
+			</form>
+			</div>
+		</div>
+	</div>
+  <script>
+    $(function(){
+      $('.dz').bind('click', function(){
+        $('.qtabs li a').removeClass('active');
+        $(this).addClass('active');
+        $('.tab-dz').show();
+        $('.tab-dj').hide();
+        $('.zlf_query').css('background', 'url(images/query_01.jpg)');
+      });
+      $('.dj').bind('click', function(){
+        $('.qtabs li a').removeClass('active');
+        $(this).addClass('active');
+        $('.tab-dz').hide();
+        $('.tab-dj').show();
+        $('.zlf_query').css('background', 'url(images/query_02.jpg)');
+      });
+    });
+  </script>
+	<!-- tab end //-->
+
+	<!-- footer -->
+	<div class="footer">
+		
+		<div class="foot-desc">
+			<div class="container">
+				<div class="row foot-desc-list">
+					<div class="col-xs-12 col-md-2 footer-logo">
+						<img src="images/logo.png" alt="">
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>用户指南</h5>
+						<ul class="list-group">
+							<li><a href="#">注册用户</a></li>
+							<li><a href="#">购买流程</a></li>
+							<li><a href="#">支付方式</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>关于配送</h5>
+						<ul class="list-group">
+							<li><a href="#">商品包装</a></li>
+							<li><a href="#">配送方式</a></li>
+							<li><a href="#">配送流程</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>售后服务</h5>
+						<ul class="list-group">
+							<li><a href="#">会员细节</a></li>
+							<li><a href="#">售后保障</a></li>
+							<li><a href="#">退换流程</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>常见问题</h5>
+						<ul class="list-group">
+							<li><a href="#">珠宝常识</a></li>
+							<li><a href="#">配送问题</a></li>
+							<li><a href="#">联系客服</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-12 col-md-2 gstime">
+						<img src="images/footer-phone.png" alt="">
+						<strong><h4>0755-22922183</h4></strong>
+						<span>服务时间： AM9: 00-PM23: 00</span>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				<p class="copy-link">伪验证   友情链接        钻石、钻戒、裸钻、婚戒、戒指、结婚钻戒、结婚戒指、钻石戒指、珠宝、首饰、订婚戒指、克拉钻、异形钻、30分钻石、50分钻石、钻石饰品、裸钻定制</p>
+				<p class="text-center">© 2010-2016 珠宝官网 版权所有,并保留所有权利  粤ICP备123456789号</p>
+			</div>
+		</div>
+	</div>
+	<!-- footer end //-->
+
+
+</body>
+</html>

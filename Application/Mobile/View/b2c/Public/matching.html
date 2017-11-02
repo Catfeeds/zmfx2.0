@@ -1,0 +1,57 @@
+<script>
+	$('.custom-btn').click(function(){
+		var dingzhi = JSON.parse(GetCookie("dingzhi"));
+		if(dingzhi.jietuo_info.goods_id && dingzhi.luozuan_info.gid){
+				var timestamp			= new Date().getTime();
+				dingzhi_id   		 	= dingzhi.jietuo_info.goods_id+dingzhi.luozuan_info.gid+timestamp;
+				ThreeAjax.Interactive = [];
+				ThreeAjax.Interactive.push({
+								'Action': 'post',
+								'goodId': new Array(dingzhi.luozuan_info.gid),
+								'dingzhiId':dingzhi_id,
+								'type':1,
+								'Url':'/Order/addCart',
+				});
+				ThreeAjax.Interactive.push(function(data){
+									var cart_gid		  = data.url;
+									ThreeAjax.Interactive = [];
+									ThreeAjax.Interactive.push({
+													'Action': 'post',
+													'gid': dingzhi.jietuo_info.goods_id,
+													'goods_type':4,
+													'deputystoneId':dingzhi.jietuo_info.deputystoneId,
+													'materialId':dingzhi.jietuo_info.materialId,
+													'diamondId':dingzhi.jietuo_info.diamondId,
+													'hand':dingzhi.jietuo_info.hand,
+													'word':dingzhi.jietuo_info.word,
+													'word1':dingzhi.jietuo_info.word1,
+													'hand1':dingzhi.jietuo_info.hand1,
+													'goods_number':dingzhi.jietuo_info.goods_number,
+													'dingzhiId':dingzhi_id,
+													'Url':'/Order/addZMGoods2cart',
+									});
+									ThreeAjax.Interactive.push(function(data){
+											var cart_good_id	=	data.id;
+											ThreeAjax.Interactive = [];
+											ThreeAjax.Interactive.push({
+															'cart_good_id': cart_good_id,
+															'cart_gid': cart_gid,
+															'Url':'/Order/BindCartId',
+											});
+											ThreeAjax.Interactive.push(function(data){
+												$('.matching').fadeOut(3000);
+												layer.open({
+													   content: data.info,
+													   time: 2
+												});
+												SetCookie('dingzhi', null, -1);
+												setTimeout("window.location.href='/Order/orderCart'",3000);
+											});
+											ThreeAjax.Send();
+									});
+											ThreeAjax.Send();
+				});
+				ThreeAjax.Send();
+		}
+	});	
+</script>	

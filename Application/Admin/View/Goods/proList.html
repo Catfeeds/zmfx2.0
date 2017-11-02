@@ -1,0 +1,331 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>活动列表</title>
+<style>
+.opention{
+	width:100%;
+	height:25px;
+	margin-top:25px;
+	line-height:25px;
+	font-size:12px;
+}
+.opention .cut{
+	border: 1px solid;
+    cursor: pointer;
+    float: left;
+    margin: 0 20px;
+    text-align: center;
+    width: 8%;
+	background:#E1E1E1;
+	border:1px solid #ADADAD;
+}
+.opention .cut a{
+	color:#000;
+}
+.opention .cut:hover{
+	background:#E1FBFF;
+}
+.chongzhi{
+	height: 20px !important;
+    line-height: 20px !important;
+	width:35px;
+	text-align:center;
+}
+
+
+</style>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：活动列表</h3>
+    </div>
+	<div class="filter">
+	<form action="{:U('Admin/Promotion/proList')}" method="get">
+		<div class="fl">产品编号:&nbsp;</div>
+		<input type='text' name='Productno' value="{$Productno|stripslashes}">
+		<div class="fl">产品名称:&nbsp;</div>
+		<input type='text' name='Productname' value="{$Productname|stripslashes}">
+		<div class="fl">首页展示产品:&nbsp;</div>
+		<select name="home_show">
+			<option value='' >全部产品</option>
+			<option value="1" <if condition="$home_show eq 1">selected</if>  >不展示</option>
+			<option value="2" <if condition="$home_show eq 2">selected</if>  >展示</option>
+		</select>
+		<div class="fl">
+		<input class="button" type="submit" value="查询" />
+		</div>
+		<div class="fl">
+		<input class="button chongzhi"  type="" value="重置" />
+		</div>
+	</form>
+	</div>
+    <form action="{:U('Admin/Goods/exportProduct')}" method="POST">
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+        <tr class="top">
+        	<!--<th width="50px">全选:<input onclick="selectcheckbox(this.form)" type="checkbox" name="chkall" id="chkall" value="All" /></th>-->
+			<th width="3%"><input id="selectThisPage" type="checkbox"></th>
+            <th width="5%">产品ID</th>
+            <th width="13%">产品编号</th>
+            <th>产品名称</th>
+            <th>产品类别</th>
+			<th>首页展示</th>
+            <th>销售价格</th>
+			<th>活动价格</th>
+            <th>产品库存</th>
+			<th>产品状态</th>
+            <th>操作</th>
+        </tr>
+		<if condition="$dataList neq '' ">
+        <volist name="dataList" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+			<td><input data-id="chk_{$vo['goods_id']}"  name="tbSelectedId" type="checkbox"></td>
+        	<!-- <td><input type="checkbox" name="pids[]" value="{$vo.goods_id}" /></td> -->
+            <td>{$vo.goods_id}</td>
+            <td>{$vo.goods_sn}</td>
+            <td>{$vo.goods_name}</td>
+            <td>
+            	<eq name="vo.goods_type" value="3">珠宝成品</eq>
+                <eq name="vo.goods_type" value="4">珠宝定制</eq>
+            </td>
+			<td>
+				<eq name="vo.home_show" value="1">不展示</eq>
+                <eq name="vo.home_show" value="2">展示</eq>
+			</td>
+            <td>{$vo.goods_price}</td>
+			<td>{$vo.activity_price}</td>
+            <td>{$vo.goods_number}</td>
+			<td>
+				<eq name="vo.activity_status" value="0">无活动</eq>
+                <eq name="vo.activity_status" value="1">活动中</eq>
+			</td>
+            <td>
+				<eq name="vo.activity_status" value="0">
+					<a href="javascript:;" onclick="opration('确定要开启活动吗？',2,{$vo['goods_id']});">开启</a>
+					<if condition="$vo['agent_id'] eq $agent_id">
+					<a href="{:U('Admin/Goods/productInfo?goods_id='.$vo['goods_id'])}">修改</a>
+					<a href="javascript:;" onclick="del_product({$vo['goods_id']})">删除</a>
+					</if>
+				</eq>
+				<eq name="vo.activity_status" value="1">
+					<a href="javascript:;" onclick="opration('确定要下架吗？',1,{$vo['goods_id']});">取消</a>
+				</eq>
+            </td>
+        </tr>
+        </volist>
+		<else/>
+		<tr><td colspan="10">暂无数据。。。</td></tr>
+		</if>
+    </table>
+    <!--<div class="tbl_buttom"><input type="submit" name="export" value="导出所选" /></div>-->
+    </form>
+	<div class="opention">
+		<div class="cut" id="batch_pull_off_shelves">批量取消活动</div>
+		<div class="cut" id="batch_put_on_shelves">批量开启活动</div>
+		<div class="cut" id="move_goods">移动到产品列表</div>
+		<div class="cut" id="home_show">设置首页展示</div>
+		<div class="cut" id="cancel_show">取消首页展示</div>
+	</div>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>
+<script>
+	<!-- 批量下架、上架，单个下架、上架ajax操作 type:1 下架，2 上架 -->
+	function opration(msg,type,data){
+		layer.confirm(msg, {
+			  btn: ['确定','再想想'] //按钮
+			}, function(){
+				$.ajax({
+					type: "post",
+					url : "{:U('/Admin/Promotion/proOperation')}", 
+					dataType:'json',
+					data: {thisid:data,type:type}, 
+					success: function(res){
+						if(res.status == 100){
+							layer.msg(res.info,{
+								shift:6,
+								icon: 6
+							});
+							setTimeout(function(){
+								window.location.href="/Admin/Promotion/proList";
+							},1500)
+						}else{
+							layer.msg(res.info,{
+								shift:6,
+								icon: 5
+							});
+						}
+					},
+				});
+			}
+		);
+	}
+	<!-- 删除产品 -->
+	function del_product(thisid){
+		var msg = '确定要删除吗？';
+		layer.confirm(msg, {
+			  btn: ['确定','再想想'] //按钮
+			}, function(){
+				$.ajax({
+					type: "post",
+					url : "{:U('/Admin/Promotion/productDel')}", 
+					dataType:'json',
+					data: {goods_id:thisid}, 
+					success: function(res){
+						if(res.status == 100){
+							layer.msg(res.info,{
+								shift:6,
+								icon: 6
+							});
+							setTimeout(function(){
+								window.location.href="/Admin/Promotion/proList";
+							},1500)
+						}else{
+							layer.msg(res.info,{
+								shift:6,
+								icon: 5
+							});
+						}
+					},
+				});
+			}
+		);
+	}
+	<!-- type: 2:活动页首页展示，4：活动页取消展示 -->
+	function home_show(msg,type){
+		layer.confirm(msg, {
+			  btn: ['确定','再想想'] //按钮
+			}, function(){
+				$.ajax({
+					type: "post",
+					url : "{:U('/Admin/Promotion/activityHomeShow')}", 
+					dataType:'json',
+					data: {thisid:thisid,type:type}, 
+					success: function(res){
+						if(res.status == 100){
+							layer.msg(res.info,{
+								shift:6,
+								icon: 6
+							});
+							setTimeout(function(){
+								window.location.href="/Admin/Promotion/proList";
+							},1500)
+						}else{
+							layer.msg(res.info,{
+								shift:6,
+								icon: 5
+							});
+						}
+					},
+				});
+			}
+		);
+	
+	}
+	
+$(document).ready(function(){
+	<!-- 当前选中的商品ID -->
+	function nowid(){
+		<!-- 初始化当前选中的id -->
+		thisid  = '';
+		$("input[name = tbSelectedId]:checkbox").each(function(){
+			if($(this).is(":checked")){
+				thisid += $(this).attr('data-id').replace('chk_','')+',';
+			}
+		});
+		if(!thisid){
+			layer.msg('请选择产品',{
+				shift :6,
+			});
+			return false;
+		}
+	};
+
+	<!-- 重置按钮 -->
+	$('.chongzhi').click(function(){
+		window.location.href = "{:U('/Admin/Promotion/proList')}";
+	})
+	<!-- 选定当前页数据 -->
+	$('#selectThisPage').click(function(){
+		var status = $("#selectThisPage").is(":checked");   
+		$("input[name = tbSelectedId]:checkbox").prop("checked", status);  
+	})
+	<!-- 批量下架 -->
+	$('#batch_pull_off_shelves').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+		var msg = '确定要取消吗？';
+		var type = 1;
+		opration(msg,type,thisid);
+	})
+	<!-- 批量上架 -->
+	$('#batch_put_on_shelves').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+		var msg = '确定要开启吗？';
+		var type = 2;
+		opration(msg,type,thisid);
+	})
+	<!-- 批量移动 -->
+	$('#move_goods').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+		var msg = '确定要移动到产品列表吗？';
+		layer.confirm(msg, {
+			  btn: ['确定','再想想'] //按钮
+			}, function(){
+				$.ajax({
+					type: "post",
+					url : "{:U('/Admin/Promotion/reverseMoveGoods')}", 
+					dataType:'json',
+					data: {thisid:thisid}, 
+					success: function(res){
+						layer.closeAll();
+						if(res.status == 100){
+							layer.msg(res.info,{
+								shift:6,
+								icon: 6
+							});
+							setTimeout(function(){
+								window.location.href="/Admin/Promotion/proList";
+							},1500)
+						}else{
+							layer.msg(res.info,{
+								shift:6,
+								icon: 5
+							});
+						}
+					},
+				});
+			}
+		);
+	})
+	<!-- 设置首页展示 -->
+	$('#home_show').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+		var msg = '确定要设置到首页展示吗？';
+		var type = 1;
+		home_show(msg,type);
+	})
+	<!-- 取消首页展示 -->
+	$('#cancel_show').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+		var msg = '确定要取消首页展示吗？';
+		var type = 2;
+		home_show(msg,type);
+	
+	})
+		
+});
+
+</script>

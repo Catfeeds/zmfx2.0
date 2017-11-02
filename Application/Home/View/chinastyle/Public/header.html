@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{:C("seo_title")}</title>
+    {:htmlspecialchars_decode(C('site_statistics_code_tsz'))}
+<link href="__CSS__/zmb2c.css" rel="stylesheet" type="text/css">
+<link rel="icon" type="image/png" href="/Public/{:C('favicon')}">
+<script type="text/javascript" src="__PUBLIC__/Js/jquery.10.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/Jquery/Jquery.Cookie.js"></script>
+<script src="__JS__/fxs.js" type="text/javascript"></script>
+<script src="__JS__/public.js"></script>
+<script type="text/javascript">
+// 用户退出 --> ken
+function loginout() {
+    $.ajax({
+        url: '/Home/Public/loginout',
+        type: 'get',
+        dataType: 'json',
+        success: function (result) {
+            if (result.success) {
+                alert(result.msg);
+                delCookie('password');
+                delCookie('autologin');
+                window.location.href = '/Home/Index/index.html';
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+}
+</script>
+</head>
+<body>
+<div class="header">
+  <div class="userInfo">
+    <ul>
+      <li class="fl"><span>欢迎光临{:C('site_name')}网络旗舰店</span></li>
+      <if condition="$Think.session.web.uid eq ''">
+        <li class="fl"><a href="{:U('Home/Public/login')}">会员登录</a></li>
+        <li class="fl"><a href="{:U('Home/Public/regist')}">| 会员注册</a></li>
+        <!--<li class="fl"><a href="{:U('Home/Public/forgetps')}">| 找回密码</a></li>-->
+      <else/>
+        <li class="fl"><a href="{:U('/Home/User/index')}">{$Think.session.web.username}</a></li>
+        <li class="fl"><a href="javascript:void(0)" onclick="loginout();">退出</a></li>
+      </if>
+      <li class="fr"><a href="#">| 帮助中心</a></li>
+      <li class="fr"><a href="{:U('/Home/User/orderList')}">| 我的订单</a></li>
+      <li class="fr"><a href="{:U('/Home/Order/orderCart')}">购物车(<span id="totalCart">{$cartNumber}</span>)件</a></li>
+      <div class="clear"></div>
+    </ul>
+  </div>
+  <div class="headerTop">
+    <div class="logo"><a href="{:U('/Home/Index/index')}">
+		<?php $is_company_name_callback=cookie('is_company_name_callback');?>
+		<if condition=" C('agent_id') == 7 &&  $is_company_name_callback">
+			<span class="user_experience text-center" style="width: 264px; height: 50px;   line-height: 50px;  margin-top: 18px;   overflow: hidden;  display: inline-block;  font-size: 3em; color: #15A2E4;  text-align: center;">{:C('site_name')}</span>
+		<else/>
+			<img src="__PUBLIC__/{:C('web_logo')}" class="logo" alt="logo">
+		</if>
+		</a>
+	</div>
+    <div class="search">
+      <form action="{:U('/Home/Search/goodsList')}" method="get">
+        <input type="text" value="" name="keyword">
+        <input type="submit" value="搜索">
+      </form>
+      <ul>
+        <li><span>搜索热词:</span></li>
+        <li><a href="{:U('/Home/Search/goodsList/keyword/裸钻')}">裸钻</a></li>
+        <li><a href="{:U('/Home/Search/goodsList/keyword/钻石')}">钻石</a></li>
+        <li><a href="{:U('/Home/Search/goodsList/keyword/对戒')}">对戒</a></li>
+        <li><a href="{:U('/Home/Search/goodsList/keyword/女戒')}">女戒</a></li>
+        <li><a href="{:U('/Home/Search/goodsList/keyword/男戒')}">男戒</a></li>
+        <li><a href="{:U('/Home/Search/goodsList/keyword/手链')}">手链</a></li>
+		    <li><a href="{:U('/Home/Search/goodsList/keyword/手镯')}">手镯</a></li>
+        <div class="clear"></div>
+      </ul>
+    </div>
+    <div class="weixin"></div>
+  </div>
+  <div class="nav">
+    <div class="navContent">
+      <ul class="menu">
+        <li class="homepage"><a href="/index.php">首页</a></li>
+        <if condition="$nav">
+        <volist name="nav" id="vo">
+        	<li class="openNav"><a href="{$vo.nav_url}">{$vo.nav_name}</a>
+        	<if condition="$vo['sub']">
+        	 <ul class="nav_zi" onmouseout="jQuery(this).hide();" onmouseover="jQuery( this ).show();">
+        	 	<volist name="vo['sub']" id="v">
+	            <li><a href="{$v.nav_url}">{$v.nav_name}</a></li>
+	            </volist>
+	          </ul>
+	          </if>
+        	</li>
+        </volist>
+        </if>
+        <div class="clear"></div>
+      </ul>
+
+      </div>
+  </div>
+</div>
+<script>
+$(document).ready(function(){
+		$(function(){
+			var url= '__SELF__';
+			if(url=='/' || url.indexOf("goodsList/keyword") > 0 || url.indexOf("Home/Public/") > 0 || url.indexOf("Home/Index/") > 0){
+				$('.homepage').addClass('action');
+			}else if(url.indexOf("Search/detail") > 0  ||  url.indexOf("Goods/goodsDiyColor") > 0){
+				$('a[href="'+'/Home/Goods/goodsDiy.html'+'"]').parent('.openNav').addClass('action');
+			}else{
+				var attr_id = [];
+				$(".openNav").each(function(i){
+					attr_id[i] = $(this).find('a').attr("href");
+				});
+				if(attr_id){
+					$.each(attr_id ,function(k ,v) {
+						if(v.replace(/[\d]/g,"")==url.replace(/[\d]/g,"")){
+							$('a[href="'+v+'"]').parent('.openNav').addClass('action');	 	return false;
+						}else if(url.indexOf("goods_type/3/") > 0 && v.indexOf("/Goods/goodsCat") > 0){
+							$('a[href="'+v+'"]').parent('.openNav').addClass('action');	 	return false;
+						}else if(url.indexOf("goods_type/4/") > 0 && v.indexOf("/Goods/goodsCategory/gcid") > 0){
+							$('a[href="'+v+'"]').parent('.openNav').addClass('action');	 	return false;
+						}else if(url.indexOf("Article") > 0 && v.indexOf("Article") > 0){
+							$('a[href="'+v+'"]').parent('.openNav').addClass('action');	 	return false;
+						}else{
+							$('a[href="'+url+'"]').parent('.openNav').addClass('action');
+						}
+					})
+				}
+			}
+		})
+	$(".openNav").mousemove(function(e){
+		$(this).find("ul:first").css("display","block");
+	}).mouseout(function(e){
+		$(this).find("ul:first").css("display","none");
+	});
+	$(".nav_zi").mouseout(function(e){
+	   $(this).css("display","none");
+	});
+});
+</script>

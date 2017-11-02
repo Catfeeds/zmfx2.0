@@ -1,0 +1,119 @@
+<include file="Public:header" />
+<body>
+    <section class="user">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>个人中心 </h2>
+                <div class="web-top-right">
+                    <a href="/User/msg"><img src="__IMG__/msg_icon.png" class="msg-icon" alt=""></a>
+                </div>
+            </div>
+        </header>
+
+        <div class="wrapper">
+
+            <div class="module-box">
+                <a href="/User/Info" class="alink">
+                    <img src="__IMG__/user_head.png" class="user-head" alt="">
+                    <span class="user-name">
+                        用户名
+                    </span>
+                </a>
+            </div>
+
+            <div class="module-box user-main-list">
+                <ul>
+                    <li>
+                        <a href="/User/orderList" class="alink">
+                            <img src="__IMG__/user_icon_03.png" class="u-icon" alt="">
+                            <span class="navname">
+                                我的订单
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/User/Collect" class="alink">
+                            <img src="__IMG__/user_icon_06.png" class="u-icon" alt="">
+                            <span class="navname">
+                                我的收藏
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/User/AfterSer" class="alink">
+                            <img src="__IMG__/user_icon_08.png" class="u-icon" alt="">
+                            <span class="navname">
+                                售后服务
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="module-box user-main-list">
+                <ul>
+                    <li>
+                        <a href="/User/Ress" class="alink">
+                            <img src="__IMG__/user_icon_10.png" class="u-icon" alt="">
+                            <span class="navname">
+                                地址管理
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/User/ModifyPassword" class="alink">
+                            <img src="__IMG__/user_icon_12.png" class="u-icon" alt="">
+                            <span class="navname">
+                                账户安全
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/User/Contact" class="alink">
+                            <img src="__IMG__/user_icon_14.png" class="u-icon" alt="">
+                            <span class="navname">
+                                联系我们
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <style>
+                body { margin-bottom: 4rem !important;}
+            </style>
+
+            <div class="login-box">
+				<?php if ($_SESSION['m']['uid'] == true): ?>
+					<a class="login-btn ClickEvent">
+						退出登录
+					</a>
+				<?php else: ?>
+					<a href="login.html" class="login-btn">
+						登录
+					</a>
+				<?php endif; ?> 
+            </div>
+        </div>
+    </section>
+    <!-- footer start -->
+	<style>
+		body { margin-bottom: 2.2rem;}
+	</style>
+	<script>
+		BringAjax.IntendData.Url		 = '/Public/loginout';
+		BringAjax.IntendData.SwitchMain  = 1;
+		BringAjax.IntendData.SuccessEvet = function(){ CommonFunction.Link.Href('/User/index');};
+		EasyClick();
+	</script>
+
+
+<include file="Public:tabs" />
+<include file="Public:foot" />
+
+</body>
+</html>

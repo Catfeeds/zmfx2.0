@@ -1,0 +1,36 @@
+<style>
+.new-list img{
+	max-width:170px;
+}
+</style>
+<!-- jewelry-new -->
+<div class="jewelry-new">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<include file=".:Com:b2c:article:navtabs" />
+			</div>
+		</div>
+
+		<div class="new">
+			<div class="row">
+				<div class="col-md-8">
+					<include file=".:Com:b2c:article:article_list_images" />
+				</div>
+				<div class="col-md-4">
+					<include file=".:Com:b2c:article:hot_list" />
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('.navtab ul li').each(function(){
+			if($(this).find('a').html() == "帮助中心"){
+				$(this).remove();
+			}
+		});
+	</script>
+</div>
+<!-- jewelry-new end //-->

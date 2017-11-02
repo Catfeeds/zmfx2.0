@@ -1,0 +1,35 @@
+<?php if(C('new_rules')['kefu_show']==1){ ?>
+<a id="ibangkf" href="http://www.ibangkf.com">客服系统</a>
+<script type="text/javascript" src="http://c.ibangkf.com/i/c-jtf-b2bzm.js"></script>
+<?php } ?>
+<footer>
+  <div class="version">
+    <ul>
+      <li style="padding-left: 50px;">
+        <a href="http://{:C('DEFAULT_AGENT_MOBILE_DOMAIN')}">
+          <p><img src="__IMG__/banb_03.png" alt=""></p>
+          <p>触屏版</p>
+        </a>
+      </li>
+      <li style="padding-right: 50px;">
+			<?php
+				$DEFAULT_AGENT_DOMAIN=C('DEFAULT_AGENT_DOMAIN');
+				if(substr_count($DEFAULT_AGENT_DOMAIN,'.')==1){
+					echo "<a href='http://www.$DEFAULT_AGENT_DOMAIN?is_inside_callback=1'>";
+				}else{
+					echo "<a href='http://$DEFAULT_AGENT_DOMAIN?is_inside_callback=1'>";
+				}
+			?>
+          <p><img src="__IMG__/banb_05.png" alt=""></p>
+          <p>电脑版</p>
+        </a>
+      </li>
+      <div class="clearfix"></div>
+    </ul>
+  </div>
+	<a id="foot_tel" href="Tel:{:C('site_contact')}">Tel:{:C('site_contact')}</a>
+	<p>Copyright ©2013—2016 {:C('site_name')}版权所有</p>
+	<p>{:C('case_number')}</p>
+</footer>
+</body>
+</html>

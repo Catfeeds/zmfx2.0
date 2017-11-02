@@ -1,0 +1,180 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车-确认订单</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-swiper.css" /> <!-- tab -->
+    <link rel="stylesheet" type="text/css" href="../css/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="../css/style-layer.css" /> <!-- 提示 -->
+
+    <script src="../js/jquery-1.12.3.js"></script>
+    <script src="../js/swiper.min.js"></script> <!-- tab -->
+    <script src="../js/mobileSelect.js"></script> <!-- ios下弹式菜单选择 -->
+    <script src="../js/layer.js"></script> <!-- 提示 -->
+</head>
+
+
+<body>
+
+    <section class="submit-order">
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="../img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>确认订单</h2>
+            </div>
+        </header>
+
+        <div class="checkout wrapper">
+            <!-- 己选择地址 -->
+            <div class="address-true">
+                <a href="地址管理.html" class="link">
+                    <div class="top">
+                        <div class="fl"><b>收货人：余文乐</b></div>
+                        <div class="fr">18800781106</div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="address-where">
+                        收货地址：广东省深圳市罗湖区太白路松泉山庄三栋三层
+                    </div>
+                </a>
+                <div class="location-icon"></div>
+            </div>
+            <!-- 己选择地址 end -->
+
+            <!-- 未选择地址 -->
+            <div class="address-false" style="display: none">
+                <a href="地址管理-添加收货地址.html" class="to-address">
+                    <img src="../img/add_icon.png" alt="">
+                    &nbsp;&nbsp;
+                    添加收货地址
+                </a>
+            </div>
+            <!-- 未选择地址 end -->
+
+            <!-- 订单商品列表 -->
+            <div class="order-list">
+                <a href="购物车-商品清单.html" class="to-cart-listing">
+                    <div class="order-left">
+                        <img src="../img/goods_layou_img_03.jpg" alt="">
+                        <img src="../img/goods_layou_img_03.jpg" alt="">
+                        <img src="../img/goods_layou_img_03.jpg" alt="">
+                        <img src="../img/goods_layou_img_03.jpg" alt="">
+                        <img src="../img/goods_layou_img_03.jpg" alt="">
+                        <img src="../img/goods_layou_img_03.jpg" alt="">
+                    </div>
+                    <div class="order-sum">
+                        共3件
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+            <!-- 订单商品列表 end -->
+
+            <!-- 支付、配送方式 -->
+            <div class="step-box">
+                <div class="step-content border-bottom">
+                    <h1>支付方式</h1>
+                    <dl class="clearfix">
+                        <dt>
+                            <input type="radio" class="zdy-radio" name="pay" value="">
+                        </dt>
+                        <dd>
+                            <h2 class="type">在线支付</h2>
+                            <p class="small border-bottom">支持银行卡支付、支付宝等</p>
+                        </dd>
+                    </dl>
+                    <dl class="clearfix">
+                        <dt>
+                            <input type="radio" class="zdy-radio" name="pay" value="">
+                        </dt>
+                        <dd>
+                            <h2 class="type">线下转账</h2>
+                            <p class="small">户名：测试个人账户</p>
+                            <p class="small">账号：3451657515645</p>
+                            <p class="small">开户行：65153351135153</p>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="step-content">
+                    <h1>物流方式</h1>
+                    <dl class="clearfix">
+                        <dt>
+                            <input type="radio" class="zdy-radio" name="logistics" value="">
+                        </dt>
+                        <dd>
+                            <h2 class="type">第三方物流配送</h2>
+                            <p class="small border-bottom">预计到货时间: 5-8个工作日</p>
+                        </dd>
+                    </dl>
+                    <dl class="clearfix">
+                        <dt>
+                            <input type="radio" class="zdy-radio" name="logistics" value="">
+                        </dt>
+                        <dd>
+                            <h2 class="type">展厅取货</h2>
+                            <p class="small">预计到货时间: 5-8个工作日</p>
+                        </dd>
+                    </dl>
+                </div>
+
+            </div>
+            <!-- 支付、配送方式 end -->
+
+            <!-- 发票信息 -->
+            <div class="invoice-data">
+                <a href="购物车-发票信息.html" class="inline-block">
+                    <div class="fl">发票信息</div>
+                    <div class="fr">
+                        <div class="order-sum"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+            <!-- 发票信息 end -->
+
+            <!-- 总计 -->
+            <div class="money">
+                <ul>
+                    <li class="clearfix">
+                        <div class="fl">商品总金额</div>
+                        <div class="fr rmb">￥8888.00</div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fl">保险费</div>
+                        <div class="fr rmb">+ ￥0.00</div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fl">运费</div>
+                        <div class="fr rmb">+ ￥0.00</div>
+                    </li>
+                </ul>
+            </div>
+            <!-- 总计 end -->
+
+            <!-- 提交订单 -->
+            <style>
+                body { margin-bottom: 2.5rem;}
+            </style>
+            <div class="submit-order-box">
+                <a href="购物车-订单提交成功.html" class="submit-btn">提交订单</a>
+                <span class="rmb total">实际付款：￥0.00</span>
+            </div>
+            <!-- 提交订单 end -->
+        </div>
+    </section>
+    <!-- Zdy Input UI -->
+<script src="../js/zdy-input-ui.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,724 @@
+<!--裸钻列表-->
+<link rel="stylesheet" href="<?php echo C('ZMALL_URL');?>/Application/Admin/View/css/banfang.css">
+
+<style>
+	.order .order-content .info1 { overflow: auto;}
+	.inline-item { display: inline-block; margin: 0 5px;}
+	.pull-left { float: left;}
+	.pull-right { float: right;}
+	.chk-all { margin-left: 5px;}
+	.ml10 { margin-left: 10px;}
+	.order .order-content .h23 { height: 23px !important;}
+   
+	.theme-popover-mask{z-index: 9998;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;opacity:0.4;filter:alpha(opacity=40);display:none}
+	.theme-popover{z-index:9999;position:fixed;top:50%;left:50%;width:700px;min-height:600px;margin:-300px 0 0 -350px; border-radius:5px;border:solid 2px #666;background-color:#fff;display:none;box-shadow: 0 0 10px #666;}
+	.theme-poptit{border-bottom:1px solid #ddd;padding:12px;position: relative;}
+	.theme-poptit .close{float:right;color:#999;padding:5px;margin:-2px -5px -5px;font:bold 14px/14px simsun;text-shadow:0 1px 0 #ddd}
+	.theme-poptit .close:hover{color:#444;}
+	.btn.theme-reg{position: absolute;top: 8px;left: 43%;display: none}
+	.inp-gray,.feed-mail-inp{border:1px solid #ccc;background-color:#fdfdfd;width:220px;height:16px;padding:4px;color:#444;margin-right:6px}
+	.dform{padding:10px;text-align: center; height: 553px; overflow: auto;}
+	.dform .ipt_error{background-color:#FFFFCC;border-color:#FFCC66}
+	.dform li{padding-left: 10px;margin-bottom: 5px;float: left;width: 300px; height: 100%;}   
+	.dform p{font-size: 12px;color: #999;}
+	#luozuan_info .col-md-6 span { padding-left: 50px;}
+
+	.opention{width:100%;height:25px;margin-top:25px;line-height:25px;font-size:12px;}
+	.opention .cut{border: 1px solid;cursor: pointer;float: left;margin: 0 20px;text-align: center;width: 8%;background:#E1E1E1;border:1px solid #ADADAD;}
+	.opention .cut a{color:#000;}
+	.opention .cut:hover{background:#E1FBFF; }
+	.chongzhi{height: 20px !important;line-height: 20px !important;width:35px;text-align:center;}
+</style>
+
+
+
+<script>
+    $(function(){
+        $('.diamond-btnimg, .diamond-video, .diamond-image').bind('click',function(){
+            var attribute = $(this).attr('attribute');
+            //luozuan.get_info(attribute,func_display_luozuan_info);
+            func_display_luozuan_info(JSON.parse(attribute));
+            $('.theme-popover-mask').fadeIn(100);
+            $('.theme-popover').slideDown(200);
+        });
+        $('.theme-poptit .close').click(function(){
+            $('.theme-popover-mask').fadeOut(100);
+            $('.theme-popover').slideUp(200);
+        })   
+    }); 
+	
+	
+
+	$(function(){
+		$('.menu').height($(window).height());
+		$('.traderIndex').height($(document).height()).css({"background": "#CEDCFF"});
+
+	  $('.cd').click(function(){
+		$('.menu').slideToggle();
+	  });
+	  $('table').wrap("<div class='table_box'></div>");
+	  $('.mores').click(function(){
+		$('.subNav').slideUp();
+		$('.mores').text("+");
+
+		if($(this).prev('.subNav').css('display') == 'none'){
+		  $(this).prev('.subNav').slideDown();
+		  $(this).text("-");
+		}else{
+		  $(this).prev('.subNav').slideUp();
+		  $(this).text("+");
+		}
+	  });
+	  $('.nav').hover(function(){
+		if($(window).width() >= 768){
+		  $(this).find('.subNav').show();
+		}
+	  },function(){
+		if($(window).width() >= 768){
+		  $(this).find('.subNav').hide();
+		}
+	  });
+	});
+
+
+	$(document).ready(function(){
+    　　$("#moreLog tr").each(function(i){ 
+            if(i>6){              
+                $("#moreLog tr:nth-child(" + i + ")").css('display', 'none');
+            }
+            i++;           
+       }); 
+
+    }); 
+
+	
+	
+	
+	
+	
+	
+	
+</script>
+
+<notempty name="goodsList['banfang']">
+    <div class="info">
+
+		<table class="listTbl" style="width:100%" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+            <tr class="top">
+                <th>款式编号</th>
+                <th>商品名称</th>				
+                <th>商品明细</th>
+                <th>匹配石头数量</th>
+                <th>小计商品数量</th>
+                <th>小计商品价格</th>
+            </tr>
+            <volist name="goodsList['banfang']" id="vo" mod="2">
+                <tr class="{$mod?'bg2':'bg1'} list">       
+                    <td><img src="" /> {$vo.goods_sn} </td>
+                    <td>{$vo.goods_name}</td>
+                    <td>参见预售下单表</td>
+                    <td>                        
+                        <eq name="orderInfo.order_status" value="0">
+                            {$vo.goods_number}
+                        <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+                            {$vo.goods_number}
+                        <else />
+                            {$vo.goods_number_up}
+                        </eq>
+                    </td>
+                    <td class="goods_number" data-id="{$vo['og_id']}">
+                        <eq name="orderInfo.order_status" value="0">
+                            {$vo.goods_number}
+                        <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+                            {$vo.goods_number}
+                        <else />
+                            {$vo.goods_number_up}
+                        </eq>
+                    </td>
+                    <td class="consignment_price_xiaoji">
+                        
+                        <eq name="orderInfo.order_status" value="0">
+                            {$vo['goods_price']}
+                        <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+                            {$vo['goods_price']}
+                        <else />
+                            {$vo['goods_price_up']}
+                        </eq>
+                    </td>
+                </tr>
+            </volist>
+            <tr class="count">
+                <td colspan="4" style="color:red;font-size:12px;">网络版房，由于金重与镶嵌石头大小及附加工费不确定性，此本报价仅供参考，实际以出货价格为准。</td>
+                <td>合计:</td>
+                <td><span >{$consignmentPrice}</span></td>
+                <span id="consignmentTotal" style="display:none;">{$orderInfo.order_price}</span>
+            </tr>
+        </table>
+        <div class="clear"></div>   
+    </div>
+
+    <div class="info info1">
+			<!-- <div style=" width: 100%; overflow: auto;"> -->
+        <table class="listTbl chuhuodan" style="width:100%" border="1" bordercolor="#000" cellspacing="0" cellpadding="0" style="border-collapse:collapse"> 
+            <tr class="top" >
+                <th colspan="36" align="left">金价：倒模当天金价</th>
+            </tr>
+            <tr>
+                <td>序列</td>
+                <td>工厂款号</td>
+                <td>款号</td>
+                <td>条形码</td>
+                <td>产品名称</td>
+                <td>数量</td>
+                <td>材质</td>
+                <td>国标字印</td>
+				<td>品牌字印</td>
+                <td>特殊字印</td>
+                <td>颜色</td>
+                <td>手寸</td>
+                <td>
+                    <table class="child-table" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td colspan="6" align="center" >金料</td>
+                        </tr>
+                        <tr>
+                            <td>金价</td>
+                            <td>货重</td>
+                            <td>净金重</td>
+                            <td>损耗</td>
+                            <td>含耗重</td>
+                            <td>金料额</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>                    
+                    <table class="child-table" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td colspan="3" align="center">金料折足</td>
+                        </tr>
+                        <tr>
+                            <td>折足</td>
+                            <td>单价</td>
+                            <td>补口费</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table class="child-table" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td colspan="10" align="center" >主石</td>
+                        </tr>
+                        <tr>									
+                            <td>石名</td>
+                            <td>石号</td>
+                            <td>颜色</td>
+                            <td>净度</td>
+                            <td>形状</td>
+                            <td>尺寸</td>
+                            <td>石重</td>
+                            <td>数量</td>
+                            <td>单价</td>
+                            <td>主石额</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table class="child-table" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td colspan="10" align="center" >副石</td>
+                        </tr>
+                        <tr>							
+                            <td>石名</td>
+                            <td>石号</td>
+                            <td>颜色</td>
+                            <td>净度</td>
+                            <td>形状</td>
+                            <td>尺寸</td>
+                            <td>石重</td>
+                            <td>数量</td>
+                            <td>单价</td>
+                            <td>副石额</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>图片</td>
+                <td>特殊生产要求</td>
+                <td>基本工费</td>
+                <td>
+                    <table class="child-table" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td colspan="3" align="center">副石镶工</td>
+                        </tr>
+                        <tr>							
+                            <td>数量</td>
+                            <td>单价</td>
+                            <td>金额</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table class="child-table" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td colspan="21" align="center">附加工艺工费</td>
+                        </tr>
+                        <tr>
+                            <td>喷拉沙</td>
+                            <td>车花片</td>
+                            <td>CNC车花镶口</td>
+                            <td>灵动镶口</td>
+                            <td>灵动车花镶口</td>
+                            <td>来链工费</td>
+                            <td>GIA的腰码字印</td>
+                            <td>单片车花</td>
+                            <td>三件套车花片</td>
+                            <td>手工车花</td>
+                            <td>六围一</td>
+                            <td>八围一</td>
+                            <td>十二围一</td>
+                            <td>封底</td>
+                            <td>特殊字印</td>	
+                            <td>分色分件</td>
+                            <td>契拉提</td>
+                            <td>露珠边</td>							
+                        </tr>
+                    </table>
+                </td>
+                <td>起版设计</td>
+                <td>喷蜡费</td>
+                <td>成品证书号</td>
+                <td>证书费</td>
+                <td>物料名称</td>
+                <td>物料费用</td>
+                <td>镶主石保险费</td>
+                <td>
+                    <table class="child-table" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td colspan="5" align="center">配件</td>
+                        </tr>
+                        <tr>
+                            <td>名称</td>
+                            <td>数量</td>
+                            <td>重量</td>
+                            <td>单价</td>
+                            <td>金额</td>
+                        </tr>
+                    </table>
+                </td>
+                <!-- <td>倍率</td> -->
+                <td>结算/金额</td>
+                <td>加工成本</td>
+                <!-- <td>标签价</td> -->
+                <td>合计</td>
+                <td>字印</td>
+                <td>备注</td>
+            </tr>
+            <php>
+                $goods_number_total                = 0;
+                $base_fee_total_price              = 0;
+                $penla_total_price                 = 0;
+                $zhengshu_total_price              = 0;
+                $wuliao_total_price                = 0;
+                $xiangzhushibaoxianfei_total_price = 0;
+                $jiesuan_total_price               = 0;
+                $jiagongchengben_total_price       = 0;
+                $biaoqian_total_pirce              = 0;
+                $heji_total_price                  = 0;
+            </php>
+			<php>
+				$j = 0;
+			</php>
+			
+			
+
+            <volist name="goodsList['banfang']" id="vo" mod="2">
+                <volist name="vo['banfang_info']" id="vo1" mod="2">
+				<php>
+					$j += 1;
+				</php>
+                <tr>
+                    &nbsp;<input type="hidden" name="banfang_info[{$vo1['ogbi_xulie_id']}][ogbi_xulie_id]" value="{$vo1['ogbi_xulie_id']}"> &nbsp;
+                    <td>
+                        {$j}
+                    </td>
+                    <td>&nbsp;<input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][gongchangkuanhao]" value="{$vo1['gongchangkuanhao']}" class="w150"> &nbsp;</td>
+                    <td>&nbsp;<input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][kuanhao]" value="{$vo1['kuanhao']}"  class="w150">&nbsp;</td>
+                    <td>&nbsp;<input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][tiaoxingma]" value="{$vo1['tiaoxingma']}" class="w150">&nbsp;</td>
+                    <td>{$vo['goods_name']}</td>
+                    <td>
+                        {$vo1['goods_number']}
+                        <php>$goods_number_total = $goods_number_total + $vo1['goods_number'];</php>
+                    </td>
+                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][caizhi]" value="{$vo1['caizhi']}"  class="w50"></td>
+                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][guobiaoziyin]" value="{$vo1['guobiaoziyin']}" class="w50"></td>
+					<td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][pinpaiziyin]" value="{$vo1['pinpaiziyin']}" class="w50"></td>
+                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][teshuziyin]" value="{$vo1['teshuziyin']}" class="w50"></td>
+                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][color]" value="{$vo1['color']}" class="w50"></td>
+                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][hand_size]" value="{$vo1['hand_size']}" class="w50"></td>
+                    <td>
+                        <table class="child-table" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][gold_unit_price]" value="{$vo1['gold_unit_price']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][gold_weight]" value="{$vo1['gold_weight']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][gold_weight_clean]" value="{$vo1['gold_weight_clean']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][gold_loss]" value="{$vo1['gold_loss']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][gold_full_loss_weight]" value="{$vo1['gold_full_loss_weight']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][gold_price]" value="{$vo1['gold_price']}" class="w50"></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>                    
+                        <table class="child-table" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][zhezu_weight]" value="{$vo1['zhezu_weight']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][zhezu_bukou_unit_price]" value="{$vo1['zhezu_bukou_unit_price']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][zhezu_bukou_price]" value="{$vo1['zhezu_bukou_price']}" class="w50"></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table class="child-table" cellpadding="0" cellspacing="0">
+                            <tr>									
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][zhushi_name]" value="{$vo1['zhushi_name']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][zhushi_no]" value="{$vo1['zhushi_no']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][zhushi_color]" value="{$vo1['zhushi_color']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][zhushi_clarity]" value="{$vo1['zhushi_clarity']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][zhushi_shape]" value="{$vo1['zhushi_shape']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][zhushi_size]" value="{$vo1['zhushi_size']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][zhushi_weight]" value="{$vo1['zhushi_weight']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][zhushi_number]" value="{$vo1['zhushi_number']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][zhushi_unit_price]" value="{$vo1['zhushi_unit_price']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][zhushi_price]" value="{$vo1['zhushi_price']}" class="w50"></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table class="child-table" cellpadding="0" cellspacing="0">
+                            <volist name="vo1['fushi_info']" id="v" mod="2">
+                                <tr>							
+                                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fushi_info][{$i}][fushi_name]" value="{$v['fushi_name']}" class="w50"></td>
+                                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fushi_info][{$i}][fushi_no]" value="{$v['fushi_no']}" class="w50"></td>
+                                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fushi_info][{$i}][fushi_color]" value="{$v['fushi_color']}" class="w50"></td>
+                                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fushi_info][{$i}][fushi_clarity]" value="{$v['fushi_clarity']}" class="w50"></td>
+                                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fushi_info][{$i}][fushi_shape]" value="{$v['fushi_shape']}" class="w50"></td>
+                                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fushi_info][{$i}][fushi_size]" value="{$v['fushi_size']}" class="w50"></td>
+                                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fushi_info][{$i}][fushi_weight]" value="{$v['fushi_weight']}" class="w50"></td>
+                                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fushi_info][{$i}][fushi_number]" value="{$v['fushi_number']}" class="w50"></td>
+                                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fushi_info][{$i}][fushi_unit_price]" value="{$v['fushi_unit_price']}" class="w50"></td>
+                                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fushi_info][{$i}][fushi_price]" value="{$v['fushi_price']}" class="w50"></td>
+                                </tr>
+                            </volist>
+                        </table>
+                    </td>
+                    <td>
+                        <img width='50' src="<?php echo C('ZMALL_URL');?>/Public/{$vo['attribute']['images'][0]['small_path']}" />
+                    </td>
+                    <td>
+                        <input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][teshushengchanyaoqiu]" value="{$vo1['teshushengchanyaoqiu']}" class="w50">
+                    </td>
+                    <td>
+                        <input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][base_fee_price]" value="{$vo1['base_fee_price']}" class="w50">
+                    </td>
+                    <td>
+                        <table class="child-table" cellpadding="0" cellspacing="0">
+                            <tr>							
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fushixianggong_number]" value="{$vo1['fushixianggong_number']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fushixianggong_unit_price]" value="{$vo1['fushixianggong_unit_price']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fushixianggong_price]" value="{$vo1['fushixianggong_price']}" class="w50"></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table class="child-table min-table" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="width: 70px;"><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_penlasha]" value="{$vo1['fujiagongfei_penlasha']}" class="w50"></td>
+                                <td style="width: 70px;"><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_chehuapian]" value="{$vo1['fujiagongfei_chehuapian']}" class="w50"></td>
+                                <td style="width: 77px;"><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_cncchehuaxiangkou]" value="{$vo1['fujiagongfei_cncchehuaxiangkou']}" class="w50"></td>
+                                <td style="width: 71px;"><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_lingdongxiangkou]" value="{$vo1['fujiagongfei_lingdongxiangkou']}" class="w50"></td>
+                                <td style="width: 83px;"><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_lingdongchehuaxiangkou]" value="{$vo1['fujiagongfei_lingdongchehuaxiangkou']}" class="w50"></td>
+                                <td style="width: 70px;"><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_lailiangongfei]" value="{$vo1['fujiagongfei_lailiangongfei']}" class="w50"></td>
+                                <td style="width: 91px;"><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_giadeyaomaziyin]" value="{$vo1['fujiagongfei_giadeyaomaziyin']}" class="w50"></td>
+                                <td style="width: 70px;"><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_danpianchehua]" value="{$vo1['fujiagongfei_danpianchehua']}" class="w50"></td>
+                                <td style="width: 84px;"><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_sanjiantaochehuapian]" value="{$vo1['fujiagongfei_sanjiantaochehuapian']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_shougongchehua]" value="{$vo1['fujiagongfei_shougongchehua']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_liuweiyi]" value="{$vo1['fujiagongfei_liuweiyi']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_baweiyi]" value="{$vo1['fujiagongfei_baweiyi']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_shierweiyi]" value="{$vo1['fujiagongfei_shierweiyi']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_fengdi]" value="{$vo1['fujiagongfei_fengdi']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_tesuziyin]" value="{$vo1['fujiagongfei_tesuziyin']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_fensefenjian]" value="{$vo1['fujiagongfei_fensefenjian']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_qilati]" value="{$vo1['fujiagongfei_qilati']}" class="w50"></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][fujiagongfei_luzhubian]" value="{$vo1['fujiagongfei_luzhubian']}" class="w50"></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][qibansheji]" value="{$vo1['qibansheji']}" class="w50" />
+                    </td>
+                    <td>
+                        <input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][penla_price]" value="{$vo1['penla_price']}" class="w50" />
+                    </td>
+                    <td>
+                        <input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][zhengpinzhengshu_no]" value="{$vo1['zhengpinzhengshu_no']}" class="w50" />
+                    </td>
+                    <td>
+                        <input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][zhengshu_price]" value="{$vo1['zhengshu_price']}" class="w50" />
+                    </td>
+                    <td>
+                        <input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][wuliao_name]" value="{$vo1['wuliao_name']}" class="w50" />    
+                    </td>
+                    <td>
+                        <input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][wuliao_price]" value="{$vo1['wuliao_price']}" class="w50" /> 
+                    </td>
+                    <td>
+                        <input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][xiangzhushibaoxianfei_price]" value="{$vo1['xiangzhushibaoxianfei_price']}" class="w50" /> 
+                    </td>
+                    <td>
+                        <table class="child-table" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][peijian_name]" value="{$vo1['peijian_name']}" class="w50" /></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][peijian_number]" value="{$vo1['peijian_number']}" class="w50" /></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][peijian_weight]" value="{$vo1['peijian_weight']}" class="w50" /></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][peijian_unit_price]" value="{$vo1['peijian_unit_price']}" class="w50" /></td>
+                                <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][peijian_price]" value="{$vo1['peijian_price']}" class="w50" /></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <!-- <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][beilv]" value="{$vo1['beilv']}" class="w50" /></td> -->
+                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][jiesuan_price]" value="{$vo1['jiesuan_price']}" class="w50" /></td>
+                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][jiagongchengben_price]" value="{$vo1['jiagongchengben_price']}" class="w50" /></td>
+                    <!-- <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][biaoqian_pirce]" value="{$vo1['biaoqian_pirce']}" class="w50" /></td> -->
+                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][heji_price]" value="{$vo1['heji_price']}" class="w50" /></td>
+                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][ziyin]" value="{$vo1['ziyin']}" class="w50" /></td>
+                    <td><input type="text" name="banfang_info[{$vo1['ogbi_xulie_id']}][keziyaoqiu]" value="{$vo1['keziyaoqiu']}" class="w50" /></td>
+                    <php>
+                        $penla_total_price                 = $penla_total_price + $vo1['penla_price'];
+                        $base_fee_total_price              = $base_fee_total_price + $vo1['base_fee_price'];    
+                        $zhengshu_total_price              = $zhengshu_total_price + $vo1['zhengshu_price']; 
+                        $wuliao_total_price                = $wuliao_total_price + $vo1['wuliao_price'];    
+                        $xiangzhushibaoxianfei_total_price = $xiangzhushibaoxianfei_total_price + $vo1['xiangzhushibaoxianfei_price']; 
+                        $jiesuan_total_price               = $jiesuan_total_price + $vo1['jiesuan_price'];
+                        $jiagongchengben_total_price       = $jiagongchengben_total_price + $vo1['jiagongchengben_price'];
+                        $biaoqian_total_pirce              = $biaoqian_total_pirce + $vo1['biaoqian_pirce'];
+                        $heji_total_price                  = $heji_total_price + $vo1['heji_price'];
+                    </php>
+                </tr>
+                </volist>
+            </volist>
+            <tr>
+                <td colspan="5">订单统计:</td>
+                <td>{$goods_number_total}</td>
+                <td colspan="12"></td>
+                <td dec="基本工费">{$base_fee_total_price}</td>
+                <td colspan="3"></td>
+                <td dec="喷蜡费">{$penla_total_price}</td>
+                <td></td>
+                <td dec="证书费">{$zhengshu_total_price}</td>
+                <td></td>
+                <td dec="物料费用">{$wuliao_total_price}</td>
+                <td dec="镶主石保险费">{$xiangzhushibaoxianfei_total_price}</td>
+                <td></td>
+                <!-- <td dec="倍率"></td> -->
+                <td dec="结算金额">{$jiesuan_total_price}</td>
+                <td dec="加工成本">{$jiagongchengben_total_price}</td>
+                <!-- <td dec="标签价">{$biaoqian_total_pirce}</td> -->
+                <td dec="总价">{$heji_total_price}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="36">需求备注:{$vo1['remark']}</td>
+            </tr>
+        </table>
+		<!--</div>--> 
+        <div class="clear"></div>   
+    </div>
+
+	<!--
+    <div class="info">
+        <div class="title">证书货钻石:</div>
+        <table class="listTbl" style="width:100%" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+            <tr>
+                <td>去向</td>
+                <td>形状</td>
+                <td>编号</td>
+                <td>证书号</td>
+                <td>钻重</td>
+                <td>彩色</td>
+                <td>净度</td>
+                <td>切工</td>
+                <td>抛光</td>
+                <td>对称</td>
+                <td>荧光</td>
+                <td>全身比</td>
+                <td>台宽比</td>
+                <td>奶色</td>
+                <td>伽色</td>
+                <td>国际报价</td>
+                <td>人民币</td>
+                <td>折扣</td>
+                <td>优惠</td>
+                <td>价格</td>
+            </tr>
+            <volist name="goodsList['banfang']" id="vo" mod="2">
+                <volist name="vo['luozuan_list']" id="vo1" mod="2">
+                    <tr>
+                        <td>{$vo1['quxiang']}</td>
+                        <td>{$vo1['shape']}</td>
+                        <td>{$vo1['goods_name']}</td>
+                        <td>{$vo1['certificate_number']}</td>
+                        <td>{$vo1['weight']}</td>
+                        <td>{$vo1['color']}</td>
+                        <td>{$vo1['clarity']}</td>
+                        <td>{$vo1['cut']}</td>
+                        <td>{$vo1['polish']}</td>
+                        <td>{$vo1['symmetry']}</td>
+                        <td>{$vo1['fluor']}</td>
+                        <td>{$vo1['dia_depth']}</td>
+                        <td>{$vo1['dia_table']}</td>
+                        <td>{$vo1['milk']}</td>
+                        <td>{$vo1['coffee']}</td>
+                        <td>{$vo1['dia_global_price']}</td>
+                        <td>{$vo1['rmb']}</td>
+                        <td>{$vo1['dia_discount']}</td>
+                        <td>{$vo1['price']}</td>
+                        <td>{$vo1['price']}</td>
+                    </tr>
+                </volist>
+            </volist>
+            <tr></tr>
+        </table>
+        <div class="clear"></div>   
+    </div>
+
+    <div class="info">
+        <div class="title">裸钻[客来]:</div>
+        <table class="listTbl" style="width:100%" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+            <tr>
+                <th>证书类型</th>
+                <th>证书编号</th>
+                <th>形状</th>
+                <th>重量</th>
+                <th>颜色</th>
+                <th>净度</th>
+                <th>切工</th>
+                <th>抛光</th>
+                <th>全深比</th>
+                <th>台宽比</th>
+                <th>奶色</th>
+                <th>咖色</th>
+                <th>数量</th>
+            </tr>
+            <volist name="goodsList['banfang']" id="vo" mod="2">
+                <volist name="vo['luozuan_list_kelai']" id="vo1" mod="2">
+                    <tr>
+                        <td>{$vo1['certificate_type']}</td>
+                        <td>{$vo1['certificate_number']}</td>
+                        <td>{$vo1['shape']}</td>
+                        <td>{$vo1['weight']}</td>
+                        <td>{$vo1['color']}</td>
+                        <td>{$vo1['clarity']}</td>
+                        <td>{$vo1['cut']}</td>
+                        <td>{$vo1['polish']}</td>
+                        <td>{$vo1['dia_depth']}</td>
+                        <td>{$vo1['dia_table']}</td>
+                        <td>{$vo1['milk']}</td>
+                        <td>{$vo1['coffee']}</td>
+                        <td>{$vo1['number']}</td>
+                    </tr>
+                </volist>
+            </volist>
+            <tr></tr>
+        </table>
+        <div class="clear"></div>   
+    </div>
+
+    <div class="info">
+        <div class="title">彩钻[客来]:</div>
+        <table class="listTbl" style="width:100%" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+            <tr>
+                <th>证书类型</th>
+                <th>证书编号</th>
+                <th>形状</th>
+                <th>重量</th>
+                <th>颜色</th>
+                <th>净度</th>
+                <th>切工</th>
+                <th>抛光</th>
+                <th>全深比</th>
+                <th>台宽比</th>
+                <th>奶色</th>
+                <th>咖色</th>
+                <th>数量</th>
+            </tr>
+            <volist name="goodsList['banfang']" id="vo" mod="2">
+                <volist name="vo['caizuan_list_kelai']" id="vo1" mod="2">
+                    <tr>
+                        <td>{$vo1['certificate_type']}</td>
+                        <td>{$vo1['certificate_number']}</td>
+                        <td>{$vo1['shape']}</td>
+                        <td>{$vo1['weight']}</td>
+                        <td>{$vo1['color']}</td>
+                        <td>{$vo1['clarity']}</td>
+                        <td>{$vo1['cut']}</td>
+                        <td>{$vo1['polish']}</td>
+                        <td>{$vo1['dia_depth']}</td>
+                        <td>{$vo1['dia_table']}</td>
+                        <td>{$vo1['milk']}</td>
+                        <td>{$vo1['coffee']}</td>
+                        <td>{$vo1['number']}</td>
+                    </tr>
+                </volist>
+            </volist>
+            <tr></tr>
+        </table>
+        <div class="clear"></div>   
+    </div>
+
+    <div class="info">
+        <div class="title">散货[客来]:</div>
+        <table class="listTbl" style="width:100%" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+            <tr>
+                <th>编号</th>
+                <th>分数段</th>
+                <th>重量</th>
+                <th>颜色</th>
+                <th>净度</th>
+                <th>切工</th>
+                <th>描述</th>
+                <th>数量</th>
+            </tr>
+            <volist name="goodsList['banfang']" id="vo" mod="2">
+                <volist name="vo['sanhuo_list_kelai']" id="vo1" mod="2">
+                    <tr>
+                        <td>{$vo1['goods_sn']}</td>
+                        <td>{$vo1['size']}</td>
+                        <td>{$vo1['weight']}</td>
+                        <td>{$vo1['color']}</td>
+                        <td>{$vo1['clarity']}</td>
+                        <td>{$vo1['cut']}</td>
+                        <td>{$vo1['describe']}</td>
+                        <td>{$vo1['number']}</td>
+                    </tr>
+                </volist>
+            </volist>
+            <tr></tr>
+        </table>
+        <div class="clear"></div>   
+    </div>
+	-->
+
+<div class="info period_list" id="consignment_period_list"></div>
+
+    <!---div class="info period">
+        <div class="info">
+            结算：预付定金，预估订单总金额的百分比:
+            <label>
+                <input type="text" name="" class="fl mr30 overdue" />%
+            </label>
+        </div>
+        <div class="clear"></div>
+    </div-->
+</notempty>
+ 
+
+<!--裸钻列表结束-->

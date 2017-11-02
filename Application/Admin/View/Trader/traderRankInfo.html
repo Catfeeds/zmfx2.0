@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加编辑分销商等级</title>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：分销商等级信息</h3>
+    </div>
+	<form action"{:U('Admin/Trader/traderRankInfo?trid='.$info['trid'])}" method="post">
+    	<div style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">等级名称:</div>
+                <input name="rank_name" type="text" value="{$info.rank_name}">
+            </div>
+            <div class="info">
+                <div class="title">最大客户数:</div>
+                <input name="maximum" type="text" value="{$info.maximum}">
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="保存">
+                <input type="reset" class="button fl ml10" value="重置">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

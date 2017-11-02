@@ -1,0 +1,213 @@
+
+<include file="Public:header" /><body>
+
+    <section class="submit-order">
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onClick="location='/Order/orderCart'" class="back-img" alt="">
+                </div>
+                <h2>确认订单</h2>
+            </div>
+        </header>
+
+ 
+		
+        <div class="checkout wrapper">
+            <!-- 己选择地址 -->
+            <div class="address-true">
+                <a href="/User/Ress?CallBack=<?php echo $_SERVER['REQUEST_URI'];?>" class="link">
+					 <if condition="$user_address">
+						<div class="top">
+							<div class="fl"><b>收货人：{$user_address[name]}</b></div>
+							<div class="fr">{$user_address[phone]}</div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="address-where">
+						   {$user_address['title']} {$user_address[0]} {$user_address[1]} {$user_address[2]} {$user_address[3]}&nbsp;&nbsp;{$user_address[address]}
+						</div>
+						<input type="hidden" class="user_address_id" data_num="{$user_address[address_id]}" />
+					<else/>	
+ 
+							<img src="__IMG__/add_icon.png" alt="">
+							&nbsp;&nbsp;
+							添加收货地址
+ 
+					</if>	
+                </a>
+                <div class="location-icon"></div>
+            </div>
+            <!-- 己选择地址 end -->
+ 
+
+            <!-- 订单商品列表 -->
+            <div class="order-list">
+                <a href="/order/CartList?id=<?php echo $_GET['id'];?>" class="to-cart-listing">
+                    <div class="order-left">
+					
+									<if condition="$product">
+										<volist name="product['data']" id="vo">
+												<img src="{$vo.goods_attrs.thumb}" alt="">
+										</volist>
+									</if>
+									<if condition="$luozuan">
+										<volist name="luozuan['data']" id="vo">
+												<img src="/Public/images/default/luozuan.jpg" alt="">
+										</volist>
+									</if>
+									<if condition="$sanhuo">
+										<volist name="sanhuo['data']" id="vo">
+												<img src="/Public/images/default/sanhuo.jpg" alt="">
+										</volist>
+									</if>
+									<if condition="$jietuo">
+										<volist name="jietuo['data']" id="vo">
+												<img src="{$vo.goods_attrs.thumb}" alt="">
+										</volist>
+									</if>
+                    </div>
+                    <div class="order-sum">
+                        共{$count}件
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+            <!-- 订单商品列表 end -->
+
+            <!-- 支付、配送方式 -->
+            <div class="step-box">
+                <div class="step-content border-bottom">
+					<if condition="$user_pay_mode">
+						<h1>支付方式</h1>
+						<dl class="clearfix">
+							<dt>
+								<input type="radio" class="zdy-radio" name="pay" value="">
+							</dt>
+							<dd>
+								<h2 class="type">在线支付</h2>
+								<p class="small border-bottom">支持银行卡支付、支付宝等</p>
+							</dd>
+						</dl>
+						<dl class="clearfix">
+							<dt>
+								<input type="radio" class="zdy-radio" name="pay" value="" checked>
+							</dt>
+							<dd>
+								<h2 class="type">线下转账</h2>
+								<if condition="$LinePayMode">
+									<p class="small">户名：{$LinePayMode.aname}</p>
+									<p class="small">账号：{$LinePayMode.abank}</p>
+									<p class="small">开户行：{$LinePayMode.tback}</p>
+								</if>								
+
+							</dd>
+						</dl>
+					</if>
+                </div>
+                <div class="step-content" style="border-bottom: 1px solid #D7D7D7;">
+                    <h1>物流方式</h1>
+					<if condition="$user_delivery_mode">
+						<volist name="user_delivery_mode" id="vo">
+							<dl class="clearfix">
+								<dt>
+									<input type="radio" class="zdy-radio" name="logistics" value="" ref={$vo.mode_id} <?php if($key==1) echo 'checked'?>>
+								</dt>
+								<dd>
+									<h2 class="type">{$vo.mode_name}</h2>
+									<p class="small border-bottom">预计到货时间: 5-8个工作日</p>
+								</dd>
+							</dl>
+						</volist>
+					</if>					
+					
+                </div>
+
+				<!-- 订单备注 -->
+			
+                <div class="step-content">
+                    <h1>订单备注</h1>
+					<dl class="clearfix">
+						<dt></dt>
+						<dd>
+							<textarea style="width:80%; height:80px;" name="note" id="note"></textarea>
+						</dd>
+					</dl>				
+                </div>
+
+            	<!-- 订单备注 end -->
+
+            </div>
+            <!-- 支付、配送方式 end -->
+
+            <!-- 发票信息 -->
+            <div class="invoice-data">
+                <a href="/order/invoice?id=<?php echo $_GET['id'];?>&invoic=<?php echo $_GET['invoic'];?>" class="inline-block">
+                    <div class="fl">发票信息</div>
+                    <div class="fr">
+                        <div class="order-sum"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+            <!-- 发票信息 end -->
+
+			
+            <!-- 总计 -->
+            <div class="money">
+                <ul>
+                    <li class="clearfix">
+                        <div class="fl">商品总金额</div>
+                        <div class="fr rmb">￥<?php echo $total;?></div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fl">保险费</div>
+                        <div class="fr rmb">+ ￥0.00</div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fl">运费</div>
+                        <div class="fr rmb">+ ￥0.00</div>
+                    </li>
+                </ul>
+            </div>
+            <!-- 总计 end -->
+
+            <!-- 提交订单 -->
+            <style>
+                body { margin-bottom: 2.5rem;}
+            </style>
+            <div class="submit-order-box">
+                <a   class="submit-btn" onClick="submit_data()">提交订单</a>
+                <span class="rmb total">实际付款：￥<?php echo $total;?></span>
+            </div>
+            <!-- 提交订单 end -->
+        </div>
+    </section>
+	
+	<script>
+ 
+
+			 
+		function submit_data(){
+			var radio_tips 	= $("input[name='logistics']:checked").attr('ref');
+			var address_id 	= $(".user_address_id").attr('data_num');
+			var note 		= $("#note").val();
+			if(radio_tips=='' || radio_tips==null || radio_tips==undefined ){
+				ThreeAjax.tan('请选择物流配送方式！');
+			}
+			if(address_id=='' || address_id==null || address_id==undefined ){
+				ThreeAjax.tan('请选择地址！');
+			}
+
+			MiddleLayer({'address_id':address_id,
+						'note':note,
+						'id':'<?php echo $_GET['id'];?>',
+						'Url':'/order/Submit_Corder',
+						'radio_tips':radio_tips},function(data){ThreeAjax.tan(data.msg);setTimeout("window.location.href='/order/OrderSucceed?am="+data.result+"'",3000);},'msg');                                             
+		}
+	</script>
+	
+	
+	
+<include file="Public:foot" />
+</body>
+</html>

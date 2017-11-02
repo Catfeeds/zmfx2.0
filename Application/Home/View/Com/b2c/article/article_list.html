@@ -1,0 +1,12 @@
+<div class="list box mb10">
+    <ul>
+        <if condition="articleList">
+        <volist name="articleList" id="vo">
+        <li><a href="{:U('Home/Article/detail?aid='.$vo['aid'])}"> <span>{$vo.title|msubstr=0,60,'utf-8'}</span> <font>{$vo.addtime|date="Y-m-d H:i",###}</font>
+            <div class="clear"></div>
+            </a></li>
+        </volist>
+        </if>
+    </ul>
+</div>
+<div class="page">{$page}</div>

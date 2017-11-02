@@ -1,0 +1,20 @@
+<div class="material" id="material_{$info.material_id}">
+	<div class="materialTitle">{$info.material_name}：</div>
+	<div class="materialContent">
+		<div class="materialTop">
+			<span>{$L['text_expected_weight']}：</span>
+			<input type="text" style="width: 120px;" value="" name="material[info][{$info.material_id}][weights_name]" placeholder="({$L['unit']}：G)" />
+			<span>{$L['text_product_ioss']}：</span>
+			<input type="text" style="width: 80px;" value="" name="material[info][{$info.material_id}][loss_name]" placeholder="({$L['unit']}：%)" />
+			<span>{$L['text_basic_fee']}：</span>
+			<input type="text" style="width: 120px;" value="" name="material[info][{$info.material_id}][basic_cost]" placeholder="({$L['unit']}：￥)" />
+		</div>
+		<div class="materialBottom">
+			<div class="materialBottomTitle">{$L['text_match_diamond']}：</div>
+			<div class="luozuan_match"></div>
+			<button type="button" class="luozuan_button add" data-id="{$info.material_id}">{$L['text_add_match']}</button>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>

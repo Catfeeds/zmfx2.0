@@ -1,0 +1,158 @@
+<!-- 商品轮播 start -->
+<div id="gooods-tab-box">
+    <!-- 图片 -->
+    <div class="swiper-container tabtype" id="goods-tab" dir="rtl" style="display: none;">
+        <if condition="$goodsInfo['images']">
+            <div class="swiper-wrapper">
+                <volist name="goodsInfo['images']" id="vo" key="k">
+                    <div class="swiper-slide"><img src="{$vo.big_path}" alt="{$goodsInfo.goods_name}"></div>
+                </volist>
+            </div>
+        </if>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+    <!-- 图片 end -->
+
+    <!-- 视频 -->
+    <!-- <div class="swiper-container tabtype" id="video-tab" dir="rtl">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <video class="video-box" controls autoplay style="width: 100%;">
+                   <source src="http://zmfx.com/Public/Uploads/diamond/7/pic_video/2017-10-07/59d87830c2aae.mp4" type="video/mp4" class="video_url">
+                </video>
+            </div>
+            <div class="swiper-slide">
+                <video class="video-box" controls autoplay style="width: 100%;">
+                   <source src="http://zmfx.com/Public/Uploads/diamond/7/pic_video/2017-10-07/59d87830c2aae.mp4" type="video/mp4" class="video_url">
+                </video>
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+
+        <script>
+            $(function(){
+                //设置视频静音
+                var videoBox = $(".video-box");
+                videoBox.each(function(index){
+                    videoBox.get(index).muted = true;
+                });
+            });
+        </script>
+    </div> -->
+	
+	
+	<?php if ($video == true): ?>
+		<div id="video-tab" class="tabtype">
+			<video class="video-box" controls style="width: 100%;">
+			   <source src="<?php echo '/Public/'.$video[0]['video_adds']?>" type="video/mp4">
+			</video>
+		</div>
+		<script>
+			//设置视频静音
+			var videoBox = $(".video-box");
+			videoBox.each(function(index){
+				videoBox.get(index).muted = true;
+			});
+		</script>
+		<!-- 视频  end -->
+	<?php endif; ?> 
+	
+	<?php if ($goodsInfo['images'] == true  && $video == true): ?>
+		<!-- 视频图片切换 -->
+		<div class="playtab">
+			<span class="playitem active" data="#video-tab">视频</span>
+			<span class="playitem" data="#goods-tab">图片</span>
+		</div>
+		<script>
+			$(function(){
+				//视频图片切换
+				$('.playtab .playitem').bind('click', function(){
+					$('.tabtype').hide();
+					$($(this).attr('data')).show();
+					$('.playtab .playitem').removeClass('active');
+					$(this).addClass('active');
+				});
+			});
+		</script>
+	<?php endif; ?> 
+
+</div>
+
+
+<script>
+    $(function(){
+        //商品轮播
+        swiper1 = new Swiper('#goods-tab', {
+            pagination: '.swiper-pagination',
+            paginationClickable: true,
+            initialSlide :1,
+            autoplay: 2500,
+            loop: true
+        });
+
+        //切换后更新swiper组件
+        $('.playtab .playitem').bind('click', function(){
+            swiper1.update();
+        });
+    })
+</script>
+<!-- 商品轮播 end -->
+
+<!-- 商品标题 -->
+<div class="goods-name">
+    <h1>{$goodsInfo.goods_name}</h1>
+    <h2>商品编号: {$goodsInfo.goods_sn}</h2>
+    <b class="rmb" id="price">
+        <in name="goodsInfo['activity_status']" value="0,1">
+            ￥{$goodsInfo.activity_price}
+        <else/>
+            ￥{$goodsInfo.goods_price}
+        </in>
+    </b>
+</div>
+<!-- 商品标题 end -->
+
+<!-- 商品参数 -->
+<div class="goods-spec">
+    <ul>
+        <!-- 定制产品开始 -->
+        <if condition="$goodsInfo['goods_type'] eq 4">
+            <include file="Goods:diyParam" />
+        </if>
+        <!-- 定制产品结束 -->
+        <if condition="$goodsInfo['goods_type'] eq 3">
+            <li>
+                <h2>产品规格：</h2>
+                <div class="spec-box" id="sku">
+                    <volist name="goodsInfo['similar']" id="vo">
+                        <span class="checks <if condition='$key eq 0'>active</if>"
+                              data-goods-number="{$vo.goods_number}"
+                              data-goods-sku-id="{$vo.sku_sn}"
+                              data-price="<?php if($goodsInfo['activity_status']=='0' || $goodsInfo['activity_status']=='1'){ echo $vo['activity_price']; } else{	echo 	$vo['goods_price'];}?>"
+                              data-marketPrice = "{$vo.goods_price}" onclick="setPrice(this,{$goodsInfo.goods_id},'{$vo.sku_sn}')">
+                            {$vo.attrs}
+                        </span>
+                    </volist>
+                </div>
+            </li>
+
+            <li>
+                <h2>数量：</h2>
+                <div class="spec-box">
+                    <div class="customize-box">
+                        <a href="javascript:;" class="add"><img src="__IMG__/add_icon.png" alt=""></a>
+                        <input type="text" id="goodsnumber" min="1" name="" value="1" max="{$goodsInfo['similar'][0]['goods_number']}" class="number-cust">
+                        <a href="javascript:;" class="reduction"><img src="__IMG__/reduction_icon.png" alt=""></a>
+                        <span class="kucun">&nbsp;库存：{$goodsInfo['similar'][0]['goods_number']}</span>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </li>
+
+
+        </if>
+    </ul>
+</div>
+
+<!-- 商品参数 end -->

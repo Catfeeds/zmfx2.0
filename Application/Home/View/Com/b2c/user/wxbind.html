@@ -1,0 +1,225 @@
+<script type="text/javascript">
+	/* 判断值是否为空 */
+	function isEmpty(val) {
+		var result = true;
+		switch (typeof val) {
+			case 'string':
+				if (val === '0') {
+				result = true;
+				} else {
+				result = val.trim().length === 0 ? true : false;
+				}
+				break;
+			case 'number':
+				result = val === 0;
+				break;
+			case 'object':
+				result = val === null;
+				break;
+			case 'array':
+				result = val.length === 0;
+				break;
+			default:
+				result = true;
+		}
+		return result;
+	}
+	// 检查用户名长度
+	function checkuser() {
+		var user = $('#username');
+		if (user.val().length <= 2) {
+			layer.msg("{$Think.lang.L9011}",{
+				shift:6,
+			});
+			return false;
+		}
+		return true;
+	}
+	// 检查密码长度
+	function checkpas() {
+		var ps = $('#password');
+		if (ps.val().length < 6) {
+			layer.msg("{$Think.lang.L9010}",{
+				shift:6,
+			});
+			return false;
+		}
+		return true;
+	}
+	//加密后才存cookie
+	function setEncodeCookie(key, plain){
+		var code = strToASC(plain);
+		$.cookie(key, code, { expires: 7, path:'/'});
+	}
+
+	function getEncodeCookie(key){
+		var arr = JSON.parse($.cookie(key));
+		return ASCToStr(arr);
+	}
+
+	function ASCToStr(arr){
+		var temp = '';
+		if(arr){
+			for(var i = 0 ; i < arr.length ; i++)
+				temp += String.fromCharCode(arr[i]-8);
+		}
+		return temp;
+	}
+
+	function strToASC(plain){
+		var arr = new Array();
+		for(var i = 0 ; i < plain.length ; i++)
+			arr[i] = plain.charCodeAt(i)+8; 	//每个ascii码加8以加密
+		return JSON.stringify(arr);
+	}
+
+	function init(){
+		// 记住用户名
+		if ($.cookie('rememberuser')) {
+			$('#rememberuser').attr('checked', true);
+			$('#username').val(getEncodeCookie('username'));
+		}
+		// 自动登陆
+		if ($.cookie('autologin')) {
+			$('#username').val(getEncodeCookie('username'));
+			$('#password').val(getEncodeCookie('password'));
+			$('#autologin').attr('checked', true);
+			$('#rememberuser').attr('checked', true);
+			//$('#loginSubmit').trigger('click');
+		}
+		//如果cookie同时有用户名和密码，则勾上"自动登录","记住用户名"
+		if($.cookie('username') && $.cookie('password')){
+			$('#username').val(getEncodeCookie('username'));
+			$('#password').val(getEncodeCookie('password'));
+			$('#autologin').trigger('click');
+		}
+	}
+
+	$(document).ready(function () {
+		// cookie 记录
+		$('#rememberuser').click(function () {
+			var name = $('#username');
+			if ($(this).is(':checked')) {
+				if (isEmpty(name.val())) {
+					layer.msg('{$Think.lang.L9096}',{
+						shift:6,
+					});
+					$(this).attr('checked', false);
+				} else {
+					setEncodeCookie('username',name.val());
+					$.cookie('rememberuser', 1, {expires: 30,path:'/'});
+				}
+			} else {
+				$.cookie('rememberuser', null, {path:'/'});
+				$.cookie('username', null, {path:'/'});
+			}
+		});
+		$('#autologin').click(function () {
+			var ru = $('#rememberuser'), name = $('#username'), pass = $('#password');
+			if (isEmpty(pass.val()) || isEmpty(name.val())) {
+				layer.msg('{$Think.lang.L9097}',{
+					shift:6,
+				});
+				$(this).attr('checked', false);
+			} else {
+				if ($(this).is(':checked')) {
+					ru.attr('checked', true);
+					//$.cookie('autologin', 1, { expires: 7 });
+					$.cookie('autologin', 1, { expires: 7, path:'/' });
+					$.cookie('rememberuser', 1, {expires: 30,path:'/'});
+					setEncodeCookie('username',name.val());	//以asc码+8的方式加密cookie
+					setEncodeCookie('password',pass.val());
+					//$.cookie('username', name.val(), { expires: 7, path:'/'});
+					//$.cookie('password', pass.val(), { expires: 7, path:'/' });
+				} else {
+					ru.attr('checked', false);
+					$.cookie('username', null, {path:'/'});
+					$.cookie('autologin', null, {path:'/'});
+					$.cookie('password', null, {path:'/'});
+				}
+			}
+		});
+		// 登陆
+		$('#loginSubmit').click(function () {
+			var name = $('#username'), pass = $('#password');
+			if($('#rememberuser').is(':checked')){
+				$.cookie('rememberuser', 1, {expires: 30,path:'/'});
+				setEncodeCookie('username',name.val());
+			}
+			if($('#autologin').is(':checked')){
+				$.cookie('autologin', 1, { expires: 7, path:'/' });
+				setEncodeCookie('username',name.val());	//以asc码+8的方式加密cookie
+				setEncodeCookie('password',pass.val());
+			}
+			if (!isEmpty(name.val()) && !isEmpty(pass.val())) {
+				if (checkuser() && checkpas()) {
+					$("#form1").submit();
+				} else {
+					layer.msg('用户名和密码没有通过验证！',{
+					shift:6,
+				});
+				}
+			} else {
+				layer.msg('{$Think.lang.L9097}',{
+					shift:6,
+				});
+				$('#username').focus();
+			}
+		});
+		$('.pwd').click(function(){
+			layer.alert('为了账户安全请联系客服帮助修改！<br />客服电话：{:C('site_contact')}');
+		});
+		init();
+	});
+
+</script>
+<!-- login -->
+<div class="login" 	<if condition="$LoginAdList['images_path']"> style="background:url(__PUBLIC__/{$LoginAdList['images_path']}) no-repeat left top;"  </if>>
+	<div class="container">
+		<div class="col-md-5 col-md-offset-7 col-sm-5 col-sm-offset-7">
+			<form class="form-horizontal loginK" action="{:U('wxbind')}" method="post"  id="form1">
+				<div class="element">
+					<h5>首次微信登录请进行绑定</h5>
+					<div class="form-group">
+						<label for="inputUsername" class="col-md-3 control-label">用户名：</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" id="username" placeholder="用户名" name="username">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputPassword" class="col-md-3 control-label">登录密码：</label>
+						<div class="col-md-9">
+							<input type="password" class="form-control" id="password" placeholder="" name="password" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-4"></div>
+						<div class="col-md-4 padno">
+							<div class="checkbox">
+							<label>
+								<input type="checkbox" id="rememberuser" value="1" name='rememberuser'> 记住用户名
+							</label>
+							</div>
+						</div>
+						<div class="col-md-4 padno">
+							<div class="checkbox">
+								<label>
+									<a class="pwd" >忘记密码？</a>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-offset-3 col-md-9">
+							<button type="button" class="btn btn-warning" style="width: 100%;" id='loginSubmit'>登录</button>							
+						</div>
+						<div class="col-md-offset-3 col-md-9">
+							
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- login end //-->

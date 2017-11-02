@@ -1,0 +1,82 @@
+<!--裸钻列表-->
+<notempty name="goodsList['luozuan']">
+<div class="info luozuan">
+	<div class="title">证书货产品:</div>
+	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+            <th>证书号</th>
+            <th>采购单价(&yen;)</th>
+            <th>4C属性(重量/颜色/净度/切工)</th>
+            <th>订购数量(颗)</th>
+            <if condition="!$order_id"><th>操作</th></if>
+        </tr>
+        <volist name="goodsList['luozuan']" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'} list">
+            <td>
+                {$vo.goods_sn_a}
+                <if condition="!$order_id and $vo.have_goods lt 1">(<span style="color:red">无货</span>)</if>
+            </td>
+            <td><if condition="!$order_id">{$vo.goods_price2}<else />{$vo.goods_price}</if></td>
+            <td>{$vo.4c}</td>
+            <td>
+            	<if condition="!$order_id">{$vo.goods_number}</if>
+	            <range name="orderInfo.order_status" value="-1,-2,0" type="in">
+	            	{$vo.goods_number}
+	            <else />
+	            	{$vo.goods_number_up}
+	            </range>
+            </td>
+            <if condition="!$order_id"><td><a href="{:U('Admin/Order/purchaseOrderdel?id='.$vo['id'])}" id="isDel">删除</a></td></if>
+        </tr>
+        </volist>
+        <tr class="count">
+            <td></td>
+            <td></td>
+            <if condition="!$order_id"><td></td></if>
+        	<td class="tr"><span>采购价合计:</span></td>
+            <td class="tl"><span>&yen;</span><span id="luozuanTotal">{$luozuanPrice}</span></td>
+        </tr>
+	</table>
+    <div class="clear"></div>
+</div>
+<if condition="$order_id">
+<range name="orderInfo.order_status" value="-1,-2,0" type="notin">
+<div class="info">
+	<div class="title">证书货结算:</div>
+     <eq name="periodList.luozuan.order_id" value="$orderInfo.order_id">
+        <ul class="periodList">
+        <li class="bg">
+            <span>做{$periodList.luozuan.period_num}期支付&nbsp;&nbsp;&nbsp;</span>
+            <span>应支付总金额:&yen;{$luozuanPrice}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span>逾期利率:0.0{$periodList.luozuan.period_overdue}%</span>
+        </li>
+        <volist name="receivablesList.luozuan" id="vo">
+        	<li>
+            <span>第{$vo.period_current}期</span>
+            <span>{$vo.period_day}天内</span>
+            <span>应支付:&yen;{$vo.receivables_price}</span>
+            <span>已支付:&yen;{$vo.payment_price}</span>
+            <eq name="vo.receivables_status" value="1"><span>&nbsp;&nbsp;&nbsp;未支付</span></eq>
+            <eq name="vo.receivables_status" value="2"><span>&nbsp;&nbsp;&nbsp;支付部分</span></eq>
+            <eq name="vo.receivables_status" value="3"><span>&nbsp;&nbsp;&nbsp;已完成支付</span></eq>
+            </li>
+        </volist>
+        </ul>
+    <else />
+        <ul class="periodList">
+        <li><span>全款支付，应支付金额：{$luozuanPrice}</span>
+        <volist name="receivablesList.luozuan" id="vo">
+            <span>已支付:&yen;{$vo.payment_price}</span>
+            <eq name="vo.receivables_status" value="1"><span>&nbsp;&nbsp;&nbsp;未支付</span></eq>
+            <eq name="vo.receivables_status" value="2"><span>&nbsp;&nbsp;&nbsp;支付部分</span></eq>
+            <eq name="vo.receivables_status" value="3"><span>&nbsp;&nbsp;&nbsp;已完成支付</span></eq>
+        </volist>
+        </li>
+        </ul>
+    </eq>
+</div>
+</range>
+</if>
+<div class="info period_list" id="luozuan_period_list"></div>
+</notempty>
+<!------------------裸钻列表结束------------------->

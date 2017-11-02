@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/user.css">
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/user.js"></script>
+<script src="__JS__/m_back.js"></script>
+<script src="__JS__/public.js"></script> 
+<link rel="stylesheet" href="__CSS__/cart.css">
+<script src="__JS__/public.js"></script> 
+<script src="__JS__/layer-mobile/layer.js"></script> 
+<script src="__JS__/common.js"></script>
+
+<!-- 商品滑动 -->
+<link rel="stylesheet" href="__CSS__/swiper.min.css">
+<style>
+.swiper-container {
+        width: 100%;
+        height: 300px;
+        margin: 20px auto;
+    }
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+</style>
+<title>我的订单-己完成</title>
+</head>
+
+<body class="wrap-bg">
+	<!-- Header -->
+    <header class=" header text-center">
+        <a href="/user" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    	我的订单
+    </header>
+
+    <nav class="navbar navbar-default footer user-order-empty user-order-waitpay" role="navigation">
+          <ul class="nav">
+             <li value="1"><a>待支付</a></li>
+             <li value="3"><a>待发货</a></li>
+             <li value="4"><a>待收货</a></li>
+             <li value="6"><a>完成</a></li>
+             <li class="active" value="-2"><a>全部</a></li> 
+          </ul>
+    </nav>
+    <!-- Header END //-->
+    
+    <!-- Main -->
+    <div class="container-fluid">
+
+        <div class="search-box">
+            <div class="order-search">
+                <div class="form-group has-success has-feedback">
+                  <div class="input-group">
+                    <span class="input-group-btn">
+                        <button  class="btn btn-default btn-sub" type="button"><span  onclick="submit_data('777')" class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                    <input type="text" class="form-control" placeholder="订单编号">
+                </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="order-list">
+            <div class="col-xs-12">
+                 <div class="panel panel-default "></div>
+			</div>
+			<div  id="pullUp" style="text-align:center"><span   style="font-size:18px" > </span></div>
+		</div>
+    <!-- Main END //-->
+    
+    <!-- Swiper JS -->
+    <script src="__JS__/swiper.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script>
+	var page='';
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        slidesPerView: 3,
+        paginationClickable: true,
+        spaceBetween: 30,
+        freeMode: true
+    });
+	
+ 
+	submit_data(page);		//初始化
+	
+	$(".nav li").bind("click",function(){							//定义点击active
+				$(this).siblings("li").removeClass("active");		 
+				$(this).addClass("active");
+				submit_data();
+			});
+			
+	function submit_data(page){
+		status=($(".nav .active").val());
+		content=($(".form-control").val());
+		if(page=='777'){
+			if (content =="" || content ==undefined || content ==null) { tan ('订单编号不能为空！');return false;}	
+			if(isNaN(content)){	tan ('请输入正确用于模糊查询的订单编号！');return false;}	
+			page='0';
+		}
+		$.post("/User/order_api",{Action:"POST",order_tips:content,order_status:status,n:page},function(data){
+			var html="";
+			var emptyhtml='';
+			var emptyhtmsl='';
+			if(data.data && data.data != ''&& data.count!='0'){
+					data.data.forEach(function(e){
+						html +="<div class='panel panel-default'>";
+						html += "<div class='panel-heading'><h6>'订单编号:'"+e.order_sn+" <span class='pull-right red'>"+e.status_txt+"</span></h6></div>";
+						html += "<div class='panel-body'>";   
+						html += "<div id='gmap-street-view'>";
+						html += "<div class='swiper-container spimg'>";
+						html += "<ul class='swiper-wrapper'>";
+						html += "<li><span class='swiper-slide'><img src='/Public/"+e.thumb+"' alt=''></span></li>";
+						html += "<div class='clear'></div>";
+						html += "</ul></div>";
+						html += "<div class='spsum'> 共<span class='red'>"+e.count+"</span>件商品 <i class='glyphicon glyphicon-chevron-right'></i>  </div>";
+						html += " <div class='clear'></div>";
+						html += " </div><p>订单总额：￥<span>"+e.price+"</span> <span class='pull-right'><button class='btn btn-cart btn-pad'>删除</button></span></p></div></div></div>";
+						html += "</ul></div>";
+					});
+					if(data.tip==1){									//判断是否是第一次初始化
+						$(".col-xs-12").html(html);
+					}else if(data.tip==2){
+						$(".col-xs-12").append(html);
+					}					 
+					$("#pullUp").html(emptyhtmsl);
+				}else{
+					if(data.count=='0'){
+						emptyhtml +="<div class='empty' style='text-align:center;margin-top: 5em;'>";
+						emptyhtml+="<img src='__IMG__/user-order-empty_03.png' alt='' width='120'>";
+						if(content==""){
+							emptyhtml+="<h3>您还没有相关的订单...</h3>";
+						}else{
+							emptyhtml+="<h3>没有搜索到符合的数据...</h3>";
+						}
+						emptyhtml+="<p class='text-muted'>快去挑点宝贝吧</p>";
+						emptyhtml+="<a href='/Goods' style='border:1px solid #fd7d16; color:#fd7d16; background:transparent;padding: 6px 16px;' class='btn btn-lg btn-default'>随便逛逛</a></div>";
+						$(".col-xs-12").html(emptyhtml);
+					}
+
+					if(data.count>10 && data.tip=='2'){
+						html+=" <span   style='font-size:18px' >没有更多数据了...</span>"
+						$("#pullUp").html(html);
+					}
+				}
+			});
+
+	}		
+	
+		window.onscroll = function () { 
+		if (getScrollTop() + getClientHeight() == getScrollHeight()) { 
+			if( $('.panel-heading').length<'10'){return false;}
+			if( $('.panel-heading').length=='10'){page='1';}
+			submit_data(page++);
+		} 
+	}
+			
+			
+ alert
+	
+    </script>
+
+
+</body>
+</html>

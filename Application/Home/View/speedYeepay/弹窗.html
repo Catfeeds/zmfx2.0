@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="js/jquery-1.12.3.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+</head>
+<body style="padding: 20px;">
+	<!-- Large modal -->
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Large modal</button>
+
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h5 class="modal-title" id="gridSystemModalLabel">Modal title</h5>
+	      </div>
+	      <div class="container-fluid">
+	      	<div class="row">
+	      		<div class="col-md-12">
+	      			<p>内容...</p>
+	      		</div>
+	      	</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- Small modal -->
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
+
+	<div class="modal fade bs-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+	        <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h5 class="modal-title" id="gridSystemModalLabel">Modal title</h5>
+	        </div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12">
+						<p>内容...</p>
+					</div>
+				</div>
+			</div>
+	    </div>
+	  </div>
+	</div>
+	<script>
+	// 通过js调用弹窗
+	$(function(){
+		/*$('#myModal').modal({
+		  keyboard: false
+		})*/
+	})
+	</script>
+</body>
+</html>

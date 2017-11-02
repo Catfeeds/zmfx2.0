@@ -1,0 +1,51 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<div class="baikeList">
+    <div class="box here"><span>您当前的位置:钻石百科>{$categoryInfo['catname']}</span></div>
+    <div class="listLeft">
+    	<div class="list box mb10">
+            <ul>
+            	<if condition="articleList">
+            	<volist name="articleList" id="vo">
+                <li><a href="{:U('Home/Article/detail?aid='.$vo['aid'])}"> <span>{$vo.title|msubstr=0,60,'utf-8'}</span> <font>{$vo.addtime|date="Y-m-d H:i",###}</font>
+                    <div class="clear"></div>
+                    </a></li>
+                </volist>
+                </if>
+            </ul>
+        </div>
+        <div class="page">{$page}</div>
+    </div>
+    <div class="listRight">
+		<div class="box top">
+            <div class="title">点击热榜</div>
+            <ul>
+            	<if condition="$hot_article">
+            	<volist name="hot_article" id="vo">
+                <li><a href="{:U('Home/Article/detail?aid='.$vo['aid'])}"> <span>{$vo.title|msubstr=0,20,'utf-8'}</span></a></li>
+                </volist>
+                </if>
+            </ul>
+        </div>
+		<volist name="categorys" id="vo" key="key">
+		<div class="box baikeCat">
+			<div class="title"><a href="{:U('Home/Article/articleList?cat_id='.$vo['cid'])}">{$vo.catname}</a></div>
+			<if condition="$vo['childCategory']">
+			<ul>
+				<volist name="vo['childCategory']" id="v">
+					<li><a href="{:U('Home/Article/articleList?cat_id='.$v['cid'])}">{$v.catname}</a></li>
+				</volist>
+				<div class="clear"></div>
+			</ul>
+			</if>
+		</div>
+		</volist>
+	</div>
+    <div class="clear"></div>
+</div>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

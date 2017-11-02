@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>应收款记录</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.css" />
+<script type="text/javascript" src="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/datepicker-tw.js"></script>
+<script type="text/javascript">
+$(function() {
+	$( "#from" ).datepicker($.datepicker.regional[ "zh-TW" ] );
+	$( "#end" ).datepicker($.datepicker.regional[ "zh-TW" ] );
+});
+</script>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：销售统计</h3>
+    </div>
+    <div class="filter">
+    <form action="{:U('Admin/Statistics/salesStatistics')}" method="get">
+        <div class="fl">订单编号：</div>
+        <input class="input" type="text"  style='width:130px' name="order_sn"  value="{$order_sn}"/>
+		 <div class="fl">货品类型：</div>
+		 <select name="goods_type" class="fl">
+				<option value="0" selected>全部</option>
+				<option value="1" <eq name="goods_type" value="1">selected</eq>>证书货</option>
+				<option value="2" <eq name="goods_type" value="2">selected</eq>>散货</option>
+				<option value="3" <eq name="goods_type" value="3">selected</eq>>珠宝成品</option>
+				<option value="4" <eq name="goods_type" value="4">selected</eq>>钻托定制</option>
+				<option value="5" <eq name="goods_type" value="5">selected</eq>>代销货（定制）</option>
+				<option value="6" <eq name="goods_type" value="6">selected</eq>>代销货（成品）</option>
+        </select>
+		 <div class="fl">客户名称：</div><input type='text' style='width:70px' name='Uname' value="{$Uname}">
+		 <div class="fl">时间：</div>
+			<input type='text' name='startTime' style='width:70px' class='datepicker' id="from" value="{$startTime}" ><div class="fl">至</div>
+			<input type='text' name='endTime' style='width:70px' class='datepicker' id="end" value="{$endTime}">
+		<if condition="!$is_yewuyuan">
+		 <div class="fl">业务员：</div>	
+            <select name="parent_id" class="fl">
+                <option value="0">所有业务员</option>
+                <volist name="businessList" id="vo">
+                    <option value="{$vo.user_id}" <eq name="parent_id" value="$vo['user_id']">selected</eq>>{$vo.nickname}</option>
+                </volist>
+        </select>
+		</if>
+        <div class="fl">&nbsp;</div>
+        <input class="button" type="submit" value="查询" />
+    </form>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr>
+        	<th>统计金额：</th>
+        	<th colspan='3'>￥:{$GP}元
+			</th>
+        	<th>统计数量：</th>
+        	<th colspan='3'>{$GN}个</th>
+        </tr>
+        <tr class="top">
+            <th>订单号</th>
+            <th>货品号</th>
+            <th>货品名称</th>
+            <th>时间</th>
+            <th>数量</th>
+            <th>金额</th>
+        </tr>
+        <volist name="goodsList" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+            <td><a href="{:U('Admin/Order/orderInfo?order_id='.$vo['order_id'])}" showOrder="{$vo.order_id}">{$vo.order_sn}</a></td>
+            <td>{$vo.certificate_no}</td>
+            <td><if condition="$vo.goods_name eq '' ">{$vo.certificate_no}<else />{$vo.goods_name}</if></td>
+            <td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+            <td>{$vo.goods_number}</td>
+            <td>{$vo.goods_price}</td>
+        </tr>
+        </volist>
+    </table>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>

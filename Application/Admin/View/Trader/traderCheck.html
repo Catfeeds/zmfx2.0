@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>分销商审核</title>
+<script type="text/javascript" src="__PUBLIC__/Js/Jquery/jquery.validate.js"></script>
+<script type="text/javascript" src="__JS__/checkTraderForm.js"></script>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：分销商审核</h3>
+    </div>
+    <form action"{:U('Admin/Trader/traderCheck?tid='.$info['tid'])}" method="post" enctype="multipart/form-data" id="checkTraderForm">
+    	<div style="padding:50px 150px;">
+
+            <div class="info">
+                <div class="title">分销商名称:</div>
+                <input type="text" name="trader_name" disabled="true" value="{$info.trader_name}" style="width:300px;"/>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">管理账户:</div>
+                <input type="text" name="user_name" value="" class="fl"  style="width:300px;"/>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">密码:</div>
+                <input type="password" name="password" value="" class="fl"  style="width:300px;"/>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">确认密码:</div>
+                <input type="password" name="repassword" value="" class="fl"  style="width:300px;"/>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">站点域名:</div>
+                <input type="text" name="domain" value="{$info.domain}" class="fl" style="width:300px;"/>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+	            <div class="title">电脑站模板:</div>
+	            <select name="template_id" style="width: 312px;">
+	            	<volist name="templateList[1]" id="vo">
+	            		<option value="{$vo.template_id}">{$vo.template_name}</option>
+	            	</volist>
+	            </select>
+	        	<div class="clear"></div>
+	        </div>
+	        <div class="info">
+	            <div class="title">手机站模板:</div>
+	        	<select name="m_template_id" style="width: 312px;">
+	        		<volist name="templateList[2]" id="vo">
+	            		<option value="{$vo.template_id}">{$vo.template_name}</option>
+	            	</volist>
+	            </select>
+	            <div class="clear"></div>
+	        </div>
+	        <volist name="configList" id="vo">
+                <eq name="vo['config_type']" value="1">
+	                <div class="info">
+	                    <div class="title">{$vo.config_key_name}:</div>
+	                    <input name="{$vo.config_key}" type="text" value="{$vo.config_value}" style="width:300px;">
+	                </div>
+                </eq>
+                <eq name="vo['config_type']" value="2">
+	                <div class="info">
+	                    <div class="title">{$vo.config_key_name}:</div>
+	                    <volist name="vo['config_option']" id="id">
+	                    	<input type="radio" name="{$vo.config_key}" value="{$id.key}" <eq name="vo['config_value']" value="$id['key']">checked</eq>>{$id.val}
+	                    </volist>
+	                </div>
+                </eq>
+                <eq name="vo['config_type']" value="3">
+	                <div class="info">
+	                    <div class="title">{$vo.config_key_name}:</div>
+	                    <volist name="vo['config_option']" id="id">
+	                    	<input type="checkbox" name="{$vo.config_key}[]" value="{$id.key}" <if condition="in_array($id['key'],$vo['config_value'])">checked</if>>{$id.val}
+	                    </volist>
+	                </div>
+                </eq>
+                
+                <eq name="vo['config_type']" value="4">
+	                <div class="info">
+	                    <div class="title">{$vo.config_key_name}</div>
+	                    <label>
+	                    	<input type="radio" name="{$vo.config_key}" value="1"<eq name="vo.config_value" value="1">checked</eq>/>开启
+	                    </label>
+	                    <label>
+	                    	<input type="radio" name="{$vo.config_key}" value="0"<eq name="vo.config_value" value="0">checked</eq>/>关闭
+	                    </label>
+	                </div>
+                </eq>
+                
+                <eq name="vo['config_type']" value="6">
+	                <div class="info">
+	                    <div class="title">{$vo.config_key_name}:</div>
+	                    <input name="{$vo.config_key}" type="file" value="" style="width: 300px;"/>
+	                </div>
+	                <if condition="$vo['config_value']">
+		            	<div class="info"><div class="title">展示:</div><img src="/Public/{$vo.config_value}" style="border: 1px solid #d9d9d9; padding: 3px; background: #313036; max-width: 304px;"></div>
+		            </if>
+                </eq>
+            </volist>
+            <div class="clear"></div>
+            <div class="info">
+            <div class="title">&nbsp;</div>
+            <input type="submit" class="button fl" value="确认开通">
+            <input type="reset" class="button fl ml10" value="重置数据">
+            <div class="clear"></div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

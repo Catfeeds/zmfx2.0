@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>编辑/添加分销商</title>
+<script type="text/javascript" src="__JS__/traderInfo.js"></script>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：分销商信息</h3>
+    </div>
+    <form action"{:U('Admin/Trader/traderInfo?tid='.$traderInfo['tid'])}" method="post">
+    	<div style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">分销商名称:</div>
+                <input name="trader_name" type="text" value="{$traderInfo.trader_name}">
+            </div>
+            <div class="info">
+                <div class="title">公司名称:</div>
+                <input name="company_name" type="text" value="{$traderInfo.company_name}" style="width: 300px;">
+            </div>
+            <div class="info">
+                <div class="title">绑定域名:</div>
+                <input name="domain" type="text" value="{$traderInfo.domain}">
+            </div>
+			<div class="info">
+                <div class="title">下级证书货白钻供货加点:</div>
+                <input name="luozuan_advantage" type="text" value="{$traderInfo.luozuan_advantage}" placeholder="10点就表示 +10%">
+            </div>
+			<div class="info">
+                <div class="title">下级证书货彩钻供货加点:</div>
+                <input name="caizuan_advantage" type="text" value="{$traderInfo.caizuan_advantage}" placeholder="10点就表示 +10%">
+            </div>
+            <div class="info">
+                <div class="title">下级散货供货加点:</div>
+                <input name="sanhuo_advantage" type="text" value="{$traderInfo.sanhuo_advantage}"  placeholder="10点就表示 +10%">
+            </div>
+            <div class="info">
+                <div class="title">下级代销货货加点:</div>
+                <input name="consignment_advantage" type="text" value="{$traderInfo.consignment_advantage}" placeholder="10点就表示 +10%">
+            </div>
+            <div class="info">
+                <div class="title">联系人:</div>
+                <input name="contacts" type="text" value="{$traderInfo.contacts}">
+            </div>
+            <div class="info">
+                <div class="title">联系电话:</div>
+                <input name="phone" type="text" value="{$traderInfo.phone}">
+            </div>
+            <neq name="traderInfo.status" value="1">
+                <div class="info" id="photos">
+                    <div class="title">三证图片:</div>
+                    <img data-key="0" src="{$traderInfo.business_license_img}" height="150">
+                    <img data-key="1" src="{$traderInfo.business_tax_img}" height="150">
+                    <img data-key="2" src="{$traderInfo.business_code_img}" height="150">
+                    <div class="clear"></div>
+                </div>
+            </neq>
+            <div class="info">
+                <div class="title">分销地区:</div>
+                <span>{$province_name}{$city_name}&nbsp;</span>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">备注:</div>
+                <textarea name="note">{$traderInfo.note}</textarea>
+            </div>
+            <div class="info">
+                <div class="title">注册资金:</div>
+                <eq name="traderInfo.funds" value="1"><span>20-50万</span></eq>
+                <eq name="traderInfo.funds" value="2"><span>50-100万</span></eq>
+                <eq name="traderInfo.funds" value="3"><span>100-500万</span></eq>
+                <eq name="traderInfo.funds" value="4"><span>500-1000万</span></eq>
+				<eq name="traderInfo.funds" value="5"><span>1000万以上</span></eq>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="保存">
+                <input type="reset" class="button fl ml10" value="重置">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

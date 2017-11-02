@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>手工入款</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.css" />
+<script type="text/javascript" src="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/datepicker-tw.js"></script>
+<script type="text/javascript">
+function submitForm(){
+	if(confirm("确定要入款或者修改收款单吗？"))return true;
+	else return false;
+}
+$(function() {
+	$( "#from" ).datepicker( $.datepicker.regional[ "zh-TW" ] );
+});
+</script>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：手工入款</h3>
+    </div>
+   	<form action="{:U('Admin/Business/payMoney?payment_id='.$payment_id)}" onsubmit="return submitForm();" method="post" enctype="multipart/form-data">
+    	<div class="payMoney">
+            <div class="info">
+                <div class="title">订单编号:</div>
+                <if condition="$payment_id">
+					{$info.order_sn}
+					<input type="hidden" name="order_sn" value="{$info.order_sn}"/>
+                <else />
+                	<if condition="$order_sn">
+	                    {$order_sn}
+	                    <input type="hidden" name="order_sn" value="{$order_sn}"/>
+                    <else />
+                    <input type="text" name="order_sn">
+                    </if>
+                </if>
+            </div>
+            <div class="info">
+                <div class="title">支付方式:</div>
+                <if condition="$payment_id and $info['payment_status'] != 1">
+                <span>{$info.mode_name}</span>
+                <else />
+                <select name="payment_mode" id="payment_mode" style="width: 158px;">
+                	<volist name="payModeList" id="vo">
+                    	<option value="{$vo.mode_id}"<eq name="info['payment_mode']" value="$vo['mode_id']">selected</eq>>{$vo.mode_name}</option>
+                    </volist>
+                </select>
+                </if>
+            </div>
+            <div class="info">
+                <div class="title">收款金额:</div>
+                <if condition="$payment_id and $info['payment_status'] != 1">
+					<span class="fl">&yen;{$info.payment_price}</span>
+                <else />
+                	<input name="payment_price" type="text" style="width: 100px;" class="fl" value="{$info.payment_price}">
+                </if>
+                <div class="Ftitle fl">折扣金额:</div>
+                <if condition="$payment_id and $info['payment_status'] != 1">
+					<span class="fl Ftitle">&yen;{$info.discount_price}</span>
+                <else />
+                	<if condition="$discount">
+                	<input name="discount_price" style="width: 100px;" type="text" class="fl ml10" value="{$info.discount_price}">
+                	<else />
+                	<span class="fl ml10">你没有入款折扣权限</span>
+                	</if>
+                </if>
+                <if condition="$payment_id and $info['payment_status'] == 2">
+	                <div class="Ftitle fl">截余金额:</div>
+	                <span class="fl Ftitle">&yen;{$info.more_price}</span>
+	                <div class="Ftitle fl">实际核销金额:</div>
+	                <span class="fl Ftitle">&yen;{$info.verification_price}</span>
+                </if>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">收款账号:</div>
+                <if condition="$payment_id and $info['payment_status'] != 1">
+									<span>{$info.payment_user}&nbsp;</span>
+                <else />
+                		<input name="payment_user" type="text" style="width:300px;" value="{$info.payment_user}">
+                </if>
+            </div>
+            <div class="info">
+                <div class="title">收款时间:</div>
+                <if condition="$payment_id and $info['payment_status'] != 1">
+					<span>{$info.create_time|date="Y-m-d",###}&nbsp;</span>
+                <else />
+                	<if condition="$info['payment_status'] == 1">
+                    <input name="create_time" id="from" type="text" style="width: 300px;" class="datepicker" value="{$info.create_time|date="Y-m-d",###}">
+                	<else />
+                	<input name="create_time" id="from" type="text" style="width: 300px;" class="datepicker">
+                	</if>
+                </if>
+            </div>
+            <notempty name="receivablesList">
+            <div class="info">
+            	<div class="title">订单应付:</div>
+                <ul class="periodList">
+	                <volist name="receivablesList" id="vo">
+	                <li>
+	                    <span style="width: 60px;">第{$vo.period_current}期</span>
+	                    <span style="width: 70px;">
+		                	<eq name="vo.period_type" value="1">证书货</eq>
+					            <eq name="vo.period_type" value="2">散货</eq>
+					            <eq name="vo.period_type" value="3">成品货</eq>
+					            <eq name="vo.period_type" value="5">代销货</eq>
+					            <eq name="vo.period_type" value="11">逾期</eq>
+					            <eq name="vo.period_type" value="12">补差价</eq>
+		                	</span>
+	                    <span style="width: 60px;">{$vo.period_day}天内</span>
+	                    <span style="width: 150px;">应支付:&yen;{$vo.receivables_price}</span>
+	                    <span style="width: 150px;">已支付:&yen;{$vo.payment_price}</span>
+	                    <eq name="vo.receivables_status" value="1"><span>&nbsp;&nbsp;&nbsp;未支付</span></eq>
+	                    <eq name="vo.receivables_status" value="2"><span>&nbsp;&nbsp;&nbsp;支付部分</span></eq>
+	                    <eq name="vo.receivables_status" value="3"><span>&nbsp;&nbsp;&nbsp;已完成支付</span></eq>
+                  </li>
+                	</volist>
+	                <li class="bottom">
+	                	<span style="width: 180px;">总应付：&yen;{$total}</span>
+	                	<span style="width: 180px;">首期应付：&yen;{$firstPhase}</span>
+	                	<if condition="round($balanceDue) gt 0">
+	                	<span style="width: 180px;">尾款应付：&yen;{$balanceDue}</span>
+	                	</if>
+	                </li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            </notempty>
+            <if condition="$payment_id and $info['payment_status'] != 1"><else />
+            <div class="info">
+                <div class="title">上传凭证:</div>
+                <input name="template_img" type="file" style="width:300px;">
+            </div>
+            </if>
+            <if condition="$payment_id">
+            <div class="info">
+            	<div class="title">收款凭证:</div>
+                <if condition="$info['payment_voucher']">
+            		<img src="/Public/{$info.payment_voucher}" style="max-width: 55%; max-height: 600px;  border: 1px solid #d9d9d9;">
+            	<else />
+            		<span>没有上传凭证</span>
+            	</if>
+            </div>
+            </if>
+            <div class="info">
+                <div class="title">支付备注:</div>
+                <if condition="$info['payment_status'] != 2">
+                <textarea name="note">{$info.payment_note}</textarea>
+                <else />
+                <span>{$info.payment_note|default="没有添加备注"}</span>
+                </if>
+            </div>
+            <if condition="!$payment_id">
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="入款">
+                <input type="reset" class="button fl ml10" value="重置">
+                <div class="clear"></div>
+            </div>
+            <elseif condition="$payment_id and $info['payment_status'] == 1" />
+            <eq name="info.type" value="1">
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" value="修改收款" style="height: 26px; vertical-align: middle; margin-right: 35px; cursor: pointer;" />
+                <a href="{:U('Admin/Business/checkPayment?payment_id='.$payment_id)}" id="isConfirm" class="btn_common">财务通过</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="{:U('Admin/Business/quxiaoPayment?payment_id='.$payment_id)}" id="isConfirm" class="btn_common">作废收款单</a>
+                <div class="clear"></div>
+            </div>
+            </eq>
+            </if>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<notempty name="purchaseOrderDeliveryList">
+<div class="info">
+	<div class="title">发货信息:</div>
+	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+		<tr class="top">
+			<th width="7%">发货单id</th>
+			<th width="57%">发货产品</th>
+			<th width="10%">发货金额</th>
+			<th width="15%">发货时间</th>
+			<th width="8%">操作</th>
+		</tr>
+		<volist name="purchaseOrderDeliveryList" id="vo">
+		<tr>
+			<td>{$vo.delivery_id}</td>
+			<td>
+				<volist name="vo.delivery" id="io">
+					<div style=" text-align:left; background: #F9F9F9; border: 1px solid #D9D9D9; height: 30px; width: 95%; margin: 5px auto;">
+						<span style="width: 230px;padding-left: 10px; display: inline-block;">产品编号：{$io.certificate_no}</span>
+						<span style="width: 70px; display: inline-block;">数量：{$io.goods_number}</span>
+						<span style="width: 130px; display: inline-block;">&nbsp;&nbsp;
+							类型：
+							<eq name="io.goods_type" value="1">证书货</eq>
+							<eq name="io.goods_type" value="2">散货</eq>
+							<eq name="io.goods_type" value="3">代销-成品</eq>
+							<eq name="io.goods_type" value="4">代销-定制</eq>
+						</span>
+						<if condition="$io['return_number']">
+							<span style="width: 80px; display: inline-block;">退货数量：<span class="red">{$io.return_number}</span></span>
+						</if>
+					</div>
+				</volist>
+			</td>
+			<td>{$vo.goods_price}</td>
+			<td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+			<td>
+				<neq name="vo.deliveryWhole" value="1">
+					<eq name="vo.confirm_type" value="1">
+						<span>已收货</span>
+					<elseif condition="$vo['confirm_type'] == 2"/>
+						<span>你已收货</span>
+					<else />
+						<a href="{:U('Admin/Order/confirmDeliveryOne?delivery_id='.$vo['delivery_id'])}">确认收货</a>
+					</eq>
+				<else />
+					<span>全部有退货</span>
+				</neq>
+			</td>
+		</tr>
+		</volist>
+	</table>
+	<div class="clear"></div>
+</div>
+</notempty>

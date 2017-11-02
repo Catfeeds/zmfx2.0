@@ -1,0 +1,43 @@
+<include file="Public:header" />
+<body>
+    <section class="orders-status orders-checkstand">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>收银台</h2>
+            </div>
+        </header>
+
+        <section class="wrapper">
+            <!-- 支付信息 -->
+            <div class="user-order">
+                <p class="borderb">订单编号：{$orderInfo['order_sn']}</p>
+                <p class="borderb">总金额：<span class="rmb">￥{$orderInfo['order_price']}</span></p>
+                <p class="borderb">线下支付信息</p>
+                <div class="userdata">
+					<volist name="LinePayMode" id="vo">
+					  <p>户&nbsp;&nbsp;&nbsp;名：{$vo.aname}</p>
+					  <p>账&nbsp;&nbsp;&nbsp;号：{$vo.abank}</p>
+					  <p>开户行：{$vo.tback}</p>
+					</volist>
+                    <p>在“个人中心”我的订单管理 查看订单信息</p>
+                </div>
+            </div>
+            <!-- 支付信息 end -->
+
+            <!-- 用户操作 -->
+            <div class="operation">
+                <p><button type="button" class="operation-btn" onclick="window.location='/User/paymentUpload/order_id/{$orderInfo['order_id']}'">上传付款凭证</button></p>
+                <p><a   onclick="window.location='/User/onlineselect/order_id/{$orderInfo['order_id']}'" class="operation-btn to-play">去付款</a></p>
+            </div>
+            <!-- 用户操作 end -->
+
+        </section>
+
+    </section>
+	<include file="Public:foot" />
+</body>
+</html>

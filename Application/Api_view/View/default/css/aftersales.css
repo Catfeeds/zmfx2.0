@@ -1,0 +1,74 @@
+
+/* 售后服务 */
+.red { color: red;}
+.after-sales-list { background: #FFF; border-top: 1px solid #ECECEC; border-bottom: 1px solid #ECECEC; margin-bottom: 10px;}
+.after-sales-list .shouhou { margin-bottom: -1px;}
+.after-sales-head span { display: inline-block; width: 50%; text-align: center; float: left;}
+.after-sales-head span a { display: inline-block; padding: 12px 8px; font-size: 15px;}
+.after-sales-head span:first-child {}
+.after-sales-head span.active a { color: #02469B; border-bottom: 3px solid #396EB1;}
+.after-sales-list .thead,
+.after-sales-list .tbody { border-bottom: 1px solid #ECECEC; padding: 10px;}
+.after-sales-list .tfoot { padding: 10px;}
+.after-sales-list .slist-tfoot { border-bottom: 1px solid #ECECEC; padding-top: 0;}
+.after-sales-list .slist-tbody { border-bottom: none;}
+.after-sales-list .tfoot small { color: #999;}
+.after-sales-list .thead { padding-bottom: 10px;}
+.after-sales-list .thead h6 { margin: 5px 0;}
+.after-sales-box .after-sales-head a { color: #676767;}
+.after-sales-list .tbody .cbimg { width: 30%;}
+.after-sales-list .tbody .after-data { width: 70%;}
+.after-sales-list .cbimg img { width: 100%; max-width: 150px;}
+.after-sales-list .after-data p { padding-left: 5px;}
+.after-sales-list .after-data p:first-child { padding-bottom: 10px;}
+.after-sales-list .shouhou .cbimg { width: 25%;}
+.after-sales-list .shouhou .after-data { width: 50%;}
+.after-sales-list .shouhou .toview { width: 25%; margin-top: 25px; text-align: right;}
+.after-sales-list .toview .btn { border-color: #F77979; color: #F33031;}
+.after-sales-list .ysl { color: #F33031;}
+.after-sales-list .tbody2 .after-data { width: 75%;}
+.after-sales-list .tbody2 .toview { width: 25%; margin-top: 30px;}
+.after-sales-list .tbody2 p { margin-bottom: 0px;}
+#pullUp { text-align: center; font-size: 16px; padding: 5px 0;}
+.after-sales-list .cbimg img { border: 1px solid #D8D8D8;}
+
+/* 申请售后-详情 */
+.after-sales-list .shouhouxq { border-bottom: 1px solid #EEE;}
+.after-sales-list .description { border: none; background: #F6F5F3; border-radius: 0; -webkit-border-radius: 0;}
+.after-sales-list .shouhouxq .cbimg { width: 25%;}
+.after-sales-list .shouhouxq .after-data { width: 75%;}
+.after-sales-list .shouhouxq .thead, 
+.after-sales-list .shouhouxq .tbody { border: none;}
+.after-sales-list .shlx { padding: 10px;}
+.after-sales-list .shlx p { padding: 8px 0; margin-bottom: 0;}
+.after-sales-list .shlx h4 { margin: 5px 0; margin-bottom: 8px;}
+.after-sales-list .shouhoutype { margin: 10px 0;}
+.after-sales-list .shouhoutype button { margin: 0 5px;}
+.shouhouxq-sub .alert { margin-bottom: 0;} 
+.shouhouxq-sub .btn-danger { background: #F23030; padding: 10px 0;}
+.after-sales-list .shouhoutype button { color: #ACACAC; padding: 5px 15px}
+.after-sales-list .shouhoutype .btn-primary { background: #FFF; border-color: #F67171; color: #F45151; border-radius: 2px; -webkit-border-radius: 2px; -moz-border-radius: 2px;}
+
+/* 售后进度-详情 */
+
+.sh-progress .shlx h4 { border-bottom: 1px solid #D6D6D6; padding-bottom: 10px;}
+.sh-progress .shlx .times { color: #999;}
+.sh-progress .btnone { border-top: none;}
+.sh-progress .shlx .shenhezhong { color: #D3C2BC; text-align: center; padding: 1.2em 0; font-size: 15px;}
+.sh-progress .miaoshu { background: #F6F5F3; padding: 0px 5px;　word-break:break-all; word-wrap:break-word;}
+.sh-progress .shlyz { color: #666;}
+.sh-progress .sl p { padding: 3px 0;}
+.sh-progress .btn-red { background: #FFF; border-color: #F67171; color: #F45151; border-radius: 2px; -webkit-border-radius: 2px; -moz-border-radius: 2px;}
+
+/* 证书查询 */
+.zsquery { margin-top: 20px;}
+.zsquery .alert { padding: 6px 15px;}
+
+/* 证书查询结果 */
+.cxbox { border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;}
+.cxbox { background: #FFF; padding: 10px 5px;}
+.cxbox table { border: 1px solid #ccc; width: 98%; margin:0; padding:0; border-collapse: collapse; border-spacing: 0; margin: 0 auto;}
+.cxbox table tr { border: 1px solid #E4E4E4; padding: 5px;}
+.cxbox table th, table td { padding: 8px 10px; text-align: center;}
+.cxbox table th { text-transform: uppercase; width: 35%; font-size: 13px; letter-spacing: 1px; border-right: 1px solid #E4E4E4; color: #444;}
+.cxbox table td { width: 65%; color: #666;}

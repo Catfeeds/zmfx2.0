@@ -1,0 +1,9 @@
+<div class="tiao">
+    <input type="text" value="" style="width: 120px;" name="material[deputystone][{$uuid}][deputystone_name]" placeholder="名称">
+	<if condition=" !$price_model ">
+		<input type="text" value="" name="material[deputystone][{$uuid}][deputystone_price]" placeholder="价格">
+	<else />
+		<input type="text" value="" name="material[deputystone][{$uuid}][deputystone_num]" placeholder="数量">
+	</if>
+	<button type="button" class="luozuan_button del">删除</button>
+</div>

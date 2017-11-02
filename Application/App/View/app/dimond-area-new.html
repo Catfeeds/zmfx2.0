@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/public.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+<title>首页-挑选祼钻</title>
+</head>
+
+<body class="wrap-bg">
+	<!--头部-->
+    <header class=" header text-center">
+    	<a href="#" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+       	挑选钻石
+        <a href="#" id="search-right" class="pull-right">搜索</a>
+    </header>
+    <!--内容-->
+    <div class="container-fluid" id="maincont">
+        <div class="tab-content">
+            <div class="areatitle">
+                <div class="col-xs-6 text-left"><h4>今日美元汇率: 6.68</h4></div>
+                <div class="col-xs-6 text-right"><h4>共找到77023颗钻</h4></div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="area-list">
+                <table class="table text-center">
+                    <thead>
+                        <tr>
+                            <th>形状</th>
+                            <th>重量(ct）</th>
+                            <th>颜色 </th>
+                            <th>净度</th>
+                            <th>切工</th>
+                            <th>价格</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>圆形</td>
+                            <td>0.51</td>
+                            <td>GH</td>
+                            <td>SL1-SL2</td>
+                            <td>EX</td>
+                            <td><span class="red">￥4835.00</span></td>
+                        </tr>
+                        <tr>
+                            <td>圆形</td>
+                            <td>0.51</td>
+                            <td>GH</td>
+                            <td>SL1-SL2</td>
+                            <td>EX</td>
+                            <td><span class="red">￥4835.00</span></td>
+                        </tr>
+                        <tr>
+                            <td>圆形</td>
+                            <td>0.51</td>
+                            <td>GH</td>
+                            <td>SL1-SL2</td>
+                            <td>EX</td>
+                            <td><span class="red">￥4835.00</span></td>
+                        </tr>
+                        <tr>
+                            <td>圆形</td>
+                            <td>0.51</td>
+                            <td>GH</td>
+                            <td>SL1-SL2</td>
+                            <td>EX</td>
+                            <td><span class="red">￥4835.00</span></td>
+                        </tr>
+                        <tr>
+                            <td>圆形</td>
+                            <td>0.51</td>
+                            <td>GH</td>
+                            <td>SL1-SL2</td>
+                            <td>EX</td>
+                            <td><span class="red">￥4835.00</span></td>
+                        </tr>
+                        <tr>
+                            <td>圆形</td>
+                            <td>0.51</td>
+                            <td>GH</td>
+                            <td>SL1-SL2</td>
+                            <td>EX</td>
+                            <td><span class="red">￥4835.00</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="showdata">
+                <div class="container">
+                    <h3 class="text-center">详细参数</h3>
+                    <div class="row">
+                        <div class="col-xs-6">GIA:1197170918</div>
+                        <div class="col-xs-6">货品编号：FMP3971 </div>
+                        <div class="col-xs-6">形状：圆形 </div>
+                        <div class="col-xs-6">去向：国外 </div>
+                        <div class="col-xs-6">钻重：0.19CT </div>
+                        <div class="col-xs-6">颜色：D</div>
+                        <div class="col-xs-6">净度：VS1</div>
+                        <div class="col-xs-6">切工：VG</div>
+                        <div class="col-xs-6">抛光：VG</div>
+                        <div class="col-xs-6">对称：GD</div>
+                        <div class="col-xs-6">荧光：N</div>
+                        <div class="col-xs-6">全深比：63.1</div>
+                        <div class="col-xs-6">台宽比：65.0</div>
+                        <div class="col-xs-6">奶色：无奶</div>
+                        <div class="col-xs-6">咖色：中咖</div>
+                        <div class="col-xs-6">国际报价：$1000.00</div>
+                        <div class="col-xs-6">折扣：62.00</div>
+                        <div class="col-xs-6">价格：<span class="red">2888.00</span></div>
+                    </div>
+                </div>
+                <div class="gw text-center">
+                    <div class="col-xs-6"><a href="#" class="btn red">加入购物车</a></div>
+                    <div class="col-xs-6"><a href="#" class="btn hei">返回</a></div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="gwbg" style="display: none;"></div>
+        </div>
+	</div>
+
+    <script>
+        $(function(){
+            $(".area-list tbody tr").click(function(){
+                 $(".area-list tbody tr").removeClass("actives");
+                 $(this).addClass("actives");
+            });
+            /* 控制弹出详细内容 */
+            var Hi = $(".showdata").height();
+            $(".showdata").height("0");
+            $(".table tbody tr").click(function(){
+                $(".showdata").animate({height: Hi});
+                $(".gwbg").show();
+            });
+            $(".hei,.gwbg").click(function(){
+                $(".showdata").animate({height: 0});
+                $(".gwbg").hide();
+            });
+        });
+    </script>
+
+    <!-- Search alert -->
+    <div id="search-alert" class="container-fluid user-info" style="display: none">
+
+        <div class="panel panel-default border-radius-none search-masonry">
+            <div class="panel-body username usbox">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">形状：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" class="btn btn-default navbar-btn"><img src="img/shape_img_43.png" alt="圆形" title="圆形"></a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn"><img src="img/shape_img_40.png" alt="椭圆" title="椭圆"></a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn"><img src="img/shape_img_36.png" alt="马眼" title="马眼"></a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn"><img src="img/shape_img_33.png" alt="心形" title="心形"></a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn"><img src="img/shape_img_30.png" alt="水滴" title="水滴"></a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn"><img src="img/shape_img_26.png" alt="方形" title="方形"></a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn"><img src="img/shape_img_22.png" alt="祖母绿" title="祖母绿"></a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn"><img src="img/shape_img_07.png" alt="枕形" title="枕形"></a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn"><img src="img/shape_img_14.png" alt="蕾蒂恩" title="蕾蒂恩"></a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn"><img src="img/shape_img_03.png" alt="梯方" title="梯方"></a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">颜色：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" class="btn btn-default navbar-btn btn-primary">D</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">E</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">F</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">G</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">H</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">I</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">J</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">K</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">L</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">M</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">N</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">Fancy</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">净度：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" class="btn btn-default navbar-btn">FL</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">IF</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">VVS1</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">VVS2</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">SI1</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">SI2</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">I1</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">I2</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">I3</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">证书：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" class="btn btn-default navbar-btn">GIA</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">HRD</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">IGI</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">国检</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">其他</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">无奶</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">无咖</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">切工：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" class="btn btn-default navbar-btn">Ideal</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">EX</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">VG</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">GOOD</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">Fair</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">其它</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">抛光：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" class="btn btn-default navbar-btn">Ideal</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">EX</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">VG</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">GOOD</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">Fair</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">其它</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">对称：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" class="btn btn-default navbar-btn">Ideal</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">EX</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">VG</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">GOOD</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">Fair</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">其它</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">荧光：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" class="btn btn-default navbar-btn">N</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">F</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">M</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">S</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">VS</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">其它</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">无奶</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">无咖</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">所属：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" class="btn btn-default navbar-btn">香港</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">深圳</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">上海</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">北京</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">广州</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">国外</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">筛选：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" class="btn btn-default navbar-btn btn-primary">现货</a>
+                        <a href="javascript:;" class="btn btn-default navbar-btn">订货</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">重量：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <p class="kl-box"><input type="text" class="kl"> - <input type="text" class="kl"> 克拉</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">价格：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <p class="kl-box"><input type="text" class="kl"> - <input type="text" class="kl"> 人民币</p>
+                    </div>
+                </div>
+
+                <div class="navbar-fixed-bottom area-bottom">
+                    <button type="button" class="btn btn-yellow">确认搜索</button>
+                    <button type="button" class="btn">重置</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Search alert END //-->
+
+
+
+</body>
+<script>
+    $(function(){
+        
+        /* 条件选择 */
+        $(".search-masonry .row a").bind("click",function(){
+            $(this).parent("div").find("a").removeClass("btn-primary");
+            $(this).addClass("btn-primary");
+        });
+
+        /* 搜索切换 */
+        $("#search-right").click(function(){
+            if($(this).text() == "取消"){
+                $("#search-alert").fadeOut();
+                $("#maincont").fadeIn();
+                $(this).text("搜索");
+            }else{
+                $("#search-alert").fadeIn();
+                $("#maincont").fadeOut();
+                $(this).text("取消");
+            }
+        });
+    });
+</script>
+</html>

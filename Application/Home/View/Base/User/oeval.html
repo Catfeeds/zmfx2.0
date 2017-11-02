@@ -1,0 +1,360 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<style>
+/* star */
+.star {position:relative;width:600px;margin:20px auto;height:24px;}
+.star ul,.star span{float:left;display:inline;height:19px;line-height:19px;}
+.star ul{margin:0; padding-left: 5px;}
+.star li{float:left;width:24px;cursor:pointer;text-indent:-9999px;background:url(__IMG__/star.png) no-repeat;}
+.star li:first-child {background:url(__IMG__/star.png) no-repeat !important;}
+.star strong{color:#f60;padding-left:10px;}
+.star li.on{background-position:0 -28px;}
+.star li:first-child.on{background-position:0 -28px !important;}
+.star p { position: absolute; z-index: 999; top: 20px; width: 216px; height: 65px; display: none; background: url(/Application/Home/View/b2c/Img/icon.gif) no-repeat; padding: 7px 10px 0;  border: 1px solid #ccc; background: #fff; border-radius: 5px; line-height: 15px;}
+.star p em{color:#f60;display:block;font-style:normal;}
+</style>
+
+
+	<!-- user -->
+	<div class="user">
+		<div class="container">
+			<div class="path">
+				<ol class="breadcrumb">
+					当前位置：
+				  <li><a href="{:U('User')}">首页</a></li>
+				  <li><a href="{:U('User/olist')}">我的订单</a></li>
+				  <li class="active">订单评价</li>
+				</ol>
+			</div>
+
+			<div class="userdata">
+				<div class="row">
+					<include file=".:Base:User:menu" />
+					<div class="col-md-9">
+						<div class="user-order-details">
+							<h4><a href="{:U('User/olist')}">返回我的订单</a> > 订单评价</h4>
+						</div>
+
+						<div class="cart user-order-details user-order-evaluation">
+							<div class="table-box">
+								<div class="cart-list table-responsive">
+									<table class="table">
+									    <tbody>
+
+		<if condition="$product">
+			<volist name="product" id="vo">
+				<tr>
+					<td>
+						<if condition="$vo['goods']['thumb']">
+							<img src="{$vo.goods.thumb}" />
+						<else />
+							<img src="__PUBLIC__/Uploads/product/nopic.png" />
+						</if>
+						<br>
+
+						<if condition="$vo['goods']['associateInfo']">
+							{$vo.goods.associateInfo.material_name} 金重：{$vo.goods.associateInfo.weights_name}g 主石：{$vo.goods.luozuanInfo.weights_name}CT
+							{$vo.goods.luozuanInfo.shape_name}  {$vo.goods.deputystone_name}  手寸：{$vo.goods.hand} 刻字：{$vo.goods.word}
+						<else />
+							{$vo.goods.attrs}
+						</if>
+					</td>
+					<td>珠宝产品</td>
+					<td>{$vo.goods.goods_sn}</td>
+					<td>¥{$vo.goods.goods_price}</td>
+					<td>{$vo.product_number}</td>
+						<if condition="$vo['oeval'] eq 1">
+							<td><button class="btn btn-warning"  attr_gid="{$vo.goods_id}" attr_ogid="{$vo.og_id}">评价</button></td>
+						<else />
+							<td><button class="btn btn-default" disabled>已评价</button></td>
+						</if>
+
+				</tr>
+
+				<tr>
+					<td colspan="6" class="hidden-td" style="display: none">
+						<div id="" class="star">
+							<span>评分：</span>
+							<ul>
+								<li><a href="javascript:;">1</a></li>
+								<li><a href="javascript:;">2</a></li>
+								<li><a href="javascript:;">3</a></li>
+								<li><a href="javascript:;">4</a></li>
+								<li><a href="javascript:;">5</a></li>
+							</ul>
+							<span></span>
+							<p></p>
+						</div><!--star end-->
+						<div class="describe">
+							<span>描述：</span>
+							<textarea  class="form-control control_zz"   onchange="control_zz_val(this);" placeholder="请输入50-200字，发表您的评论"></textarea>
+						</div>
+						<p class="describe submitpl">
+							<button class="btn btn-default">提交评论</button>
+						</p>
+					</td>
+				</tr>
+			</volist>
+		</if>
+
+
+		<if condition="$zmProduct neq null && $zmProduct neq ''">
+			<volist name="zmProduct" id="vo">
+									        <tr>
+									          <td>
+												<if condition="$vo['goods']['thumb']">
+													<img src="{$vo.goods.thumb}" />
+												<else />
+													<img src="__PUBLIC__/Uploads/product/nopic.png" />
+												</if>
+									          	<br>
+									          	<if condition="$vo['goods']['associateInfo']">
+													{$vo.goods.associateInfo.material_name}
+													主石：{$vo.goods.luozuanInfo.weights_name} CT {$vo.goods.luozuanInfo.shape_name} {$vo.goods.deputystone_name}
+													手寸：{$vo.goods.hand}		<br>
+													刻字：{$vo.goods.word}
+												<elseif condition="$vo['specification']" />
+													{$vo.specification}
+												</if>
+									          </td>
+									        <td>定制戒托</td>
+											<td>{$vo.goods.goods_sn}</td>
+											<td>¥{$vo.goods.goods_price}</td>
+											<td>{$vo.product_number}</td>
+											<if condition="$vo['oeval'] eq 1">
+												<td><button class="btn btn-warning"  attr_gid="{$vo.goods_id}" attr_ogid="{$vo.og_id}">评价</button></td>
+											<else />
+												<td><button class=" "  >已评价</button></td>
+											</if>
+									        </tr>
+				<tr>
+					<td colspan="6" class="hidden-td" style="display: none">
+						<div id="" class="star">
+							<span>评分：</span>
+							<ul>
+								<li><a href="javascript:;">1</a></li>
+								<li><a href="javascript:;">2</a></li>
+								<li><a href="javascript:;">3</a></li>
+								<li><a href="javascript:;">4</a></li>
+								<li><a href="javascript:;">5</a></li>
+							</ul>
+							<span></span>
+							<p></p>
+						</div><!--star end-->
+						<div class="describe">
+							<span>描述：</span>
+							<textarea  class="form-control control_zz"  onchange="control_zz_val(this);"  placeholder="请输入50-200字，发表您的评论"></textarea>
+						</div>
+						<p class="describe submitpl">
+							<button class="btn btn-default">提交评论</button>
+						</p>
+					</td>
+				</tr>
+
+			</volist>
+		</if>
+
+
+
+
+
+
+		<if condition="$sanhuo neq null && $sanhuo neq ''">
+			<volist name="sanhuo" id="vo">
+		  		<tr>
+					<td>{$vo.goods.location}  {$vo.goods.type_name}  {$vo.goods.clarity} {$vo.goods.clarity} {$vo.goods.cut}</td>
+					<td>散货</td>
+					<td>{$vo.goods.goods_sn}</td>
+					<td>¥{$vo.goods.goods_price}</td>
+					<td>{$vo.sanhuo_number}</td>
+					<if condition="$vo['oeval'] eq 1">
+						<td><button class="btn btn-warning"  attr_gid="{$vo.goods_id}" attr_ogid="{$vo.og_id}">评价</button></td>
+					<else />
+						<td><button class=" "  >已评价</button></td>
+					</if>
+				</tr>
+
+								<tr>
+					<td colspan="6" class="hidden-td" style="display: none">
+						<div id="" class="star">
+							<span>评分：</span>
+							<ul>
+								<li><a href="javascript:;">1</a></li>
+								<li><a href="javascript:;">2</a></li>
+								<li><a href="javascript:;">3</a></li>
+								<li><a href="javascript:;">4</a></li>
+								<li><a href="javascript:;">5</a></li>
+							</ul>
+							<span></span>
+							<p></p>
+						</div><!--star end-->
+						<div class="describe">
+							<span>描述：</span>
+							<textarea  class="form-control control_zz"  onchange="control_zz_val(this);"  placeholder="请输入50-200字，发表您的评论"></textarea>
+						</div>
+						<p class="describe submitpl">
+							<button class="btn btn-default">提交评论</button>
+						</p>
+					</td>
+				</tr>
+			</volist>
+		</if>
+
+ 		<if condition="$diamond neq null || $diamond neq ''">
+			<volist name="diamond" id="vo">
+				<if condition="$vo.goods_type eq 1">
+					<tr>
+						<td><img src="__PUBLIC__/images/diamondShape/{$vo.goods.shape}.gif" />   {$vo.goods.location}  {$vo.goods.goods_name}   {$vo.goods.color} {$vo.goods.clarity} {$vo.goods.cut}</td>
+						<td>证书货</td>
+						<td>{$vo.goods.certificate_type}_{$vo.goods.certificate_number}</td>
+						<td>{$vo.diamond_price}</td>
+						<td>{$vo.goods.weight}</td>
+						<if condition="$vo['oeval'] eq 1">
+							<td><button class="btn btn-warning"  attr_gid="{$vo.goods_id}" attr_ogid="{$vo.og_id}">评价</button></td>
+						<else />
+							<td><button class=" "  >已评价</button></td>
+						</if>
+					</tr>
+				<tr>
+					<td colspan="6" class="hidden-td" style="display: none">
+						<div id="" class="star">
+							<span>评分：</span>
+							<ul>
+								<li><a href="javascript:;">1</a></li>
+								<li><a href="javascript:;">2</a></li>
+								<li><a href="javascript:;">3</a></li>
+								<li><a href="javascript:;">4</a></li>
+								<li><a href="javascript:;">5</a></li>
+							</ul>
+							<span></span>
+							<p></p>
+						</div><!--star end-->
+						<div class="describe">
+							<span>描述：</span>
+							<textarea  class="form-control control_zz"  onchange="control_zz_val(this);"  placeholder="请输入50-200字，发表您的评论"></textarea>
+						</div>
+						<p class="describe submitpl">
+							<button class="btn btn-default">提交评论</button>
+						</p>
+					</td>
+				</tr>
+
+				</if>
+			</volist>
+		</if>
+		<tr><td colspan="6" style="border: none"></td></tr>
+								      </tbody>
+								    </table>
+								</div>
+								<script>
+								var og_id='';
+								var g_id='';
+									//评论切换
+									$(function(){
+										$(".btn-warning").bind("click", function(){
+											og_id=$(this).attr("attr_ogid");
+											g_id=$(this).attr("attr_gid");
+											$(".hidden-td .star").attr("id","");
+											$(this).parents("tr").next("tr").find(".star").attr("id","star");
+											//$(".control_zz").val('');
+											$(".hidden-td").hide();
+											$(this).parents("tr").next("tr").find("td").show();
+											//调用星星效果
+											stars($(this).parents("tr").next("tr").find(".star").attr("id"));
+
+										});
+									});
+								</script>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- user end //-->
+
+
+	<!-- footer end //-->
+<script>
+var is_stars='';
+var control_val='';
+function stars(obj){
+	var oStar = document.getElementById(obj);
+	var aLi = oStar.getElementsByTagName("li");
+	var oUl = oStar.getElementsByTagName("ul")[0];
+	var oSpan = oStar.getElementsByTagName("span")[1];
+	var oP = oStar.getElementsByTagName("p")[0];
+	var i = iScore = iStar = 0;
+	var aMsg = [
+				"很不满意|差得太离谱，与卖家描述的严重不符，非常不满",
+				"不满意|部分有破损，与卖家描述的不符，不满意",
+				"一般|质量一般，没有卖家描述的那么好",
+				"满意|质量不错，与卖家描述的基本一致，还是挺满意的",
+				"非常满意|质量非常好，与卖家描述的完全一致，非常满意"
+				]
+
+	for (i = 1; i <= aLi.length; i++){
+		aLi[i - 1].index = i;
+		//鼠标移过显示分数
+		aLi[i - 1].onmouseover = function (){
+			fnPoint(this.index);
+			//浮动层显示
+			oP.style.display = "block";
+			//计算浮动层位置
+			oP.style.left = oUl.offsetLeft + this.index * this.offsetWidth - 104 + "px";
+			//匹配浮动层文字内容
+			oP.innerHTML = "<em><b>" + this.index + "</b> 分 " + aMsg[this.index - 1].match(/(.+)\|/)[1] + "</em>" + aMsg[this.index - 1].match(/\|(.+)/)[1]
+		};
+
+		//鼠标离开后恢复上次评分
+		aLi[i - 1].onmouseout = function (){
+			fnPoint();
+			//关闭浮动层
+			oP.style.display = "none"
+		};
+
+		//点击后进行评分处理
+		aLi[i - 1].onclick = function (){
+
+			iStar = this.index;
+			oP.style.display = "none";
+			oSpan.innerHTML = "<strong>" + (this.index) + " 分</strong> (" + aMsg[this.index - 1].match(/\|(.+)/)[1] + ")"
+			is_stars= iStar;
+		}
+	}
+
+	//评分处理
+	function fnPoint(iArg){
+		//分数赋值
+		iScore = iArg || iStar;
+		for (i = 0; i < aLi.length; i++) aLi[i].className = i < iScore ? "on" : "";
+	}
+
+};
+
+
+
+
+ function control_zz_val(obj){
+	control_val=$(obj).val();
+ }
+
+$('.btn-default').click(function(){
+	if(is_stars==''){			layer.msg('评分不能为空！',{	shift :6,	});  return false;}
+	if(control_val==''){		layer.msg('内容不能为空！',{	shift :6,	});  return false;}
+	$.post("{:U('Home/User/oeval_api')}",{Action:"POST",og_id:og_id,g_id:g_id,is_stars:is_stars,control:control_val},function(data){
+			layer.msg(data,{	shift :2,	});
+			setTimeout(function(){
+				window.location.reload();
+			},1500)
+	});
+})
+</script>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

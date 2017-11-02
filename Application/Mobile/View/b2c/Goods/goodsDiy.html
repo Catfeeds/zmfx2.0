@@ -1,0 +1,350 @@
+
+<include file="Public:header" /><body>
+<section class="custom-jewelry">
+
+
+	<include file="Public:localHeader"/>
+
+    <!-- content -->
+    <section class="wrapper">
+
+        <!-- 广告 -->
+        <if condition="$goodsDiyAd">
+            <div class="pop">
+                <a href="{$goodsDiyAd['url']}" title="{$goodsDiyAd['title']}"><img src="/Public{$goodsDiyAd['images_path']}" alt="{$goodsDiyAd['title']}"></a>
+            </div>
+        </if>
+        <!-- 广告 end -->
+
+        <!-- 筛选 -->
+		<?php if($_GET['keyword']==false) :?>
+        <div class="search-sort">
+            <ul>
+                <li class="sort-item active" data-code="goods_id">默认</li>
+                <li class="sort-item" data-code="goods_price">价格 <img src="__IMG__/down_icon.png" class="down" alt=""></li>
+                <li class="sort-item" data-code="goods_number">钻石大小 <img src="__IMG__/down_icon.png" class="down" alt=""></li>
+                <li><img src="__IMG__/more-ss.png" alt="" class="more-ss"></li>
+            </ul>
+            <script>
+                $(function(){
+					//设置是否显示底部匹配信息
+					var dingzhi = GetCookie("dingzhi");
+					if(dingzhi!=null){
+						$(".matching").css('display','block');
+					}else{
+						$(".matching").css('display','none');
+					}
+                    //排序
+                    $('.search-sort ul li.sort-item').bind('click', function(){
+                        var down = $(this).find('.down');
+                        var _order = $(this).attr('data-code');
+                        var _desc;
+                        if(down.attr('data-lock') == 'true'){
+                            down.css('transform', 'rotate(0deg)').attr('data-lock', 'false');
+                            _desc = 'desc';
+                        }else{
+                            down.css('transform', 'rotate(180deg)').attr('data-lock', 'true');
+                            _desc = 'asc';
+                        }
+
+                        if(_order == 'goods_id'){
+                            _desc = 'desc';
+                        }
+
+                        // 设置排序规则，重新加载产品
+                        goodsDiy.setOrderBy(_order, _desc);
+                        goodsDiy.loadGoods();
+
+                        $('.search-sort ul li').removeClass('active');
+                        $(this).addClass('active');
+                    });
+                });
+            </script>
+        </div>
+		<?php endif;?>
+        <!-- 筛选 end -->
+
+        <!-- 数据列表 -->
+        <div class="item-box">
+            <div class="goods-list clearfix">
+                <ul>
+                    <li>
+                        加载中...
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 暂无数据 -->
+        <div class="nodata text-center" style="display: none;">
+            <ul>
+                <li>
+                    <p style="margin-top: 3.5rem"><img src="__IMG__/nodata.png" alt=""></p>
+                    <h1>很抱歉没能找到您要的钻石</h1>
+                </li>
+            </ul>
+        </div>
+        <!-- 暂无数据 -->
+
+		<!-- loading -->
+        <div class="loading" style="display: none"><img src="__IMG__/loading.gif" alt=""></div>
+        <script>
+            $(function(){
+                $(window).scroll(function(){
+                    if($(document).scrollTop() + $(window).height() >= $(document).height()){
+                        $('.loading').show();
+                        if(goodsDiy.total/goodsDiy.pageSize+1 < goodsDiy.page){
+                            $('.loading').html('没有了~~');
+                        }else{
+                            goodsDiy.page = goodsDiy.page+1;
+                            goodsDiy.loadGoods('more');
+                        }
+                    }
+                });
+            });
+        </script>
+        <!-- loading end -->
+
+        <!-- 数据列表 end -->
+
+        <!-- 全部条件筛选 -->
+        <div class="all-conditions"></div>
+        <div class="options">
+            <button type="button" class="conditions-btn reset-btn">重置</button>
+            <button type="button" class="conditions-btn determine-btn">确定</button>
+        </div>
+        <div class="all-conditions-bg" style="display: none"></div>
+        <script>
+            var goodsDiy = {
+                products: [],
+                categoryId: '{$categoryId}',
+                goodsType: '{$goodsType}',
+                page: 1,
+                pageSize: 20,
+                total: 0,
+                order: 'goods_id',
+                desc: 'desc',
+                filter: '',
+                keyword: '<?php echo $_GET['keyword'];?>',
+                loadGoods: function(_type){
+                    if(_type == 'reset'){
+                        goodsDiy.page = 1;
+                    }
+                    $.getJSON("{:U('Goods/goodsData')}", {
+                        'goods_type': goodsDiy.goodsType,
+                        'category_id': goodsDiy.categoryId,
+                        'page_id': goodsDiy.page,
+                        'page_size': goodsDiy.pageSize,
+                        'order': goodsDiy.order,
+                        'desc': goodsDiy.desc,
+                        'goods_attr_filter': goodsDiy.filter,
+                        'keyword': goodsDiy.keyword
+                    }, function(data){
+                        goodsDiy.renderGoods(data);
+                    });
+                },
+                setOrderBy: function(_order, _desc){
+                    goodsDiy.order = _order;
+                    goodsDiy.desc = _desc;
+                },
+                setFilter: function(){
+                    $('.item-list').each(function(){
+                        var activeItems = $(this).find('.active');
+                        if(activeItems.length > 0){
+                            var _attrId = $(this).attr('data-attr-id');
+                            var _attrCodes = '';
+                            activeItems.each(function(){
+                                _attrCodes += $(this).attr('data-attr-code')+',';
+                            });
+
+                            _attrCodes = _attrCodes.slice(0, -1);
+                            goodsDiy.filter += _attrId+':'+_attrCodes+';'
+                        }
+                    });
+                    if(goodsDiy.filter != '' && goodsDiy.filter.length > 2){
+                        goodsDiy.filter = goodsDiy.filter.slice(0, -1);
+                    }
+                },
+                renderGoods: function(data){
+                    if(data.hasOwnProperty('ret') && data.hasOwnProperty('data') && data.ret == 100){
+                        if(data.hasOwnProperty('data') == true){
+                            var goodsList = '';
+                            if(data.data.total > 0){
+                                goodsDiy.total = data.data.total;
+                                $.each(data.data.data, function(i, item) {
+                                    goodsList += '<li class="col-2">';
+                                    goodsList += '<a href="/Goods/detail/goods_type/'+item.goods_type+'/gid/'+item.goods_id+'.html">';
+                                    goodsList += '<p>';
+                                    if(item.thumb != ''){
+                                        goodsList += '<img src="'+item.thumb+'" alt="'+item.goods_name+'">';
+                                    }else{
+                                        goodsList += '<img src="__IMG__/nodata.png" alt="">';
+                                    }
+                                    goodsList += '</p>';
+                                    goodsList += '<p class="good-name">'+item.goods_name+'</p>';
+                                    goodsList += '<small>'+item.goods_name_txt+'</small>';
+                                    goodsList += '<p class="rmb">￥'+item.activity_price+'</p>';
+                                    goodsList += '</a>';
+                                    goodsList += '</li>';
+                                });
+                                if(goodsDiy.page == 1){
+                                    $('.goods-list ul').html(goodsList);
+                                }else{
+                                    $('.goods-list ul').append(goodsList);
+                                }
+                            }
+                        }else{
+							if(goodsDiy.page== 1){
+								$('.nodata').show();
+								$('.item-box').hide();
+							}
+						}
+                    }else{
+                        $('.nodata').show();
+                        $('.item-box').hide();
+                    }
+                },
+                attributes: function(){
+                    $.getJSON("{:U('Goods/goodsAttributes')}", {
+                        'goods_type': goodsDiy.goodsType,
+                        'category_id': goodsDiy.categoryId
+                    }, function(data){
+                        goodsDiy.renderAttributes(data);
+                    });
+                },
+                renderAttributes: function(data){
+                    if(data.hasOwnProperty('ret') && data.hasOwnProperty('data') && data.ret == 100){
+                        if(data.data){
+                            var conditions = '';
+							var col2;
+                            $.each(data.data, function(i, item) {
+                                conditions += '<div class="conditions-item">';
+                                conditions += '<h1>'+item.attr_name+'</h1>';
+								item.attr_name == "产品系列" ? col2 = 'col-2' : col2 = '';
+                                conditions += '<div class="item-list ' + col2 + '" data-attr-id="'+item.attr_id+'">';
+                                // 遍历属性值
+                                if(item.value){
+                                    $.each(item.value, function(j, value){
+                                        conditions += '<span class="checks" data-attr-id="'+value.attr_id+'" data-attr-code="'+value.attr_code+'">'+value.attr_value_name+'</span>&nbsp;';
+                                    });
+                                }
+                                conditions += '</div>';
+                                conditions += '</div>';
+                            });
+
+                            $('.all-conditions').html(conditions);
+                        }
+                    }
+                }
+            };
+            $(function(){
+                goodsDiy.attributes();
+                goodsDiy.loadGoods('reset');
+                //全部条件-选择功能
+                $(document).on('click', '.item-list .checks', function(){
+                    if($(this).hasClass('active')){
+                        $(this).removeClass('active');
+                    }else{
+                        $(this).addClass('active');
+                    }
+                });
+
+                //显示全部条件
+                $('.more-ss').bind('click', function(){
+                    $('.all-conditions, .options').animate({'right': '0'});
+                    $('.all-conditions-bg').show();
+                    $('body, html').css({'height': '100%', 'overflow': 'hidden'});
+                });
+
+                //关闭全部条件
+                $('.determine-btn, .all-conditions-bg').bind('click', function(){
+                    $('.all-conditions, .options').animate({'right': '-80%'},function(){
+                        $('.all-conditions-bg').hide();
+                        $('body, html').css({'height': '', 'overflow': ''});
+                    });
+
+                    if($(this).hasClass('determine-btn')){
+                        goodsDiy.setFilter();
+                        goodsDiy.loadGoods('reset');
+                    }
+                });
+
+                //重置
+                $('.reset-btn').bind('click', function(){
+                    $('.item-list .checks').removeClass('active');
+                    $('.number-input').val('');
+
+                    // 清除筛选条件
+                    goodsDiy.filter = '';
+                    goodsDiy.loadGoods('reset');
+                });
+
+            });
+        </script>
+        <!-- 全部条件筛选 end -->
+    </section>
+    <!-- content end -->
+
+</section>
+
+<include file="Public:search" />
+
+<script>
+    //快捷搜索
+    quickSearch.show('.search-icon');
+	$(function(){
+		load_dingzhi();
+		function load_dingzhi(){
+			var dingzhi = getCookieOfObject("dingzhi");
+			if(!$.isEmptyObject(dingzhi) ){
+				luozuanInfo  = dingzhi.luozuan_info;
+				if( !$.isEmptyObject(dingzhi.luozuan_info) ){
+					var luozuanStr = '<div class="fl good-img"><img src="__IMG__/luozhuan.png" class="w4rem" alt=""></div><div class="fr good-title"><p>证书号：'+luozuanInfo.certificate_number+'</p><p class="rmb">￥'+luozuanInfo.price+'</p></div><div class="clearfix"></div>';
+				}else{
+					var luozuanStr = '<div class="fl good-img"><a href="/Diamond/goodsDiy"><img src="__IMG__/matching_img_08.jpg" id="choice" class="w4rem" alt=""></a></div><div class="fr good-title"><p>请选择裸钻</p></div><div class="clearfix"></div>';
+				}
+			}
+			if(!$.isEmptyObject(dingzhi) ){
+				jietuoInfo   = dingzhi.jietuo_info;
+				if( !$.isEmptyObject(dingzhi.jietuo_info) ){
+					var jietuoStr  = '<div class="fl good-img"><img src="'+jietuoInfo.thumb+'" class="w4rem" alt=""></div><div class="fr good-title"><p>'+jietuoInfo.goods_name+'<br /> '+jietuoInfo.material.material_id+" &nbsp;"+' <br />'+jietuoInfo.luozuan.shape_name+'  &nbsp;&nbsp;'+jietuoInfo.luozuan.weights_name+'Ct </p><p class="rmb">￥'+jietuoInfo.goods_price+'</p></div><div class="clearfix"></div>';
+				}else{
+					var jietuoStr = '<div class="fl good-img"><img src="__IMG__/matching_img_05.png" class="w4rem" alt=""></div><div class="fr good-title"><p>请选择戒托</p></div><div class="clearfix"></div>';
+				}
+			}
+			$("#luozuanInfo").html(luozuanStr);
+			$("#jietuoInfo").html(jietuoStr);
+		}
+	});
+
+</script>
+
+<!-- 匹配戒托 -->
+<style>
+    body { margin-bottom: 7.8rem;}
+</style>
+<?php if($_GET['keyword']==false) :?>
+<div class="matching" style="display:none;">
+    <div class="tops">
+        <h1>匹配项目：</h1>
+        <ul class="ma-box" id="matchingContent">
+			<li id="luozuanInfo">
+			</li>
+			<li class="text-center link">
+				<img src="__IMG__/matching_img_08.png" alt="">
+			</li>
+			<li id="jietuoInfo">
+			</li>
+			<div class="clearfix"></div>
+        </ul>
+    </div>
+    <a  class="custom-btn">确认定制</a>
+</div>
+<?php endif;?>
+<!-- 匹配戒托 end -->
+<include file="Public:foot" />
+
+<include file="Public:matching" />
+
+
+</body></html>

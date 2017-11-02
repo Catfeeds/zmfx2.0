@@ -1,0 +1,137 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>我的订单-上传凭证</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-swiper.css" /> <!-- tab -->
+    <link rel="stylesheet" type="text/css" href="../css/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="../css/style-layer.css" /> <!-- 提示 -->
+
+    <script src="../js/jquery-1.12.3.js"></script>
+    <script src="../js/swiper.min.js"></script> <!-- tab -->
+    <script src="../js/mobileSelect.js"></script> <!-- ios下弹式菜单选择 -->
+    <script src="../js/layer.js"></script> <!-- 提示 -->
+</head>
+
+
+<body>
+    <section class="upload-credentials">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="../img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>上传凭证</h2>
+            </div>
+        </header>
+
+        <section class="wrapper">
+
+        <div class="item-box">
+            <p class="borderb">
+                订单编号：2017080716544667
+            </p>
+            <p>
+                总金额：<span class="rmb">￥278431.88</span>
+            </p>
+        </div>
+
+        <div class="item-box">
+            <form action="" class="form-box">
+                <ul>
+                    <li>
+                        <label>付款方式：</label>
+                        <div class="input-box">
+                            <div class="select" id="play">请选择付款方式</div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <label>转账账号：</label>
+                        <div class="input-box">
+                            <input type="text" name="" value="" placeholder="输入您的账号" class="text-input">
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <label>转账金额：</label>
+                        <div class="input-box">
+                            <input type="text" name="" value="" placeholder="输入您的金额" class="text-input">
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <label>转账时间：</label>
+                        <div class="input-box">
+                            <input type="text"  id="beginTime" class="stores-input select" placeholder="年/月/日">
+                            <div id="datePlugin" class="time-select"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <label>上传凭证：</label>
+                        <div class="input-box">
+                            <input type="file" class="text-input">
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <label>备注：</label>
+                        <div class="input-box">
+                            <textarea name="" id="" class="text-input"></textarea>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+
+        <div class="add-box">
+            <button type="submit" class="add-address-btn">提交</button>
+        </div>
+
+        <!-- 时间选择 -->
+        <link rel="stylesheet" type="text/css" href="../css/style-date.css" />
+        <script src="../js/date.js"></script>
+        <script src="../js/iscroll.js"></script>
+        <!-- 时间选择 end -->
+        <script>
+        $(function(){
+
+            //省
+            var arr1 = ['支付宝','微信','银行转账'];
+            var mobileSelect1 = new MobileSelect({
+            trigger: '#play',
+            title: '请选择付款方式',
+            wheels: [
+                        {data: arr1}
+                    ],
+            position:[0] //初始化定位
+            });
+
+            //时间选择
+            $('#beginTime').date();
+
+            $(document).delegate('#dateconfirm', 'click', function(){
+                console.log($('#beginTime').val());
+            });
+        });
+        </script>
+        </section>
+
+    </section>
+    <!-- Zdy Input UI -->
+<script src="../js/zdy-input-ui.js"></script>
+
+</body>
+</html>

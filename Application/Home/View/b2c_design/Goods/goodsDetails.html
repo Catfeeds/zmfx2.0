@@ -1,0 +1,117 @@
+<style type="text/css">
+    * {padding: 0;margin: 0;}
+    .magnify{width: 200px;position: relative;}
+    .large {width: 180px;height: 180px;position: absolute;border-radius: 100%;box-shadow: 0 0 0 7px rgba(255,255,255,0.8),0 0 7px 7px rgba(0,0,0,0.3),inset 0 0 40px 2px rgba(0,0,0,0.3);background: url(iphone.jpg) no-repeat;display: none;z-index: 9999;}
+    .small {display: block;}
+    .item-list { font-size: 14px;}
+    .goods-details .itemInfo span { padding: 2px 5px; margin-right: -1px; margin-bottom: 1px; cursor: pointer;}
+    span.active { border: 1px solid #D6B870;}
+</style>
+<include file=".:Com:b2c:product:goods_js" />
+<!-- goods-details-->
+<div class="goods-details">
+    <div class="container">
+
+        <div class="path">
+            <ol class="breadcrumb">
+                当前位置：
+                <li><a href="javascript:void(0);">首页</a></li>
+                <if condition="$goodsInfo['goods_type'] eq 3">
+                    <li><a href="{:U('Home/Goods/goodsCat/cid/'.$goodsInfo['category_id'])}">{$goodsInfo.category_name}</a></li>
+                <else />
+                    <li><a href="{:U('Home/Goods/goodsCategory')}?gcid={$goodsInfo.category_id}">{$goodsInfo.category_name}</a></li>
+                </if>
+            </ol>
+        </div>
+
+        <div class="goods-desc">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <include file=".:Com:b2c:product:goods_images_look" />
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <include file=".:Com:b2c:product:goods_param" />
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="shoucang">
+                <img src="{$goodsInfo['collection_img']}" data-goods-id="{$goodsInfo['goods_id']}" data-goods-type="{$goodsInfo['goods_type']}" class="shoucang-img" collection_id="{$goodsInfo.collection_id}" data-toggle="tooltip" data-placement="right" title="点击加入我的收藏" alt="">
+                <script>
+                    $(function(){
+                        //收藏
+                        $('.shoucang-img').bind('click', function(){
+                            var current = $(this);
+                            var type	= '';
+                            dingzhi.addToCollection(current,type);
+                        });
+                        $('.shoucang-img').tooltip();
+                    });
+                </script>
+            </div>
+            <div class="row">
+                <div class="goods-img">
+                    <div class="col-md-2 hidden-xs hidden-sm">
+                        <include file=".:Com:b2c:product:goods_history" />
+                    </div>
+                    <div class="col-md-10 col-xs-12">
+                        <div class="smart-body">
+                            <ul class="nav nav-tabs default bordered">
+                                <li class="active">
+                                    <a href="#product-img" data-toggle="tab" aria-expanded="true">
+                                        <span class="visible-xs"><i class="icon-home"></i></span>
+                                        <span>商品详情</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="#product-data" data-toggle="tab" aria-expanded="false">
+                                        <span class="visible-xs"><i class="icon-man"></i></span>
+                                        <span>商品参数</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="#messages" data-toggle="tab" aria-expanded="false">
+                                        <span class="visible-xs"><i class="icon-email"></i></span>
+                                        <span>客户评论</span>
+                                    </a>
+                                </li>
+                                <li class="hide">
+                                    <a href="#product-service" data-toggle="tab" aria-expanded="false">
+                                        <span class="visible-xs"><i class="icon-settings2"></i></span>
+                                        <span>产品服务</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="#distribution" data-toggle="tab" aria-expanded="false">
+                                        <span class="visible-xs"><i class="icon-settings2"></i></span>
+                                        <span>支付配送</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="product-img">
+                                    <include file=".:Com:b2c:product:goods_desc" />
+                                </div>
+                                <div class="tab-pane fade" id="product-data">
+                                    <include file=".:Com:b2c:product:goods_param_desc" />
+                                </div>
+                                <div class="tab-pane fade" id="messages">
+                                    <include file=".:Com:b2c:product:goods_comment" />
+                                </div>
+                                <div class="tab-pane fade" id="product-service">
+                                    {$goodsInfo.productService.content}
+                                </div>
+                                <div class="tab-pane fade" id="distribution">
+                                    {$goodsInfo.payment.content}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- goods-details end //-->

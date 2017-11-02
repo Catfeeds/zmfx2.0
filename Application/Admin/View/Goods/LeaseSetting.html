@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>租赁设置</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" /> 
+</head>
+
+<style>
+
+.regular-radio {
+	display: none;
+}
+
+.regular-radio + label {
+	-webkit-appearance: none;
+	background-color: #fafafa;
+	border: 1px solid #00FF7F;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+	padding: 9px;
+	border-radius: 50px;
+	display: inline-block;
+	position: relative;
+}
+
+.regular-radio:checked + label:after {
+	content: ' ';
+	width: 12px;
+	height: 12px;
+	border-radius: 50px;
+	position: absolute;
+	top: 3px;
+	background: #00FF7F;
+	box-shadow: inset 0px 0px 10px rgba(0,0,0,0.3);
+	text-shadow: 0px;
+	left: 3px;
+	font-size: 12px;
+}
+</style>
+
+
+<body>
+
+
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：租赁设置</h3>
+    </div>
+	
+
+
+
+    <form action="/Admin/Goods/LeaseSetting/id/<?php echo $publicdataInfo['goods_id'];?>" method="post">
+    	<div style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">首日租赁价格:</div>
+                <input type="text" placeholder="只接受整数小数值" name="first_lease_price" value="<?php echo  ($publicdataInfo['first_lease_price']) 	? $publicdataInfo['first_lease_price'] : '';?>">&nbsp;&nbsp;元
+            </div>
+			
+            <div class="info">
+                <div class="title">租赁百分比:</div>
+                <input type="text" placeholder="只接受整数小数值" name="lease_percentage" value="<?php echo  ($publicdataInfo['lease_percentage']) 		? $publicdataInfo['lease_percentage'] : '';	?>">&nbsp;&nbsp;%
+            </div>
+			
+            <div class="info">
+                <div class="title">状态：</div>
+				<input type="radio" id="radio1" name="lease_switch" value=1 	class="regular-radio" <?php  	  echo	($publicdataInfo['lease_switch']) 			? 'checked' : '';?>/><label for="radio1"></label>&nbsp;开启租赁
+				<input type="radio" id="radio2" name="lease_switch" value=null  class="regular-radio" <?php       echo  !($publicdataInfo['lease_switch']) 	? 'checked' : '';?>/><label for="radio2"></label>&nbsp;关闭租赁
+            </div>
+			
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="保存设置">
+                <input type="reset" class="button fl ml10"  onclick="location.href='/Admin/Goods/productList.html'" value="返回">
+                <div class="clear"></div>
+            </div>
+			
+			<div class="info">
+                <div class="title">&nbsp;</div>
+				<font color="red">首日租赁价&nbsp; + 【 （租赁天数-1）&nbsp; X&nbsp;&nbsp; 当前商品价格&nbsp; X&nbsp; 租赁百分比】</font>
+            </div>
+			
+			<div class="info">
+				<div class="title">注释：</div>
+				<div style="float:left; width:80%;">
+					<p>1.首日租赁价格与租赁百分比均需输入值，勾选开启租赁，保存设置后产品详情页显示“首日租赁价格、租赁百分比及租赁计算器”，并回到产品列表页。</p>
+					<p>2.当前设置只针对当前产品生效。</p>
+					<p>3.返回按钮点击后不保存当前操作，返回到产品列表。</p>
+					<p>4.后台判断有值并勾选开启租赁，前台才展示租赁价。无值，选择开启，提示用户输入值再开启并保存。</p>
+				</div>
+			</div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

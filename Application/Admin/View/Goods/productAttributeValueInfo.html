@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品属性值信息</title>
+</head>
+<body>
+<div class="page-main edit">
+    <form action="{:U('Admin/Goods/productAttributeValueInfo')}" method="post">
+        <div style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">名称:</div>
+                <input name="attr_value_name" type="text" value="">
+            </div>
+            <div class="info">
+                <div class="title">编码:</div>
+                <input type="text" value="" placeholder="自动编码" disabled="">
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="hidden" name="attr_id" value="{$attr_id}" />
+                <input type="submit" class="button fl" value="添加" id="productAttributeValueInfo">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

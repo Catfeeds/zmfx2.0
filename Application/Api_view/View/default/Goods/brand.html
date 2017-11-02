@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/product.css">
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/public.js"></script> 
+<script src="__JS__/layer-mobile/layer.js"></script> 
+<script src="__JS__/common.js"></script>
+<title>品牌系列</title>
+</head>
+
+<body class="wrap-bg">
+	<!--头部-->
+    <header class="header text-center sort-head">
+        <a href="/goods" class="">产品分类</a>
+        <a href="/goods/brand" class="active">品牌系列</a>
+    </header>
+    <!--内容-->
+    <div class="container wrap">
+    	<div class="row">
+        	<!--搜索-->
+                <div class="col-lg-12 search">
+                    <div class="input-group">
+                    	<span class="input-group-btn">
+                            <button onclick="Search()" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                        </span>
+                        <input type="text" class="form-control" placeholder="编号、名称、系列">
+                    </div>
+                </div>
+           <!--系列列表-->
+            <div class="brand">
+			<if condition="$goods_series_array">
+            	<ul>
+					<volist name="goods_series_array" key="key" id="v">
+						<li>
+						 <a href="{:U('/Goods/goodsCat/gid/'.$v['goods_series_id'])}" class="series_name">{$v.series_name}</a></li>
+                    </volist>
+                </ul>
+			</if>
+            </div>
+   		</div>
+	</div>
+    <!--底部-->
+	{:W('Frame/footer', array('Goods'))}
+
+	<script>	
+		var exp = new Date();
+		exp.setTime(exp.getTime() + 3000);
+		document.cookie = 'brand_tip' + "=" + escape('111') + ";expires=" + exp.toGMTString()+";path=/;";
+		
+		$(".series_name").click(function(){
+		var series_name=($(this).html());
+		setCookie('series_name',series_name);	
+		});
+
+		function Search(){ 
+			content=$('.form-control').val();
+			if(content=='' || content==undefined ||content==null)
+			{
+				tan('请输入搜索内容！');
+				return false;
+			}
+			window.location.href="/Goods/goodsCat?content="+content;
+		}
+	</script>
+</body>
+</html>

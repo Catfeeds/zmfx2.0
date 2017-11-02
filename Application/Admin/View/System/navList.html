@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>导航管理</title>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：导航管理</h3>
+        <ul>
+			<li class="<eq name="currentUrl" value="Admin/System/navInfo">active</eq>">
+				<a href="{:U('Admin/System/navInfo')}" >添加导航</a>
+			</li>
+        </ul>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+        	<th width="7%">导航ID</th>
+            <th width="20%">导航名称</th>
+            <th width="7%">图片</th>				
+            <th width="7%">导航类型</th>
+            <th width="7%">链接分类</th>
+            <th width="10%">链接功能</th>
+            <th width="25%">地址</th>
+            <th width="5%">状态</th>
+            <th width="5%">排序</th>
+            <th width="10%">操作</th>
+        </tr>
+        <volist name="list" id="vo" mod="2">
+			<tr class="{$mod?'bg2':'bg1'}">
+				<td>{$vo.nid}</td>
+				<td class="tl pl20">{$vo.nav_name}</td>
+				<td><if condition="$vo.nav_img neq '' ">
+					<img style="width: 50px; height: 50px;" src="__PUBLIC__/{$vo.nav_img}">
+				</if>
+				</td>
+				<td>
+					<eq name="vo.nav_type" value="1">产品分类</eq>
+					<eq name="vo.nav_type" value="2">功能</eq>
+					<eq name="vo.nav_type" value="3">地址</eq>
+				</td>
+				<td>{$vo.category_name}</td>
+				<td>
+					<eq name="vo.function_id" value="1">裸钻页面</eq>
+					<eq name="vo.function_id" value="2">散货页面</eq>
+					<eq name="vo.function_id" value="3">百科页面</eq>
+					<eq name="vo.function_id" value="4">用户中心</eq>
+					<eq name="vo.function_id" value="5">我的订单</eq>
+					<eq name="vo.function_id" value="6">加入分销</eq>
+				</td>
+				<td>{$vo.nav_url}</td>
+				<td>{$vo['status']?开启:关闭}</td>
+				<td>{$vo.sort}</td>
+				<td>
+					<a href="{:U('Admin/System/navInfo?nid='.$vo['nid'])}">修改</a>
+					<a href="{:U('Admin/System/navDel?nid='.$vo['nid'])}" id="isDel">删除</a>
+				</td>
+			</tr>
+        	<volist name="vo.sub" id="vo" mod="2">
+				<tr class="{$mod?'bg2':'bg1'}">
+					<td>{$vo.nid}-1</td>
+					<td class="tl pl20">&nbsp;&nbsp;|---{$vo.nav_name}</td>
+					<td></td>
+					<td>
+						<eq name="vo.nav_type" value="1">产品分类</eq>
+						<eq name="vo.nav_type" value="2">功能</eq>
+						<eq name="vo.nav_type" value="3">地址</eq>
+					</td>
+					<td>{$vo.category_name}</td>
+					<td>
+						<eq name="vo.function_id" value="1">裸钻页面</eq>
+						<eq name="vo.function_id" value="2">散货页面</eq>
+						<eq name="vo.function_id" value="3">百科页面</eq>
+						<eq name="vo.function_id" value="4">用户中心</eq>
+						<eq name="vo.function_id" value="5">我的订单</eq>
+						<eq name="vo.function_id" value="6">加入分销</eq>
+					</td>
+					<td>{$vo.nav_url}</td>
+					<td>{$vo['status']?开启:关闭}</td>
+					<td>{$vo.sort}</td>
+					<td>
+						<a href="{:U('Admin/System/navInfo?nid='.$vo['nid'])}">修改</a>
+						<a href="{:U('Admin/System/navDel?nid='.$vo['nid'])}" id="isDel">删除</a>
+					</td>
+				</tr>
+	        </volist>
+        </volist>
+    </table>
+</div>
+</body>
+</html>

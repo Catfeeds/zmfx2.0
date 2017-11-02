@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加订单</title>
+</head>
+<body>
+<script type="text/javascript" src="__JS__/orderAdd.js"></script>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：添加订单</h3>
+        <ul>
+            <volist name="menuList[3]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+    </div>
+    <div class="order">
+    <form action="{:U('Admin/Order/orderAdd')}" method="post">
+    	<div class="order-top">
+            <div class="info">
+                <span class="title">订单来源:</span>
+                <if condition="!$is_yewuyuan">
+                <select name="business_id">
+                	<option value="0">请选择业务员</option>
+                	<volist name="businessList" id="vo">
+                    <option value="{$vo.user_id}">{$vo.nickname}</option>
+                    </volist>
+                </select>
+                </if>
+                <select name="uid">
+                    <option value="0">请选择客户</option>
+                    <volist name="userList" id="vo">
+                    <option value="{$vo.uid}">{$vo.username}</option>
+                    </volist>
+                </select>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+            	<span class="title">配送方式:</span>
+                <select name="delivery_mode">
+					<if condition="$user_delivery_mode">
+						<volist name="user_delivery_mode" id="vo">
+						<option value="{$vo.mode_id}">{$vo.mode_name}</option>									 
+						</volist>
+					</if>
+                </select>
+                <div class="clear"></div>
+            </div>
+            <div class="info address">
+            	<span class="title">收货地址:</span>
+                <ul class="addressList"></ul>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="order-content">
+        	<div class="info luozuan">
+            	<div class="title">证书货产品:</div>
+            	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+                    <tr class="top goodsLuozuanList">
+                        <th>证书号</th>
+                        <th>单价(&yen;)</th>
+                        <th>4C属性(重量/颜色/净度/切工)</th>
+                        <th>订购数量(颗)</th>
+                        <th>库存参考</th>
+                        <th>小计价格</th>
+                        <th>操作</th>
+                    </tr>
+                    <!--裸钻产品数据-->
+                    <tr class="count">
+                    	<td style="text-align: left; padding-left: 20px;">
+                    		<a href="#" id="orderAddGoodsLuozuan">添加证书货产品</a>
+                    	</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    	<td>合计:</td>
+                        <td><span>&yen;</span><span class="luozuanTotal">0.00</span></td>
+                    </tr>
+            	</table>
+                <div class="clear"></div>
+            </div>
+            <!--散货只有钻明才有-->
+            <div class="info sanhuo">
+            	<div class="title">散货产品:</div>
+            	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+                    <tr class="top goodsSanhuoList">
+                        <th>产品编号</th>
+                        <th>小计价格(&yen;)</th>
+                        <th>4C属性(颜色/净度/切工)</th>
+                        <th>订购重量(Cut)</th>
+                        <th>库存参考</th>
+                        <th>单价每卡参考(&yen;)</th>
+                        <th>操作</th>
+                    </tr>
+                    <!--散货产品数据-->
+                    <tr class="count">
+                    	<td style="text-align: left; padding-left: 20px;">
+                    		<a href="#" id="orderAddGoodsSanhuo">添加散货产品</a>
+                    	</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    	<td>合计:</td>
+                        <td><span>&yen;</span><span class="sanhuoTotal">0.00</span></td>
+                    </tr>
+            	</table>
+                <div class="clear"></div>
+            </div>
+            
+            
+			<if condition="$btj">
+            <!--成品货只有分销商才卖-->
+            <if condition="$tid">
+            <div class="info product">
+            	<div class="title">成品货产品:</div>
+            	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+                    <tr class="top productList">
+                        <th>产品编号</th>
+                        <th>小计单价(&yen;)</th>
+                        <th>属性规格</th>
+                        <th>数量</th>
+                        <th>库存参考</th>
+                        <th>单价参考(&yen;)</th>
+                        <th>操作</th>
+                    </tr>
+                    <!--成品货数据-->
+                    <tr class="count">
+                    	<td style="text-align: left; padding-left: 20px;">
+                    		<a href="#" id="orderAddProduct">添加成品货产品</a>
+                    	</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    	<td>合计:</td>
+                        <td><span>&yen;</span><span class="productTotal">0.00</span></td>
+                    </tr>
+            	</table>
+                <div class="clear"></div>
+            </div>
+            </if>
+            <!--代销货-->
+            <div class="info consignment">
+            	<div class="title">代销货产品:</div>
+            	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+                    <tr class="top consignmentList">
+                        <th width="20%">产品编号</th>
+                        <th width="15%">小计单价(&yen;)</th>
+                        <th width="20%">属性规格</th>
+                        <th width="10%">数量</th>
+                        <th width="8%">操作</th>
+                    </tr>
+                    <!--这里代销货数据-->
+                    <tr class="count">
+                    	<td style="text-align: left; padding-left: 20px;">
+                    		<a href="#" id="orderAddConsignment">添加代销货产品</a>
+                    	</td>
+                        <td></td>
+                        <td></td>
+                    	<td>合计:</td>
+                        <td><span>&yen;</span><span class="consignmentTotal">0.00</span></td>
+                    </tr>
+            	</table>
+                <div class="clear"></div>
+            </div>
+            <!--代销货结束-->
+            </if>
+            
+            <div class="info">
+            	<div class="title">订单备注:</div>
+                <textarea name="note">{$orderInfo.note}</textarea>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+            	<div class="title">操作:</div>
+                <input type="submit" value="添加订单" name="">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+</body>
+</html>

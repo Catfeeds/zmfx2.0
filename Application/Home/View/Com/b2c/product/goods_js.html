@@ -1,0 +1,1616 @@
+<script language="javascript">
+    var luozuan = {
+        page_id:1,
+        page_size:50,
+        condition:{
+            Shape:    new Array(),
+            Weight:   new Array(),
+            Price:    new Array(),
+            Color:    new Array(),
+            Clarity:  new Array(),
+            Location: new Array(),
+			Intensity:new Array(),
+            Cut:      new Array(),
+            Fluor:    new Array(),
+            Polish:   new Array(),
+            Symmetry: new Array(),
+            Cert:     new Array(),
+            Milk:     new Array(),
+			Coffee:	  new Array(),
+			goods_sn:'',
+			is_own	: '',
+			preferential : '',
+			luozuan_type:[0],
+        },
+        gid:{},
+        orderby:{},
+        save_condition_cookies:function (){
+            return void(0); //注释此段可以实现赛选状态驻留。
+			setCookieNotimeOfObject('luozuan_condition',this.condition);
+        },
+
+        load_condition_cookies:function (){
+            var data = getCookieOfObject('luozuan_condition');
+			if( data != null ){
+				this.condition = data;
+			}
+        },
+        get_condition:function(){
+            return this.condition;
+        },
+        set_condition:function (key,item_value){
+            //添加
+			if(typeof(this.condition[key])=='string'){
+				this.condition[key] = item_value;
+			}else{
+				this.condition[key].push(item_value);
+			}
+			this.save_condition_cookies();
+            return true;
+        },
+		set_orderby:function(order,desc){
+            this.orderby.order = order;
+            this.orderby.desc  = desc;
+        },
+        clear_condition:function(key,item_value){
+            //清除条件
+            var data     = this.condition[key];
+            var data_new = new Array();
+            for( var k in data ){
+                if( data[k] != item_value ){
+                    data_new.push(data[k]);
+                }
+            }
+            this.condition[key] = data_new;
+            this.save_condition_cookies();
+        },
+        clear_condition_all:function(){
+            //清除条件
+            for(var k in this.condition){
+				if( k == 'goods_sn'){
+					this.condition[k] = '';
+				}else if(k == 'luozuan_type'){
+					this.condition[k] = [0];
+				} else{
+					this.condition[k] = new Array();
+				}
+            }
+			this.set_orderby('','');
+			$('.zdy').html('自定义');
+			$('.input-one').val('');
+			$('.input-two').val('');
+			this.save_condition_cookies();
+        },
+        set_gid:function(value){
+            this.gid[value] = value;
+        },
+        clear_gid:function(value){
+            delete this.gid[value];
+        },
+        set_page:function(pageid){
+            this.page_id = pageid;
+        },
+        get_list:function (func){
+            var data   = {},func_bibao,type;
+            data       = this.get_condition();
+            type       = data['luozuan_type'][0];
+            func_bibao = function(data1){
+                if( data1.ret == 100 ){
+                    data = data1.data;
+					if(data['list'] != "false" && luozuan.orderby.order == 'dia_global_price' ){
+						data = func_data_sort(data,luozuan.orderby.desc);
+					}
+                    func(data,type);
+                } else {
+					layer.msg('获取数据出错',{ shift:6, });
+                }
+            };
+            data['page_id']   = this.page_id;
+            data['page_size'] = this.page_size;
+            if( $.isEmptyObject( this.orderby ) == false ){
+				data['order']         = this.orderby.order;
+				data['desc']          = this.orderby.desc;
+			}
+
+			//如果有定制要求
+			if($.isEmptyObject(dingzhi.info.jietuo_info) == false){
+				if(dingzhi.info.jietuo_info.luozuan.gal_id){
+					data['gal_id']    = dingzhi.info.jietuo_info.luozuan.gal_id;
+				}
+
+				if(dingzhi.info.jietuo_info.luozuan.szzmzb_gal_id){
+					data['szzmzb_gal_id'] = dingzhi.info.jietuo_info.luozuan.szzmzb_gal_id;
+				}
+			}
+            $.getJSON("{:U('Goods/getDiamondData')}",data,func_bibao);
+            return void(0);
+        },
+        get_info:function (gid,func){
+            var data  = {},func_bibao;
+			data       = this.get_condition();
+            type       = data['luozuan_type'][0];
+            func_bibao = function(data1){
+                if( data1.ret == 100 ){
+                    data = data1.data;
+                    func(data,type);
+                } else {
+					layer.msg('获取数据出错',{ shift:6, });
+                }
+            };
+            $.getJSON("{:U('Goods/getDiamondInfo')}",{'gid':gid},func_bibao);
+            return void(0);
+        },
+        addThisPageToCart:function(){
+            if($.isEmptyObject( this.gid )){
+                return false;
+            }
+            var data   = new Array();
+            for( var key in this.gid ){
+                data.push(this.gid[key]);
+            }
+            $.post('{:U("Goods/add2cart")}',{Action:'post',gid:data},function(data){
+                if(data.status == 1){
+					layer.msg(data.info,{ shift:2, });
+                    $('#cart').html(data.count);
+					$('.cat-c').html(data.count+'件');
+                }else{
+					layer.msg(data.info,{ shift:6, });
+                }
+            });
+        },
+        addDingzhiSelectedInfo:function(gid){
+			var func1                     = function(data){
+				dingzhi.load_info_cookies();
+				dingzhi.info.luozuan_info = data;
+                dingzhi.save_info_cookies();
+				dingzhi.get_luozuan_info(func_selected_luozuan_info);
+            }
+            this.get_info(gid,func1);
+        }
+    }
+	var zuantuo = {
+		page_id:1,
+		page_size:20,
+		category_id:'{$category_id}',
+		orderby:{},
+		condition:{
+		},
+		save_condition_cookies:function (){
+			setCookieNotimeOfObject('zuantuo_condition',this.condition);
+        },
+        load_condition_cookies:function (){
+			var data = getCookieOfObject('zuantuo_condition');
+			if( data != null ){
+				this.condition = data;
+			}
+        },
+		set_page:function(pageid){
+            this.page_id = pageid;
+        },
+		set_category_id:function(id){
+            this.category_id = id;
+        },
+		set_orderby:function(order,desc){
+            this.orderby.order = order;
+            this.orderby.desc  = desc;
+        },
+		set_condition:function(attr_id,attr_value_name,attr_code){
+			if( typeof( this.condition[attr_id] ) == "undefined" ){
+				this.condition[attr_id]       = {};
+				this.condition[attr_id].value = {};
+			}
+			this.condition[attr_id].value[attr_code] = {'attr_value_name':attr_value_name,'attr_code':attr_code};
+			this.save_condition_cookies();
+		},
+		clear_condition:function(attr_id,attr_code){
+			if( typeof( this.condition[attr_id] ) != "undefined" ){
+				if( typeof( this.condition[attr_id].value[attr_code] ) != "undefined" ){
+					delete this.condition[attr_id].value[attr_code];
+				}
+				if( $.isEmptyObject( this.condition[attr_id] ) ){
+					delete this.condition[attr_id];
+				}
+			}
+			this.save_condition_cookies();
+		},
+		clear_condition_all:function(){
+			this.condition   = {};
+			this.category_id = '{$category_id}';
+			this.save_condition_cookies();
+		},
+		get_condition:function(){
+			return this.condition;
+		},
+		get_attributes:function( func ){
+			var data   = {'goods_type':4,'category_id':this.category_id},func_bibao;
+			func_bibao = function(data1){
+				if( data1.ret == 100 ){
+					data = data1.data;
+					func(data,4);
+				} else {
+					layer.msg('获取数据出错',{ shift:6, });
+				}
+			};
+			$.getJSON("{:U('Goods/attributes')}",data,func_bibao);
+			return void(0);
+		},
+		get_goods_list:function( func ){
+			var func_bibao,args = {},condition;
+			args['goods_type']  = '4';
+			args['category_id'] = this.category_id;
+			if( $.isEmptyObject( this.orderby ) == false ){
+				args['order']   = this.orderby.order;
+				args['desc']    = this.orderby.desc;
+			}
+			args['desc']        = this.orderby.desc;
+			args['page_id']     = this.page_id;
+			args['page_size']   = this.page_size;
+
+			//如果有定制要求
+			if($.isEmptyObject(dingzhi.info.luozuan_info) == false){
+				args['shape']         = dingzhi.info.luozuan_info.shape;
+				args['weight']        = dingzhi.info.luozuan_info.weight;
+			}
+
+			args['goods_attr_filter'] = '';
+			condition                 = this.get_condition();
+			for(var row in condition){
+				var str='';
+				for( var r in condition[row].value ){
+					var attr_id,attr_code,attr_value_name;
+					attr_id   = row;
+					attr_code = condition[row].value[r].attr_code;
+					if( str   == '' ){
+						str   = attr_code;
+					}else{
+						str   = str + ',' + attr_code;
+					}
+				}
+				if( str != '' ){
+					if( args['goods_attr_filter'] == '' ){
+						args['goods_attr_filter'] = row + ':' + str;
+					}else{
+						args['goods_attr_filter'] += ';' + row + ':' + str;
+					}
+				}
+			}
+			func_bibao = function(data1){
+				if( data1.ret == 100 ){
+					data = data1.data;
+					func(data,4);
+				} else {
+					layer.msg('获取数据出错',{ shift:6, });
+				}
+			};
+			$.getJSON("{:U('Goods/goods_list')}",args,func_bibao);
+			return void(0);
+		},
+		get_goods_info:function(goods_id,func){
+			$.getJSON("{:U('Goods/goods_info')}",{'goods_id':goods_id,'goods_type':4},func);
+			return void(0);
+		}
+	}
+	var dingzhi = {
+		info:{
+			luozuan_info:{},
+			jietuo_info:{},
+			total_price:0
+		},
+		save_info_cookies:function (){
+			setCookieNotimeOfObject('dingzhi',this.info);
+        },
+        load_info_cookies:function (){
+			var data = getCookieOfObject('dingzhi');
+			if( data != null ){
+				this.info = data;
+			}
+        },
+		get_luozuan_info:function(func){
+			this.load_info_cookies();
+            if(this.info.luozuan_info  && !$.isEmptyObject( this.info.luozuan_info ) && func ){
+				this.count_total_price();
+                func(this.info.luozuan_info,this.info.total_price);
+            }
+			return this.info.luozuan_info;
+		},
+		get_jietuo_info:function(func){
+			this.load_info_cookies();
+            if(!$.isEmptyObject( this.info.jietuo_info )){
+				this.count_total_price();
+                func(this.info.jietuo_info,this.info.total_price);
+            }
+			return this.info.jietuo_info;
+		},
+		clear_info:function(){
+			this.info.luozuan_info = {};
+			this.info.jietuo_info  = {};
+			this.info.total_price  = 0;
+			this.save_info_cookies();
+		},
+		clear_luozuan_info:function(){
+			this.info.luozuan_info = {};
+			this.count_total_price();
+			this.save_info_cookies();
+		},
+		clear_jietuo_info:function(){
+			this.info.jietuo_info  = {};
+			this.count_total_price();
+			this.save_info_cookies();
+		},
+		set_jietuo_info:function(goods_id,func){
+			var cur_obj    = this;
+			var func_bibao = function(data){
+				if( data.ret == 100 ){
+                    if( $.isEmptyObject( data.data ) == false ){
+						cur_obj.info.jietuo_info             = {};
+						cur_obj.info.jietuo_info.goods_id    = data.data.goods_id;
+						cur_obj.info.jietuo_info.thumb       = data.data.thumb;
+						cur_obj.info.jietuo_info.goods_name  = data.data.goods_name;
+
+						if(data.data.activity_status == '0' || data.data.activity_status == '1'){
+							cur_obj.info.jietuo_info.goods_price = data.data.activity_price;
+						}else{
+							cur_obj.info.jietuo_info.goods_price = data.data.goods_price;
+						}
+						cur_obj.info.jietuo_info.luozuan     = {};
+
+						cur_obj.info.jietuo_info.luozuan.shape_name = data.data.luozuan.shape_name;
+						
+						if( data.data.luozuan ){
+							cur_obj.info.jietuo_info.luozuan.weights_name = data.data.luozuan.weights_name;
+							cur_obj.info.jietuo_info.luozuan.gal_id       = data.data.luozuan.gal_id;
+						}else{
+							cur_obj.info.jietuo_info.luozuan.weights_name = '';
+							cur_obj.info.jietuo_info.luozuan.gal_id       = '';
+						}
+						cur_obj.info.jietuo_info.material                 = {};
+						if( data.data.material ){
+							cur_obj.info.jietuo_info.material.material_id = data.data.material.material_id;
+							cur_obj.info.jietuo_info.material.material_name  = data.data.material.material_name;
+						}else{
+							cur_obj.info.jietuo_info.material.material_id = '';
+						}
+						cur_obj.info.jietuo_info.deputystone              = {};
+						if( data.data.deputystone ){
+							cur_obj.info.jietuo_info.deputystone.gad_id = data.data.deputystone.gad_id;
+						}else{
+							cur_obj.info.jietuo_info.deputystone.gad_id = '';
+						}
+                        cur_obj.save_info_cookies();//持久化变量
+						cur_obj.count_total_price();
+                        func(data.data,cur_obj.info.total_price);//执行回调
+						if( !$.isEmptyObject(  dingzhi.info.luozuan_info ) ){
+							layer.msg('尊敬的客户，您的钻戒匹配成功。',{ shift:2, });
+						} else {
+							layer.confirm('钻托选择成功，是否去挑选钻石？', {
+								btn: ['是','否'] //按钮
+								}, function(){
+									location.href='{:U('/Home/Goods/goodsDiy')}';
+								}
+							);
+						}
+                    }
+				} else {
+					layer.msg('获取数据出错',{ shift:6, });
+				}
+			};
+			zuantuo.get_goods_info(goods_id,func_bibao);
+			return void(0);
+		},
+		set_jietuo_info1:function(goods_id){
+			var cur_obj = this;
+			var func_bibao = function(data){
+				if( data.ret == 100 ){
+                    if(!$.isEmptyObject( data.data )){
+                        cur_obj.info.jietuo_info             = {};
+                        cur_obj.info.jietuo_info.goods_id    = data.data.goods_id;
+						cur_obj.info.jietuo_info.thumb       = data.data.thumb;
+						cur_obj.info.jietuo_info.goods_name  = data.data.goods_name;
+						cur_obj.info.jietuo_info.goods_price = $("#memberPrice").html();
+                        cur_obj.info.jietuo_info.luozuan              = {};
+                        cur_obj.info.jietuo_info.luozuan.shape_name = $("#associateLuozuan .active").attr("title");
+                        cur_obj.info.jietuo_info.luozuan.weights_name = $("#associateLuozuan .active").attr("ref");
+                        cur_obj.info.jietuo_info.luozuan.gal_id       = $("#associateLuozuan .active").attr("data-content");
+                        cur_obj.info.jietuo_info.material             = {};
+                        cur_obj.info.jietuo_info.material.material_id = $("#associateMaterial .active").attr("ref");
+                        cur_obj.info.jietuo_info.material.material_name = $("#associateMaterial .active").text();
+                        cur_obj.info.jietuo_info.deputystone          = {};
+                        cur_obj.info.jietuo_info.deputystone.gad_id   = $("#deputystone .active").attr("ref");
+                        cur_obj.info.jietuo_info.hand                 = $("#hand").val();
+                        cur_obj.info.jietuo_info.word                 = $("#word").val();
+						cur_obj.info.jietuo_info.sd_id                = $("input[name='sd_id']").val();
+						cur_obj.info.jietuo_info.hand1                 = $("#hand1").val();
+                        cur_obj.info.jietuo_info.word1                 = $("#word1").val();
+						cur_obj.info.jietuo_info.sd_id1                = $("input[name='sd_id1']").val();
+                        cur_obj.save_info_cookies();                  //持久化变量
+						cur_obj.count_total_price();
+						if( !$.isEmptyObject( dingzhi.info.luozuan_info ) ){
+							layer.msg('尊敬的客户，您的钻戒匹配成功。',{ shift:2, });
+							window.open("{:U('/Home/Goods/goodsCategory')}?gcid=60");
+						}else{
+							layer.confirm('钻托选择成功，是否去挑选钻石？', {
+								btn: ['是','否'] //按钮
+								}, function(){
+									location.href='{:U('/Home/Goods/goodsDiy')}';
+								}
+							);
+						}
+                    }
+				} else {
+					layer.msg('获取数据出错',{ shift:6, });
+				}
+			};
+			zuantuo.get_goods_info(goods_id,func_bibao);
+			return void(0);
+		},
+		count_total_price:function(){
+			if($.isEmptyObject( this.info.luozuan_info ) && $.isEmptyObject( this.info.jietuo_info )){
+				this.info.total_price = 0;
+			}else if(!$.isEmptyObject( this.info.luozuan_info ) && !$.isEmptyObject( this.info.jietuo_info )){
+				this.info.total_price = accAdd(this.info.luozuan_info.price,this.info.jietuo_info.goods_price).toFixed(2);
+			}else if(!$.isEmptyObject( this.info.luozuan_info )){
+				this.info.total_price = this.info.luozuan_info.price;
+			}else if(!$.isEmptyObject( this.info.jietuo_info )){
+				this.info.total_price = this.info.jietuo_info.goods_price;
+			}
+			return this.info.total_price;
+		},
+		submit:function(){
+			var msg = '';
+			if($.isEmptyObject( this.info.luozuan_info ) && $.isEmptyObject( this.info.jietuo_info )){
+				msg = '请挑选好你的商品。';
+			}else if(!$.isEmptyObject( this.info.luozuan_info ) && !$.isEmptyObject( this.info.jietuo_info )){
+				msg = '';
+			}else if($.isEmptyObject( this.info.luozuan_info )){
+				msg = '请挑选好裸钻。';
+			}else if($.isEmptyObject( this.info.jietuo_info )){
+				msg = '请挑选好你的戒托信息。';
+			}
+			if( msg != '' ){
+				layer.msg(msg,{ shift:6, });
+				return void(0);
+			}
+            var data                = new Array();
+			data.push(this.info.luozuan_info.gid);
+			var goods_info = {},gid,cur_obj;
+			goods_info.weights_name = this.info.jietuo_info.luozuan.weights_name;
+			goods_info.gal_id       = this.info.jietuo_info.luozuan.gal_id;
+			goods_info.material_id  = this.info.jietuo_info.material.material_id;
+			goods_info.gad_id       = this.info.jietuo_info.deputystone.gad_id;
+			if(this.info.jietuo_info.hand){
+				goods_info.hand     = this.info.jietuo_info.hand;
+			}else{
+				goods_info.hand     = '';
+			}
+			if(this.info.jietuo_info.hand1){
+				goods_info.hand1     = this.info.jietuo_info.hand1;
+			}else{
+				goods_info.hand1     = '';
+			}
+			if(this.info.jietuo_info.word){
+				goods_info.word     = this.info.jietuo_info.word;
+			}else{
+				goods_info.word     = '';
+			}
+			if(this.info.jietuo_info.word1){
+				goods_info.word1    = this.info.jietuo_info.word1;
+			}else{
+				goods_info.word1    = '';
+			}
+			gid                     = this.info.jietuo_info.goods_id;
+			cur_obj                 = this;
+			var timestamp			= new Date().getTime();
+			dingzhi_id   			= data+gid+timestamp;
+            $.post('{:U('Goods/add2cart')}',{Action:'post',gid:data,dingzhiId:dingzhi_id},function(data){
+                if(data.status == 1){
+                    //addToCart(gid,4,goods_info);
+					var goods_id      = gid;
+					var diamondWeight = goods_info.weights_name;
+					var diamondId     = goods_info.gal_id;
+					var materialId    = goods_info.material_id;
+					var deputystoneId = goods_info.gad_id;
+					var hand          = goods_info.hand;
+					var word          = goods_info.word;
+					var hand1         = goods_info.hand1;
+					var word1         = goods_info.word1;
+					$.post("/Home/Order/addZMGoods2cart",{Action:"post",gid:goods_id,dingzhiId:dingzhi_id,goods_type:4,deputystoneId:deputystoneId,materialId:materialId,diamondId:diamondId,hand:hand,word:word,hand1:hand1,word1:word1,goods_number:'1'},function(data){
+						if(data.status == 100){
+							cur_obj.clear_info();
+							window.location.href="/Home/Order/orderCart";
+						}else{
+							layer.msg(data.msg,{ shift:6, });
+						}
+					});
+                }else{
+					layer.msg(data.info,{ shift:6, });
+                }
+            });
+		},
+		addToCart:function(current,type){					//type为空添加商品到购物车，type为'rapidBuy'则是立即购买
+			var goods_id     = current.attr('data-goods-id');
+            var goods_type   = current.attr('data-goods-type');
+			var goods_number = $("#goodsnumber").val();
+			var realy_goods_number=$("#goodsnumber").attr('max');
+			if(goods_number<0){
+				layer.msg('选填数量不能为负数',{ shift:6, });
+				return false;
+			}
+			if(goods_number==0){
+				layer.msg('选填数量不能为0',{ shift:6, });
+				return false;
+			}
+			var number_this=realy_goods_number-goods_number;
+			if(number_this<0){
+				layer.msg('选择的商品数量已经超过该商品库存。',{ shift:6, });
+				return false;
+			}
+            var data      = {};
+            if(goods_type == '3'){
+                data.sku_id = $("#sku .active").attr("data-goods-sku-id");
+                addToCart_b2c(goods_id,goods_type,data, goods_number,type);
+            } else {
+                var luozuan_info  = this.get_luozuan_info();
+                data.weights_name = $("#associateLuozuan .active").attr("ref");
+                data.gal_id       = $("#associateLuozuan .active").attr("data-content");
+                data.material_id  = $("#associateMaterial .active").attr("ref");
+                data.gad_id       = $("#deputystone .active").attr("ref");
+                data.hand         = $("#hand").val();
+                data.word         = $("#word").val();
+				data.sd_id        = $("input[name='sd_id']").val();
+				data.hand1         = $("#hand1").val();
+                data.word1         = $("#word1").val();
+				data.sd_id1        = $("input[name='sd_id1']").val();
+                addToCart_b2c(goods_id,goods_type,data, goods_number,type);
+            }
+		},
+		addToCollection:function(current,type){
+			var goods_id     = current.attr('data-goods-id');
+			var goods_type   = current.attr('data-goods-type');
+			var goods_number = $("#goodsnumber").val();
+			var realy_goods_number=$("#goodsnumber").attr('max');
+			/*if(goods_number<0){
+				layer.msg('选填数量不能为负数',{ shift:6, });
+				return false;
+			}
+			if(goods_number==0){
+				layer.msg('选填数量不能为0',{ shift:6, });
+				return false;
+			}*/
+			var number_this=realy_goods_number-goods_number;
+			/*if(number_this<0){
+				layer.msg('选择的商品数量已经超过该商品库存。',{ shift:6, });
+				return false;
+			}*/
+			var data      = {};
+			if(current.attr('collection_id')>0){
+				layer.confirm('请勿重复添加收藏!', {
+					btn: ['查看我的收藏','好的'] //按钮
+				}, function(){
+					window.location.href = "{:U('Home/Goods/getCollectionList')}";
+				});
+			}else{
+				if(goods_type == '3'){
+					data.sku_id = $("#sku .active").attr("data-goods-sku-id");
+					addToCollection(current,goods_id,goods_type,data, goods_number,type);
+				} else {
+					var luozuan_info  = this.get_luozuan_info();
+					data.weights_name = $("#associateLuozuan .active").attr("ref");
+					data.gal_id       = $("#associateLuozuan .active").attr("data-content");
+					data.material_id  = $("#associateMaterial .active").attr("ref");
+					data.gad_id       = $("#deputystone .active").attr("ref");
+					data.hand         = $("#hand").val();
+					data.word         = $("#word").val();
+					data.sd_id        = $("input[name='sd_id']").val();
+					data.hand1         = $("#hand1").val();
+					data.word1         = $("#word1").val();
+					data.sd_id1        = $("input[name='sd_id1']").val();
+					addToCollection(current,goods_id,goods_type,data, goods_number,type);
+				}
+			}
+		}
+	}
+	var chengpin = {
+		page_id:1,
+		page_size:20,
+		category_id:'{$category_id}',
+		orderby:{},
+		goods_series_id:'{$goods_series_id}',
+		condition:{
+		},
+		save_condition_cookies:function (){
+			setCookieNotimeOfObject('chengpin_condition',this.condition);
+        },
+        load_condition_cookies:function (){
+			var data = getCookieOfObject('chengpin_condition');
+			if( data != null ){
+				this.condition = data;
+			}
+        },
+		set_goods_series_id:function(id){
+            this.goods_series_id = id;
+        },
+		set_category_id:function(id){
+			this.category_id = id;
+		},
+		set_page:function(pageid){
+            this.page_id = pageid;
+        },
+		set_orderby:function(order,desc){
+            this.orderby.order = order;
+            this.orderby.desc  = desc;
+        },
+		set_condition:function(attr_id,attr_value_name,attr_code){
+			if( typeof( this.condition[attr_id] ) == "undefined" ){
+				this.condition[attr_id]       = {};
+				this.condition[attr_id].value = {};
+			}
+			this.condition[attr_id].value[attr_code] = {'attr_value_name':attr_value_name,'attr_code':attr_code};
+			this.save_condition_cookies();
+		},
+		clear_condition:function(attr_id,attr_code){
+			if( typeof( this.condition[attr_id] ) != "undefined" ){
+				if( typeof( this.condition[attr_id].value[attr_code] ) != "undefined" ){
+					delete this.condition[attr_id].value[attr_code];
+				}
+				if( $.isEmptyObject( this.condition[attr_id] ) ){
+					delete this.condition[attr_id];
+				}
+			}
+			this.save_condition_cookies();
+		},
+		clear_condition_all:function(){
+			this.condition       = {};
+			this.goods_series_id = '{$goods_series_id}';
+			this.category_id     = '{$category_id}';
+			this.save_condition_cookies();
+		},
+		get_condition:function(){
+			return this.condition;
+		},
+		get_attributes:function( func ){
+			var data   = {'goods_type':3,'category_id':this.category_id},func_bibao;
+			func_bibao = function(data1){
+				if( data1.ret == 100 ){
+					data = data1.data;
+					func(data,3);
+				} else {
+					layer.msg('获取数据出错',{ shift:6, });
+				}
+			};
+			$.getJSON("{:U('Goods/attributes')}",data,func_bibao);
+			return void(0);
+		},
+		get_goods_list:function( func ){
+			var func_bibao,args = {},condition;
+			args['goods_type']  = '3';
+			args['category_id'] = this.category_id;
+			if( $.isEmptyObject( this.orderby ) == false ){
+				args['order']   = this.orderby.order;
+				args['desc']    = this.orderby.desc;
+			}
+			if( this.goods_series_id > 0 ){
+				args['goods_series_id'] = this.goods_series_id;
+			}
+			args['page_id']           = this.page_id;
+			args['page_size']         = this.page_size;
+			args['goods_attr_filter'] = '';
+			condition                 = this.get_condition();
+			for(var row in condition){
+				var str='';
+				for( var r in condition[row].value ){
+					var attr_id,attr_code,attr_value_name;
+					attr_id   = row;
+					attr_code = condition[row].value[r].attr_code;
+					if( str   == '' ){
+						str   = attr_code;
+					}else{
+						str   = str + ',' + attr_code;
+					}
+				}
+				if( str != '' ){
+					if( args['goods_attr_filter'] == '' ){
+						args['goods_attr_filter'] = row + ':' + str;
+					}else{
+						args['goods_attr_filter'] += ';' + row + ':' + str;
+					}
+				}
+			}
+			func_bibao = function(data1){
+				if( data1.ret == 100 ){
+					data = data1.data;
+					func(data,3);
+				} else {
+					layer.msg('获取数据出错',{ shift:6, });
+				}
+			};
+			$.getJSON("{:U('Goods/goods_list')}",args,func_bibao);
+			return void(0);
+		},
+		get_goods_info:function(goods_id,func){
+			$.getJSON("{:U('Goods/goods_info')}",{'goods_id':goods_id,'goods_type':3},func);
+			return void(0);
+		}
+	}
+    var goods = {
+		page_id:1,
+		page_size:20,
+		goods_type:'{$goods_type}',
+		category_id:'{$category_id}',
+		price: '{$price}',
+		keyword:'{$keyword}',
+		Preferential:'{$Preferential}',//热门
+		orderby:{},
+		condition:{
+		},
+		set_page:function(pageid){
+            this.page_id     = pageid;
+        },
+		save_condition_cookies:function (){
+			setCookieNotimeOfObject('goods_condition',this.condition);
+        },
+        load_condition_cookies:function (){
+			var data = getCookieOfObject('goods_condition');
+			if( data != null ){
+				this.condition = data;
+			}
+        },
+		set_category_id:function(id){
+            this.category_id = id;
+        },
+		set_price:function(price){
+            this.set_price = price;
+        },
+		set_orderby:function(order,desc){
+            this.orderby.order = order;
+            this.orderby.desc  = desc;
+        },
+		get_condition:function(){
+			return this.condition;
+		},
+		set_condition:function(attr_id,attr_value_name,attr_code){
+			if( typeof( this.condition[attr_id] ) == "undefined" ){
+				this.condition[attr_id]       = {};
+				this.condition[attr_id].value = {};
+			}
+			this.condition[attr_id].value[attr_code] = {'attr_value_name':attr_value_name,'attr_code':attr_code};
+			this.save_condition_cookies();
+		},
+		clear_condition:function(attr_id,attr_code){
+			if( typeof( this.condition[attr_id] ) != "undefined" ){
+				if( typeof( this.condition[attr_id].value[attr_code] ) != "undefined" ){
+					delete this.condition[attr_id].value[attr_code];
+				}
+				if( $.isEmptyObject( this.condition[attr_id] ) ){
+					delete this.condition[attr_id];
+				}
+			}
+			this.save_condition_cookies();
+		},
+		clear_condition_all:function(){
+			this.condition   = {};
+			this.category_id = '{$category_id}';
+			this.save_condition_cookies();
+		},
+		get_attributes:function( func ){
+			var goods_type = this.goods_type;
+			var data   = {'goods_type':goods_type,'category_id':this.category_id},func_bibao;
+			func_bibao = function(data1){
+				if( data1.ret == 100 ){
+					data = data1.data;
+					func(data,0);
+				} else {
+					layer.msg('获取数据出错',{ shift:6, });
+				}
+			};
+			$.getJSON("{:U('Goods/attributes')}",data,func_bibao);
+			return void(0);
+		},
+		get_goods_list:function( func ){
+			var func_bibao,args = {},condition;
+			args['goods_type']        = this.goods_type;
+			args['category_id']       = this.category_id;
+			args['price']       	  = this.price;
+			if( !$.isEmptyObject( this.orderby )){
+				args['order']         = this.orderby.order;
+				args['desc']          = this.orderby.desc;
+			}
+			if( this.keyword != '' ){
+				args['keyword']       = this.keyword;
+			}
+			if( this.Preferential != ''){
+				args['Preferential']  = this.Preferential;
+			}
+			args['page_id']           = this.page_id;
+			args['page_size']         = this.page_size;
+			args['goods_attr_filter'] = '';
+			condition                 = this.get_condition();
+			for(var row in condition){
+				var str='';
+				for( var r in condition[row].value ){
+					var attr_id,attr_code,attr_value_name;
+					attr_id   = row;
+					attr_code = condition[row].value[r].attr_code;
+					if( str   == '' ){
+						str   = attr_code;
+					}else{
+						str   = str + ',' + attr_code;
+					}
+				}
+				if( str != '' ){
+					if( args['goods_attr_filter'] == '' ){
+						args['goods_attr_filter'] = row + ':' + str;
+					}else{
+						args['goods_attr_filter'] += ';' + row + ':' + str;
+					}
+				}
+			};
+			func_bibao = function(data1){
+				if( data1.ret == 100 ){
+					data = data1.data;
+					func(data,0);
+				} else {
+					layer.msg('获取数据出错',{ shift:6, });
+				}
+			};
+			$.getJSON("{:U('Goods/goods_list')}",args,func_bibao);
+			return void(0);
+		},
+		get_goods_info:function(goods_id,func){
+			var goods_type = this.goods_type;
+			$.getJSON("{:U('Goods/goods_info')}",{'goods_id':goods_id,'goods_type':goods_type},func);
+			return void(0);
+		}
+	}
+    function func_display_luozuan_info(data,type){
+        var html='';
+        if( !$.isEmptyObject( data ) ){
+            if(data.imageurl !='' && data.imageurl != '-' && data.imageurl != null){
+                if(data.imageurl.substr(-4)==".png" || data.imageurl.substr(-4)==".jpg" || data.imageurl.substr(-5) ==".jpeg"){
+                    html += '<li class="col-md-12"><img style="max-width:500px;max-height:300px;width:auto;height:auto;border:0px" src="'+data.imageurl+'"></li>';
+                }else{
+                    html += '<li class="col-md-12"><iframe src="'+data.imageurl+'" style="max-width:500px;max-height:300px;width:auto;height:auto;border:0px" ></iframe></li>';
+                }
+            }
+            if(data.videourl != '-' && data.videourl != '' && data.videourl != null){
+                html += '<li class="col-md-12"><iframe  id="frmMiniFramevideo" data-ng-src="'+data.videourl+'" style="max-width:500px;max-height:300px;width:auto;height:auto;border:0px" src="'+data.videourl+'"></iframe></li>';
+            }
+
+            html += '<li class="col-md-6"><span>证书编号：</span>'+data.certificate_number+'</li>';
+            html += '<li class="col-md-6"><span>证书类型：</span>'+data.certificate_type+'</li>';
+            html += '<li class="col-md-6"><span>形状：</span>'+data.shape_name+'</li>';
+            html += '<li class="col-md-6"><span>荧光：</span>'+data.fluor+'</li>';
+            html += '<li class="col-md-6"><span>重量：</span>'+data.weight+'</li>';
+            html += '<li class="col-md-6"><span>全深比：</span>'+data.dia_depth+'</li>';
+            html += '<li class="col-md-6"><span>颜色：</span>'+data.color+'</li>';
+            html += '<li class="col-md-6"><span>台宽比：</span>'+data.dia_table+'</li>';
+            if(type>0){
+                html += '<li class="col-md-6"><span>色度：</span>'+data.intensity+'</li>';
+            }
+            html += '<li class="col-md-6"><span>净度：</span>'+data.clarity+'</li>';
+            html += '<li class="col-md-6"><span>奶色：</span>'+data.milk+'</li>';
+            if(type==0){
+                html += '<li class="col-md-6"><span>切工：</span>'+data.cut+'</li>';
+            }
+            html += '<li class="col-md-6"><span>咖色：</span>'+data.coffee+'</li>';
+            html += '<li class="col-md-6"><span>抛光：</span>'+data.polish+'</li>';
+            html += '<li class="col-md-6"><span>编号：</span>'+data.gid+'</li>';
+            html += '<li class="col-md-6"><span>对称：</span>'+data.symmetry+'</li>';
+            html += '<li class="col-md-6"><span>价格：</span>'+data.price+'元</li>';
+            html += '<li class="col-md-6"><span>尺寸：</span>'+data.dia_size+'</li>';
+            html += '<li class="col-md-6"><span>所在地：</span>'+data.location+'</li>';
+            html += '<div class="clearfix"></div>';
+        }
+        $('#luozuan_info').html(html);
+    }
+	//裸砖列表html构建
+    function func_display_luozuan_data(data,type){
+        var html = '' , page_html = '', htmls='';
+		$('.tip_class').remove();
+        if( data.list.length > 0 ){
+            for(var row in data.list){
+                html += '<tr>';
+                if($.trim(data.list[row].videourl) != '-' && $.trim(data.list[row].videourl) !=''){
+                    html += '<th class="oper lb-hide"><button type="button" gid="'+data.list[row].gid+'" class="diamond-video"  data-toggle="modal" data-target=".bs-example-modal-lg"></button></th>';
+                }else if($.trim(data.list[row].imageurl) != '-' && $.trim(data.list[row].imageurl) !=''){
+                    html += '<th class="oper lb-hide"><button type="button" gid="'+data.list[row].gid+'" class="diamond-image"  data-toggle="modal" data-target=".bs-example-modal-lg"></button></th>';
+                }else{
+                    html += '<th class="oper lb-hide"><button type="button" gid="'+data.list[row].gid+'" class="diamond-btnimg" data-toggle="modal" data-target=".bs-example-modal-lg"></button></th>';
+                }
+                html += '<td  class="nf-hide">'+data.list[row].location+'</td>';
+                html += '<td>'+data.list[row].shape_name+'</td>';
+                html += '<td>';
+                if(data.list[row].certificate_number){
+                	if(type>0){
+                    	//html += data.list[row].certificate_type+' '+data.list[row].certificate_number;
+
+	                    if(data.list[row].certificate_type=='GIA'){
+	                        html +='<a href="/Home/Search/detail.html?zs_id='+data.list[row].certificate_number+'&zs_type=1" target="_blank">';
+	                    }else if(data.list[row].certificate_type=='IGI'){
+	                        html +='<a href="/Home/Search/detail.html?zs_id='+data.list[row].certificate_number+'&zs_type=2" target="_blank">';
+	                    }else if(data.list[row].certificate_type=='HRD'){
+	                        html +='<a href="/Home/Search/detail.html?zs_id='+data.list[row].certificate_number+'&zs_type=3" target="_blank">';
+	                    }else if(data.list[row].certificate_type=='NGTC'){
+	                        html +='<a href="" >';
+	                    }else{
+	                        html +='<a href="" >';
+	                    }
+	                    html +=	data.list[row].certificate_type+' '+data.list[row].certificate_number;
+					    html +='</a>';
+	                }else{
+	                    if(data.list[row].certificate_type=='GIA'){
+	                        html +='<a href="/Home/Search/detail.html?zs_id='+data.list[row].certificate_number+'&zs_type=1" target="_blank">';
+	                    }else if(data.list[row].certificate_type=='IGI'){
+	                        html +='<a href="/Home/Search/detail.html?zs_id='+data.list[row].certificate_number+'&zs_type=2" target="_blank">';
+	                    }else if(data.list[row].certificate_type=='HRD'){
+	                        html +='<a href="/Home/Search/detail.html?zs_id='+data.list[row].certificate_number+'&zs_type=3" target="_blank">';
+	                    }else if(data.list[row].certificate_type=='NGTC'){
+	                        html +='<a href="" >';
+	                    }else{
+	                        html +='<a href="" >';
+	                    }
+	                    html +=	data.list[row].certificate_type+' '+data.list[row].certificate_number;
+					    html +='</a>';
+	                }
+                }else{
+                	html +=	data.list[row].certificate_type+' '+data.list[row].certificate_number;
+                }
+
+                html +='</td>';
+                html += '<td>'+data.list[row].goods_name+'</td>';
+                html += '<td>'+data.list[row].weight+'</td>';
+                html += '<td>'+data.list[row].color+'</td>';
+				if(type>0){
+					html += '<td>'+data.list[row].intensity+'</td>';
+					html += '<td>'+data.list[row].clarity+'</td>';
+				}else{
+					html += '<td>'+data.list[row].clarity+'</td>';
+					html += '<td>'+data.list[row].cut+'</td>';
+				}
+                html += '<td>'+data.list[row].polish+'</td>';
+                html += '<td>'+data.list[row].symmetry+'</td>';
+                html += '<td>'+data.list[row].fluor+'</td>';
+
+                var _currentTab = $('.chose').html();
+				if(type == 0 && _currentTab == '白钻'){
+					html += '<td>'+data.list[row].milk+'</td>';
+					html += '<td>'+data.list[row].coffee+'</td>';
+				}
+				html += '<td class="lb-hide">'+data.list[row].dia_depth+'</td>';
+                html += '<td class="lb-hide">'+data.list[row].dia_table+'</td>';
+                html += '<td class="red">￥'+parseInt(data.list[row].price)+'</td>';
+                html += '<td><input type="checkbox" class="gid" value="'+data.list[row].gid+'"></td>';
+                html += '<td>';
+				if(data.list[row].collection_id>0){
+					html += '<button class="btn btn-default btn-sm btn-warning" onclick="addDiamondsToCollection($(this),'+data.list[row].gid+',1)" collection_id="'+data.list[row].collection_id+'">已收藏</button>';
+				}else{
+					html += '<button class="btn btn-default btn-sm btn-warning" onclick="addDiamondsToCollection($(this),'+data.list[row].gid+',1)">收藏</button> ';
+				}
+
+				html += '<button data-value="'+data.list[row].gid+'" class="btn btn-default btn-sm btn-warning addCart">购买</button> ';
+				html += '<button data-value="'+data.list[row].gid+'" class="btn btn-default btn-sm btn-warning addDingzhi">选托</button> ';
+				html += '</td>';
+                html += '</tr>';
+            }
+        }else{
+			if($('.datalist').hasClass('designqutation')){
+				htmls = '<div class="tip_class luozuan" style="text-align:center"><h4>抱歉，没有找到符合您方案的商品，请重新获取！</h4></div>';
+			}else{
+				htmls = '<div class="tip_class luozuan" style="text-align:center"><h4>没有搜索到符合条件的商品，请重新选择参数！</h4></div>';
+			}
+
+			$('#pages').after(htmls);
+		}
+        $('#num').html(data.total);
+        $('#luozuan_table').html(html);
+        page_html = page.create({PageID:data['page_id'],PageSize:data['page_size'],TotalNum:data['total']}).getHtml();
+        $('#pages').html(page_html);
+        $('#pages .pagination a').on('click',function(){
+            luozuan.set_page($(this).attr('data-page-id'));
+            luozuan.get_list(func_display_luozuan_data);
+        });
+        $('.gid').click(function(){
+            if($(this).prop('checked')) {
+                luozuan.set_gid($(this).val());
+            }else{
+                luozuan.clear_gid($(this).val());
+            }
+        });
+        $('.addCart').bind('click',function(){
+            var gid = $(this).attr('data-value');
+            $('input[type="checkbox"]').each(function(){
+                $(this).prop('checked',false);
+                luozuan.clear_gid($(this).val());
+            });
+            luozuan.set_gid(gid);
+            luozuan.addThisPageToCart();
+        });
+
+        $('.diamond-btnimg,.diamond-video,.diamond-image').bind('click',function(){
+            var gid = $(this).attr('gid');
+            luozuan.get_info(gid,func_display_luozuan_info);
+        });
+        $('.addDingzhi').bind('click',function(){
+            var gid = $(this).attr('data-value');
+            luozuan.addDingzhiSelectedInfo(gid);
+			if( !$.isEmptyObject(  dingzhi.info.jietuo_info )){
+				layer.msg('尊敬的客户，您的钻戒匹配成功。',{ shift:2, });
+			}else{
+				layer.confirm('钻石选择成功，是否去挑选戒托？', {
+					btn: ['是','否'] //按钮
+					}, function(){
+						location.href='{:U('/Home/Goods/goodsCategory')}?gcid=60';
+					}
+				);
+			}
+        });
+    }
+	function func_display_luozuan_data_new(data,type){		//斯特曼裸钻列表显示方式
+		layer.closeAll();									//关闭加载层
+        var html = '' , page_html = '', htmls='';img	= '';
+		$('.tip_class').remove();
+        if( data.list.length > 0 ){
+			for(var row in data.list){
+				img	= '';
+				switch(data.list[row].shape_name){
+					case '圆形':
+						img	= 'screening_icon_03.png';
+						break;
+					case '椭圆':
+						img	= 'screening_icon_11.png';
+						break;
+					case '马眼':
+						img	= 'screening_icon_09.png';
+						break;
+					case '心形':
+						img	= 'screening_icon_17.png';
+						break;
+					case '水滴':
+						img	= 'screening_icon_15.png';
+						break;
+					case '方形':
+						img	= 'screening_icon_05.png';
+						break;
+					case '祖母绿':
+						img	= 'screening_icon_07.png';
+						break;
+					case '枕形':
+						img	= 'screening_icon_19.png';
+						break;
+					case '雷蒂恩':
+						img	= 'screening_icon_13.png';
+						break;
+					case '梯方':
+						img	= 'screening_icon_23.png';
+						break;
+					case '方形祖母绿':
+						img	= 'screening_icon_21.png';
+						break;
+					default:
+						img	= 'screening_icon_03.png';
+						break;
+				}
+                html += '<tr>';
+				if(data.list[row].compare_id){
+					html += '<td><input type="checkbox" checked class="compare" value="'+data.list[row].gid+'" ></td>';
+				}else{
+					html += '<td><input type="checkbox" class="compare" value="'+data.list[row].gid+'" ></td>';
+				}
+
+                html += '<td><img src="__IMG__/'+img+'" alt="">'+data.list[row].shape_name+'</td>';
+                html += '<td>'+data.list[row].weight+'</td>';
+                html += '<td>'+data.list[row].cut+'</td>';
+                html += '<td>'+data.list[row].color+'</td>';
+				html += '<td>'+data.list[row].clarity+'</td>';
+				if(data.list[row].preferential_id){
+					html += '<td>特惠价￥'+data.list[row].preferential_price+' <span class="pull-right">>&nbsp;</span></td>';
+				}else{
+					html += '<td>'+data.list[row].price+'<span class="pull-right">>&nbsp;</span></td>';
+				}
+
+				html += '</tr>';
+            }
+        }else{
+			if($('.datalist').hasClass('designqutation')){
+				htmls = '<div class="tip_class luozuan" style="text-align:center"><h4>抱歉，没有找到符合您方案的商品，请重新获取！</h4></div>';
+			}else{
+				htmls = '<div class="tip_class luozuan" style="text-align:center"><h4>没有搜索到符合条件的商品，请重新选择参数！</h4></div>';
+			}
+
+			$('#pages').after(htmls);
+		}
+		if(luozuan.condition['is_own'][0] == '0'){
+			$('.xianhuo').html(data.total);
+		}else{
+			$('.bilishi').html(data.total);
+		}
+
+        $('#num').html(data.total);
+        $('#luozuan_list').html(html);
+        page_html = page.create({PageID:data['page_id'],PageSize:data['page_size'],TotalNum:data['total']}).getHtml();
+        $('#pages').html(page_html);
+        $('#pages .pagination a').on('click',function(){
+            luozuan.set_page($(this).attr('data-page-id'));
+            luozuan.get_list(func_display_luozuan_data_new);
+        });
+        $('.gid').click(function(){
+            if($(this).prop('checked')) {
+                luozuan.set_gid($(this).val());
+            }else{
+                luozuan.clear_gid($(this).val());
+            }
+        });
+
+    }
+	function func_display_luozuan_info_new(data,type){		//斯特曼裸钻列表获取裸钻详情
+        var html='';img_one	= '';img_two	= '';img_threr	= '';
+        if( !$.isEmptyObject( data ) ){
+
+			switch(data.shape_name){
+				case '圆形':
+					img_one		= 's_round_01.jpg';
+					img_two		= 's_round_02.jpg';
+					img_threr	= 's_round_03.jpg';
+					break;
+				case '椭圆':
+					img_one		= 's_oval_01.jpg';
+					img_two		= 's_oval_02.jpg';
+					img_threr	= 's_oval_03.jpg';
+					break;
+				case '马眼':
+					img_one		= 's_marquise_01.jpg';
+					img_two		= 's_marquise_02.jpg';
+					img_threr	= 's_marquise_03.jpg';
+					break;
+				case '心形':
+					img_one		= 's_heart_01.jpg';
+					img_two		= 's_heart_02.jpg';
+					img_threr	= 's_heart_03.jpg';
+					break;
+				case '水滴':
+					img_one		= 's_pear_01.jpg';
+					img_two		= 's_pear_02.jpg';
+					img_threr	= 's_pear_03.jpg';
+					break;
+				case '方形':
+					img_one		= 's_princess_01.jpg';
+					img_two		= 's_princess_02.jpg';
+					img_threr	= 's_princess_03.jpg';
+					break;
+				case '祖母绿':
+					img_one		= 's_emerald_01.jpg';
+					img_two		= 's_emerald_02.jpg';
+					img_threr	= 's_emerald_03.jpg';
+					break;
+				case '枕形':
+					img_one		= 's_cushion_01.jpg';
+					img_two		= 's_cushion_02.jpg';
+					img_threr	= 's_cushion_03.jpg';
+					break;
+				case '雷蒂恩':
+					img_one		= 's_radiant_01.jpg';
+					img_two		= 's_radiant_02.jpg';
+					img_threr	= 's_radiant_03.jpg';
+					break;
+				case '梯方':
+					img_one		= 's_baguette_01.jpg';
+					img_two		= 's_baguette_02.jpg';
+					img_threr	= 's_baguette_03.jpg';
+					break;
+				case '方形祖母绿':
+					img_one		= 's_square_01.jpg';
+					img_two		= 's_square_02.jpg';
+					img_threr	= 's_square_03.jpg';
+					break;
+				default:
+					img_one		= 's_round_01.jpg';
+					img_two		= 's_round_02.jpg';
+					img_threr	= 's_round_03.jpg';
+					break;
+			}
+
+			html += '<p><button type="button" class="cz cz-1">关闭详情>></button><button type="button" data-gid="'+data.gid+'" class="diamondDetails cz cz-2 " >查看更多详情>></button></p>';
+			html += '<div class="stm-desc-box">';
+			html += '<div class="xianxi-box">';
+			if(data.preferential_price){
+				var prefix	= '特价';
+			}else{
+				var prefix	= '精选';
+			}
+			html += '<h1>'+data.weight+'ct '+data.certificate_type+'证书 '+prefix+''+data.shape_name+'钻</h1>';
+			html += '<div class="xianxi-content">';
+			html += '<div class="top-banner clearfloat">';
+			html += '<p>';
+			if(data.videourl != '-' && data.videourl != '' && data.videourl != null){
+                html += '<video src="'+data.videourl+'" controls="controls" class="master-video w100">your browser does not support the video tag</video>';
+            }else{
+				html += '<video src="" controls="controls" class="master-video w100">your browser does not support the video tag</video>';
+			}
+
+			html += '<img src="" class="master-img" alt="" style="display: none;">';
+			html += '</p>';
+			html += '<ul>';
+			html += '<li class="video-banner active" data-url="'+data.videourl+'"><img src="__IMG__/child_img_03.png" alt=""></li>';
+			html += '<li class="pci-banner" data-url="__IMG__/'+img_one+'"><img src="__IMG__/'+img_one+'" alt=""></li>';
+			html += '<li class="pci-banner" data-url="__IMG__/'+img_two+'"><img src="__IMG__/'+img_two+'" alt=""></li>';
+			html += '<li class="pci-banner" data-url="__IMG__/'+img_threr+'"><img src="__IMG__/'+img_threr+'" alt=""></li>';
+			if(data.certificate_type=='GIA'){
+				html +='<a href="/Home/Search/detail.html?zs_id='+data.certificate_number+'&zs_type=1" target="_blank">';
+			}else if(data.certificate_type=='IGI'){
+				html +='<a href="/Home/Search/detail.html?zs_id='+data.certificate_number+'&zs_type=2" target="_blank">';
+			}else if(data.certificate_type=='HRD'){
+				html +='<a href="/Home/Search/detail.html?zs_id='+data.certificate_number+'&zs_type=3" target="_blank">';
+			}else if(data.certificate_type=='NGTC'){
+				html +='<a href="" >';
+			}else{
+				html +='<a href="" >';
+			}
+			html +=	'<li class="pci-banner" data-url="__IMG__/screening_icon_01_11.png"><img src="__IMG__/child_img_05.png" alt=""></li>';
+			html +='</a>';
+
+			html += '</ul>';
+			html += '</div>';
+			if(data.preferential_price){
+				html += '<p class="stm-rmb">RMB ￥'+data.preferential_price+'</p>';
+			}else{
+				html += '<p class="stm-rmb">RMB ￥'+data.price+'</p>';
+			}
+			html += '<p>';
+			html += '<div class="mnselect">';
+			html += '<button type="button" class="operation op1 join-type">将钻石加入 <img src="__IMG__/dowm_03.png" alt=""></button>';
+			html += '<ul class="join-type-ul" style="display: none;">';
+			html += '<li><a data-value="'+data.gid+'" class="addDingzhi" href="javascript:;">匹配戒托</a></li>';
+			html += '<li><a data-value="'+data.gid+'" class="addCart" href="javascript:;">加入购物车</a></li>';
+			html += '</ul>';
+			html += '</div>';
+			html += '<p class="mt10"><button type="button" data-gid="'+data.gid+'" class="operation op2 compare2">加入对比</button></p>';
+			html += '</p>';
+			html += '</div>';
+			html += '<div class="desc-list"><h1 class="bule-title">概要</h1><ul><li>形状: '+data.shape_name+'</li><li>证书编号:'+data.certificate_type+''+data.certificate_number+'</li><li>克拉单价:￥'+data.cur_price+'</li></ul></div>';
+			html += '<div class="desc-list"><h1 class="bule-title">4C标准</h1><ul style="display: none;"><li>克拉: '+data.weight+'</li><li>颜色: '+data.color+'</li><li>净度: '+data.clarity+'</li><li>切工: '+data.cut+'</li></ul></div>';
+			html += '<div class="desc-list"><h1 class="bule-title">宝石风采</h1><ul style="display: none;"><li>抛光:'+data.polish +'</li><li>对称:'+data.symmetry +'</li><li>荧光:'+data.fluor +'</li></ul></div>';
+			html += '<div class="desc-list"><h1 class="bule-title">尺寸比例</h1><ul style="display: none;"><li>直径:'+data.dia_size +'</li><li>全深比%:'+data.dia_depth +'</li><li>台宽比% :'+data.dia_table +'</li></ul></div>';
+			html += '<div class="pd20">我们所有0.3ct以上的钻石均提供GIA品质认证书及'+data.site_name+'终身保证书。</div>';
+			html += '<div class="hepls clearfloat">';
+			html += '<div class="hleft">';
+			html += '<p>需要帮助?</p><p>'+data.site_name+'在任何时候都欢迎您提出问题或意见。与我们的钻石珠宝顾问交流，以助您做出明智的决定.</p>';
+			html += '</div>';
+			html += '<div class="hright">';
+			html += '<ul>';
+			html += '<li><img src="__IMG__/screening_icon_38.png" alt=""> <a href="javascript:;" class="c1">在线咨询</a></li>';
+			html += '<li><img src="__IMG__/screening_icon_41.png" alt=""> <a href="tel:'+data.site_contact+'" class="c1">'+data.site_contact+'</a></li>';
+			html += '<li><img src="__IMG__/screening_icon_43.png" alt=""> <a href="javascript:;" class="c2">'+data.company_address+'</a></li>';
+			html += '</ul>';
+			html += '</div>';
+			html += '</div>';
+			html += '</div></div>';
+
+        }
+        $('.stm-diamond-xianxi').html(html);
+		$('.addCart').bind('click',function(){
+            var gid = $(this).attr('data-value');
+            luozuan.set_gid(gid);
+            luozuan.addThisPageToCart();
+        });
+
+        $('.addDingzhi').bind('click',function(){
+            var gid = $(this).attr('data-value');
+            luozuan.addDingzhiSelectedInfo(gid);
+			if( !$.isEmptyObject(  dingzhi.info.jietuo_info )){
+				layer.msg('尊敬的客户，您的钻戒匹配成功。',{ shift:2, });
+			}else{
+				layer.confirm('钻石选择成功，是否去挑选戒托？', {
+					btn: ['是','否'] //按钮
+					}, function(){
+						location.href='{:U('/Home/Goods/goodsCategory')}?gcid=60';
+					}
+				);
+			}
+        });
+
+		$('.diamondDetails').bind('click',function(){
+			var gid	= $(this).attr('data-gid');
+			window.location.href = "/Home/Goods/diamondDetails/gid/"+gid;
+		})
+
+    }
+
+    function load_selected(){
+		luozuan.load_condition_cookies();
+        var data = luozuan.get_condition();
+        for(var key in data){
+            if(data[key]){
+                for(var k in data[key]){
+                    var obj = $('a[data-type="'+key+'"][data-value="'+data[key][k]+'"]');
+                    if( obj.length > 0 ){
+                        obj.addClass('actives');
+                    }else{
+                        var obj = $('a[data-type="'+key+'"][data-value=""]');
+                        obj.attr('data-value',data[key][k]);
+                        obj.addClass('actives');
+                        obj.text( data[key][k] );
+                    }
+                }
+            }
+        }
+		var goods_sn = "{$goods_sn}";
+        if(goods_sn){
+			 luozuan.set_condition('goods_sn','{$goods_sn}');
+		}
+		var is_own = luozuan.condition['is_own'][0];
+		if(is_own == '0' || is_own == '1' ){
+			layer.load(2, {time: 10*1000}); 		//加载层，并且设定最长等待10秒
+			luozuan.get_list(func_display_luozuan_data_new);
+		}else{
+			luozuan.get_list(func_display_luozuan_data);
+		}
+
+    }
+    var func_select_all = function (name,obj){
+        if($(obj).prop('checked')) {
+            $('.gid').each(function(){
+                $(this).prop('checked',true);
+                luozuan.set_gid($(this).val());
+            });
+        }else{
+            $('.gid').each(function(){
+                $(this).prop('checked',false);
+                luozuan.clear_gid($(this).val());
+            });
+        }
+    }
+    function func_selected_luozuan_info(data,price){
+        var html = '';
+        html += '<p>裸钻-'+data.color+'-'+data.weight+'克拉</p>';
+        html += '<p>'+data.shape+' '+data.fluor+'-'+data.clarity+'-'+data.cut+'-'+data.symmetry+'</p>';
+		if(getCookie('yn_certificate_num_cv')!=1){
+			html += '<p>证书号：'+data.certificate_number+'</p>';
+		}
+        html += '<p class="rmb">¥'+data.price+'</p>';
+        $('#selected_luozuan').html(html);
+		$('#price').html(price);
+    }
+    function func_selected_jietuo_info(data,price){
+        var html = '';
+        html += '<li><img src="'+data.thumb+'"  onclick="location.href=\'{:U('Home/Goods/goodsDetails')}?goods_type=4&gid='+data.goods_id+'\';" ></li>';
+        html += '<li id="selected_luozuan">';
+		html += '<p style="color:#337ab7" onclick="location.href=\'{:U('Home/Goods/goodsDetails')}?goods_type=4&gid='+data.goods_id+'\';">';
+
+		if(data.goods_name.length<7){
+			html += data.goods_name+'</p>';
+		}else{
+			html += data.goods_name.substr(0,7)+'...'+'</p>';
+		}
+
+
+		html += '<p>';
+
+		if(data.material.material_name !="" && data.material.material_name != undefined && data.material.material_name != null){
+			html += data.material.material_name.replace(/(^\s*)|(\s*$)/g, "");
+		}
+
+
+		if(data.hand !="" && data.hand != undefined && data.hand != null){
+			html += ' , '+data.hand+"g";
+		}
+
+		if(data.word !="" && data.word != undefined && data.word != null){
+			html += ' , '+data.word;
+		}
+
+		if(data.hand1 !="" && data.hand1 != undefined && data.hand1 != null){
+			html +=  ' , '+data.hand1;
+		}
+
+		if(data.word1 !="" && data.word1 != undefined && data.word1 != null){
+			html +=  ' , '+data.word1;
+		}
+		
+		if(data.luozuan.weights_name !="" && data.luozuan.weights_name != undefined && data.luozuan.weights_name != null){
+			html +=  '<br />'+ data.luozuan.shape_name +' ,'+data.luozuan.weights_name+'Ct';
+		}
+		
+		html += '</p>';
+
+		if(data.activity_status == '0' || data.activity_status == '1' ){
+			html += 	'<p class="rmb">￥'+data.activity_price+'</p>';
+		}else{
+			html += 	'<p class="rmb">￥'+data.goods_price+'</p>';
+		}
+		html += '</li>'
+        $('#sellist ul').html(html);
+		$('#price').html(price);
+    }
+	
+ 
+ 
+	//打印商品列表
+	function func_display_goods_list(data,goods_type){
+		var html = '';
+		if(data.data.length > 0){
+			for(var k in data.data){
+				html += '<div class="col-md-5ths col-sm-3 col-xs-6">';
+				html	+= '<div class="thumbnail">';
+				html		+= '<a href="{:U('Home/Goods/goodsDetails')}?goods_type=' + data.data[k].goods_type + '&gid='+data.data[k].goods_id+'" target="_blank"><img src="'+data.data[k].thumb+'"></a>';
+				html		+= '<div class="caption">';
+				html			+= '<h5 class="text-left list-name"><a href="javascript:void(0);">'+data.data[k].goods_name+'</a></h5>';
+				html			+= '<p class="jiage clearfix">';
+				if(data.data[k].activity_status == '0' || data.data[k].activity_status == '1' ){
+					html			+= '<strong class="rmbsum red text-left pull-left">￥'+parseInt(data.data[k].activity_price)+'</strong>';
+				}else{
+					html			+= '<strong class="rmbsum red text-left pull-left">￥'+parseInt(data.data[k].goods_price)+'</strong>';
+				}
+				
+				<?php if (C('new_rules')['lease_components']): ?>				
+					if (data.data[k].lease_switch == '1' && data.data[k].goods_type == '3') {
+						html			    += '<strong class="rmbsum red text-right pull-right">首日租：'+parseInt(data.data[k].first_lease_price)+'</strong>';
+					}
+				<?php endif; ?>
+
+				if( goods_type == 4 && data.data[k].goods_type == 4 ){
+					html			+= '&nbsp;&nbsp;';
+					html			+= '<span ';
+					html            += 'data-goods-id    = "'+ data.data[k].goods_id +'" ';
+					html            += 'class="btn btn-default red text-right pps" ><a href="#k">匹配</a></span>';
+				}
+				html            += '</p>';
+				html		+= '</div>';
+				html	+= '</div>';
+				html += '</div>';
+			}
+		}else{
+			if($('#listbox').hasClass('designqutation')){
+				html = '<div class="tip_class luozuan" style="text-align:center"><h4>抱歉，没有找到符合您方案的商品，请重新获取！</h4></div>';
+			}
+		}
+		$('#listbox').html( html );
+		$('#count').html(data.total);
+		$('.count').html(data.total);
+		$('#luozuan_table').html(html);
+        page_html = page.create({PageID:data['page_id'],PageSize:data['page_size'],TotalNum:data['total']}).getHtml();
+        $('#pages').html(page_html);
+        if(goods_type==3){
+            $('#listbox .pps').bind('click',function(){
+                //var data         = {};
+                //data.goods_id    = $(this).attr('data-goods-id');
+                //data.goods_name  = $(this).attr('data-goods-name');
+                //data.sku_id      = $(this).attr('data-sku-id');
+                //data.goods_price = $(this).attr('data-goods-price');
+                //data.thumb       = $(this).attr('data-goods-thumb');
+                //dingzhi.set_jietuo_info( data );
+				//错误代码
+            });
+            $('#pages .pagination a').on('click',function(){
+                chengpin.set_page($(this).attr('data-page-id'));
+                chengpin.get_goods_list(func_display_goods_list);
+            });
+        } else if(goods_type==4){
+            $('#pages .pagination a').on('click',function(){
+                zuantuo.set_page($(this).attr('data-page-id'));
+                zuantuo.get_goods_list(func_display_goods_list);
+            });
+            $('.thumbnail .pps').on('click',function(){
+                //匹配
+                var gid = $(this).attr('data-goods-id');
+                dingzhi.set_jietuo_info(gid,func_selected_jietuo_info);
+                $('.tiaoxuan').show();
+            });
+        } else {
+            $('#pages .pagination a').on('click',function(){
+                goods.set_page($(this).attr('data-page-id'));
+                goods.get_goods_list(func_display_goods_list);
+            });
+        }
+	}
+	function func_display_attributes_data(data,goods_type){
+		if(goods_type == 3){
+			var goods_obj = chengpin;
+		} else if(goods_type == 4){
+			var goods_obj = zuantuo;
+		} else if(goods_type == 0){
+			var goods_obj = goods;
+		}
+		//打印出所有属性
+		var html   = '' , html2 = '';
+		if( !$.isEmptyObject( data ) ){
+			html2  = '<li class="checked" id="conditions">己选条件<span class="reset pull-right red">清空</span>';
+			html2 += '</li>';
+			for(var row in data){
+				html += '<li class="attrs">'+data[row].attr_name;
+				if( !$.isEmptyObject( data[row].value ) ){
+					for(var r in data[row].value){
+						html += '<a href="javascript:void(0);" data-attr-code="' + data[row].value[r].attr_code +
+						'" data-attr-id="'+data[row].value[r].attr_id+'" >'+data[row].value[r].attr_value_name+'</a>';
+					}
+				}
+				html += '</li>';
+			}
+			html      = html2 + html;
+		}
+		$('#attributes').html( html );
+		//给添加的条件选中
+		var condition           = goods_obj.get_condition();
+		if( typeof( condition ) != "undefined" && !$.isEmptyObject( condition ) ){
+			html2 = '';
+			for(var row in condition){
+				if( row != 'page_id' && row != 'page_size' && !$.isEmptyObject( condition[row] ) ){
+					for( var r in condition[row].value ){
+						var attr_id,attr_code,attr_value_name;
+						attr_id         = row;
+						attr_code       = condition[row].value[r].attr_code;
+						attr_value_name = condition[row].value[r].attr_value_name;
+						$('a[data-attr-code="'+attr_code+'"][data-attr-id="'+attr_id+'"]').addClass('active');
+						html2 += '<a href="javascript:void(0);"><span class="mallhot-tag" data-attr-code="' + attr_code +
+						'" data-attr-id = "'+row+'" >'+attr_value_name+'<i class="delete"> x</i></span></a>';
+					}
+				}
+			}
+			$('#conditions').append(html2);
+		}
+		/* 附加属性方法 */
+		$('#attributes .attrs').each(function(){
+			$(this).find('a').bind('click', function(){
+				if( $(this).hasClass('active') == false ){
+					$(this).addClass('active');
+					var attr_code,attr_id,text,html2;
+					attr_code = $(this).attr('data-attr-code');
+					attr_id   = $(this).attr('data-attr-id');
+					text      = $(this).text();
+					html2     = '<a href="javascript:void(0);"><span class="mallhot-tag" data-attr-code="' + attr_code +
+					'" data-attr-id = "' + attr_id + '" >' + text + '<i class="delete"> x</i></span></a>';
+					$('#conditions').append( html2 );
+					goods_obj.set_condition(attr_id,text,attr_code);
+					goods_obj.set_page('1');
+					goods_obj.get_goods_list(func_display_goods_list);
+				}
+			});
+		});
+
+		//清空所有条件
+		$(".groups .reset").click(function(){
+			$(".checked a").remove();
+			$(".groups a").removeClass("active");
+			goods_obj.clear_condition_all();
+			goods_obj.set_page('1');
+			goods_obj.get_goods_list(func_display_goods_list);
+		});
+
+		$(document).undelegate('.mallhot-tag','click');
+		/* 附加删除条件的方法 */
+		$(document).delegate('.mallhot-tag','click',  function() {
+			var attr_code,attr_id;
+			attr_code = $(this).attr('data-attr-code');
+			attr_id   = $(this).attr('data-attr-id');
+			$('a[data-attr-code="'+attr_code+'"][data-attr-id="'+attr_id+'"]').removeClass('active');
+			$(this).parents("a").remove();
+			goods_obj.clear_condition(attr_id,attr_code);
+			goods_obj.set_page('1');
+			goods_obj.get_goods_list(func_display_goods_list);
+		});
+	}
+	//根据数组排序
+	function func_data_sort(data,sort){
+		if(data['list'] && sort){
+			 //外层循环n-1
+			for(var h=0; h<data['list'].length-1; h++){
+				for(var i=0; i<data['list'].length-h-1; i++){
+					//判断数组大小，颠倒位置
+					if(sort == 'desc'){
+						if(parseInt(data['list'][i]['price']) < parseInt(data['list'][i+1]['price'])){
+							var temp			= data['list'][i+1];
+							data['list'][i+1]	= data['list'][i];
+							data['list'][i]		= temp;
+						}
+					}else{
+						if(parseInt(data['list'][i]['price']) > parseInt(data['list'][i+1]['price'])){
+							var temp			= data['list'][i+1];
+							data['list'][i+1]	= data['list'][i];
+							data['list'][i]		= temp;
+						}
+					}
+				}
+			}
+		}
+		return data;
+	}
+
+</script>

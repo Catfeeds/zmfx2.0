@@ -1,0 +1,599 @@
+		<?php if(C('new_rules')['kefu_show']==1){ ?>
+		<a id="ibangkf" href="http://www.ibangkf.com">客服系统</a>
+		<script type="text/javascript" src="http://c.ibangkf.com/i/c-jtf-b2bzm.js"></script>
+		<?php } ?>
+
+		
+		<!-- new footer -->
+		<div id="footer">
+	        <p>COPYRIGHT (©) 2017 {:C('site_name')}定制. <a class="beian" href="#" style="display:inline; width:auto; color:#8e8e8e" target="_blank"></a></p>
+	    </div>
+		<!-- new footer end //-->
+
+    <script>
+    $(function(){
+      var myDate = new Date();
+      var getFullYear = myDate.getFullYear();
+      $('#fullyear').html(getFullYear);
+    });
+    </script>
+
+		<a href="javascript:void(0)" class="back_top" style="display:none">Top</a>
+
+		<!-- qq -->
+		<div class="qqbox">
+			<div class="main-im">
+					<div id="open_im" class="open-im">
+						<if condition="C('online_consult_img')">
+							<img src="__PUBLIC__/{:C('online_consult_img')}" alt="">
+						<else />
+							<img src="__IMG__/open_im.png" alt="">
+						</if>
+					</div>
+					<div class="im_main" id="im_main">
+							<div id="close_im" class="close-im"><a href="javascript:void(0);" title="点击关闭">&nbsp;</a></div>
+							<span class="im-qq qq-a" title="在线QQ客服">
+									<div class="qq-container"></div>
+									<div class="qq-hover-c"><img class="img-qq" src="__IMG__/qq.png"></div>
+									<span> QQ在线咨询</span>
+							</span>
+							<div class="im-tel">
+					<if condition="$contact_qq">
+						<volist name="contact_qq" id="vo">
+						<div class="tel-num">
+							<a href="tencent://message/?Menu=yes&uin={$vo[1]}&Site=80fans&Service=300&sigT=45a1e5847943b64c6ff3990f8a9e644d2b31356cb0b4ac6b24663a3c8dd0f8aa12a545b1714f9d45" target="_blank" title="在线QQ客服">{$vo[0]}:{$vo[1]}</a>
+						</div>
+						</volist>
+					</if>
+							</div>
+							<div class="im-tel">
+									<div>咨询热线</div>
+									<div class="tel-num"><a href="tel:{:C('site_contact')}">{:C('site_contact')}</a></div>
+							</div>
+							<div class="im-footer" style="position:relative">
+									<div class="weixing-container">
+											<div class="weixing-show">
+													<div class="weixing-txt">微信扫一扫<br>关注{:C('site_name')}</div>
+													<img class="weixing-ma" src="__PUBLIC__/{:C('contact_weixin')}">
+													<div class="weixing-sanjiao"></div>
+													<div class="weixing-sanjiao-big"></div>
+											</div>
+									</div>
+									<div class="go-top"><a href="javascript:;" title="返回顶部"></a> </div>
+									<div style="clear:both"></div>
+							</div>
+					</div>
+					<if condition="$templateSetting['store_show'] eq 1">
+					<if condition="C('booked_show') eq 1 ">
+					<div class="zxyy onzxyy">
+						<img src="__IMG__/booking_03.jpg" alt="">
+					</div>
+
+					<script>
+						$(document).ready(function(){
+							laydate.skin('molv');  //加载皮肤，参数lib为皮肤名
+							laydate({
+								elem: '#time',
+								start: laydate.now(+1),    //开始日期
+								min: laydate.now(+1), 	//设定最小日期为当前日期
+							});
+						})
+					</script>
+
+					<style>
+						#laydate_box * {
+							-webkit-box-sizing: content-box;
+							-moz-box-sizing: content-box;
+							box-sizing: content-box;
+						}
+            .zxyy-mask { width: 100%; height: 100%; background: #000; opacity: 0.5; position: fixed; top: 0; left: 0; z-index: 99;}
+					</style>
+
+          <div class="zxyy-mask" style="display: none;"></div>
+					<div class="zxyy-main zxyy-public text-center" style="display: none;">
+						<!-- <div class="zxyy-head">
+							<img src="__IMG__/booking_05.jpg" alt="">
+						</div> -->
+						<span class="zx-colse public-colse">X</span>
+						<h4 class="zxh4">在线预约</h4>
+						<form action="" method="" id="myform">
+							<p class="on">
+								<select id="provinces" name="provinces_id" class="form-control">
+									<option value="" selected="selected" >请选择省份</option>
+									<volist name="province" id="val">
+										<option value="{$val['region_id']}" <if condition="$storeInfo['province_id'] eq $val['region_id']">selected="selected"</if> >{$val['region_name']}</option>
+									</volist>
+								</select>
+								<select id="citys" name="citys_id" class="form-control">
+									<option value="" selected="selected">请选择城市</option>
+								</select>
+								<select id="districts" name="districts_id" class="form-control">
+									<option value="" selected="selected">请选择区/县</option>
+								</select>
+							</p>
+							<p>
+								<select name="store_id" id="store" class="form-control">
+									<option value="" selected="">请选择预约门店</option>
+									<volist name="onlineStoreList" id="vo">
+										<option value="{$vo['id']}" data-province="{$vo['province_id']}" data-city="{$vo['city_id']}" data-district="{$vo['district_id']}" >{$vo['name']}</option>
+									</volist>
+								</select>
+							</p>
+							<p><input type="text" class="form-control" id="time" name="time" placeholder="请选择预约时间" ></p>
+							<p><input type="text" class="form-control" name="names" placeholder="请填写您的姓名"></p>
+							<p><input type="text" class="form-control" name="phones" placeholder="请填写手机号码"></p>
+							<p><input type="hidden" value="0" name="types"></p>
+							<p><button id="submit_booked" type="button"><img src="__IMG__/booking_10.jpg" alt=""></button></p>
+						</form>
+					</div>
+					<script>
+						$(function(){
+							$('.onzxyy,.public-colse,.zxyy-mask').bind('click', function(){
+                $('#close_im').click();
+                var _display = $('.zxyy-public');
+                if(_display.css('display') == "block"){
+                  _display.hide();
+                  $('.zxyy-mask').hide();
+                }else{
+                  _display.show();
+                  $('.zxyy-mask').show();
+                }
+							});
+						});
+					</script>
+					<script>
+						//获取下级城市或者县区，id: 作为父级ID查询，type：1 查询出城市，2 查询出县/区，select_id：选中id
+						function getaddressTwo(parent_id,type,select_id){
+							$.ajax({
+								type: "get",
+								url : "{:U('Home/Public/getRegion/parent_id/"+parent_id+"')}",
+								dataType:'json',
+								async:false,
+								success: function(res){
+									if(res){
+										switch(type){
+											case 1:
+												var content = '<option value="" selected="selected">请选择城市</option>';
+												break;
+											case 2:
+												var content = '<option value="" selected="selected">请选择县/区</option>';
+												break;
+										}
+										$.each( res, function(index,item){
+											if(select_id && select_id == item.region_id){
+												content +='<option selected value="'+item.region_id+'" >'+item.region_name+'</option>';
+											}else{
+												content +='<option value="'+item.region_id+'" >'+item.region_name+'</option>';
+											}
+
+										});
+										if(type == 1){
+											$('#citys').html(content);
+											$('#districts').html('<option value="" selected="selected">请选择县/区</option>');
+										}else{
+											$('#districts').html(content);
+										}
+									}else{
+										layer.msg('网络错误',{
+											shift :6,
+											icon: 5
+										});
+										return false;
+									}
+								},
+							});
+						}
+
+						//根据省，市，区查询出门店列表；province_id 省ID，city_id 市ID，district_id 区ID
+						function getStoreListTwo(province_id,city_id,district_id,select_id){
+							var content	= '';
+							$.ajax({
+								type: "post",
+								url : "{:U('Home/Store/getStoreList/')}",
+								data: {province_id:province_id,city_id:city_id,district_id:district_id},
+								dataType:'json',
+								success: function(res){
+									if(res){
+										if(res.status == 100 ){
+											content	+= '<option value="" selected="">请选择预约门店</option>';
+											$.each( res.data, function(index,item){
+												if(select_id && select_id == item.id){
+													content +='<option selected value="'+item.id+'" data-province="'+item.province_id+'" data-city="'+item.city_id+'" data-district="'+item.district_id+'"  >'+item.name+'</option>';
+												}else{
+													content +='<option value="'+item.id+'" data-province="'+item.province_id+'" data-city="'+item.city_id+'" data-district="'+item.district_id+'"  >'+item.name+'</option>';
+												}
+
+											});
+										}else{
+											content	= '<option value="" >该区域没有门店</option>';
+										}
+										$('#store').html(content);
+									}else{
+										layer.msg('网络错误',{
+											shift :6,
+											icon: 5
+										});
+										return false;
+									}
+								},
+							});
+						}
+
+						$(function(){
+
+							// 选择省份ajax返回城市地址
+							$('#provinces').change(function(){
+								var id = $(this).find ("option:selected").val();
+								getStoreListTwo(id);
+								if(!id){
+									$('#citys').html('<option value="" selected="selected">请选择城市</option>');
+									$('#districts').html('<option value="" selected="selected">请选择县/区</option>');
+									return false;
+								}
+								getaddressTwo(id,1);
+							})
+							// 选择城市ajax返回县区地址
+							$('#citys').change(function(){
+								var id = $(this).find ("option:selected").val();
+								var province_id = $(this).prev('select').val();
+								getStoreListTwo(province_id,id);
+								if(!id){
+									$('#districts').html('<option value="" selected="selected">请选择县/区</option>');
+									return false;
+								}
+								getaddressTwo(id,2);
+
+							})
+							// 选择县区ajax返回门店列表
+							$('#districts').change(function(){
+								var id = $(this).find ("option:selected").val();
+								var province_id = $(this).prev().prev('select').val();
+								var city_id		= $(this).prev('select').val();
+								getStoreListTwo(province_id,city_id,id);
+							})
+
+							//选择门店默认选中省市区,并取值对应省市区的门店列表
+							$('#store').change(function(){
+								var store_id		= $('select[name="store_id"] option:selected').val();
+								if(store_id){
+									var provinces_id = $('select[name="store_id"] option:selected').attr('data-province');
+									var citys_id		= $('select[name="store_id"] option:selected').attr('data-city');
+									var districts_id	= $('select[name="store_id"] option:selected').attr('data-district');
+
+									if(provinces_id && citys_id && districts_id ){
+										$('#provinces').val(provinces_id);
+										getaddressTwo(provinces_id,1,citys_id);
+										getaddressTwo(citys_id,2,districts_id);
+										getStoreListTwo(provinces_id,citys_id,districts_id,store_id);
+									}
+								}
+							})
+
+
+							$('#submit_booked').click(function(){
+								var data = {};
+								if(checkeselect('provinces_id','请选择省份') == false){
+									console.log(111111);return false;
+									return false;
+								}
+								if(checkeselect('citys_id','请选择城市') == false){
+									return false;
+								}
+								if(checkeselect('districts_id','请选择县区') == false){
+									return false;
+								}
+								if(checkeselect('store_id','该区域没有门店，无法预约') == false){
+									return false;
+								}
+								if(checkeinput_length('time','','','预约时间不能为空') == false){
+									return false;
+								}
+								if(checkeinput_length('names','','','联系人不能为空') == false){
+									return false;
+								}
+								if(checkeinput('phone','phones') == false){
+									return false;
+								}
+								var province_id	= $('select[name="provinces_id"]').val();
+								var city_id		= $('select[name="citys_id"]').val();
+								var district_id	= $('select[name="districts_id"]').val();
+								var store_id	= $('select[name="store_id"]').val();
+								var time		= $('input[name="time"]').val();
+								var name		= $('input[name="names"]').val();
+								var phone		= $('input[name="phones"]').val();
+								var type		= $('input[name="types"]').val();
+								data = {province_id:province_id,city_id:city_id,district_id:district_id,store_id:store_id,time:time,name:name,phone:phone,type:type};
+								$.ajax({
+									url: '/Home/Store/onlineBooked',
+									type: 'POST',
+									data: data,
+									success: function(ref){
+										if(ref.status == 100){
+											layer.msg(ref.msg,{
+												shift :6,
+												icon: 6
+											});
+											$('.zxyy-public').toggle();
+										}else{
+											layer.msg(ref.msg,{
+												shift :6,
+												icon: 5
+											});
+											return false;
+										}
+									}
+								});
+								return false;
+							});
+
+						});
+					</script>
+					</if>
+					</if>
+			</div>
+		</div>
+		<!-- qq END -->
+
+		<div style="display: none;">{:htmlspecialchars_decode(C('site_statistics_code'))}</div>
+
+
+		<!-- Quick login -->
+		<div class="modal fade" id="quick" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-md modal-w">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">欢迎登录{:C('site_name')}官方网站</h4>
+					</div>
+
+					<div class="luozuanDetail">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="quick-login">
+									<form class="form-horizontal loginK" action="" method="post" onsubmit="return false;">
+										<div class="element">
+											<h5> </h5>
+											<div class="form-group">
+												<label for="commonusername" class="col-md-3 col-xs-3 control-label text-right">用户名：</label>
+												<div class="col-md-9 col-xs-8">
+													<input type="text" class="form-control" id="commonusername" placeholder="用户名" name="commonusername" value="">
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="commonpassword" class="col-md-3  col-xs-3 control-label text-right">登录密码：</label>
+												<div class="col-md-9 col-xs-8">
+													<input type="password" class="form-control" id="commonpassword" placeholder="" name="commonpassword" value="">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="col-md-4 col-xs-4"></div>
+												<div class="col-md-4 col-xs-4 padno">
+													<div class="checkbox">
+														<label>
+															<input type="checkbox" id="commonrememberuser" value="1" name="commonrememberuser"> 记住用户名
+														</label>
+													</div>
+												</div>
+												<div class="col-md-4 col-xs-4 padno">
+													<div class="checkbox">
+														<label>
+															<a class="pwd">忘记密码？</a>
+														</label>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="col-md-offset-3 col-md-9 col-xs-offset-3 col-xs-8">
+													<button type="" class="btn btn-warning" style="width: 100%;" id="commonloginsubmit">登录</button>
+												</div>
+												<div class="col-md-offset-3 col-md-9">
+													<div class="tologin text-center">
+														<a href="/Home/Public/regist.html">没有账号?免费注册&gt;&gt;</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			//这里会把登录地方的部分方法覆盖
+			/* 判断值是否为空 */
+			function isEmpty(val) {
+				var result = true;
+				switch (typeof val) {
+					case 'string':
+						if (val === '0') {
+							result = true;
+						} else {
+							result = val.trim().length === 0 ? true : false;
+						}
+						break;
+					case 'number':
+						result = val === 0;
+						break;
+					case 'object':
+						result = val === null;
+						break;
+					case 'array':
+						result = val.length === 0;
+						break;
+					default:
+						result = true;
+				}
+				return result;
+			}
+			// 检查用户名长度
+			function commoncheckuser() {
+				var user = $('#commonusername');
+				if (user.val().length <= 2) {
+					layer.msg("{$Think.lang.L9011}",{
+						shift:6,
+					});
+					return false;
+				}
+				return true;
+			}
+			// 检查密码长度
+			function commoncheckpas() {
+				var ps = $('#commonpassword');
+				if (ps.val().length < 6) {
+					layer.msg("{$Think.lang.L9010}",{
+						shift:6,
+					});
+					return false;
+				}
+				return true;
+			}
+			//加密后才存cookie
+			function setEncodeCookie(key, plain){
+				var code = strToASC(plain);
+				$.cookie(key, code, { expires: 7, path:'/'});
+			}
+
+			function getEncodeCookie(key){
+				var arr = JSON.parse($.cookie(key));
+				return ASCToStr(arr);
+			}
+
+			function ASCToStr(arr){
+				var temp = '';
+				if(arr){
+					for(var i = 0 ; i < arr.length ; i++)
+						temp += String.fromCharCode(arr[i]-8);
+				}
+				return temp;
+			}
+
+			function strToASC(plain){
+				var arr = new Array();
+				for(var i = 0 ; i < plain.length ; i++)
+					arr[i] = plain.charCodeAt(i)+8; 	//每个ascii码加8以加密
+				return JSON.stringify(arr);
+			}
+
+			function commoninit(){
+				// 记住用户名
+				if ($.cookie('commonrememberuser')) {
+					$('#commonrememberuser').attr('checked', true);
+					$('#commonusername').val(getEncodeCookie('commonusername'));
+				}
+				// 自动登陆
+				/*if ($.cookie('commonautologin')) {
+					$('#commonusername').val(getEncodeCookie('commonusername'));
+					$('#commonpassword').val(getEncodeCookie('commonpassword'));
+					$('#commonautologin').attr('checked', true);
+					$('#commonrememberuser').attr('checked', true);
+					//$('#commonloginsubmit').trigger('click');
+				}*/
+				//如果cookie同时有用户名和密码，则勾上"自动登录","记住用户名"
+				/*if($.cookie('commonusername') && $.cookie('commonpassword')){
+					$('#commonusername').val(getEncodeCookie('commonusername'));
+					$('#commonpassword').val(getEncodeCookie('commonpassword'));
+					$('#commonautologin').trigger('click');
+				}*/
+			}
+
+			$(document).ready(function () {
+				// cookie 记录
+				$('#commonrememberuser').click(function () {
+					var name = $('#commonusername');
+					if ($(this).is(':checked')) {
+						if (isEmpty(name.val())) {
+							layer.msg('{$Think.lang.L9096}',{
+								shift:6,
+							});
+							$(this).attr('checked', false);
+						} else {
+							setEncodeCookie('commonusername',name.val());
+							$.cookie('commonrememberuser', 1, {expires: 30,path:'/'});
+						}
+					} else {
+						$.cookie('commonrememberuser', null, {path:'/'});
+						$.cookie('commonusername', null, {path:'/'});
+					}
+				});
+				/*$('#commonautologin').click(function () {
+					var ru = $('#commonrememberuser'), name = $('#commonusername'), pass = $('#commonpassword');
+					if (isEmpty(pass.val()) || isEmpty(name.val())) {
+						layer.msg('{$Think.lang.L9097}',{
+							shift:6,
+						});
+						$(this).attr('checked', false);
+					} else {
+						if ($(this).is(':checked')) {
+							ru.attr('checked', true);
+							//$.cookie('commonautologin', 1, { expires: 7 });
+							$.cookie('commonautologin', 1, { expires: 7, path:'/' });
+							$.cookie('commonrememberuser', 1, {expires: 30,path:'/'});
+							setEncodeCookie('commonusername',name.val());	//以asc码+8的方式加密cookie
+							setEncodeCookie('commonpassword',pass.val());
+							//$.cookie('commonusername', name.val(), { expires: 7, path:'/'});
+							//$.cookie('commonpassword', pass.val(), { expires: 7, path:'/' });
+						} else {
+							ru.attr('checked', false);
+							$.cookie('commonusername', null, {path:'/'});
+							$.cookie('commonautologin', null, {path:'/'});
+							$.cookie('commonpassword', null, {path:'/'});
+						}
+					}
+				});*/
+				// 登陆
+				$('#commonloginsubmit').click(function () {
+					var name = $('#commonusername'), pass = $('#commonpassword');
+					if($('#commonrememberuser').is(':checked')){
+						$.cookie('commonrememberuser', 1, {expires: 30,path:'/'});
+						setEncodeCookie('commonusername',name.val());
+					}
+					/*if($('#commonautologin').is(':checked')){
+						$.cookie('commonautologin', 1, { expires: 7, path:'/' });
+						setEncodeCookie('commonusername',name.val());	//以asc码+8的方式加密cookie
+						setEncodeCookie('commonpassword',pass.val());
+					}*/
+					if (!isEmpty(name.val()) && !isEmpty(pass.val())) {
+						if (commoncheckuser() && commoncheckpas()) {
+							$.ajax({
+								url: "{:U('Home/Public/login')}",
+								type: 'post',
+								dataType: 'json',
+								data: {'username': name.val(), 'password': pass.val()},
+								success: function (result, a, g) {
+									if (result.success) {
+										//window.location.href = result.url;
+										window.location.reload();
+									} else {
+										layer.msg(result.msg,{
+											shift:6,
+										});
+									}
+								},
+								error: function (e) {
+									console.log(e);
+								}
+							});
+						} else {
+							layer.msg('用户名和密码没有通过验证！',{
+								shift:6,
+							});
+						}
+					} else {
+						layer.msg('{$Think.lang.L9097}',{
+							shift:6,
+						});
+						$('#username').focus();
+					}
+				});
+				$('.pwd').click(function(){
+					layer.alert('为了账户安全请联系客服帮助修改！<br />客服电话：{:C('site_contact')}');
+				});
+				commoninit();	
+			});
+
+		</script>
+</body>
+</html>

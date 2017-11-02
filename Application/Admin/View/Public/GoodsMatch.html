@@ -1,0 +1,128 @@
+<div class="luozuanTiao">
+	<div class="luozuanTile">材质：</div>
+	<div class="luozuanContent">
+		<volist name="materialList" id="vo">
+			<label>
+ 				<input type="checkbox" value="{$vo.material_id}" data-category-id="{$category_id}" />
+ 				<span>{$vo.material_name}</span>
+			</label>
+		</volist>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="luozuanTiao">
+	<div class="luozuanTile">副石：</div>
+	<div class="luozuanContent">
+		<div class="luozuan_match2">
+			<volist name="material.deputystone" id="vo">
+			<div class="tiao">
+			    <input type="text" value="{$vo.deputystone_name}" style="width: 120px;" name="material[deputystone][{$vo.gad_id}][deputystone_name]" placeholder="名称">
+				<if condition=" !$price_model ">
+			    	<input type="text" value="{$vo.deputystone_price}" name="material[deputystone][{$vo.gad_id}][deputystone_price]" placeholder="价格">
+				<else />
+					<input type="text" value="{$vo.deputystone_num}" name="material[deputystone][{$vo.gad_id}][deputystone_num]" placeholder="数量">
+				</if>
+				<button type="button" class="luozuan_button del">删除</button>
+			</div>
+			</volist>
+		</div>
+		<button type="button" class="luozuan_button add2">添加匹配副石</button>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="luozuanTiao" id="material">
+	<volist name="material.list" id="vo">
+	<div class="material" id="material_{$vo.material_id}">
+		<div class="materialTitle">{$vo.material_name}：</div>
+		<div class="materialContent">
+			<div class="materialTop">
+				<span>预估金重：</span>
+				<input type="text" style="width: 80px;" value="{$vo.weights_name}" name="material[info][{$vo.material_id}][weights_name]" placeholder="(单位：G)" />
+				<if condition=" !$price_model ">
+					<span>损耗：</span>
+					<input type="text" style="width: 60px;" value="{$vo.loss_name}" name="material[info][{$vo.material_id}][loss_name]" placeholder="(单位：%)" />
+					<span>基本工费：</span>
+					<input type="text" style="width: 80px;" value="{$vo.basic_cost}" name="material[info][{$vo.material_id}][basic_cost]" placeholder="(单位：￥)" />
+					<span>附加公费：</span>
+					<input type="text" style="width: 50px;" value="{$vo.additional_price}" name="material[info][{$vo.material_id}][additional_price]" placeholder="(单位：G)" />					
+				</if>
+
+			</div>
+			<div class="materialBottom">
+				<div class="materialBottomTitle">匹配钻石：</div>
+				<div class="luozuan_match">
+					<volist name="vo.sub" id="io">
+					<div class="tiao">
+						<select name="material[luozuan][{$io.material_id}][{$io.gal_id}][shape_id]" class="luozuan_shape">
+					    	<option value="0">匹配形状</option>
+					        <volist name="goodsLuozuanShape" id="so">
+					        	<option value="{$so.shape_id}"<eq name="io['shape_id']" value="$so['shape_id']">selected="selected"</eq>>{$so.shape_name}</option>
+					        </volist>
+					    </select>
+					    <input type="text" value="{$io.weights_name}" name="material[luozuan][{$io.material_id}][{$io.gal_id}][weights_name]" placeholder="单位CT">
+						<if condition=" !$price_model ">
+							<input type="text" value="{$io.price}" name="material[luozuan][{$io.material_id}][{$io.gal_id}][price]" placeholder="主石保险费">
+						</if>
+						<button type="button" class="luozuan_button del">删除</button>
+					</div>
+					</volist>
+				</div>
+				<button type="button" class="luozuan_button add" data-id="{$vo.material_id}">添加匹配</button>
+				<div class="clear"></div>
+			</div>
+			<if condition=" $price_model ">
+				<if condition=" InStringByLikeSearch($category_name,array('钻戒','戒','对戒'))  ">
+					<div class="materialBottom goods_size">
+						<div class="materialBottomTitle">手寸价格：</div>
+						<div class="luozuan_match luozuan_match3" style="width: 450px;">
+							<volist name="vo.size" id="io">
+								<div class="tiao">
+									<input type="text" value="{$io.min_size}" style="width: 50px;" name="material[size][{$io.material_id}][{$io.goods_size_id}][min_size]" placeholder="最小尺寸">
+									<input type="text" value="{$io.max_size}" style="width: 50px;" name="material[size][{$io.material_id}][{$io.goods_size_id}][max_size]" placeholder="最大尺寸">
+									<input type="text" value="{$io.size_price}" style="width: 60px;" name="material[size][{$io.material_id}][{$io.goods_size_id}][size_price]" placeholder="价格">
+									<if condition="InStringByLikeSearch($category_name,array('对戒'))" >
+										<span class="sex">
+											<label>男<input <eq name="io.sex" value="1">checked="checked"</eq> type="radio" name="material[size][{$io.material_id}][{$io.goods_size_id}][sex]" value='1' ></label>
+											<label>女<input <eq name="io.sex" value="2">checked="checked"</eq> type="radio" name="material[size][{$io.material_id}][{$io.goods_size_id}][sex]"value='2' ></label> 
+										</span>
+									</if>
+									<button type="button" class="luozuan_button del3" style="float: none;">删除</button>
+									<div class="clear"></div>
+								</div>
+							</volist>
+						</div>
+						<button type="button" class="luozuan_button add3" data-id="{$vo.material_id}" data-category-id="{$category_id}" >添加手寸价格</button>
+						<div class="clear"></div>
+					</div>
+				<elseif condition=" InStringByLikeSearch($category_name,array('项链','手链'))  "/>
+					<div class="materialBottom goods_size">
+						<div class="materialBottomTitle">尺寸价格：</div>
+						<div class="luozuan_match luozuan_match3" style="width: 450px;">
+							<volist name="vo.size" id="io">
+								<div class="tiao">
+									<input type="text" value="{$io.min_size}" style="width: 50px;" name="material[size][{$io.material_id}][{$io.goods_size_id}][min_size]" placeholder="最小尺寸">
+									<input type="text" value="{$io.max_size}" style="width: 50px;" name="material[size][{$io.material_id}][{$io.goods_size_id}][max_size]" placeholder="最大尺寸">
+									<input type="text" value="{$io.size_price}" style="width: 60px;" name="material[size][{$io.material_id}][{$io.goods_size_id}][size_price]" placeholder="价格">									
+									<button type="button" class="luozuan_button del3" style="float: none;">删除</button>
+									<div class="clear"></div>
+								</div>
+							</volist>
+						</div>
+						<button type="button" class="luozuan_button add3" data-id="{$vo.material_id}" data-category-id="{$category_id}">添加尺寸价格</button>
+						<div class="clear"></div>
+					</div>
+				<else />
+					<div class="materialBottom goods_size">
+						<div class="materialBottomTitle">一口价：</div>
+						<div class="luozuan_match luozuan_match3">
+							<input type="text" value="{$vo.fixed_price}" name="material[info][{$vo.material_id}][fixed_price]" placeholder="价格">
+						</div>
+						<div class="clear"></div> 
+					</div>
+				</if>
+			</if>
+		</div>
+		<div class="clear"></div>
+	</div>
+	</volist>
+</div>

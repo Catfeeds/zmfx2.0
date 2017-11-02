@@ -1,0 +1,272 @@
+<script src="__JS__/m_back.js"></script>
+<script src="__JS__/common.js"></script>
+<include file="Public:header" />
+<script src="__JS__/public.js"></script> 
+<style>
+	.glyphicon { margin-top: 15px;}
+	.searchsub { width: 100%; position: fixed; bottom: 0; left: 0; padding: 5px 0; background: #FFF;}
+</style>
+<body class="product-bg">
+	<!--头部-->
+    <header class="header sub-header text-center">
+		 <if condition="$data[0]['Searchcontent']">
+		  珠宝成品 
+        <a onclick="history.go(-1)" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+		 <else />
+		 成品宝石专区
+		 <a onclick="history.go(-1)" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+		 				<if condition="$cateAttrs">
+		  <a href="#" id="search-right" class="pull-right">搜索</a>
+			</if>
+		 </if>
+    </header>
+    <!--内容-->
+    <div class="container" id="maincont">
+    	<div class="product text-center" id="wrapper">
+					 <if condition="$data[0]['Searchcontent']">
+					 <p>关键字：<i style="color:red">{$data[0]['Searchcontent']}</i> &nbsp;&nbsp;&nbsp;共查询到(共{$data[0]['num']} 个商品)</p>
+					 </if>
+        	<ul id="dataList">
+		 <if condition="$data[0]['num']">
+			<volist name="data" id="vo">
+            	<li>
+                	<div class="product-img"><a href="{:U('/Goods/goodsInfo/goods_id/'.$vo['goods_id'].'/type/3')}"><img src="{$vo.thumb}" alt="产品图片" width="140" height="140"></a></div>
+                    <div class="info">
+                    	
+                            <a href="{:U('/Goods/goodsInfo/goods_id/'.$vo['goods_id'].'/type/3')}"><p>{$vo.goods_name|msubstr=0,10,'utf-8'}</p></a>
+								 <!--<if condition="$data[0]['Searchcontent']">
+										<p>{$vo.goods_sn}</p>
+								 </if>-->
+                            <em>&yen;
+								<in name="vo['activity_status']" value="0,1">
+									{$vo['activity_price']}
+								<else/>
+									{$vo['goods_price']}
+								</in>
+							</em>
+                    	
+                    </div>
+				</li>
+			</volist>
+		</if>					 
+          </ul>
+   <input type="hidden" class="count_page_input" data_num="{$data[0].num}" />
+   <input type="hidden" class="category_id" data_num="{$data[0].category_id}" />
+   <input type="hidden" class="content" data_num="{$data[0].Searchcontent}" />
+   <input type="hidden" class="crumbs_master" data_num="{$data[0].crumbs_master}" />
+        </div>
+			<div  id="pullUp" style="text-align:center">
+			 <if condition="$data[0]['num'] lt 10">
+				<span   style="font-size:16px" >没有更多数据了...</span>
+			<else />
+				<span   style="font-size:16px" >下拉搜索更多数据了...</span>
+			</if>
+		    </div>
+		</div>
+	<!-- Search alert -->
+	<div class="container-paluid" id="search-alert" style="display: none">
+    	<div class="panel panel-default custom-product-search">
+		<if condition="$cateAttrs">
+			<volist name="cateAttrs" id="vo">
+			<div class="panel-heading">
+				<p class="ptitle">{$vo.attr_name}：</p>	
+			</div>
+			<div class="panel-body">
+				<div class="gmap-street-view" style="width: 100%;">
+				<if condition="$vo['value']">
+					<volist name="vo['value']" id="v">
+					<!--class="btn btn-default navbar-btn btn-primary"-->
+						<a attr_id="{$v.attr_id}"  attr_code="{$v.attr_code}"   class="btn btn-default navbar-btn" >
+							{$v.attr_value_name}
+						</a>
+					</volist>
+				 </if>
+				</div>
+			</div>
+			</volist>
+		</if>
+		</div>
+ 
+		<div class="searchsub">
+
+			<div class="col-xs-6">
+				<button type="button" class="btn btn-primary exit-button btn-block"  onclick="submitData(777)" >搜索</button>
+			</div>
+			<div class="col-xs-6">
+				<button class="btn btn-primary exit-button btn-block" onclick="reset()" >重置</button>
+			</div>
+			<div class="clearfix"></div>
+ 
+		</div>
+	</div>
+	<!-- Search alert END //-->
+
+</body>
+<script>
+		 
+		var attr_code = [];
+		var gid =<?php echo empty(I('get.gid'))?0:I('get.gid'); ?>;
+		if(gid){	$("#search-right").remove(); 	}
+ 		setCookie('type_goodscat_attr_id','');
+
+  headermsg=($("#search-right").text());
+  crumbs_master=$(".crumbs_master").attr('data_num');//当前第
+  brand_tip=getCookie('brand_tip');
+  series_name=getCookie('series_name');
+ 
+ 	if(crumbs_master=='3'){
+		var html="";
+		htmlheader=getCookie('crumbs_master');
+		html+=htmlheader;
+		html+="<a onclick='history.go(-1)' class='pull-left'><i class='glyphicon glyphicon-chevron-left'></i></a>";
+		$(".header.sub-header.text-center").html(html);     
+	}else if(headermsg=="搜索" && brand_tip !='111'){
+		var html="";
+		htmlheader=getCookie('crumbs_master')+getCookie('crumbs_subset');
+		html+=htmlheader;
+		html+="<a onclick='history.go(-1)' class='pull-left'><i class='glyphicon glyphicon-chevron-left'></i></a>";
+		if($(".product-img").length>0){
+			html+="<a  id='search-right' class='pull-right'>搜索</a>";
+		}
+		$(".header.sub-header.text-center").html(html);     
+	}else if(brand_tip =='111' && series_name ){
+		var html="";
+		html+=series_name;
+		html+="<a onclick='history.go(-1)' class='pull-left'><i class='glyphicon glyphicon-chevron-left'></i></a>";
+ 
+		$(".header.sub-header.text-center").html(html);  
+	}
+		var page ='1';
+		var page_tips='';		
+		$(function(){
+			/* 条件选择 */
+			$(".gmap-street-view a").bind("click",function(){
+				//$(this).parent("div").find("a").removeClass("btn-primary");
+				if($(this).is('.btn-primary') == true){
+					$(this).removeClass('btn-primary');
+				}else{
+					$(this).addClass("btn-primary");
+				}
+			});
+			/* 搜索切换 */
+			$("#search-right").click(function(){
+				if($(this).text() == "取消"){
+					$("#search-alert").fadeOut("fast");
+					$("#maincont").fadeIn();
+					$(this).text("搜索");
+				}else{
+					$("#search-alert").fadeIn();
+					$("#maincont").fadeOut("fast");
+					$(this).text("取消");
+				}
+			});
+		});	
+		/* 重置*/
+		function reset(){
+			window.location.reload();
+		}	
+	
+		function submitData(page){ 
+		var attr_id_str='';
+		/* 准备数据*/
+			$(".btn.btn-default.navbar-btn.btn-primary").each(function(i){
+					if(getCookie('type_goodscat_attr_id')==$(this).attr("attr_id")  && i>0){
+						attr_id_str +=$(this).attr("attr_code")+',';
+					}else{
+						attr_id_str +='--'+$(this).attr("attr_id")+','+$(this).attr("attr_code")+',';
+					}
+					setCookie('type_goodscat_attr_id',$(this).attr("attr_id"));
+			});
+			if(attr_id_str=='' && page=='777'){
+				window.location.reload();
+			}
+			if(page=='777'){ 
+				 page ='0'; 
+				 page_tips='1';
+				 $("#dataList").html(''); 
+			}
+		 	var category_id=$(".category_id").attr('data_num');//当前第
+			var content=$(".content").attr('data_num');//当前第 
+		/* 当为空时，显示默认数据*/
+ 
+			$.post("/Goods/customcall",
+				{
+					Action:"post",
+					page:page,
+					//sortType:getCookie('type'),
+					//sortValue:getCookie(getCookie('type')),
+					//n:getCookie('n'),
+					attr_id:attr_id_str,
+					//attr_code:attr_code,
+					categroyId:category_id,
+					categorygoodsId:gid,
+					goodsType:'3',
+					content:content
+					//series_id:getCookie('series_id')
+					//attribute_id:getCookie('attribute_id'),
+				},
+						
+				refData
+			);
+		}
+		function refData(data){
+			var html = "";
+			var content=$(".content").attr('data_num');
+			if(data){
+				if(data.data && data.data != ''&& data.data[0]['goods_id']){
+					data.data.forEach(function(e){
+						html += "<li>";
+						html += "<div class='product-img'><a href='/Goods/goodsInfo/goods_id/"+e.goods_id+"/type/"+e.goods_type+"' onclick='tips_id(this)' attr_id="+e.goods_id+"><img src='"+e.thumb+"' width='140' height='140'/></a></div>";
+						html += "<div class='info'><a  href='/Goods/goodsInfo/goods_id/"+e.goods_id+"/type/"+e.goods_type+"'><p>"+e.goods_name+"</p></a>";
+						if(e.activity_status == '0' || e.activity_status == '1' ){
+							html += "<em>&yen; "+e.activity_price+"</em>";
+						}else{
+							html += "<em>&yen; "+e.goods_price+"</em>";
+						}
+						html += "</div></a></div>";
+						html += "</li>";				
+					});
+ 				
+					$("#search-alert").fadeOut("fast");
+					$("#maincont").fadeIn();
+					if(data.tip=='2'){	
+						$("#dataList").append(html); 
+					}else{
+						$("#dataList").html(html); 
+					}
+					if(data.data.length<10){
+						$("#pullUp").html(" <span   style='font-size:16px' >没有更多数据了...</span>");
+					}
+					$("#search-right").text("搜索");
+				}
+			}else{
+				datahtml="";
+				html+=" <span   style='font-size:16px' >搜索不到更多数据了...</span>"
+				$("#pullUp").html(html);
+				//$("#dataList").html(datahtml);
+				$("#search-alert").fadeOut("fast");
+				$("#maincont").fadeIn();
+				$("#search-right").text("搜索");
+			}
+		}
+
+	window.onscroll = function () { 
+		if (getScrollTop() + getClientHeight() == getScrollHeight()) { 
+			var tippage=$("#search-right").text();
+			if(tippage=="取消"){return false;}
+			var count_page=$(".count_page_input").attr('data_num');//当前第
+			if(getScrollTop()<200){return false;}
+			if(page_tips==1)	{page='1'; page_tips='';}
+ 
+			submitData(page++);
+		} 
+	}
+	
+	
+	function tips_id(obj){
+		setCookie('last_save_data_attr_id',$(obj).attr("attr_id"));
+	}
+ 
+</script>
+
+</html>

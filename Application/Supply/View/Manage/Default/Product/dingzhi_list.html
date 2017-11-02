@@ -1,0 +1,204 @@
+<div class="cate-info">
+    <dl>
+        <dt>{$L['text_product_sn']}</dt>
+        <dd><input type="text" name="goods_sn"></dd>
+    </dl>
+    <dl>
+        <dt>{$L['text_goods_status']}</dt>
+        <dd>
+            <select name="product_status">
+                <option value="" >{$L['text_product_all']}</option>
+                <option value="0">{$L['text_product_unshelves']}</option>
+                <option value="1">{$L['text_product_onshelves']}</option>
+                <option value="2">{$L['finance_already_examine']}</option>
+                <option value="3">{$L['finance_not_already_examine']}</option>
+            </select>
+        </dd>
+    </dl>
+    <dl>
+        <dt>{$L['text_time_update']}</dt>
+        <dd><input type="text" size="12" name="time_begin"  class="laydate-icon" onclick="laydate()" placeholder="{$L['text_enter_date']}"></dd>
+        <dt>{$L['text_until']}</dt>
+        <dd><input type="text" size="12" name="time_end" class="laydate-icon" onclick="laydate()" placeholder="{$L['text_enter_date']}"></dd>
+    </dl>
+    <dl>
+        <dd><input type="button" class="search" id="search_dingzhi" value="{$L['search']}"></dd>
+    </dl>
+</div>
+<!--表格-->
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th><input type="checkbox" class="select_dingzhi_all"></th>
+            <th>{$L['text_product_sn']}</th>
+            <th>{$L['text_product_type']}</th>
+            <th>{$L['text_product_name']}</th>
+            <th>{$L['text_product_img']}</th>
+            <th>{$L['text_final_price']}</th>
+            <th>{$L['text_upload_time']}</th>
+            <th>{$L['text_goods_status']}</th>
+            <th>{$L['operation']}</th>
+        </tr>
+        </thead>
+        <tbody id="dingzhi_content"></tbody>
+        <script type="text/template" id="dingzhi_content_tpl">
+            <% if(datas.length > 0){ %>
+                <% _.each(datas, function (item) { %>
+                <tr title="{$L['text_upload_time']}:<%= item.create_time %>">
+                    <td><input type="checkbox" name="dingzhi_goods_id[]" value="<%= item.goods_id %>" /></td>
+                    <td><%= item.goods_sn %></td>
+                    <td><%= item.category_name %></td>
+                    <td><%= item.goods_name %></td>
+                    <td><img class="img" style="width:50px;height:50px;" src="<%= item.thumb %>" /></td>
+                    <td><%= item.goods_price %></td>
+                    <td><%= item.create_time %></td>
+                    <% if(item.valid_status == 1) { %>
+                        <td><%= item.product_status_text %></td>
+                        <td>
+                            <% if(item.product_status == 0) { %>
+                            <a data-goods-id="<%= item.goods_id %>" class="on_sale" href="javascript:void(0);">{$L['text_product_upshelves']}</a>/
+                            <a data-goods-id="<%= item.goods_id %>" class="modify_info" href="javascript:void(0);">{$L['change']}</a>/
+                            <a data-goods-id="<%= item.goods_id %>" class="remove" href="javascript:void(0);">{$L['delete']}</a>
+                            <% }else{ %>
+                            <a data-goods-id="<%= item.goods_id %>" class="off_shelves" href="javascript:void(0);">{$L['text_product_doshelves']}</a>
+                            <% } %>
+                        </td>
+                    <% }else{ %>
+                        <% if(item.valid_status == 0 ) { %>
+                            <td>{$L['finance_wait_examine']}</td>
+                        <% }else{ %>
+                            <td>{$L['finance_falied_examine']}</td>
+                        <% } %>
+                        <td>
+                            {$L['text_product_upshelves']}/
+                            <a data-goods-id="<%= item.goods_id %>" class="modify_info" href="javascript:void(0);">{$L['change']}</a>/
+                            <a data-goods-id="<%= item.goods_id %>" class="remove" href="javascript:void(0);">{$L['delete']}</a>
+                        </td>
+                    <% } %>
+                </tr>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="20">{$L['no_data']}..</td>
+                </tr>
+            <% } %>
+        </script>
+    </table>
+</div>
+<div class="compose-btn">
+    <button class="btn btn-sm btn-default on_sale_batch" >{$L['batch']}{$L['text_product_upshelves']}</button>
+    <button class="btn btn-sm btn-default off_shelves_batch" >{$L['batch']}{$L['text_product_doshelves']}</button>
+    <button class="btn btn-sm btn-default remove_batch" >{$L['batch']}{$L['delete']}</button>
+</div>
+<div class="prve"></div>
+<script>
+    var datas;
+    function func_search_dingzhi_list(){
+        var res       = dingzhi_goods.get_goods(4);
+        var page_html = page.create({PageID:res['data']['page_id'],PageSize:res['data']['page_size'],TotalNum:res['data']['total']}).getHtml();
+        if( page_html == '' ){
+            var pageid = Math.ceil( res['data']['total'] / res['data']['page_size'] );
+            if( pageid < 1 ){
+                pageid = 1;
+            }
+            dingzhi_goods.set_page( pageid , res['data']['page_size'] );;
+            res       = dingzhi_goods.get_goods();
+            page_html = page.create({PageID:res['data']['page_id'],PageSize:res['data']['page_size'],TotalNum:res['data']['total']}).getHtml();
+        }
+        datas         = res['data']['list'];
+        $('#dingzhi_content').html( _.template($('#dingzhi_content_tpl').html(), datas) );
+        $('#search_dingzhi').closest('#dingzhi').find('.prve').html(page_html);
+        $('#dingzhi .prve a').on('click',function(){
+            dingzhi_goods.set_page($(this).attr('data-page-id'),$(this).attr('data-page-size'));
+            func_search_dingzhi_list();
+        });
+		//分页GO操作
+		$('#dingzhi .prve .go').on('click',function(){
+			var data_page_id = parseInt($(this).prev().val(),10);
+			var data_page_size = parseInt($("input[name='page_size']").val(),10);
+			if(data_page_id){
+				dingzhi_goods.set_page(data_page_id,data_page_size);
+				func_search_dingzhi_list();
+			}
+		});
+        $('#dingzhi .on_sale_batch').prop('disabled',true);
+        $('#dingzhi .off_shelves_batch').prop('disabled',true);
+        $('#dingzhi .remove_batch').prop('disabled',true);
+        $('input[type="checkbox"]').prop('checked',false);
+    }
+    //界面交互逻辑
+    $(function(){
+        //默认数据
+        func_search_dingzhi_list();
+        $('#search_dingzhi').on('click',function() {
+            dingzhi_goods.set_arg('page_id','1');
+            dingzhi_goods.set_arg('goods_sn',$('#search_dingzhi').closest('#dingzhi').find('input[name="goods_sn"]').val());
+            dingzhi_goods.set_arg('certificate_number',$('#search_dingzhi').closest('#dingzhi').find('input[name="certificate_number"]').val());
+            dingzhi_goods.set_arg('product_status',$('#search_dingzhi').closest('#dingzhi').find('select[name="product_status"]').val());
+            dingzhi_goods.set_arg('time_begin',$('#search_dingzhi').closest('#dingzhi').find('input[name="time_begin"]').val());
+            dingzhi_goods.set_arg('time_end',$('#search_dingzhi').closest('#dingzhi').find('input[name="time_end"]').val());
+            func_search_dingzhi_list();
+        });
+        $('.select_dingzhi_all').on('click',function() {
+            func_select_all('dingzhi_goods_id[]',this);
+        });
+        $('.select_dingzhi_all,input[name="dingzhi_goods_id[]"]').live('click',function() {
+            $('#dingzhi .on_sale_batch').prop('disabled',true);
+            $('#dingzhi .off_shelves_batch').prop('disabled',true);
+            $('#dingzhi .remove_batch').prop('disabled',true);
+            $('input[name="dingzhi_goods_id[]"]:checked').each(function(){
+                $('#dingzhi .on_sale_batch').prop('disabled',false);
+                $('#dingzhi .off_shelves_batch').prop('disabled',false);
+                $('#dingzhi .remove_batch').prop('disabled',false);
+            });
+        });
+        //批量操作
+        $("#dingzhi .on_sale_batch,#dingzhi .off_shelves_batch,#dingzhi .remove_batch").on('click',function(){
+            var dingzhi_goods_ids = $('input[name="dingzhi_goods_id[]"]:checked').map(function(){
+                return $(this).val();
+            }).get();
+            //上架
+            if($(this).hasClass('on_sale_batch')){
+                dingzhi_goods.on_sale(dingzhi_goods_ids);
+            }
+            //下家
+            if($(this).hasClass('off_shelves_batch')){
+                dingzhi_goods.off_shelves(dingzhi_goods_ids);
+            }
+            //删除
+            if($(this).hasClass('remove_batch')){
+                if(confirm('{$L["text_detlte_notice"]}')) {
+                    dingzhi_goods.remove_goods(dingzhi_goods_ids);
+                }
+            }
+            func_search_dingzhi_list();
+        });
+        //单页操作
+        $("#dingzhi .on_sale,#dingzhi .off_shelves,#dingzhi .remove,#dingzhi .modify_info").live('click',function(){
+            var dingzhi_goods_ids = new Array();
+            dingzhi_goods_ids.push($(this).attr('data-goods-id'));
+            //上架
+            if($(this).hasClass('on_sale')){
+                dingzhi_goods.on_sale(dingzhi_goods_ids);
+            }
+            //下家
+            if($(this).hasClass('off_shelves')){
+                dingzhi_goods.off_shelves(dingzhi_goods_ids);
+            }
+            //删除
+            if($(this).hasClass('remove')){
+                if(confirm('{$L["text_detlte_notice"]}')) {
+                    dingzhi_goods.remove_goods(dingzhi_goods_ids);
+                }
+            }
+            //修改
+            if($(this).hasClass('modify_info')){
+                var goods_id = $(this).attr('data-goods-id');
+                openWindows('{:U('Goods/productInfo')}?goods_id='+goods_id,'1050','650');
+                return false;
+            }
+            func_search_dingzhi_list();
+        });
+    });
+</script>

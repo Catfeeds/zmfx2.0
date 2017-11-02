@@ -1,0 +1,78 @@
+<include file="Public:header" /><body>
+    <section class="yuyue">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onClick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>门店预约</h2>
+                <div class="web-top-right"><a href="{:U('/Store/online')}">在线预约</a></div>
+            </div>
+        </header>
+
+        <section class="yuyue-list wrapper">
+
+            <!-- content -->
+			
+			<volist name="storeList" id="v" key="key">
+            <div class="goods-layout clearfix">
+                <div class="goods-img">
+                    <img src="{$v['thumb']}" alt="">
+                </div>
+                <div class="goods-right">
+                    <h2>{$v['province_name']}·{$v['name']}</h2>
+                    <p class="goods-title">{$v.province_name}{$v.city_name}市{$v.district_name}{$v.address}</p>
+                    <div class="goods-fangshi clearfix">
+                        <!--<span class="fl c9"><img src="__IMG__/address_icon_03.png" alt=""> 574m</span>-->
+                        <span class="fr"><a href="tel:{$v['phone']}" class="phone-btn ripple">电话预约 <img src="__IMG__/phone_img.png" alt=""></a></span>
+                    </div>
+                </div>
+            </div>
+			</volist>
+            <!-- content end -->
+
+            <div class="index-bottom">
+				<div class="phone clearfix">
+					<a href="tel:{:C('site_contact')}" class="fl"><img src="__IMG__/phone_icon.png" alt="">{:C('site_contact')}</a>
+					<?php
+						$DEFAULT_AGENT_DOMAIN = C('DEFAULT_AGENT_DOMAIN');
+						if(substr_count($DEFAULT_AGENT_DOMAIN,'.')==1){
+							$defaultDomain = 'www.'.$DEFAULT_AGENT_DOMAIN.'?is_inside_callback=1';
+						}else{
+							$defaultDomain = $DEFAULT_AGENT_DOMAIN.'?is_inside_callback=1';
+						}
+					?>
+					<a href="http://<?php echo $defaultDomain;?>" title="官方网站" class="fr">查看官方网站(网页版）</a>
+				</div>
+				<div class="copyright">© 2010-2019 {:C('site_name')} 版权所有<br/>{:C('case_number')}</div>
+			</div>
+
+<!-- 返回顶部 start -->
+<a href="javascript:;" class="back-top" style="display: none;">
+    <img src="__IMG__/back_top.png" alt="">
+</a>
+
+<script>
+    $(function(){
+        //返回顶部
+        $(window).scroll(function(){
+              if($(document).scrollTop() + $(window).height() >= $(document).height()){
+                 $('.back-top').fadeIn();
+              }else{
+                 $('.back-top').hide();
+              }
+        });
+        $('.back-top').bind('click', function(){
+            $('body,html').animate({scrollTop : 0},400);
+        });
+    });
+	getCurrentPosition()
+</script>
+<!-- 返回顶部 end -->
+
+
+        </section>
+    </section>
+</body>
+</html>

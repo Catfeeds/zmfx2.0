@@ -1,0 +1,66 @@
+<div class="header">
+  <div class="userInfo">
+	<ul>
+	  <li class="fl"><span>您好，欢迎访问{:C('site_name')}</span></li>
+	  <if condition="$Think.session.web.uid eq ''">
+		<li class="fl"><a href="{:U('Home/Public/login')}">会员登录</a></li>
+		<li class="fl"><a href="{:U('Home/Public/regist')}">| 会员注册</a></li>
+		<!--<li class="fl"><a href="{:U('Home/Public/forgetps')}">| 找回密码</a></li>-->
+	  <else/>
+		<li class="fl"><a href="{:U('/Home/User/index')}">{$Think.session.web.username}</a></li>
+		<li class="fl"><a href="javascript:void(0)" onClick="loginout();">退出</a></li>
+	  </if>
+	  <li class="fr"><a href="{:U('/Home/Article/help')}">| 帮助中心</a></li>
+	  <li class="fr"><a href="{:U('/Home/User/orderList')}">| 我的订单</a></li>
+	  <li class="fr"><a href="{:U('/Home/Order/orderCart')}">购物车(<span id="totalCart">{$cartNumber}</span>)件</a></li>
+      <li class="fr"><a href="{:U('/Home/Goods/getCollectionList')}">我的收藏 |</a></li>
+      <div class="clear"></div>
+	</ul>
+  </div>
+  <div class="headerTop">
+	<div class="logo">
+	<a href="{:U('/Home/Index/index')}">
+		<?php $is_company_name_callback=cookie('is_company_name_callback');?>
+		<if condition=" C('agent_id') == 7 &&  $is_company_name_callback">
+			<span class="user_experience text-center" style="width: 264px; height: 50px;   line-height: 50px;  margin-top: 18px;   overflow: hidden;  display: inline-block;  font-size: 3em; color: #15A2E4;  text-align: center;">{:C('site_name')}</span>
+		<else/>
+			<img src="__PUBLIC__/{:C('web_logo')}" class="logo" alt="logo">
+		</if>
+	</a></div>
+	<div class="search">
+	  <form action="{:U('/Home/Search/goodsList')}" method="get">
+		<input type="text" value="" name="keyword">
+		<input id="go" type="submit" value="搜索">
+	  </form>
+	  <ul>
+		<li><span>搜索热词:</span></li>
+		<volist name="hot_search" id="vo">
+			<li><a href="{:U('/Home/Search/goodsList',array('keyword' => $vo))}">{$vo}</a></li>
+		</volist>
+		<div class="clear"></div>
+	  </ul>
+	</div>
+	<div class="weixin"></div>
+  </div>
+  <div class="nav">
+	<div class="navContent">
+	  <ul class="menu">
+		<li class="homepage"><a href="/">首&nbsp;页</a></li>
+		<if condition="$nav">
+		<volist name="nav" id="vo">
+			<li class="openNav"><a href="{$vo.nav_url}">{$vo.nav_name}</a>
+			<if condition="$vo['sub']">
+			 <ul class="nav_zi"> <!-- onMouseOut="jQuery(this).hide();" onMouseOver="jQuery( this ).show();" -->
+				<volist name="vo['sub']" id="v">
+				<li><a href="{$v.nav_url}">{$v.nav_name}</a></li>
+				</volist>
+			  </ul>
+			  </if>
+			</li>
+		</volist>
+		</if>
+		<div class="clear"></div>
+	  </ul>
+	  </div>
+  </div>
+</div>

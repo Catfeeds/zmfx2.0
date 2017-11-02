@@ -1,0 +1,262 @@
+<include file="Public:header" />
+
+<body>
+    <section class="news cart order">
+ 
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="location='/User/index'" class="back-img" alt="">
+                </div>
+                <h2>我的订单</h2>
+            </div>
+        </header>
+        <section class="wrapper">
+
+            <!-- tab -->
+            <div id="news-tab">
+        		<div class="swiper-wrapper">
+        			<div class="swiper-slide active">全部</div>
+        			<div class="swiper-slide">待支付</div>
+        			<div class="swiper-slide">待发货</div>
+                    <div class="swiper-slide">待收货</div>
+        			<div class="swiper-slide">完成</div>
+        		</div>
+        	</div>
+            <!-- tab end -->
+
+            <!-- 搜索 -->
+            <div class="top-bar">
+                <input type="text" class="s-input" name="" value="" placeholder="商品编号">
+                <input type="button" class="search-btn" onclick="Search()" name="" value=" ">		
+            </div>
+            <!-- 搜索 end -->
+
+            <!-- content -->
+            <div id="tabs-container" class="swiper-container">
+        		<div class="swiper-wrapper">
+                    <!-- 全部 -->
+        			<div class="swiper-slide EmptyHtml	ReplaceHtml0">
+ 
+        			</div>
+                    <!-- 全部 end -->
+
+                    <!-- 待支付 -->
+        			<div class="swiper-slide EmptyHtml	ReplaceHtml1">
+ 
+        			</div>
+                    <!-- 待支付 end -->
+					
+                    <!-- 待发货 -->
+        			<div class="swiper-slide EmptyHtml	ReplaceHtml2">
+ 
+        			</div>
+                    <!-- 待发货 end -->
+
+                    <!-- 待收货 -->
+        			<div class="swiper-slide EmptyHtml ReplaceHtml3">
+      
+        			</div>
+                    <!-- 待收货 end -->
+
+                    <!-- 完成 -->
+        			<div class="swiper-slide EmptyHtml ReplaceHtml4">
+  
+        			</div>
+                    <!-- 完成 end -->					
+        		</div>
+        	</div>
+			
+			
+			
+			<div class="loading" style="display: none"><img src="__IMG__/loading.gif" alt=""></div>
+			<script>
+				var VariousSet  = new Array('/User/orderList');
+				
+				var OrderStatus = new Array('','0,1','2,3','4','5,6');
+			
+				$(function(){
+					//标题切换
+					var mySwiper1 = new Swiper('#news-tab', {
+						freeMode: true,
+						slidesPerView: 'auto'
+					});
+
+					//列表切换
+					var tabsSwiper = new Swiper('#tabs-container', {
+						speed: 500,
+						autoHeight: true,
+						onSlideChangeStart: function() {
+							$("#news-tab .active").removeClass('active');
+							$("#news-tab .swiper-slide").eq(tabsSwiper.activeIndex).addClass('active');
+							$('.EmptyHtml').empty();
+							ThreeAjax.Interactive[0].activeIndex  = tabsSwiper.activeIndex;
+							ThreeAjax.Interactive[0].order_status = OrderStatus[tabsSwiper.activeIndex];
+							ThreeAjax.Interactive[0].page    	  = 0;
+							ThreeAjax.Send();
+						}
+					});
+
+					$("#news-tab .swiper-slide").on('touchstart mousedown', function(e) {
+						e.preventDefault()
+						$("#news-tab .active").removeClass('active')
+						$(this).addClass('active')
+						tabsSwiper.slideTo($(this).index());
+					})
+					$("#news-tab .swiper-slide").click(function(e) {
+						e.preventDefault()
+					});
+					$(window).scroll(function(){
+						if($(document).scrollTop() + $(window).height() >= $(document).height()){
+							$('.loading').show();
+							ThreeAjax.Interactive[0].page     +=1;
+							ThreeAjax.Send();
+						}
+					});
+				});
+				
+				
+				  ThreeAjax.Interactive.push({
+										order_sn: '',
+										order_status: '',
+										activeIndex: 0,
+										page:0,
+										page_len:20
+						});
+				   ThreeAjax.Interactive.push(function(data){
+												var html = '';
+												if($.isEmptyObject(data.data.data) == false){
+													$.each(data.data.data ,function(k ,v) {
+														if(v){
+															html += '<div class="content-slide">';
+															html += '<div class="goods-item">';
+															html += '<div class="head">订单编号：'+v.order_sn+' <span class="fr">'+v.status_txt+'</span></div>';
+															html += '<div class="goods-layout clearfix">';
+															html += '<div class="goods-img">';
+															if(v.thumb){
+																$.each(v.thumb ,function(ke,va) {
+																	if(ke<=2){
+																		html += '<img src="'+va+'" alt="">';
+																	}
+																})
+															}
+															html += '</div>';
+															html += '<div class="goods-right">';
+															html += '共<span class="rmb">'+v.goodsNum+'</span>件 <img src="/Application/Mobile/View/b2c/Styles/img/alink_icon_03.png" alt="">';
+															html += '</div>';
+															html += '</div>';
+															html += '<div class="foot clearfix">';
+															
+															if(v.order_price_up>0){
+																html += '<span class="fl">合计：'+v.order_price_up+'</span>';
+															}else{
+																html += '<span class="fl">合计：'+v.order_price+'</span>';
+															}
+															
+															
+															html += '<span class="fr">';
+															
+															if(v.order_status=='4'){
+																html += '<a href="/User/ExperList/order_id/'+v.order_id+'" class="order-list-btn">查看物流</a>';
+																html += '&nbsp';
+																html += '<a  onclick="update_order('+v.order_id+',4)" class="order-list-btn">确认收货</a>';
+															}else{
+																html += '<a href="/User/orderInfo/order_id/'+v.order_id+'" class="order-list-btn">查看</a>';
+																html += '&nbsp';
+															}
+															
+															if(v.order_status=='5' || v.order_status=='6'){
+																html += '<a href="/User/EvaluateList/order_id/'+v.order_id+'" class="order-list-btn">评价</a>';
+															}
+															
+															html += '</span>';
+															html += '</div>';															
+															html += '</div>';
+															html += '</div>';
+														}
+													})
+														
+								
+													
+													if(	ThreeAjax.Interactive[0].page==0){
+														$('.ReplaceHtml'+ThreeAjax.Interactive[0].activeIndex).html(html);
+													}else{
+														$('.ReplaceHtml'+ThreeAjax.Interactive[0].activeIndex).append(html);
+													}
+													
+
+													if(data.data.data.length<=ThreeAjax.Interactive[0].page_len){
+														$('.loading').html('没有了~~');
+													}
+												}else{
+													if(ThreeAjax.Interactive[0].page==0){
+														if(ThreeAjax.Interactive[0].order_sn){
+															var Prompt = '没有搜索到对应订单~~';
+														}else{
+															var Prompt = '您还没有相关订单哦~~';
+														}
+														$('.ReplaceHtml'+ThreeAjax.Interactive[0].activeIndex).html('<div class="empty-cart"  ><p><img src="<?php echo "__IMG__";?>/order_noimg_03.png" alt="" class="empty-img"></p><p><h2>'+Prompt+'</h2><h4>快去挑点宝贝吧</h4></p> <p><a href="/" class="toindex">随便逛逛</a></p></div>');
+													}else{
+														$('.loading').html('没有了~~');
+													}
+												}
+										}
+					);						
+				
+					ThreeAjax.Send();
+ 
+				
+				
+		function Search(){
+				var order_sn = $('.s-input').val();
+				if(isNaN(order_sn) || order_sn ==''){
+					layer.open({
+						   content: '请输入有效的订单编号！'
+						   ,btn: '确定'
+					});
+				}else{
+					ThreeAjax.Interactive[0].page		= 0;
+					ThreeAjax.Interactive[0].order_sn 	= order_sn;
+					ThreeAjax.Send();
+				}
+		}	
+				
+				
+				
+		function update_order(order_id,order_status){
+		if(order_status=='0'){			var strs='你确定取消吗？';}
+		if(order_status=='-1'){			var strs='你确定删除吗？';}
+		if(order_status=='4'){			var strs='你确认收货吗？';}
+			layer.open({
+				content: strs,
+				btn: ['确认', '取消'],
+				shadeClose: false,
+				yes: function(){
+					$.post('/User/update_order',{Action:"POST",order_id:order_id,order_status:order_status},function(data){
+						 if(data.status!='0'){
+							setTimeout(function () {   window.location.reload();   }, 3000);
+						 }
+						layer.open({ content:data.msg,  time: 2});return false;
+					});
+				}, no: function(){
+					//layer.open({content: '你选择了取消', time: 1});
+				}
+			});
+		}				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</script>
+ 
+        </section>
+    </section>
+
+	<include file="Public:foot" />	
+</body>
+</html>

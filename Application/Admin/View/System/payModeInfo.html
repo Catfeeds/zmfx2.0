@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>支付方式</title>
+</head>
+<body>
+	<div class="page-main edit">
+		<div class="subMenu">
+			<h3>当前操作：修改支付方式</h3>
+			<ul>
+				<volist name="menuList[7]['sub']" id="vo">
+					<li class="<eq name="currentUrl" value="$vo['url'] ">active</eq>"><a href="{:U($vo['url'])}">{$vo.menu_name}</a></li>
+				</volist>
+			</ul>
+		</div>
+		<div id="productMain" style="padding:10px 50px;">
+			<form action="{:U('Admin/System/payModeInfo?mode_id='.$info['mode_id'])}" method="POST">
+				<div class="info">
+					<div class="title">支付名称:</div>
+					<span>{$info.mode_name}</span>
+				</div>
+				<div class="info">
+					<div class="title">备注:</div>
+					<span>{$info.mode_note}</span>
+				</div>
+				<div class="info">
+					<div class="title">是否开启:</div>
+					<select name="pay_status">
+						<option value="0" <if condition="$info.pay_status eq 0">selected</if>>关闭</option>
+						<option value="1" <if condition="$info.pay_status eq 1">selected</if>>开启</option>
+					</select>
+				</div>
+				<!--遍历配置项开始-->
+				<volist name="configList" id="vo">
+					<eq name="vo.type" value="1">
+					<div class="info">
+						<div class="title">{$vo.mode_key_name}:</div>
+						<input type="text" name="pay_attr[{$vo.mode_key}]" value="{$vo.mode_value}" />
+					</div>
+					</eq>
+					<eq name="vo.type" value="2">
+					<div class="info">
+						<div class="title">{$vo.mode_key_name}:</div>
+						<select name="pay_attr[{$vo.mode_key}]">
+							<option value="0" <if condition="$vo.mode_value eq 0">selected</if>>关闭</option>
+							<option value="1" <if condition="$vo.mode_value eq 1">selected</if>>开启</option>
+						</select>
+					</div>
+					</eq>
+					<eq name="vo.type" value="3">
+					<div class="info">
+						<div class="title">{$vo.mode_key_name}:</div>
+						<textarea name="pay_attr[{$vo.mode_key}]">{$vo.mode_value}</textarea>
+					</div>
+					</eq>
+				</volist>
+				<!--遍历配置项结束-->
+				<div class="info">
+					<div class="title">&nbsp;</div>
+					<input type="submit" class="button fl" value="保存修改">
+					<div class="clear"></div>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

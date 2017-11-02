@@ -1,0 +1,40 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<div id="UserInfo">
+	<div class="navigation"><a href="{:U('/Home/Index/index')}">首页 </a>&gt;<a href="{:U('/Home/User/index')}"> 用户中心 </a>&gt; 用户中心首页</div>
+	<include file=".:Base:User:menu" />
+   	<div id="user_right">
+   		<table class="traderList" border="1">
+
+   			<tr class="title">
+   				<th>分销商名称</th>
+   				<th>公司名称</th>
+   				<th>域名</th>
+   				<th>联系人</th>
+   				<th>联系电话</th>
+   				<th>营业执照</th>
+   				<th>申请状态</th>
+   			</tr>
+   			<if condition="$traderList">
+   			<volist name="traderList" id="vo">
+   			<tr><td>{$vo.trader_name}</td>
+   				<td>{$vo.company_name}</td>
+   				<td>{$vo.domain}</td>
+   				<td>{$vo.contacts}</td>
+   				<td>{$vo.phone}</td>
+   				<td>{$vo.business_license}</td>
+   				<td>{$vo.status_txt}</td>
+   			</tr>
+   			</volist>
+   			<else />
+   			<tr><td colspan="7">暂无申请信息</td></tr>
+   			</if>
+   		</table>
+   	</div>
+</div>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

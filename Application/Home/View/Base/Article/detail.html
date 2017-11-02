@@ -1,0 +1,75 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<if condition="$article['art_mode'] eq 1 ">
+<div style="margin:0 auto;">
+		<div class="box">
+			<div class="content">{$article.content|htmlspecialchars_decode}</div>
+        </div>
+    <div class="clear"></div>
+
+</div>
+<else />
+<div class="baikeInfo">
+    <div class="box here"><span>您当前的位置:</span><span><a href="{:U('Home/Article/index')}"></a>钻石百科&gt;文章详情&gt;{$article.title}</span></div>
+    <div class="infoLeft">
+    	<div class="info box mb10">
+            <div class="aTitle"><span>{$article.title}</span></div>
+            <div class="aInfo"><span>编辑：{:C('system_site_name')}</span><span>发布时间：{$article.addtime|date="Y-m-d H:i",###}</span><span>关注度:{$article.click}次</span></div>
+            <div class="aRead">
+            	<div class="rTitle"><span>文章导读</span></div>
+                <div class="rContent">&nbsp;&nbsp;&nbsp;&nbsp;{$article.description}</div>
+            </div>
+            <div class="content">{$article.content|htmlspecialchars_decode}</div>
+        </div>
+    </div>
+    <div class="infoRight">
+		<div class="box top">
+            <div class="title">点击热榜</div>
+            <ul>
+            	<if condition="$hot_article">
+            	<volist name="hot_article" id="vo">
+                <li><a href="{:U('Home/Article/detail?aid='.$vo['aid'])}"> <span>{$vo.title|msubstr=0,20,'utf-8'}</span></a></li>
+                </volist>
+                </if>
+            </ul>
+        </div>
+    	<div class="content_right">
+			<volist name="categorys" id="vo" key="key">
+					<div class="box baikeCat">
+						<div class="title"><a href="{:U('Home/Article/articleList?cat_id='.$vo['cid'])}">{$vo.catname}</a></div>
+						<if condition="$vo['childCategory']">
+						<ul>
+							<volist name="vo['childCategory']" id="v">
+								<li><a href="{:U('Home/Article/articleList?cat_id='.$v['cid'])}">{$v.catname}</a></li>
+							</volist>
+							<div class="clear"></div>
+						</ul>
+						</if>
+					</div>
+			</volist>
+        </div>
+		
+        <!-- <div class="box baikeGoods mb10">
+            <div class="title">推荐产品</div>
+          	<ul>
+            	<volist name="hotGoods" id="vo">
+                <li>
+                    <a href="{:U('Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}"><img src="__PUBLIC__/{$vo.thumb}"></a>
+                    <a href="{:U('Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}"><p>{$vo.goods_name}</p></a>
+                    <a href="{:U('Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}"><p>&yen;{$vo.goods_price}</p></a>
+                </li>
+                </volist>
+                <div class="clear"></div>
+            </ul>
+        </div> -->
+        
+    </div>
+    <div class="clear"></div>
+</div>
+</if>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

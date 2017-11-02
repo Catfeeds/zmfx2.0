@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>分类管理</title>
+    <link rel="stylesheet" type="text/css" href="__CSS__/admin.css" />
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：属性列表</h3>
+        <ul>
+            <volist name="menuList[104]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+    </div>
+    <div class="filter">
+        <form action="{$my_all_param['submit_url']}" method="post">
+            <div class="fl">类型：</div>
+            <select name="top_id">
+                <option value="">全部</option>
+                <volist name="cate_arr" id="vo">
+                    <option value="{$vo['id']}" <if condition="$vo['id'] eq $searchs['top_id']">selected</if> >{$vo['name']}</option>
+                </volist>
+            </select>
+            <div class="fl">&nbsp;</div>
+
+            <div class="fl">状态：</div>
+            <select name="status">
+                <option value="">全部</option>
+                <volist name="status_arr" id="vo">
+                    <option value="{$vo['id']}" <if condition="$vo['id'] eq $searchs['status']">selected</if> >{$vo['name']}</option>
+                </volist>
+            </select>
+            <div class="fl">&nbsp;</div>
+
+            <!--<div class="fl">可修改类型：</div>
+            <select name="is_base">
+                <option value="">全部</option>
+                <volist name="can_edit_arr" id="vo">
+                    <option value="{$vo['id']}" <if condition="$vo['id'] eq $searchs['is_base']">selected</if> >{$vo['name']}</option>
+                </volist>
+            </select>-->
+            <div class="fl">&nbsp;</div>
+
+            <input class="button" type="submit" value="查询" />
+        </form>
+    </div>
+
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+        <tr class="top">
+            <th>序号</th>
+            <th>分类名称</th>
+            <th>可否自定义</th>
+            <!--<th>是否有手寸</th>-->
+            <th>状态</th>
+            <th width="220">操作</th>
+        </tr>
+        <?php $num = 0; ?>
+        <volist name="lists" id="vo" mod="2">
+            <?php $num++; ?>
+            <tr class="{$mod?'bg2':'bg1'}">
+                <td>{$num}</td>
+                <td align="left">{$vo.name}</td>
+                <td><if condition="$vo.is_base eq 0"><span style="color:#0d0;">是</span><else/><span style="color:#f00;">否</span></if></td>
+                <!--<td><if condition="$vo.is_hand eq 1"><span style="color:#0d0;">是</span><else/><span style="color:#f00;">否</span></if></td>-->
+                <td><if condition="$vo.status eq 1"><span style="color:#0d0;">开启</span><else/><span style="color:#f00;">关闭</span></if></td>
+                <td>
+                    <a href="{:U('Admin/Sgoods/editAttr?id='.$vo['id'])}" >编辑</a>
+                    <a href="javascript:;" onclick="editAttrZhiDing({$vo['id']});">置顶</a>
+                </td>
+            </tr>
+        </volist>
+    </table>
+    <div class="page">{$page}</div>
+</div>
+<script>
+    function editAttrZhiDing(id){
+        $.post("{:U('Admin/Sgoods/editAttrZhiDing')}",{id:id},function(res){
+            if(res.status==100){
+                window.location.reload();
+            }else{
+                alert(res.msg);
+            }
+        });
+    }
+</script>
+</body>
+</html>

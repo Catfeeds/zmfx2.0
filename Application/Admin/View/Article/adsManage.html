@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>广告位管理</title>
+</head>
+<body>
+<style>
+.item {
+    height: 300px;
+    overflow: hidden;
+    float: left;
+}
+
+</style>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：广告位管理</h3>
+        <h3>当前模板：默认站点模板</h3>
+        <ul>
+            <li><a <eq name="template_type" value="1">style="color:red;"</eq> href="{:U('Admin/Article/adsManage?template_type=1')}">电脑板广告位</a></li>
+            <li><a <eq name="template_type" value="2">style="color:red;"</eq> href="{:U('Admin/Article/adsManage?template_type=2')}">手机版广告位</a></li>
+			<li><a <eq name="template_type" value="3">style="color:red;"</eq> href="{:U('Admin/Article/adsManage?template_type=3')}">APP版广告位</a></li>
+        </ul>
+    </div>
+	
+    <div class="template">
+		<ul>
+			<volist name="tempAdList" id="vo" mod="2">
+			<li class="<eq name="vo.template_status" value="1">active</eq>">
+				<div class="AdsContent" style="width:1150px; min-height:200px;height:auto;" class="slide">
+					<div class="<eq name="vo.ad_type" value="2"> slide owl-carousel owl-theme </eq> ">
+						<volist name="vo['adlist']" id="val">
+						<div class="item">
+							<img src="/Public/{$val['images_path']}" title="{$val['title']}" <eq name="vo.ad_type" value="2"> width="1150" <else/>width="575" </eq>  alt="{$val['title']}">
+						</div>
+						</volist>
+					</div>
+				</div>
+				<div class="info">
+					<span>{$vo.title}</span>
+					<span>(类型：<eq name="vo.ad_type" value="1">图片</eq><eq name="vo.ad_type" value="2">幻灯片</eq><eq name="vo.ad_type" value="3">文字</eq>)</span>
+					<a href="{:U('Admin/Article/adList?ads_id='.$vo['ads_id'])}">查看列表</a>
+				</div>
+			</li>
+			<div></div>
+			</volist>
+    		<div class="clear"></div>
+    	</ul>
+    </div>
+</div>
+</body>
+</html>
+<script>
+$(document).ready(function() {
+  $(".slide").owlCarousel({
+		autoPlay : 3000,
+		stopOnHover : true,
+		navigation:false,
+		paginationSpeed : 1000,
+		goToFirstSpeed : 2000,
+		singleItem : true,
+		//autoHeight : true,
+		transitionStyle:"fade"
+	});
+});
+</script>

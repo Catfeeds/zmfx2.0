@@ -1,0 +1,88 @@
+<!-- 特价抢购 -->
+<if condition="$positionList[0]['is_show'] eq 1 ">
+<if condition="$promotion_list">
+<style>
+.font-family-one{
+	font-family:"{$positionList[0]['font']}" ;
+}
+
+
+</style>
+<div class="special">
+    <div class="container-fluid padno">	
+        <div class="qianggou">
+            <div class="container">
+                <h1 class="text-center font-family-one">
+                  <a href="{:U('/Home/Goods/goodsList',array('Preferential'=>'preferential'))}" style="color: #577bb5;">
+                    <img src="__IMG__/sz.png" alt="">
+                    <strong>{$positionList[0]['title']}</strong> <br > {$positionList[0]['english_title']}
+                  </a>
+                </h1>
+            </div>
+        </div>
+        <div class="qianggou-list">
+            <div class="container">
+                <ul id="flexiselDemo3">
+                    <volist name="promotion_list" id="vo">
+                    <li>
+                        <div class="price">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">
+                                    <div class="thumbnail border-radiusno">
+                                        <a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_type'],'gid'=>$vo['goods_id']))}" target="_blank">
+                                        <if condition="$vo['thumb']">
+                                        <img src="{$vo['thumb']}" style="max-width: 230px; width: 100%; margin: 0 auto; max-height: 230px;" alt="{$vo['goods_name']}" />
+                                        <else/>
+                                        <img src="__IMG__/noimage.jpg">
+                                        </if>
+                                        </a>
+                                        <div class="caption">
+                                        <h3>{$vo['goods_name']}</h3>
+                                        <p> 
+                                            <span class="kland-hide">
+                                                <strong class="red">￥{$vo['activity_price']}</strong>  原价 {$vo['marketPrice']} 元
+                                            </span>
+                                            <a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_type'],'gid'=>$vo['goods_id']))}" class="btn btn-default border-radiusno btn-danger" role="button" target="_blank">立即抢购</a>
+                                        </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    </volist>
+                </ul> 
+
+                <script type="text/javascript">
+                    //$(window).load(function() {
+                        $("#flexiselDemo3").flexisel({
+                            visibleItems: 5,
+                            animationSpeed: 1000,
+                            autoPlay: true,
+                            autoPlaySpeed: 3000,            
+                            pauseOnHover: true,
+                            enableResponsiveBreakpoints: true,
+                            responsiveBreakpoints: { 
+                                portrait: { 
+                                    changePoint:480,
+                                    visibleItems: 1
+                                }, 
+                                landscape: { 
+                                    changePoint:640,
+                                    visibleItems: 2
+                                },
+                                tablet: { 
+                                    changePoint:768,
+                                    visibleItems: 3
+                                }
+                            }
+                        });
+                    //});
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+</if>
+</if>
+<!-- 特价抢购 end //-->

@@ -1,0 +1,56 @@
+<if condition="$list">
+    <foreach name="list" item="vo" >
+        <section class="after-sales-list">
+            <div class="shouhou">
+                <div class="thead">
+                    <span class="pull-left">订单号：{$vo.order_sn}</span>
+                    <span class="pull-right red"></span>
+                    <div class="clearfix"></div>
+                </div>
+
+                <if condition="$vo.goods_list">
+                    <foreach name = "vo.goods_list" item="v" >
+                        <if condition = " $v.goods_type eq '3' || $v.goods_type eq '4' ">
+                            <div class="tbody">
+                                <div class="cbimg pull-left">
+                                    <img src="{$v.thumb}" alt="">
+                                </div>
+                                <div class="after-data pull-left">
+                                    <p>{$v.goods_name}</p>								
+                                    <p>提交时间：{$v.create_time}</p>
+                                </div>
+                                <div class="toview pull-right">
+                                    <a href="{:U('OrderService/sInfo',array('order_service_id'=>$v['order_service_id']))}" class="btn btn-default btn-sm pull-right">查看详情</a>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+								<div class="zt">
+								  <p class="">
+								  状态：
+									<span class="red">
+									  <if condition = " $v.status eq '1' ">可以标记完成
+										<elseif condition = " $v.status eq '0' " />进行中...
+										<elseif condition = " $v.status eq '2' " />已完成
+									  </if>
+									</span>
+								  </p>
+								</div>	
+                            </div>
+
+                        <else />
+                            <div class="tbody tbody2">
+                                <div class="after-data pull-left">
+                                    <p>【裸钻】货品编号：FME6420</p>
+                                    <p>GIA 2214685824</p>
+                                    <p>0.3ct L色 SI2净度 EX切工</p>
+                                    <p>数量：x{$v.goods_number}</p>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </if>
+                    </foreach>
+                </if>
+            </div>
+        </section>
+    </foreach>
+</if>

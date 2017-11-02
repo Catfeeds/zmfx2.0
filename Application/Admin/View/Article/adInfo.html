@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>广告信息</title>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：广告信息</h3>
+        <ul>
+        	<li><a href="{:U('Admin/Article/adList?ads_id='.$ads_id)}">返回列表</a></li>
+        </ul>
+    </div>
+    <div style="padding:40px;">
+    	<form id="adInfo" action="{:U('Admin/Article/adInfo?ad_id='.$adOnce['ad_id'].'&ads_id='.$ads_id)}" method="POST" enctype="multipart/form-data">
+        <div class="info">
+        	<div class="title">广告位:</div>
+            <span>{$tempAdsInfo.title}</span>
+            <span>(类型：<eq name="tempAdsInfo.ad_type" value="1">图片</eq><eq name="tempAdsInfo.ad_type" value="2">幻灯片</eq><eq name="tempAdsInfo.ad_type" value="3">文字</eq>)</span>
+        </div>
+        <div class="info">
+        	<div class="title">标题：</div>
+            <input type="text" name="title" value="{$adOnce.title}" style="width:595px;"/>
+        </div>
+        <div class="info">
+        	<div class="title">图片：</div>
+            <input type="file" name="images_path" style="width:595px;"/>
+        </div>
+        <div class="info">
+            <div class="title">&nbsp;&nbsp;</div>
+			<if condition="$ads_id eq 3">
+            <div class="red">注释：图片上传尺寸为1920*640px，不得超过3M，支持jpg/png</div> <!-- PC首页 -->
+			</if>
+			<if condition="$ads_id eq 13">
+            <div class="red">注释：尺寸比例2：1，参考尺寸560*280px，大小不得超过3M，支持jpg/png</div>  <!-- 首页钻石定制两张图 -->
+			</if>
+			<if condition="$ads_id eq 14">
+            <div class="red">注释：上传图片最佳尺寸为：1200*200px，不得超过3M，支持jpg/png</div> <!-- B2C钻石定制页 -->
+			</if>
+			<if condition="$ads_id eq 12">
+            <div class="red">注释：尺寸比例2：1，参考尺寸750*375px，大小不超过2M，支持jpg/png</div>  <!-- APP首页 -->
+			</if>
+			<if condition="$ads_id eq 4  || $ads_id eq 42">
+			<div class="red">尺寸大小1920*640px, 格式PNG/JPG，大小不得超过3M</div> <!-- 站点登录页图片 -->
+			</if>
+			<if condition="$ads_id eq 6">
+            <div class="red">尺寸大小370*290PX，格式PNG/JPG,大小不得超过3M</div> <!-- 钻石百科幻灯片图片 -->
+			</if>
+			<if condition="$ads_id eq 7">
+            <div class="red">参考尺寸大小750*375PX，格式PNG/JPG,大小不得超过3M</div><!-- 手机版 首页轮播图 -->
+			</if>
+			<if condition="$ads_id eq 8">
+            <div class="red">参考尺寸大小750*250PX，格式PNG/JPG,大小不得超过3M</div><!-- 手机版 分销商活动图 -->
+			</if>
+
+        </div>
+		<if condition="$ads_id eq 12">
+			<div class="info">
+				<div class="title">链接类型：</div>
+				<select name="url_type" class="select fl">
+					<option value="1" <if condition="$adOnce.url_type eq 1">selected</if>>商品链接</option>
+					<option value="2" <if condition="$adOnce.url_type eq 2">selected</if>>文章链接</option>
+					<option value="3" <if condition="$adOnce.url_type eq 3">selected</if>>页面链接</option>
+				</select>
+				<div class="red">&nbsp;&nbsp;*如果为商品或者文章链接，则只用输入文章ID或者商品的id，如果为页面链接，则输入链接地址</div><!-- APP活动图 -->
+			</div>
+		</if>
+        <div class="info">
+        	<div class="title">链接：</div>
+            <input type="text" name="url" value="{$adOnce.url}" style="width:595px;"/>
+        </div>
+        <if condition="$adOnce.images_path neq ''">
+        <div class="info">
+        	<div class="title">图片：</div>
+            <img src="/Public/{$adOnce.images_path}" style="width: 600px; padding: 3px; background: #FFFFFF; border: solid 1px #000000;">
+            <div class="clear"></div>
+        </div>
+        </if>
+        <div class="info">
+        	<div class="title">排序：</div>
+            <input type="text" name="sort" value="{$adOnce.sort}" class="input fl" style="width:80px;" />
+        	<div class="title">语言版本：</div>
+            <select name="lang" class="select fl">
+                <option value="1" <if condition="$adOnce.status eq 1">selected</if>>默认中文</option>
+                <option value="2" <if condition="$adOnce.status eq 2">selected</if>>默认繁体</option>
+                <option value="3" <if condition="$adOnce.status eq 3">selected</if>>默认英文</option>
+            </select>
+        	<div class="title">是否启用：</div>
+            <select name="status" id="status" class="select fl">
+                <option value="1" <if condition="$adOnce.status eq 1">selected</if>>默认启用</option>
+                <option value="0" <if condition="$adOnce.status and $adOnce.status eq 0">selected</if>>停用</option>
+            </select>
+            <div class="clear"></div>
+        </div>
+		<div class="info">
+            <div class="title">&nbsp;</div>
+            <input type="submit" class="button fl" value="保存">
+            <input type="reset" class="button fl ml10" value="重置">
+            <div class="clear"></div>
+        </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

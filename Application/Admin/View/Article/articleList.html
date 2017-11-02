@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>文章信息</title>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：文章信息</h3>
+        <ul>
+            <li><a href="{:U('Admin/Article/articleInfo')}">添加文章</a></li> 
+        </ul>
+    </div>
+    <div class="filter">
+    <form name="search" action="{:U('Admin/Article/articleList')}" method="GET">
+    	<div class="fl">标题：</div>
+    	<input type="text" name="title" value="{$title}" class="input" />
+        <div class="fl">文章分类：</div>
+        <select name="cat_id" class="fl" style="width:120px;">
+        <option value="0">所有分类</option>
+        <volist name="categorys" id="vo">
+        <option <if condition="$cat_id eq $vo['cid']">selected</if> value="{$vo.cid}">&nbsp;{$vo.catname}</option>
+            <volist name="vo.childCategory" id="v">
+            <option <if condition="$cat_id eq $v['cid']">selected</if> value="{$v.cid}">&nbsp;&nbsp;&nbsp;{$v.catname}</option>
+            </volist>
+        </volist>
+        </select>
+        <div class="fl">&nbsp;</div>
+		<input type="submit" value="查询"  class="button"/>
+    </form>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+    	<tr class="top"><th>ID</th><th>标题</th><th>所属分类</th><th>所属分销商</th><th>是否显示</th><th>添加日期</th><th>操作</th></tr>
+    	<volist name="articleList" id="vo">
+    	<tr>
+            <td width="5%">{$vo.aid}</td>
+            <td class="tdLeft" width="50%"><a href="{:U('Admin/Article/articleInfo?aid='.$vo['aid'])}">{$vo.title}</a> 
+                <if condition="$vo['top'] eq 1 ">
+				<img src="__IMG__/top_icon.png" alt="" style="vertical-align: sub;">
+				</if>
+            </td>
+            <td>{$vo.catname}</td>
+            <td>{$site_name}</td>
+            <td><eq name="vo['is_show']" value="1">显示<else/>不显示</eq></td>
+            <td>{$vo.addtime|date="Y-m-d",###}</td>
+            <td>
+				<a target="_blank" href="{:U('Home/Article/detail?aid='.$vo['aid'])}">查看</a> |
+                <a href="{:U('Admin/Article/articleInfo?aid='.$vo['aid'])}">编辑</a> | 
+                <a href="javascript:void(0);" onclick="if(confirm('确认删除此文章吗?')){window.location.href='{:U('Admin/Article/articleDelete?aid='.$vo['aid'])}'}">删除</a>
+            </td>
+        </tr>
+    	</volist>
+    </table>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>

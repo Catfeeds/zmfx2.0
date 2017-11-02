@@ -1,0 +1,161 @@
+<include file="Public:header" />
+<body>
+
+    <section class="login reg add-address">
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="location='/User/Ress'" class="back-img" alt="">
+                </div>
+                <h2>添加收货地址</h2>
+            </div>
+        </header>
+
+        <section class="wrapper">
+ 
+                <div class="form-box">
+                    <ul>
+                        <li>
+                            <label for="" class="label-title">收货人:</label>
+                            <input type="text" name="name" value="<?php echo $addOnce['name'] ? $addOnce['name'] : '';?>" Func='String,Tength' class="text-input" placeholder="输入收货人的姓名">
+                        </li>
+                        <li>
+                            <label for="" class="label-title">联系方式:</label>
+                            <input type="text" name="phone" value="<?php echo $addOnce['phone'] ? $addOnce['phone'] : '';?>" Func='Verif,Phone' class="text-input" placeholder="输入收货人的手机号">
+                        </li>
+                        <li>
+                            <label for="" class="label-title">所在地区:</label>
+                            <!-- <div class="text-input" id="select-address">请选择地区</div> -->
+                            <div class="address-select ml">
+                                <span id="provinces" class="cont"><?php echo $province ? $province : '省份';?></span>
+                                <span><img src="__IMG__/down_icon.png" width="12" alt=""></span>
+                            </div>
+                            <div class="address-select">
+                                <span id="city" class="cont"><?php echo  $city ? $city :  '城市';?></span>
+                                <span><img src="__IMG__/down_icon.png" width="12" alt=""></span>
+                            </div>
+                            <div class="address-select">
+                                <span id="county" class="cont"><?php echo  $district ? $district :  '区/县';?></span>
+                                <span><img src="__IMG__/down_icon.png" width="12" alt=""></span>
+                            </div>
+                        </li>
+                        <li>
+                            <label for="" class="label-title">详细地址:</label>
+                            <input type="text" name="address" value="<?php echo $addOnce['address'] ? $addOnce['address'] : '';?>" Func='String,Tength100' class="text-input" placeholder="输入收货人的街道门牌">
+                        </li>
+                    </ul>
+                </div>
+                <div class="form-box">
+                    <ul>
+                        <li class="clearfix">
+                            <label class="label-title set-title">设为默认地址</label>
+                            <input type="checkbox" class="zdy-checkbox zdy-switch <?php if($addOnce['is_default']=='1'){ echo 'active';	}?>" <?php if($addOnce['is_default']=='1'){ echo 'checked';	}?>	name="is_default" value="">
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="add-box">
+                    <button type="submit" class="add-address-btn">保存地址</button>
+                </div>
+ 
+            <script>
+ 
+                var mobileSelect1 = new MobileSelect({
+					trigger: '#provinces',
+					title: '请选择省份',
+					tips  : '1',
+					wheels: [
+								{data: (<?php echo json_encode($provinces);?>)}
+							],
+					position:['<?php echo ($position) ? $position : 0;?>'],
+					callback:function(indexArr, data){
+							BringAjax.IntendData.Url			= '/User/GetAddress';
+							BringAjax.IntendData.SwitchMain 	= 1;
+ 
+							EasyTransition({'parent_id':data.toString()},function(){
+								$('.zylayer2').remove();
+								VerifData.Condition.province_id		= BringAjax.CacheData[BringAjax.IntendData.CacheHtmlKey].parent_id;
+								var mobileSelect1 = new MobileSelect({
+									trigger: '#city',
+									title: '请选择城市',
+									tips  : '2',
+									wheels: [
+												{data: BringAjax.CacheData[BringAjax.IntendData.CacheHtmlKey].data}
+											],
+									position:[0],
+									callback:function(indexArr, data){
+										EasyTransition({'parent_id':data.toString(),'tips':2},function(){
+											$('.zylayer3').remove();
+											VerifData.Condition.city_id		= BringAjax.CacheData[BringAjax.IntendData.CacheHtmlKey].parent_id;
+											var mobileSelect1 = new MobileSelect({
+											trigger: '#county',
+											title: '请选择区/县',
+											tips  : '3',
+											wheels: [
+														{data: BringAjax.CacheData[BringAjax.IntendData.CacheHtmlKey].data}
+													],
+											position:[0],
+													callback:function(indexArr, data){
+														EasyTransition({'parent_id':data.toString(),'tips':3},function(){
+															VerifData.Condition.district_id	= BringAjax.CacheData[BringAjax.IntendData.CacheHtmlKey].parent_id;
+														});
+													}
+											});
+										});
+									}
+								});
+							});
+					}
+                });
+				
+				
+				
+			
+				
+				
+			$('button').click(function(){
+				if($('.zdy-switch')[0].classList[2]){
+					VerifData.Condition.is_default = 1;
+				}else{
+					delete VerifData.Condition.is_default;
+				}
+				VerifData.InitCondition.Div = '.form-box';
+				VerifData.Main();
+
+				
+				<?php if (empty($_GET['id']) && empty($addOnce['province_id'])):?>
+					if(VerifData.Condition.province_id== undefined){
+						CommonFunction.Prompt.Tan('请选择省份！');
+						return false;
+					}
+					
+					if(VerifData.Condition.city_id== undefined){
+						CommonFunction.Prompt.Tan('请选择城市！');
+						return false;
+					}
+				<?php endif; ?>				
+				
+				
+
+ 
+				if(VerifData.InitCondition.Status==1){
+					var action = '';
+					BringAjax.IntendData.Url	= '/User/Ress';
+					VerifData.Condition.action  = 'default';
+					VerifData.Condition.id  	= '<?php echo base64_encode($_GET['id']); ?>';
+					action =	(VerifData.Condition.id) ? '修改地址信息' : '添加地址信息';
+					BringAjax.IntendData.SwitchMain = 1;
+					BringAjax.IntendData.SuccessEvet = function(){ CommonFunction.Link.Href('/User/Ress');};
+					EasyTransition(VerifData.Condition);
+				}
+			});					
+				
+				
+
+            </script>
+        </section>
+    </section>
+	<include file="Public:foot" />	
+
+</body>
+</html>

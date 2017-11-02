@@ -1,0 +1,96 @@
+<extend name="Manage:Default:Index:base" />
+<block name="title">{$L['reset_next_title']}</block>
+<block name="desc">{$L['reset_next_description']}</block>
+<block name="body_class">forget</block>
+<block name="body">
+    <div class="registr">
+        <div class="dropdown pull-right">
+            <button type="button" class="btn dropdown-toggle transparent" id="dropdownMenu" data-toggle="dropdown">
+                {$L['text_zh-cn']}
+                <span class="fa fa-chevron-down"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                <li role="presentation">
+                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">{$L['text_zh-cn']}</a>
+                </li>
+                <li role="presentation">
+                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">{$L['text_zh-tw']}</a>
+                </li>
+                <li role="presentation">
+                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">{$L['text_en-us']}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container">
+            <if condition="LANG_SET eq 'en-us' ">
+                <img src="__IMG__/en-supply.png">      
+            <else />
+                <img src="__IMG__/logo.png">          
+            </if>
+            <span>{$L['reset_one_span_title']}</span>
+        </div>
+    </div>
+    <!--忘记密码-->
+    <div class="container">
+        <div class="form-bg">
+            <form class="form-registr" method="post" action="{:U('Index/reset_next')}">
+                <div class="registr-head">
+                    <h4>{$L['reset_one_h4']}</h4>
+                </div>
+                <div class="content">
+                    <ul>
+                        <li>
+                            <span class="orage"></span>
+                            <span class="gray"></span>
+                            <a href="#">{$L['tab_verify_email']}</a>
+                        </li>
+                        <li>
+                            <span class="orage"></span>
+                            <span class="gray"></span>
+                            <a href="#">{$L['tab_reset_password']}</a>
+                        </li>
+                        <li>
+                            <span class="orage-gr"></span>
+                            <a href="#">{$L['tab_ok']}</a>
+                        </li>
+                    </ul>
+                    <div class="clear"></div>
+                    <div class="email">
+                        <h5>{$L['text_new_password']}</h5>
+                        <input type="password" class="email-ad" name="password" placeholder="{$L['entry_new_password']}">
+                        <input type="password" class="email-ad" name="reset_password" placeholder="{$L['text_reset_new_password']}">
+                    </div>
+                </div>
+                <div class="next">
+                    <input type="submit" value="{$L['btn_reset_next']}">
+                </div>
+                <div class="corners">
+                </div>
+            </form>
+        </div>
+    </div>
+    <if condition=" $status eq '1'">
+        <!--验证成功-->
+        <script>
+            window.location.href = "{:U('Index/reset_out')}"
+        </script>
+    </if>
+    <if condition=" $status eq '2'">
+        <!--验证成功-->
+        <script>
+            alert('{$L["error_password_must"]}');
+        </script>
+    </if>
+    <if condition=" $status eq '3'">
+        <!--验证成功-->
+        <script>
+            alert('{$L["error_new_conpassword"]}');
+        </script>
+    </if>
+    <if condition=" $status eq '4'">
+        <!--验证成功-->
+        <script>
+            alert('{$L["entry_password_notice"]}');
+        </script>
+    </if>
+</block>

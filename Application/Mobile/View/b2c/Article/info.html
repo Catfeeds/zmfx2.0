@@ -1,0 +1,53 @@
+<include file="Public:header" />
+
+<body>
+    <section class="news-details">
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>资讯详情</h2>
+            </div>
+        </header>
+        <section class="wrapper">
+            <div class="details-content">
+				<?php if($info['art_mode']=='0'):?>
+					<h1>{$info.title}</h1>
+					<small class="time">{$info.addtime|date="Y-m-d H:i",###}</small>
+				<?php endif;?>
+                <div class="cont">
+				    <?php echo htmlspecialchars_decode(str_replace(array("height=","width=","width:","height:"),'',$info['content']));?>
+                </div>
+            </div>
+            <div class="index-bottom">
+<include file="Public:footer" />
+</div>
+
+<!-- 返回顶部 start -->
+<a href="javascript:;" class="back-top" style="display: none;">
+    <img src="__IMG__/back_top.png" alt="">
+</a>
+
+<script>
+    $(function(){
+        //返回顶部
+        $(window).scroll(function(){
+              if($(document).scrollTop() + $(window).height() >= $(document).height()){
+                 $('.back-top').fadeIn();
+              }else{
+                 $('.back-top').hide();
+              }
+        });
+        $('.back-top').bind('click', function(){
+            $('body,html').animate({scrollTop : 0},400);
+        });
+    });
+</script>
+<!-- 返回顶部 end -->
+
+
+        </section>
+    </section>
+</body>
+</html>

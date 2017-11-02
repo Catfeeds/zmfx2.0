@@ -1,0 +1,27 @@
+<div id="banner">
+    <div class="swiper-container" id="banner-tab" dir="rtl">
+        <div class="swiper-wrapper">
+            <volist name="focusAdList" id="vo">
+                <if condition="$vo['status'] eq 1">
+                    <div class="swiper-slide">
+                        <if condition="$vo['url'] neq '' ">
+                            <a href="{$vo['url']}"><img src="/Public{$vo.images_path}" alt="{$vo.title}" /></a>
+                        <else />
+                            <img src="/Public{$vo.images_path}" alt="{$vo.title}" />
+                        </if>
+                    </div>
+                </if>
+            </volist>
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
+        <!-- Add Arrows -->
+        <!-- <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div> -->
+    </div>
+
+    <div class="index-search" onselectstart="return false">
+        <img src="__IMG__/search_icon.png" alt=""> 搜索需要的产品
+        <!-- <input type="text" class="sear" placeholder="搜索需要的产品"> -->
+    </div>
+</div>

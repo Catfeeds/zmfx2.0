@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/main.css">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/layer-mobile/layer.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/public.js"></script> 
+<script src="__JS__/diamond_sanhuo.js"></script>
+<script src="__JS__/common.js"></script>
+<title>首页-证书货-散货钻石</title>
+</head>
+<style>
+.active_select {background:#dce3fe !important;}
+.load { width: 100%;height:0px; color: #333; opacity: 0.8; text-align: center; line-height: 50px;overflow:hidden;}
+.load {margin-bottom:100px;}
+.search-masonry-bulk .panel-default a { width: 62px;}
+select { max-width: 88px;}
+</style>
+<body class="wrap-bg">
+	<!--头部-->
+    <header class=" header text-center">
+    	<a href="{:U('Index/index')}" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+       	钻石专区
+        <a href="javascript:;" id="search-right" class="pull-right">搜索</a>
+    </header>
+    <!--内容-->
+    <div class="container" id="maincont">
+    	<div class="row area">
+       		<!--选项卡-->
+    		<ul class="nav nav-tabs">
+	           <li><a href="{:U('LuoZuan/luoZuan')}">证书货钻石</a></li>
+	           <li class="active"><a href="{:U('SanHuo/sanHuo')}">散货钻石</a></li>
+	        </ul>
+            <div id="myTabContent" class="tab-content">
+               <div class="tab-pane fade in active" id="bulk">
+				  <table class="table bulk data-title" style="margin-bottom:0;">
+					<thead>
+						<tr>
+							<td>货号</td>
+							<td>库存(ct）</td>
+							<td>颜色</td>
+							<td>净度</td>
+							<td>切工</td>
+							<td>统走定价</td>
+						</tr>
+					</thead>
+                  </table>
+                  <table class="table" id="snahuo">
+  
+                  </table>
+               </div>
+			   <!--更多在底部-->
+			   <input type="hidden" id="_pageIndex" value="" />
+			   <div class="load"></div>	
+				
+            </div>
+            <!--底部-->
+            <div class="navbar-fixed-bottom area-bottom">
+                <button type="button" onclick="addCart(4);" class="btn btn-yellow">立即购买</button>
+                <button type="button" onclick="addCart(2);" class="btn">加入购物车</button>
+            </div>
+        
+   		</div>
+	</div>
+	
+	<!-- Search alert -->
+	<div id="search-alert" class="container-fluid user-info search-masonry-bulk" style="display: none">
+
+		<div class="panel panel-default border-radius-none search-masonry">
+			<div class="panel-body username usbox">
+				
+				<div class="row">
+					<div class="col-xs-4">
+						<p class="xztitle">选择货品：</p>
+					</div>
+					<div class="col-xs-8">
+						<div class="flhh">
+							<select name="GoodsType" onchange="setGoodsType(this)">
+								<volist name="goodsType" id="vo">
+									<option value="{$vo.tid}">{$vo.type_name}</option>
+								</volist>
+							</select>
+							<select id="goods_sn" name="gid" onchange="setGoodsSn(this)">
+								<option value="">所有货号</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-4">
+						<p class="xztitle">钻石分数：</p>
+					</div>
+					<div class="col-xs-8 lancer">
+						<volist name="sanhuoWeights" id="vo">
+							<a href="javascript:;" name="Weight" ref="{$vo.weights_name}" class="btn btn-default navbar-btn selectList">{$vo.weights_name}</a>
+						</volist>  
+					</div> 
+				</div>
+
+				<div class="row">
+					<div class="col-xs-4">
+						<p class="xztitle">颜色：</p>
+					</div>
+					<div class="col-xs-8 lancer">
+						<volist name="sanhuoColor" id="vo">
+							<a href="javascript:;" name="Color" ref="{$vo.color_contain}" class="btn btn-default navbar-btn selectList">{$vo.color_name}</a>
+						</volist>  
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-4">
+						<p class="xztitle">净度：</p>
+					</div>
+					<div class="col-xs-8 lancer">
+						<volist name="sanhuoClarity" id="vo">
+							<a href="javascript:;" name="Clarity" ref="{$vo.clarity_id}" class="btn btn-default navbar-btn selectList">{$vo.clarity_name}</a>
+						</volist>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-4">
+						<p class="xztitle">切工：</p>
+					</div>
+					<div class="col-xs-8 lancer">
+						<volist name="sanhuoCut" id="vo">
+							<a href="javascript:;" name="Cut" ref="{$vo.cut_name}" class="btn btn-default navbar-btn selectList">{$vo.cut_name}</a>
+						</volist>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-4">
+						<p class="xztitle">所属：</p>
+					</div>
+					<div class="col-xs-8 lancer">
+						<volist name="locationList" id="vo">
+							<a href="javascript:;" name="Location" ref="{$vo}" class="btn btn-default navbar-btn selectList">{$vo}</a>
+						</volist>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-4">
+						<p class="xztitle">特价：</p>
+					</div>
+					<div class="col-xs-8 lancer">
+						<a href="javascript:;" name="bargain" ref="1" class="btn btn-default navbar-btn selectList">所有</a>
+						<a href="javascript:;" name="bargain" ref="2" class="btn btn-default navbar-btn selectList">特价</a>
+					</div>
+				</div>
+			
+				<div class="navbar-fixed-bottom area-bottom">
+	                <button type="button" id="confirm-search" class="btn btn-yellow">确认搜索</button>
+	                <button type="button" onclick="clearParameters();" class="btn">重置</button>
+	            </div>
+
+			</div>
+		</div>
+	</div>
+	<!-- Search alert END // -->
+</body>
+<script>
+    $(function(){
+        
+        /* 搜索切换 */
+        $("#search-right").click(function(){
+            if($(this).text() == "取消"){
+                $("#search-alert").fadeOut();
+                $("#maincont").fadeIn();
+                $(this).text("搜索");
+            }else{
+                $("#search-alert").fadeIn();
+                $("#maincont").fadeOut();
+                $(this).text("取消");
+            }
+        });
+		
+		/* 确认搜索 */
+		$("#confirm-search").click(function(){
+			$("#maincont").show();
+			$("#search-alert").hide();
+			$(".pull-right").text("搜索");
+		});
+
+
+		/* 数据导航滚动 */
+    	var top = $('.data-title thead').offset().top; //获取元素位置到顶部的距离
+
+    	//窗口改变大小动态调整大小
+		$(window).resize(function(){
+	    	var Width = $('#snahuo').width();
+	    	var left = $('#snahuo').offset().left;
+	    	$('.data-title thead').css({'position':'fixed', 'top': '50px', 'left': left, 'max-width': '1170px'}).width(Width);
+		});
+
+		//窗口滚动触发
+	    $(window).scroll(function() {
+	    	var Width = $('#snahuo').width();
+	    	var left = $('#snahuo').offset().left;
+	        if ($(window).scrollTop() >= top) {
+	            $('.data-title thead').css({'position':'fixed', 'top': '50px', 'left': left, 'max-width': '1170px'}).width(Width);
+	        } else {
+	            $('.data-title thead').removeAttr("style");
+	        }
+	    }).trigger("scroll");
+
+	    
+	    
+    });
+</script>
+</html>

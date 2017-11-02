@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>消息模板设置</title>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：消息模板设置</h3>
+        <ul>
+            <volist name="menuList[7]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+        <tr class="top">
+            <th width="3%">ID</th>
+            <th width="8%">模板名称</th>
+            <th width="6%">类型</th>
+            <th width="20%">短信消息模板</th>
+            <th width="25%">系统消息模板</th>
+            <th width="25%">邮件消息模板</th>
+            <th width="5%">操作</th>
+        </tr>
+        <volist name="list" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+            <td>{$vo.muban_id}</td>
+            <td>{$vo.muban_name}</td>
+            <td>
+                <if condition="$vo.type eq 1">发给用户</if>
+                <if condition="$vo.type eq 2">发给系统</if>
+            </td>
+            <td>{$vo.phone_content}</td>
+            <td>{$vo.websys_content}</td>
+            <td>{$vo.email_content}</td>
+            <td>
+            	<a href="{:U('Admin/System/msgMubanInfo?id='.$vo['muban_id'])}" >编辑</a>
+            </td>
+        </tr>
+        </volist>
+    </table>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>

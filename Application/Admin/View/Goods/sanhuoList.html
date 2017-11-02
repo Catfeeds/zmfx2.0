@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <title>散货数据</title>
+    <link rel="stylesheet" type="text/css" href="__CSS__/admin.css" />
+    <script>
+        // 表单全选
+        function selectcheckbox(form){
+            for(var i = 0;i < form.elements.length; i++){
+                var e = form.elements[i];
+                if(e.name != 'chkall' && e.disabled != true) e.checked = form.chkall.checked;
+            }
+        }
+    </script>
+    <if condition="in_array('admin/goods/syncshanhuo',$AuthList)">
+        <script>
+        //同步散伙数据
+        function syncshanhuo(){
+            if(confirm('确定同步供应商散伙数据吗?')){
+                $.ajax({
+                    url:"{:U('Admin/Goods/syncshanhuo')}",
+                    dataType:'html',
+                    success:function(){
+                       window.location.reload();
+                    }
+                });
+            }
+        }
+        </script>
+    </if>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：散货数据</h3>
+        <ul>
+        	<if condition="in_array('admin/goods/sanhuoinfo',$AuthList)"><li><a href="{:U('Admin/Goods/sanhuoInfo')}">添加散货</a></li></if>
+        	<if condition="in_array('admin/goods/syncshanhuo',$AuthList)"><li><a href="javascript:void(0);" onclick="syncshanhuo();">同步供应商散货</a></li></if>
+            <if condition="in_array('admin/excel/importsanhuo',$AuthList)"><li><a href="{:U('Admin/Excel/importSanhuo')}">导入散货</a></li></if>
+        </ul>
+    </div>
+    <div class="filter">
+    <form action="{:U('Admin/Goods/sanhuoList')}" method="get">
+        <div class="fl">货号：</div>
+        <input class="input" type="text" name="goods_sn" value="{$goods_sn}"/>
+        <div class="fl">散货类型：</div>
+        <select name="tid" class="fl">
+        	<volist name="sanhuoTypeList" id="vo">
+            <option value="{$vo.tid}"<eq name="tid" value="$vo['tid']">selected</eq>>{$vo.type_name}</option>
+			</volist>
+        </select>
+        <div class="fl">&nbsp;</div>
+        <input class="button" type="submit" value="查询" />
+    </form>
+    </div>
+	<form action="{:U('Admin/Goods/sanhuoexport')}" method="post">
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+		<th style='width:50px;'>全选:<input onClick="selectcheckbox(this.form)" type="checkbox" name="chkall" id="chkall" value="All" /></th>
+            <th>类型</th>
+            <th>货号</th>
+            <th>产品所属地</th>
+            <th>净度</th>
+            <th>颜色</th>
+            <th>分数</th>
+            <th>切工</th>
+            <th>销售价格</th>
+<if condition=" in_array('admin/costprofit/index',$AuthList) ">        
+            <th>采购价格</th>
+</if>
+            
+            <th>库存重量</th>
+            <if condition="$tid">
+            <th>现货库存</th>
+            </if>
+            <th>录入人</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        <volist name="sanhuoList" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+		<td><input type="checkbox" name="uids[]" value="{$vo.goods_id}" /></td>
+            <td>{$vo.type_name}</td>
+            <td>{$vo.goods_sn}</td>
+            <td>{$vo.location}</td>
+            <td>{$vo.clarity}</td>
+            <td>{$vo.color}</td>
+            <td>{$vo.weights}</td>
+            <td>{$vo.cut}</td>
+            <td>{$vo.xiaoshou_price}</td>
+ <if condition=" in_array('admin/costprofit/index',$AuthList) ">        
+            <td>{$vo.caigou_price}</td>
+ </if>
+            <td>{$vo.goods_weight}</td>
+            <if condition="$tid">
+            <td>{$vo.c_goods_weight}</td>
+            </if>
+            <td>{$vo.nickname}</td>
+            <td>
+            	<eq name="vo.goods_status" value="1">有货</eq>
+                <eq name="vo.goods_status" value="0">已售完</eq>
+            </td>
+            <td>
+            	<if condition=" in_array('admin/goods/sanhuoinfo',$AuthList) ">
+                    <a href="{:U('Admin/Goods/sanhuoInfo?goods_id='.$vo['goods_id'])}">明细</a>
+                </if>
+                <if condition="in_array('admin/goods/sanhuodel',$AuthList) && $vo['agent_id'] eq $agent_id">
+                    <a href="{:U('Admin/Goods/sanhuoDel?goods_id='.$vo['goods_id'])}" id="isDel">删除</a>
+                </if>
+            </td>
+        </tr>
+        </volist> 
+    </table>
+	<!--<div class="tbl_buttom"><input type="submit" name="export" value="导出数据" /></div>-->
+	</form>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>

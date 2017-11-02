@@ -1,0 +1,45 @@
+<meta charset="utf-8">
+<title>前台模块设置</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" />
+
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：前台模块设置</h3>
+    </div>
+    <form action="{:U('Admin/System/templateModleSys?template_id='.$template_id)}" method="post">
+        <div style="padding:10px;">
+            <div class="info">
+                <div class="title">模版名称：</div>
+                <div>{$template_name}</div>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">权限：</div>
+                <div style="float:left; width:80%;">
+                    {$html}
+                </div>
+                <div class="clear"></div>
+            </div>
+            <br />
+            <br />
+            <br />
+        </div>
+    </form>
+</div>
+<script>
+    //弹出一个iframe层
+    $('.parentIframe').on('click', function(){
+       var layout_item_id = $(this).attr('layout_item_id');
+       var id =  $(this).attr('id');
+        layer.open({
+            type: 2,
+            title: '编辑页面模块',
+            closeBtn: true,
+            maxmin: true,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['500px' , '500px'],
+            content: "{:U('Admin/System/templateModuleEditor')}?layout_item_id="+layout_item_id+'&id='+id
+        });
+    });
+
+</script>

@@ -1,0 +1,422 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<div id="UserInfo">
+	<div class="navigation"><a href="{:U('/Home/Index/index')}">首页 </a>&gt;<a href="{:U('/Home/User/index')}"> 用户中心 </a>&gt; 用户中心首页</div>
+	<include file=".:Base:User:menu" />
+   	<div id="user_right">
+  <div class="orderInfo gou_wrap">
+  	<h3 class="order_sn"><span>订单号：{$order.order_sn}</span></h3>
+  	<if condition="$product">
+  	<h3 class="mt10">珠宝产品</h3>
+  	<table border="1" class="user_order_product">
+  		<tr class="top"><th>商品</th><th width="15%">款号</th><th width="15%">本店价</th><th width="8%">购买数量</th><th width="15%">小计</th></tr>
+  		<volist name="product" id="vo">
+  		<tr>
+  			<td>
+  				<div class="tbl_cart_left">
+				<a href="{:U('/Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}" target="_blank">
+					<if condition="$vo['goods']['thumb']">
+					<img src="{$vo.goods.thumb}" />
+					<else />
+					<img src="__PUBLIC__/Uploads/product/nopic.png" />
+					</if>
+				</a></div>
+				<div class="tbl_cart_right"><a href="{:U('/Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}" target="_blank">{$vo.goods.goods_name}</a>
+					<br>
+          <if condition="$vo['goods_type'] eq 16">
+            {$vo.goods.associateInfo.material_name}
+            金重：{$vo.goods.associateInfo.weights_name}g 主石：{$vo.goods.luozuanInfo.weights_name}{$vo.goods.luozuanInfo.ct_mm}
+            {$vo.goods.luozuanInfo.shape_name} {$vo.goods.deputystone_name} 
+            <if condition="dingzhi_szzmzb_jewelry_name($vo['goods']['jewelry_name'])">
+              {$vo['goods']['jewelry_name']|dingzhi_szzmzb_jewelry_name}：{$vo.goods.hand}
+            </if>
+            
+            刻字：{$vo.goods.word}
+          <else/>
+            <if condition="$vo['goods']['associateInfo']">
+              {$vo.goods.associateInfo.material_name} 金重：{$vo.goods.associateInfo.weights_name}g 主石：{$vo.goods.luozuanInfo.weights_name}CT
+                    {$vo.goods.luozuanInfo.shape_name}  {$vo.goods.deputystone_name}  <if condition="$vo['goods']['is_show_hand'] eq 1">手寸：{$vo.goods.hand} </if>刻字：{$vo.goods.word}
+              <if condition="$vo['goods']['sd_images']">
+                刻字个性符号：<img src="{$vo.goods.sd_images} " />
+              </if>
+            <else />
+              {$vo.goods.attrs}
+            </if>
+          </if>
+					
+				</div>
+  			</td>
+  			<td>{$vo.goods.goods_sn}</td>
+  			<td>
+				<in name="vo['activity_status']" value="0,1">
+					{$vo.goods.activity_price}
+				<else/>
+					{$vo.goods.goods_price}
+				</in>
+			</td>
+  			<td>{$vo.product_number}</td>
+  			<td>{$vo.product_price}</td>
+  		</tr>
+  		</volist>
+  		<tr class="bottom"><td colspan="4" align="right" class="tdRight">合计</td><td><label class="lblMoney">{$dataList.product_total_amount}</label> 元</td></tr>
+  	</table>
+  		<if condition="$periods['product']">
+  		<div class="periods">
+  			<dl>
+  				<dt>做{$periods.product.period_num}期支付 应支付总金额￥{$dataList.product_total_amount} 逾期利率：{$periods.product.period_overdue}‰ </dt>
+  				<volist name="receivables['product']" id="vo">
+  				<dd>第{$vo.period_current}期 {$vo.period_day}天内 应支付:￥{$vo.receivables_price}元 已支付：{$vo.payment_price}</dd>
+  				</volist>
+  			</dl>
+  		</div>
+  		<elseif condition="$order['order_status'] gt 0" />
+  		<div class="periods">
+  			<dl>
+  				<dd>全款支付 应支付总金额￥{$dataList.product_total_amount} </dd>
+  			</dl>
+  		</div>
+  		</if>
+  	</if>
+  	<if condition="$zmProduct neq null && $zmProduct neq ''">
+  	<h3 class="mt10">定制产品详情</h3>
+  	<table border="1" class="user_order_product">
+  		<tr class="top"><th>商品</th><th>款号</th><th>本店价</th><th>购买数量</th><th>小计</th></tr>
+  		<volist name="zmProduct" id="vo">
+  		<tr>
+  			<td>
+  				<div class="tbl_cart_left">
+				<a href="{:U('/Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}" target="_blank">
+					<if condition="$vo['goods']['thumb']">
+					<img src="{$vo.goods.thumb}" />
+					<else />
+					<img src="__PUBLIC__/Uploads/product/nopic.png" />
+					</if>
+				</a></div>
+				<div class="tbl_cart_right" style="text-align:left;"><a href="{:U('/Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}" target="_blank">{$vo.goods.goods_name}</a>
+				<br>
+				<if condition="$vo['goods']['associateInfo']">
+					{$vo.goods.associateInfo.material_name}
+					主石：{$vo.goods.luozuanInfo.weights_name} CT {$vo.goods.luozuanInfo.shape_name} {$vo.goods.deputystone_name}
+					<if condition="$vo['goods']['hand']">
+						手寸：{$vo.goods.hand} 
+					</if>
+					<br>
+					<if condition="$vo['goods']['word']">
+						刻字：{$vo.goods.word}
+					</if>
+					<if condition="$vo['goods']['sd_images']">
+						刻字个性符号：<img src="{$vo.goods.sd_images} " />
+					</if>
+					<if condition="$vo['goods']['hand1']">
+						手寸1：{$vo.goods.hand1} 
+					</if>
+					<br>
+					<if condition="$vo['goods']['word1']">
+						刻字1：{$vo.goods.word1}
+					</if>
+					<if condition="$vo['goods']['sd_images1']">
+						刻字个性符号1：<img src="{$vo.goods.sd_images1} " />
+					</if>
+				 <elseif condition="$vo['specification']" />
+				 	{$vo.specification}
+				 </if>
+				 </div>
+  			</td>
+			<if condition="$vo['goods']['associateInfo']"><td width="80"><img src="{$vo.goods.sd_images}" /></td></if>
+  			<td>{$vo.goods.goods_sn}</td>
+  			<td>{$vo.goods.goods_price}</td>
+  			<td>{$vo.product_number}</td>
+  			<td>{$vo.product_price}</td>
+  		</tr>
+  		</volist>
+  		<tr class="bottom"><td colspan="2" class="tdLeft">定制货品以付定金日实际金价为准</td><td colspan="2"  align="right" class="tdRight">合计</td><td><label class="lblMoney">{$dataList.zmProduct_total_amount}</label> 元</td></tr>
+  	</table>
+  		<if condition="$periods['zmProduct']">
+  		<div class="periods">
+  			<dl>
+  				<dt>做{$periods.zmProduct.period_num}期支付 应支付总金额￥{$dataList.zmProduct_total_amount} 逾期利率：{$periods.zmProduct.period_overdue}‰ </dt>
+  				<volist name="receivables['zmProduct']" id="vo">
+  				<dd>第{$vo.period_current}期 {$vo.period_day}天内 应支付:￥{$vo.receivables_price}元 已支付：{$vo.payment_price}</dd>
+  				</volist>
+  			</dl>
+  		</div>
+  		<elseif condition="$order['order_status'] gt 0" />
+  		<div class="periods">
+  			<dl>
+  				<dd>全款支付 应支付总金额￥{$dataList.zmProduct_total_amount} </dd>
+  			</dl>
+  		</div>
+  		</if>
+  	</if>
+  	<if condition="$sanhuo neq null && $sanhuo neq ''">
+  	<h3>散货列表</h3>
+  	<table border="1" class="user_order_sanhuo">
+  		<tr class="title"><th>去向</th><th>分类</th><th>货号</th><th>重量（CT）</th><th>颜色</th><th>净度</th><th>切工</th><th>每卡单价</th><th>小计</th></tr>
+  		<volist name="sanhuo" id="vo">
+  			<tr><td>{$vo.goods.location}</td>
+  				<td>{$vo.goods.type_name}</td>
+  				<td>{$vo.goods.goods_sn}</td>
+  				<td>{$vo.sanhuo_number}</td>
+  				<td>{$vo.goods.color}</td>
+  				<td>{$vo.goods.clarity}</td>
+  				<td>{$vo.goods.cut}</td>
+  				<td>{$vo.goods.goods_price}</td>
+  				<td>{$vo.sanhuo_price}</td>
+  			</tr>
+  		</volist>
+  		<tr class="bottom"><td colspan="8" align="right" class="tdRight">合计</td><td><label class="lblMoney">{$dataList.sanhuo_total_amount}</label> 元</td></tr>
+  	</table>
+  		<if condition="$periods['sanhuo']">
+  		<div class="periods">
+  			<dl>
+  				<dt>做{$periods.sanhuo.period_num}期支付 应支付总金额￥{$dataList.sanhuo_total_amount} 逾期利率：{$periods.sanhuo.period_overdue}‰ </dt>
+  				<volist name="receivables['sanhuo']" id="vo">
+  				<dd>第{$vo.period_current}期 {$vo.period_day}天内 应支付:￥{$vo.receivables_price}元 已支付：{$vo.payment_price}</dd>
+  				</volist>
+  			</dl>
+  		</div>
+  		<elseif condition="$order['order_status'] gt 0" />
+  			<div class="periods">
+  				<dl>
+  					<dd>全款支付 应支付总金额￥{$dataList.sanhuo_total_amount} </dd>
+  				</dl>
+  			</div>
+  			</if>
+  		</if>
+  	</if>
+  	<if condition="$diamond neq null || $diamond neq ''">
+  	<h3 class="mt10">证书货列表</h3>
+  	<table border="1" class="user_order_diamond">
+  		<tr><th>去向</th><th>形状</th><th>编号</th><th>证书编号</th><th>钻重</th><th>颜色</th><th>净度</th><th>切工</th><th>国际报价</th><th>每粒单价</th><th>小计</th></tr>
+  		<volist name="diamond" id="vo">
+  		<if condition="$vo.goods_type eq 1">
+  		<tr><td>{$vo.goods.location}</td>
+  			<td><img src="__PUBLIC__/images/diamondShape/{$vo.goods.shape}.gif" /></td>
+  			<td>
+				<eq name="vo['goods']['luozuan_type']" value="1">
+					彩钻
+				</eq>
+				{$vo.goods.goods_name}
+			</td>
+  			<td>{$vo.goods.certificate_type}_{$vo.goods.certificate_number}</td>
+  			<td>{$vo.goods.weight}</td>
+  			<td>{$vo.goods.color}</td>
+  			<td>{$vo.goods.clarity}</td>
+			<eq name="vo['goods']['luozuan_type']" value="1">
+					<td></td>
+					<td></td>
+			<else/>
+				<td>{$vo.goods.cut}</td>
+				<td>{$vo.goods.dia_global_price}</td>
+			</eq>
+  			<td>{$vo.diamond_price}</td>
+  			<td>{$vo.diamond_price}</td>
+  		</tr>
+  		</if>
+  		</volist>
+  		<tr class="bottom"><td colspan="10" align="right" class="tdRight">合计</td><td><label class="lblMoney">{$dataList.diamond_total_amount}</label> 元</td></tr>
+  	</table>
+
+  	<if condition="$periods['luozuan']">
+  		<div class="periods">
+  			<dl>
+  				<dt>做{$periods.luozuan.period_num}期支付 应支付总金额￥{$dataList.diamond_total_amount} 逾期利率：{$periods.luozuan.period_overdue}‰ </dt>
+  				<volist name="receivables['luozuan']" id="vo">
+  				<dd>第{$vo.period_current}期 {$vo.period_day}天内 应支付:￥{$vo.receivables_price}元 已支付：{$vo.payment_price}</dd>
+  				</volist>
+  			</dl>
+  		</div>
+  	<elseif condition="$order['order_status'] gt 0" />
+  		<div class="periods">
+  			<dl>
+  				<dd>全款支付 应支付总金额￥{$dataList.diamond_total_amount} </dd>
+  			</dl>
+  		</div>
+  	</if>
+  	</if>
+  	<if condition="$total_amount neq 0"><table  class="mt10 order_total_amount"><tr class="bottom"><td class="tdRight">总金额：<label class="lblMoney">{$total_amount}</label> 元</td></tr></table></if>
+  	<h3 class="mt10">订单支付详情</h3>
+  	<table border="1">
+  		<tr><th>订单编号</th><th>订单总金额</th><th>支付金额</th><th>未支付金额</th><th>支付时间</th><th>支付备注</th></tr>
+  		<if condition="$payList != null && $payList != ''">
+  			<volist name="payList" id="vo">
+  			<tr>
+  			<td>{$order.order_sn}</td>
+  			<td>{$order.order_price_up}</td>
+  			<td>{$vo.payment_price}</td>
+  			<td>{$vo.no_payment}</td>
+  			<td>{$vo.create_time|date="Y-m-d",###}</td>
+  			<td>{$vo.payment_note}</td>
+  			</tr>
+  			</volist>
+  		<else />
+  			<tr><td colspan="6">暂无支付信息</td></tr>
+  		</if>
+  	</table>
+  	<if condition="$orderReceivables">
+  		<h3 class="mt10">订单补差价</h3>
+  	 	<table border="1">
+  		<tr><th>应支付金额</th><th>已支付金额</th><th>创建时间</th><th>支付时间</th><th>备注</th></tr>
+  		<volist name="orderReceivables" id="vo">
+  		<tr>
+  			<td>{$vo.receivables_price} 元</td>
+  			<td>{$vo.payment_price}</td>
+  			<td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+  			<td><if condition="$vo['payment_time'] eq 0">未支付<else/>{$vo.payment_time|date="Y-m-d H:i:s",###}</if></td>
+  			<td>{$vo.receivables_note}</td>
+  		</volist>
+  		</table>
+  	</if>
+
+  	<if condition="$orderDeliverys">
+  	<h3 class="mt10">发货单列表</h3>
+  	<table border="1">
+  		<tr class="top"><th>发货单ID</th><th>货品信息</th><th width="15%">发货时间</th><th width="10%">状态</th><th width="10%">操作</th></tr>
+  		<volist name="orderDeliverys" id="vo">
+  		<tr>
+  			<td>{$vo.delivery_id}</td>
+  			<td class="tdLeft" style="padding-left:10px;"><volist name="vo['deliveryGoods']" id="v">
+  				{$v.goods_name_str} 数量：{$v.goods_number} 金额：{$v.goods_price}<br>
+  				</volist>
+  			</td>
+  			<td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+  		<td>{$vo.confirm_type_txt}</td>
+  		<td><if condition="$vo['confirm_type'] eq 0 && $vo['confirm'] neq 1"><a href="javascript:void(0)" onclick="confirmReceiptGoods({$vo['delivery_id']},{$vo['order_id']})">确认收货</a></if></td>
+  		</tr>
+  		</volist>
+  	</table>
+  	</if>
+  	<if condition="$returnOrders">
+  	<h3 class="mt10">退货单列表</h3>
+  	<table border="1">
+  		<tr class="top"><th>发货单ID</th><th>产品名称</th><th width="20%">产品编号</th><th width="18%">退货时间</th><th width="10%">退货数量</th><th width="15%">退货金额</th></tr>
+  		<volist name="returnOrders" id="vo">
+  		<tr>
+  			<td>{$vo.delivery_id}</td>
+  			<td>{$vo.attrs.goods_name}</td>
+  			<td>{$vo.certificate_no}</td>
+  			<td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+  			<td>{$vo.goods_number}</td>
+  			<td>{$vo.goods_price}</td>
+  		</tr>
+  		</volist>
+  	</table>
+  	</if>
+  	<if condition="$returnFunds">
+  	<h3 class="mt10">退款单列表</h3>
+  	<table border="1">
+  		<tr class="top"><th>退款账号</th><th>收款账号</th><th width="20%">退款金额</th><th width="18%">退款时间</th><th width="10%">退款备注</th></tr>
+  		<volist name="returnFunds" id="vo">
+  		<tr>
+  			<td>{$vo.refund_user}</td>
+  			<td>{$vo.receivables_user}</td>
+  			<td>{$vo.refund_price}</td>
+  			<td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+  			<td>{$vo.refund_note}</td>
+  		</tr>
+  		</volist>
+  	</table>
+  	</if>
+
+  	<h3 class="payment mt10"><span>现金或汇款</span></h3>
+  	<p>{$payment_config}</p>
+
+  </div>
+</div>
+</div>
+
+<script>
+function showHistory(order_id,goods_type){
+	$.post("/Home/User/getOrdersByOrderId",{Action:"POST",order_id:order_id,goods_type:goods_type},function(data){
+		if(data.status == 1){
+			$("#orderHistory_"+goods_type).show();
+			html = "";
+			html_update = "";
+			if(goods_type == 3){ //裸钻
+				data.data.forEach(function(e){
+					html += "<tr>";
+					html += "<td>"+e.goods.location+"</td>";
+					html += "<td>"+e.type_name+"</td>";
+					html += "<td>"+e.goods.goods_sn+"</td>";
+					html += "<td>"+e.goods_number+"</td>";
+					html += "<td>"+e.goods.color+"</td>";
+					html += "<td>"+e.goods.clarity+"</td>";
+					html += "<td>"+e.goods.cut+"</td>";
+					html += "<td>"+e.goods_price_a+"</td>";
+					html += "<td>"+e.price+"</td>";
+					html += "</tr>";
+				});
+				data.data.forEach(function(e){
+					if(e.goods_number_up == 0){
+						html_update += "<tr class='gray'>";
+					}else{
+						html_update += "<tr>";
+					}
+					html_update += "<td>"+e.goods.location+"</td>";
+					html_update += "<td>"+e.type_name+"</td>";
+					html_update += "<td>"+e.goods.goods_sn+"</td>";
+					html_update += "<td class='fRed'>"+e.goods_number_up+"</td>";
+					html_update += "<td>"+e.goods.color+"</td>";
+					html_update += "<td>"+e.goods.clarity+"</td>";
+					html_update += "<td>"+e.goods.cut+"</td>";
+					html_update += "<td class='fRed'>"+e.goods.goods_price+"</td>";
+					html_update += "<td class='fRed'>"+e.price_update+"</td>";
+					html_update += "</tr>";
+				});
+				html += "<tr><td colspan='9' class='tdRight fRed'><strong>总计："+data.sanhuo.total_amount+" 元</td></tr>";
+				html_update += "<tr><td colspan='9' class='tdRight fRed'><strong>总计："+data.sanhuo.total_amount_update+" 元</td></tr>";
+			}else if(goods_type == 1){
+				data.data.forEach(function(e){
+				   html += "<tr>";
+				   html += "<td>"+e.goods.location;
+				   html += "<td><img src='__IMG__/"+e.goods.shape+".gif'</td>";
+				   html += "<td>"+e.goods.goods_name+"</td>";
+				   html += "<td>"+e.goods.certificate_number+"</td>";
+				   html += "<td>"+e.goods.weight+"</td>";
+				   html += "<td>"+e.goods.color+"</td>";
+				   html += "<td>"+e.goods.clarity+"</td>";
+				   html += "<td>"+e.goods.cut+"</td>";
+				   html += "<td>"+e.goods.dia_global_price+"</td>";
+				   html += "<td>"+e.goods.dia_discount+"</td>";
+				   html += "<td>"+e.goods.price+"</td>";
+				});
+				data.data.forEach(function(e){
+				   html_update += "<tr>";
+				   html_update += "<td>"+e.goods.location;
+				   html_update += "<td><img src='__IMG__/"+e.goods.shape+".gif'</td>";
+				   html_update += "<td>"+e.goods.goods_name+"</td>";
+				   html_update += "<td>"+e.goods.certificate_number+"</td>";
+				   html_update += "<td>"+e.goods.weight+"</td>";
+				   html_update += "<td>"+e.goods.color+"</td>";
+				   html_update += "<td>"+e.goods.clarity+"</td>";
+				   html_update += "<td>"+e.goods.cut+"</td>";
+				   html_update += "<td>"+e.goods.dia_global_price+"</td>";
+				   html_update += "<td>"+e.goods.dia_discount+"</td>";
+				   html_update += "<td>"+e.goods.price+"</td>";
+				});
+				html += "<tr><td colspan='11' class='tdRight fRed'><strong>总计："+data.diamond.total_amount+" 元</td></tr>";
+				html_update += "<tr><td colspan='11' class='tdRight fRed'><strong>总计："+data.diamond.total_amount_update+" 元</td></tr>";
+			}
+			$("#history_data_"+goods_type).html(html);
+			$("#history_data_update_"+goods_type).html(html_update);
+		}
+	});
+}
+
+function closeHistory(goods_type){
+	$("#orderHistory_"+goods_type).hide();
+}
+
+function confirmReceiptGoods(deliveryId,order_id){
+	$.post("/Home/User/confirmReceiptGoods",{Action:"POST",order_id:order_id,deliveryId:deliveryId},function(data){
+		alert(data.msg);
+		window.location.href="/Home/User/orderInfo/order_id/"+order_id;
+	});
+}
+</script>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

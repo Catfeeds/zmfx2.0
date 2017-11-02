@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <block name="my_meta"><!--继承此板框给添加额外的meta--></block>
+        <meta name="description" content="<block name="desc"></block>">
+        <title>{$L['main_title']}-<block name="title"></block></title>
+        <link rel="shortcut icon" href="#" type="image/png">
+        <block name="css">
+            <!--公共-->
+            <link href="__CSS__/style.css" rel="stylesheet">
+            <link href="__CSS__/style-responsive.css" rel="stylesheet">
+            <link href="__CSS__/date.css" rel="stylesheet">
+            <script src="__JS__/underscore/underscore-min.js"></script>
+            <script src="__JS__/jquery-1.10.2.min.js"></script>
+            
+            <script src="__PUBLIC__/common.js"></script>
+			<if condition="LANG_SET eq 'en-us' ">
+			     <link href="__CSS__/en-us.css" rel="stylesheet">           
+			</if>
+            <!--icheck-->
+        </block>
+        <block name="my_css"><!--继承此板框给添加额外的css代码--></block>
+        
+    </head>
+
+    <body class="<block name="body_class">sticky-header</block>">
+        <block name="zi">
+            <script>
+                //配合获取子页面iframe框架的高度
+                $(window.parent.document).find("#rightcont").load(function(){
+                    var main = $(window.parent.document).find("#rightcont");
+                    var thisheight = $(document).height()+30;
+                    main.height(thisheight);
+                });
+
+               
+                //$('html').niceScroll({styler:"fb",cursorcolor:"#65cea7", cursorwidth: '6', cursorborderradius: '0px', background: '#424f63', spacebarenabled:false, cursorborder: '0',  zindex: '1000'});
+               
+            </script>
+        </block>
+        <block name="body"><!--继承此板框给添加body--></block>
+        <block name="js">
+
+            <script src="__JS__/jquery-ui-1.9.2.custom.min.js"></script>
+            <script src="__JS__/jquery-migrate-1.2.1.min.js"></script>
+            <script src="__JS__/bootstrap.min.js"></script>
+            <script src="__JS__/modernizr.min.js"></script>
+            <script src="__JS__/jquery.nicescroll.js"></script>
+            <!--饼图-->
+            <script src="__JS__/easypiechart/jquery.easypiechart.js"></script>
+            <script src="__JS__/easypiechart/easypiechart-init.js"></script>
+            <!--icheck -->
+
+            <!-- 圆柱图-->
+            <script src="__JS__/flot-chart/jquery.flot.js"></script>
+            <script src="__JS__/flot-chart/jquery.flot.tooltip.js"></script>
+            <script src="__JS__/flot-chart/jquery.flot.resize.js"></script>
+
+            <!--公共的-->
+            <script src="__JS__/scripts.js"></script>
+			<script src="__JS__/layer/layer.js"></script>
+			
+			<script id="yzScript" src="__JS__/yz.js"  data="{$nowlang}"></script>
+
+            <script id="pageScript"    src="__PUBLIC__/page.js"       data="{$nowlang}"></script>
+            <script id="laydateScript" src="__JS__/layer/laydate.js"  data="{$nowlang}"></script>
+           
+
+
+        </block>
+        <block name="my_js">
+            <!--继承此板框给添加额外的js代码-->
+        </block>
+    </body>
+</html>
+

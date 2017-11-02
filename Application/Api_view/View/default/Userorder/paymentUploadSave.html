@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>凭证上传</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/user.css">
+	<link rel="stylesheet" href="__CSS__/cart.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script src="__JS__/public.js"></script>
+</head>
+<body>
+
+	<if condition="$result['status'] eq 100">
+		<!-- 上传成功 -->
+	    <div class="corder-succeed upload-success">
+	      <section>
+	        <div class="succeed-box" style="border: none;">
+	          <div class="succeed-head">
+	            <div class="succeed-img">
+	                <span class="pull-left" style="margin-right: 1em;">
+	              		<img src="__IMG__/upload_success.png" width="50" height="50" alt="">
+	                </span>
+	                <span class="pull-left">
+	                    <h3>凭证上传成功！</h3>
+	                 	<h4>请等待财务审核</h4>
+	                 	<h6>如需帮助请联系客服 <a href="tel:400-8008888">{:C('site_contact')}</a></h6>
+	                 	<p><button type="button" class="btn btn-default btn-zdl" onclick="ai_mutual('52');">知道了</button></p>
+	                </span>
+
+	              	<div class="clearfix"></div>
+	            </div>
+	          </div>
+	        </div>
+	      </section>
+	    </div>
+	    <!-- 上传成功 end -->
+	<else /> 
+	    <!-- 上传失败 -->
+	    <div class="corder-succeed upload-success upload-failed">
+	      <section>
+	        <div class="succeed-box" style="border: none;">
+	          <div class="succeed-head">
+	            <div class="succeed-img">
+	              <span class="pull-left" style="margin-right: 1em;">
+	                <img src="__IMG__/upload_failed.png" width="50" height="50" alt="">
+	              </span>
+	              <span class="pull-left">
+	                <h3>凭证上传失败！</h3>
+		            <p><button type="button" onclick="ai_mutual('5211,{$order_id}');" class="btn btn-default btn-zdl">重新上传</button></p>
+	              </span>
+	              <div class="clearfix"></div>
+	            </div>
+	          </div>
+	        </div>
+	      </section>
+	    </div>
+	    <!-- 上传失败 end -->
+    </if>
+</body>
+</html>
+
+
+
+
+
+

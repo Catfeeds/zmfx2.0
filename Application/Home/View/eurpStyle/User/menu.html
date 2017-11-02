@@ -1,0 +1,11 @@
+<div id="user_left">  
+	<div class="menuList">
+		<ul><li <eq name="active" value="index">class="active"</eq>><a href="{:U('/Home/User/index')}">用户中心首页</a></li>
+			<li <eq name="active" value="orderList">class="active"</eq>><a href="{:U('/Home/User/orderList')}">我的订单</a></li>
+			<li <eq name="active" value="userinfo">class="active"</eq>><a href="{:U('/Home/User/userInfo')}">用户信息</a></li>
+			<li <eq name="active" value="shopAddress">class="active"</eq>><a href="{:U('/Home/User/shopAddress')}">收货地址</a></li>
+			<li <eq name="active" value="userMessages">class="active"</eq>><a href="{:U('/Home/User/userMessages')}">消息中心</a></li>
+			<if condition="$uType neq 3"><li <eq name="active" value="traderList">class="active"</eq>><a href="{:U('/Home/User/traderList')}">分销商申请记录</a></li></if>
+		</ul>
+	</div>
+</div>

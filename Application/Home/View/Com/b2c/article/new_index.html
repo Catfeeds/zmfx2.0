@@ -1,0 +1,35 @@
+<eq name="positionList[4]['is_show']" value="1">
+<!-- 新闻动态 -->
+<div class="new">
+    <div class="container">
+        <div class="row">
+            <if condition="$article_data">
+            <volist name="article_data" id="vo">
+            <div class="col-xs-12 col-md-6">
+                <div class="con-md-12">
+                    <div class="new-header">
+                        <h3>{$vo['catname']}<small class="pull-right"><a href="{:U('Article/index',array('cat_id'=>$vo['cid']))}" target="_blank">更多》</a></small></h3>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-5 col-md-5">
+                <if condition="$vo['articleList'][0]['thumb']">
+                <img src="__PUBLIC__/Uploads/article/{$vo['articleList'][0]['thumb']}" alt="">
+                <else/>
+                <img src="__IMG__/noimage.jpg">
+                </if>
+                </div>
+                <div class="col-xs-12 col-sm-7 col-md-7">
+                    <ul>
+                        <volist name="vo['articleList']" id="v">
+                            <li><a href="{:U('Home/Article/detail?aid='.$v['aid'])}" target="_blank">{$v['title']|msubstr=0,18,'utf-8'}</a></li>
+                        </volist>
+                    </ul>
+                </div>
+            </div>
+            </volist>
+            </if>
+        </div>
+    </div>
+</div>
+<!-- 新闻动态 end //-->
+</eq>

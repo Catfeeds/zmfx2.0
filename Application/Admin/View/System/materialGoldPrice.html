@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>设置金价</title>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：设置金价</h3>
+        <ul>
+            <volist name="menuList[7]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+    </div>
+	<form action"{:U('Admin/System/systemSet?parent_type='.$parent_type)}" method="post" enctype="multipart/form-data">
+    	<div style="padding:10px 50px;">
+        	<volist name="materialList" id="vo">
+        	<div class="info">
+                <div class="title">{$vo.material_name}:</div>
+                <input name="material_id[{$vo.material_id}]" type="text" value="{$vo.gold_price}" />
+            </div>
+        	</volist>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="修改金价">
+                <input type="reset" class="button fl ml10" value="重置">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

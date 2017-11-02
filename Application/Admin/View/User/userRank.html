@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>客户等级列表</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" />
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：客户等级</h3>
+        <ul>
+            <li class=""><a href="{:U('Admin/User/userRankInfo')}">添加客户等级</a></li>
+        </ul>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+        <tr class="top">
+            <th>客户组id</th>
+            <th>客户组名称</th>
+            <th>状态</th>
+            <th>备注</th>
+            <th>操作</th>
+        </tr>
+        <volist name="userRankList" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+            <td>{$vo.rid}</td>
+            <td>{$vo.name}</td>
+            <td>{$vo['status']?'正常':'关闭'}</td>
+            <td>{$vo.note}</td>
+            <td>
+                <a href="{:U('Admin/User/userRankInfo?rid='.$vo['rid'])}" >编辑</a>
+                <a href="{:U('Admin/User/deleteUserRank?rid='.$vo['rid'])}" id="isDel" >删除</a>
+            </td>
+        </tr>
+        </volist>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,205 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>品牌系列</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-swiper.css" /> <!-- tab -->
+    <link rel="stylesheet" type="text/css" href="../css/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="../css/style-layer.css" /> <!-- 提示 -->
+
+    <script src="../js/jquery-1.12.3.js"></script>
+    <script src="../js/swiper.min.js"></script> <!-- tab -->
+    <script src="../js/mobileSelect.js"></script> <!-- ios下弹式菜单选择 -->
+    <script src="../js/layer.js"></script> <!-- 提示 -->
+</head>
+
+
+<body>
+    <section class="brand-series">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="../img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>品牌系列 </h2>
+                <!-- new navbar menu -->
+<div class="web-top-right topbar-right">
+    <img src="../img/topbar_right_more_03.png" class="topbar-more" alt="">
+</div>
+<div class="topbar-menu" style="display: none;">
+    <div class="cont">
+        <ul>
+            <li>
+                <a href="购物车.html">
+                    <img src="../img/topbar_cart.png" alt=""> 购物车
+                </a>
+            </li>
+            <li>
+                <a href="#" class="search-icon">
+                    <img src="../img/topbar_search.png" alt=""> 搜索
+                </a>
+            </li>
+            <li>
+                <a href="index.html">
+                    <img src="../img/topbar_home.png" alt=""> 首页
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<script>
+    $(function(){
+        $('.topbar-more').bind('click', function(){
+            $('.topbar-menu').toggle();
+        });
+    });
+</script>
+<!-- new navbar menu end -->
+
+            </div>
+        </header>
+
+        <!-- content -->
+        <section class="wrapper">
+
+            <div class="classify-tab">
+                <a href="产品分类.html">产品分类</a>
+                <a href="品牌系列.html" class="active">品牌系列</a>
+            </div>
+
+            <div class="brand-list">
+                <ul>
+                    <li class="ripple">
+                        <a href="品牌系列-列表.html">
+                            <img src="../img/brand_01.png" alt="">
+                            <p class="brand-title">邂逅系列</p>
+                        </a>
+                    </li>
+                    <li class="ripple">
+                        <a href="品牌系列-列表.html">
+                            <img src="../img/brand_02.png" alt="">
+                            <p class="brand-title">璀璨系列</p>
+                        </a>
+                    </li>
+                    <li class="ripple">
+                        <a href="品牌系列-列表.html">
+                            <img src="../img/brand_01.png" alt="">
+                            <p class="brand-title">邂逅系列</p>
+                        </a>
+                    </li>
+                    <li class="ripple">
+                        <a href="品牌系列-列表.html">
+                            <img src="../img/brand_02.png" alt="">
+                            <p class="brand-title">璀璨系列</p>
+                        </a>
+                    </li>
+                    <li class="ripple">
+                        <a href="品牌系列-列表.html">
+                            <img src="../img/brand_01.png" alt="">
+                            <p class="brand-title">邂逅系列</p>
+                        </a>
+                    </li>
+                    <li class="ripple">
+                        <a href="品牌系列-列表.html">
+                            <img src="../img/brand_02.png" alt="">
+                            <p class="brand-title">璀璨系列</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- loading -->
+<div class="loading" style="display: none"><img src="../img/loading.gif" alt=""></div>
+<script>
+    $(function(){
+        $(window).scroll(function(){
+            if($(document).scrollTop() + $(window).height() >= $(document).height()){
+                $('.loading').show();
+            }
+        });
+    });
+</script>
+<!-- loading end -->
+
+        </section>
+        <!-- content end -->
+
+    </section>
+
+    <!-- 快捷搜索 start -->
+<div class="index-search-open quick-search" style="display: none">
+    <form action="" class="top-search">
+        <div class="top-bar">
+            <input type="text" class="s-input" name="" value="" placeholder="商品名称、证书号、系列名称">
+            <input type="button" class="search-btn" onclick="javasctipt:location.href='search.html'" name="" value=" ">
+        </div>
+        <div class="top-bar-btn">
+            取消
+        </div>
+    </form>
+    <div class="hot-search">
+        <h1>热门搜索</h1>
+        <div class="keywords-list">
+            <a href="#">钻石</a>
+            <a href="#">钻石</a>
+            <a href="#">笔记本</a>
+            <a href="#">笔记本</a>
+            <a href="#">钻石</a>
+            <a href="#">钻石</a>
+            <a href="#">钻石</a>
+        </div>
+    </div>
+    <div class="history-search">
+        <h1><span class="pl">历史搜索</span></h1>
+        <ul>
+            <li><a href="#">镶嵌式</a></li>
+            <li><a href="#">手工钻</a></li>
+            <li><a href="#">花蝶系</a></li>
+        </ul>
+    </div>
+
+    <div class="reset-search-box">
+        <button type="button" class="reset-history">清空历史搜索</button>
+    </div>
+</div>
+<!-- 快捷搜索 end -->
+
+<script>
+    /*
+     *  @obj: 触发元素
+     */
+    var quickSearch = {
+        //显示搜索
+        show : function (obj){
+            $(obj).bind('click', function(){
+                $('.quick-search').show();
+            });
+        },
+        //关闭搜索
+        hide : function (obj){
+            $(obj).bind('click', function(){
+                $('.quick-search').hide();
+            });
+        }
+    }
+
+    quickSearch.hide('.top-bar-btn'); //关闭搜索
+</script>
+
+    <script>
+        //快捷搜索
+        quickSearch.show('.search-icon');
+    </script>
+
+</body>
+</html>

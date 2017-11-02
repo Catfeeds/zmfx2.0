@@ -1,0 +1,54 @@
+<div class="row" id="sanhuo_payList_content"></div>
+<script type="text/template" id="sanhuo_payList_content_tpl" style="display: none">
+    <div class="col-xs-1 text-right" ><label><span class="fl">{$L['text_sanhuo_settlement']}:</span></label></div>
+    <% if(datas.order_period_sanhuo_is_quankuan != 1){ %>
+    <div class="col-xs-8">
+        <div class="title">           
+            <span>{$L['orderinfo_msg_012']}<%= datas.order_period_list.sanhuo.period_num %>{$L['orderinfo_msg_013']}</span>
+            <span>{$L['orderinfo_msg_014']}:&yen;<%= datas.order_goods_list.all_sanhuo_price %></span>
+            <span>{$L['text_overdue_interest_rates']}:<%= datas.order_period_list.sanhuo.period_overdue %> %</span>
+            <table>
+                
+            <% _.each(datas.order_receivables_list.sanhuo, function (item) { %>   
+                <tr>
+                    <td>{$L['orderinfo_msg_015']}<%= item.period_current %>{$L['orderinfo_msg_016']}</td>
+                    <td><%= item.period_day %>{$L['orderinfo_msg_017']}</td>
+                    <td>{$L['text_order_payable']}:&yen;<%= item.receivables_price %></td>
+                    <td>{$L['text_order_alreadypay']}:&yen;<%= item.payment_price %> </td>
+                    <td>
+                    <% if(item.receivables_status == 1) { %>
+                        {$L['text_order_noverification']}
+                    <% }else if(item.receivables_status == 2){ %>
+                        {$L['text_order_partverification']}
+                    <% }else{ %>
+                        {$L['text_order_alreadyverification']}
+                    <% } %>
+                    
+                    </td>
+                </tr>
+            <% }); %>
+            </table>
+        </div>
+    </div>
+    <% }else{ %>
+    <div class="col-xs-8">
+        <div class="title">           
+            <span>{$L['orderinfo_msg_018']}：<%= datas.order_goods_list.all_sanhuo_price %></span>
+             <% _.each(datas.order_receivables_list.sanhuo, function (item) { %>   
+            <span>{$L['text_order_alreadypay']}:&yen;<%= item.payment_price %></span>
+            <span>
+                    <% if(item.receivables_status == 1) { %>
+                        {$L['text_order_noverification']}
+                    <% }else if(item.receivables_status == 2){ %>
+                        {$L['text_order_partverification']}
+                    <% }else{ %>
+						{$L['text_order_alreadyverification']}
+                    <% } %>
+            </span>
+            <% }); %>
+            
+        </div>
+    </div>
+    <% } %>
+</script>
+

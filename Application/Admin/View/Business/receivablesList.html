@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>应收款记录</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.css" />
+<script type="text/javascript" src="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/datepicker-tw.js"></script>
+<script type="text/javascript">
+$(function() {
+	$( ".datepicker" ).datepicker($.datepicker.regional[ "zh-TW" ] );
+	$( "#end" ).datepicker($.datepicker.regional[ "zh-TW" ] );
+});
+ 
+function selectcheckbox(form){
+	for(var i = 0;i < form.elements.length; i++){
+		var e = form.elements[i];
+		if(e.name != 'chkall' && e.disabled != true) e.checked = form.chkall.checked;
+	}
+} 
+
+function submitForm(){
+	if($("input[type='checkbox']").is(':checked')==false){
+		if(confirm("当没有勾选到任何应收款记录的时候，打印的是满足当前查询条件的全部数据，确定吗？"))return true;
+		else return false;
+	}else{
+		return true;
+	}
+
+}
+
+</script>
+
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：应收款记录</h3>
+    </div>
+    <div class="filter">
+    <form action="{:U('Admin/Business/receivablesList')}" method="get">
+        <div class="fl">订单编号：</div>
+        <input class="input" type="text" name="order_sn" value="{$order_sn}"/>
+        <div class="fl">状态：</div>
+        <select name="receivables_status" class="fl">
+        	<option value="0">全部</option>
+            <option value="1" <eq name="receivables_status" value="1">selected</eq>>未核销</option>
+            <option value="2" <eq name="receivables_status" value="2">selected</eq>>部分核销</option>
+            <option value="3" <eq name="receivables_status" value="3">selected</eq>>已核销</option>
+        </select>
+		 <div class="fl">支付时间：</div>
+		 <input type='text' name='pay_start' class='datepicker'      
+			 <if condition="$pay_start neq 0">
+				value="{$pay_start}"
+			<else />
+				value=" "
+			</if>   >
+		 <div class="fl">至：</div>
+		 <input type='text' name='pay_end' class='datepicker'  
+			<if condition="$pay_end neq 0">
+				value="{$pay_end}"
+			<else />
+				value=" "
+			</if>   
+		 >
+        <div class="fl">&nbsp;</div>
+        <input class="button" type="submit" value="查询" />
+    </form>
+    </div>
+	<form action="{:U('Admin/Excel/exportYingshou')}" method="post"   onsubmit="return submitForm();">
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+			<th style='width:50px;'>全选:<input onclick="selectcheckbox(this.form)" type="checkbox" name="chkall" id="chkall" value="All" /></th>
+            <th>收款ID</th>
+            <th>订单编号</th>
+            <th>应付类型</th>
+            <th>期数</th>
+            <th>生成时间</th>
+            <th>支付最后时间</th>
+            <th>应付金额</th>
+            <th>核销金额</th>
+            <th>核销金额</th>
+            <th>操作</th>
+        </tr>
+		 <input type="hidden"  name="yingshou_null" value="{$yingshou_null}" />
+        <volist name="list" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+		    <td><input type="checkbox" name="yingshou[]" value="{$vo.receivables_id}" /></td>
+			   
+            <td>{$vo.receivables_id}</td>
+            <td><a href="{:U('Admin/Order/orderInfo?order_id='.$vo['order_id'])}" showOrder="{$vo.order_id}">{$vo.order_sn}</a></td>
+            <td>
+            <eq name="vo.period_type" value="1">证书货</eq>
+            <eq name="vo.period_type" value="2">散货</eq>
+            <eq name="vo.period_type" value="3">成品货</eq>
+            <eq name="vo.period_type" value="5">代销货</eq>
+            <eq name="vo.period_type" value="11">逾期</eq>
+            <eq name="vo.period_type" value="12">补差价</eq>
+            </td>
+            <td>{$vo.period_current}</td>
+            <td>{$vo.create_time|date="Y-m-d H:i",###}</td>
+            <td>{$vo.payment_time|date="Y-m-d H:i",###}</td>
+            <td>{$vo.receivables_price} </td>
+            <td>{$vo.payment_price}</td>
+            <td>
+                <eq name="vo.receivables_status" value="1">未核销</eq>
+                <eq name="vo.receivables_status" value="2">已核销部分</eq>
+                <eq name="vo.receivables_status" value="3">已核销</eq>
+            </td>
+            <td>
+                <if condition="$vo.receivables_status neq '3'">
+                    <a href="{:U('Admin/Business/payMoney?handle=f&order_id='.$vo['order_id'])}">入款</a>
+                </if>
+            </td>
+        </tr>
+        </volist>
+    </table>
+	    <div class="tbl_buttom"><input type="submit" name="export" value="导出数据" /></div>
+     </form>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>

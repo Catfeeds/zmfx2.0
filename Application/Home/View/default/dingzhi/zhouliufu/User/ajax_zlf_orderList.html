@@ -1,0 +1,35 @@
+<div class="goods-list-box">
+    <foreach name="data" item="v">
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <td>订单编号：{$v.order_sn_zlf}</td>
+                <td>下单时间：{$v.create_time|date='Y-m-d',###}</td>
+                <td align="right">状态：{$v.order_status|getOrderStatus}</td>
+            </tr>
+            <foreach name="v.sub" item="v1">
+                <tr>
+                    <td><img src="{$v1.my_img}" alt="" class="zlf-goods-img"> {$v1.goods_name}</td>
+                    <td>{$v1.goods_number|intval}</td>
+                    <td align="right"><strong class="red">￥{$v1.goods_price}</strong></td>
+                </tr>
+            </foreach>
+            <tr>
+                <td colspan="2">总额：<strong class="red">￥{$v.order_price}</strong></td>
+                <td align="right">
+                    <!-- <a href="#" class="caozuo topay">去支付</a> -->
+                    <a href="{:U('User/orderInfo',array('order_id'=>$v['order_id']))}" class="caozuo">查看</a>
+                    <!-- <a href="#" class="caozuo">取消</a> -->
+                </td>
+            </tr>
+        </table>
+    </foreach>
+</div>
+<div id="js_goods_page">
+    {$page}
+</div>
+<script>
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_data(page);
+    });
+</script>

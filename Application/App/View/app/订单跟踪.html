@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>订单跟踪</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+</head>
+<style>
+  body { background: #F2F2F2;}
+  .logistics { max-width: 960px; margin: 0 auto;}
+  .logistics .bianhao { background: #FFF; margin: 0; padding: 20px 10px;}
+  .logistics .wuliu-list { padding: 20px 15px;}
+  .logistics .wuliu-list ul { padding-left: 12px; list-style: none; border-left: 1px solid #999;}
+  .logistics .wuliu-list p { margin-bottom: 5px;}
+  .wuliu-list ul li { position: relative; margin-bottom: 25px;}
+  .wuliu-list .circ { position: absolute; display: inline-block; top: 0px; left: -12px; z-index: 200; width: 20px; height: 20px; margin-left: -11px; border: 4px solid #f5f7fa; border-radius: 50%; background: #787979; -webkit-border-radius: 50%; -moz-border-radius: 50%;}
+  .wuliu-list .circ-bg { background-color: #FD341C;}
+  .wuliu-list .ydh { color: #0066FF;}
+</style>
+<body>
+  <div class="logistics">
+    <section>
+      <h4 class="bianhao">订单编号：2015129914304667</h4>
+    </section>
+    <section>
+      <div class="wuliu-list">
+        <ul>
+          <li>
+            <p>您的订单已经配货完毕，并已出库交付顺丰快递，运单号为 <span class="ydh">6669185736</span></p>
+            <small>2016-10-15  09:20</small>
+            <span class="circ circ-bg"></span>
+          </li>
+          <li>
+            <p>您的订单已经配货完毕，并已出库交付顺丰快递</p>
+            <small>2016-10-15  09:20</small>
+            <span class="circ"></span>
+          </li>
+          <li>
+            <p>快递信息</p>
+            <span class="circ"></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

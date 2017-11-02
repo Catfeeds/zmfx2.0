@@ -1,0 +1,65 @@
+<!-- 品牌系列 -->
+<eq name="positionList[3]['is_show']" value="1">
+<if condition="$series_list">
+<style>
+.font-family-four{
+	font-family:"{$positionList[3]['font']}" ;
+}
+</style>
+<div class="brand">
+    <div class="container">
+        <div class="brand-header">
+            <h1 class="text-center font-family-four"><strong>{$positionList[3]['title']}</strong> <br /> <span class="brand-text">{$positionList[3]['english_title']}</span></h1>
+        </div>
+    </div>
+
+    <div class="brand-tab">
+        <div class="container">
+            <ul id="brand-tab-list" style="height: 264px;overflow: hidden;">
+                <volist name="series_list" id="vo">
+                <li>
+                    <a href="{:U('/Home/Goods/goodsCat',array('goods_series_id'=>$vo['goods_series_id']))}" target="_blank">
+                        <if condition="$vo['series_name']">
+                        <img src="/Public/{$vo['images_path']}" alt="{$vo['series_name']}" title="{$vo['series_name']}">
+                        <else/>
+                        <img src="__IMG__/noimage6.jpg">
+                        </if>
+                    </a>
+                    <p class="brandms nbs-flexisel-item">{$vo['series_name']}</p>
+                </li>
+                </volist>
+                
+            </ul><div class="clearfix"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(window).load(function() {
+            $("#brand-tab-list").flexisel({
+                visibleItems: 3,
+                animationSpeed: 1000,
+                autoPlay: true,
+                autoPlaySpeed: 3000,            
+                pauseOnHover: true,
+                enableResponsiveBreakpoints: true,
+                responsiveBreakpoints: { 
+                    portrait: { 
+                        changePoint:480,
+                        visibleItems: 1
+                    }, 
+                    landscape: { 
+                        changePoint:640,
+                        visibleItems: 2
+                    },
+                    tablet: { 
+                        changePoint:768,
+                        visibleItems: 3
+                    }
+                }
+            });
+        });
+    </script>
+</div>
+</if>
+</eq>
+<!-- 品牌系列 end //-->

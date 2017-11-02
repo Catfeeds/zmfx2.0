@@ -1,0 +1,39 @@
+<extend name="Manage:Default:Index:base" />
+<block name="title">{$L['apply_open_title']}</block>
+<block name="desc">{$L['apply_open_description']}</block>
+<block name="body_class">forget</block>
+
+<block name="body">
+    <div class="registr">
+        <div class="dropdown pull-right">
+            <a href="javascript:void(0);" class="btn btn-default dropdown-toggle info-number" data-toggle="dropdown">
+				{$nowlang}
+				<i class="fa fa-chevron-down"></i>
+			</a>
+			<div class="dropdown-menu dropdown-menu-head pull-right">
+				<ul class="dropdown-list normal-list">
+					<li class="new"><a href="javascript:void(0);" onclick="setlang('zh-cn')">{$L['text_zh-cn']}</a></li>
+					<li class="new"><a href="javascript:void(0);" onclick="setlang('zh-tw')">{$L['text_zh-tw']}</a></li>
+					<li class="new"><a href="javascript:void(0);" onclick="setlang('en-us')">{$L['text_en-us']}</a></li>
+				</ul>
+			</div>
+        </div>
+        <div class="container">
+            <img src="__IMG__/logo_<php>echo LANG_SET;</php>.png">
+            <span>{$L['apply_open_span_title']}</span>
+        </div>
+    </div>
+    <!--忘记密码-->
+
+ 
+        <div class="container">
+            <div class="from-bg col-lg-12 text-center">
+                <span style="font-size: 32px; margin-top: 200px; display: inline-block; color： #333">{$L['text_data_examineing']}</span>
+            </div>
+        </div>
+ 
+</block>
+<block name="my_css">
+    <link href="__CSS__/fileinput.css" rel="stylesheet" type="text/css" />
+</block> 
+</block>

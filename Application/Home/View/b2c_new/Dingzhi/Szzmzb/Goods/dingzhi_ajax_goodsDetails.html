@@ -1,0 +1,380 @@
+<h4><strong>{$goodsInfo.dinzhi_goodsInfo.goods_name}</strong></h4>
+<div class="item-list">
+    <span class="item-members" style="width:100%;">价格: <strong class="price">&yen;</strong><strong class="price" id="memberPrice" >
+    <in name="goodsInfo['activity_status']" value="0,1">
+        <?php echo intval($goodsInfo['dinzhi_goodsInfo']['activity_price']);?>
+    <else/>
+		<?php echo intval($goodsInfo['dinzhi_goodsInfo']['goods_price']);?>
+    </in>
+    </strong></span>
+    <!-- <span class="item-members lb-hide" style="width:100%;">市场价: &yen;<del id="market_price">{$goodsInfo.marketPrice}</del></span> -->
+</div>
+
+<if condition="$goodsInfo['attributes']">
+    <!-- 成品 // 只显示主要属性，详细的在"商品参数"显示 -->
+    <div class="item-list">
+        <volist name="goodsInfo['attributes']" id="vo">
+            <in name="vo.attr_id" value="16,18,20,22,23,24,25,26,27,28">
+                <if condition="!empty(trim($vo['attr_value_name']))">
+                    <span class="item-members">{$vo.attr_name}：{$vo.attr_value_name}</span>
+                <elseif condition="!empty(trim($vo['attr_value']))"/>
+                    <span class="item-members">{$vo.attr_name}：{$vo.attr_value}</span>
+                </if>
+            </in>
+        </volist>
+    </div>
+</if>
+
+<if condition="$goodsInfo['goods_type'] eq 4">
+    <div class="item-list oGoods">
+        <p>产品规格</p>
+        <!-- 定制 -->
+            <p>重量：
+                <volist name="goodsInfo['dinzhi_goodsInfo']['selected']['material_weight']" id="v">
+                    <if condition="count($goodsInfo['dinzhi_goodsInfo']['selected']['material_weight']) gt 1">
+                        {$goodsInfo['dinzhi_goodsInfo']['selected']['goods_name_bm'][$key]}：{$v}g&nbsp;
+                    <else/>
+                        {$v}g&nbsp;
+                    </if>
+                </volist>
+            </p>  
+            <p>可选材质：
+                <volist name="goodsInfo['dinzhi_goodsInfo']['materialList']" id="v">
+                    <button class="ddBorder btn btn-default border-radiusno material_id 
+                        <if condition="$v['material_id'] eq $goodsInfo['dinzhi_goodsInfo']['selected']['material_id']">
+                            active
+                        </if>" 
+                        material_id={$v['material_id']}
+                    >
+                        {$v['material_name']}
+                    </button>&nbsp;
+                </volist>
+            </p>
+            <volist name="goodsInfo['dinzhi_goodsInfo']['associate_luozuan_data_all']" key="k1" id="associate_luozuan">
+                <p 
+                    <if condition="!count($goodsInfo['dinzhi_goodsInfo']['selected']['goods_name_bm'])">
+                        style="display:none;"
+                    </if>
+                >
+                    <label>
+                        <input type="checkbox" class="checked" key="{$k1-1}"
+                            <if condition="$goodsInfo['dinzhi_goodsInfo']['selected']['checked'][$k1-1] eq 1">
+                                checked="selected"
+                            </if> 
+                        >
+                        {$goodsInfo['dinzhi_goodsInfo']['selected']['goods_name_bm'][$key]}
+                    </label>
+                </p>
+                <p>可选主石：
+                    <volist name="associate_luozuan" key="k2" id="v">
+                        <button class="ddBorder  btn btn-default border-radiusno associateLuozuan 
+                            <if condition="$v['associate_luozuan_id'] eq $goodsInfo['dinzhi_goodsInfo']['selected']['associate_luozuan_id'][$k1-1]">
+                                active
+                            </if>"
+                            key="{$k1-1}" 
+                            associate_luozuan_id={$v['associate_luozuan_id']}
+                            luozuan_weight={$v['luozuan_weight']}
+                            material_weight={$v['material_weight']}
+                            luozuan_number={$v['luozuan_number']}
+                        >
+                            {$v['shape_name']}&nbsp;
+                            {$v['luozuan_weight']}{$v['ct_mm']}&nbsp;
+                            {$v['luozuan_number']}颗
+                        </button>&nbsp;
+                    </volist>
+                </p>
+                <p>
+                        可选副石：
+                        <select name="deputystone_type" class="deputystone_type" key="{$k1-1}">
+                            <volist name="goodsInfo['dinzhi_goodsInfo']['deputystone_type_show']" id="v">
+                                <option value="{$key}"  
+                                    <if condition="$key eq $goodsInfo['dinzhi_goodsInfo']['selected']['deputystone_type'][$k1-1]">
+                                        selected
+                                    </if>
+                                >
+                                    {$v}
+                                </option>
+                            </volist>
+                        </select>
+                        <volist name="goodsInfo['dinzhi_goodsInfo']['deputystone_attribute_show']" id="v" key="k2">
+                            <span class="" 
+                                <if condition="$goodsInfo['dinzhi_goodsInfo']['selected']['deputystone_type'][$k1-1] eq $k2">
+                                    style="display:inline-block;"
+                                    <else/>
+                                    style="display:none;"
+                                </if>
+                            >
+                            <?php
+                                if(is_array($v)){
+                                    $str ='';
+                                    $str.='<select class="deputystone_attribute" name="deputystone_attribute" key="'.($k1-1).'">';
+                                    foreach ($v as $v1) {
+                                        if($v1==$goodsInfo['dinzhi_goodsInfo']['selected']['deputystone_attribute'][$k1-1]){
+                                            $str.='<option value="'.$v1.'" selected>'.$v1.'</option>';
+                                        }else{
+                                            $str.='<option value="'.$v1.'">'.$v1.'</option>';
+                                        }
+                                    }
+                                    $str.='</select>';
+                                    $str.='<span class="sagh_sbgh_price">'.$goodsInfo['dinzhi_goodsInfo']['selected']['sagh_sbgh_price'][$k1-1].'元/CT</span>';
+                                    echo $str;
+                                }else{
+                                    echo $v;
+                                }
+                            ?>
+                            </span>
+                        </volist>
+                </p>
+
+                <if condition="dingzhi_szzmzb_jewelry_name($goodsInfo['dinzhi_goodsInfo']['price_info']['price_info']['base_process_info']['jewelry_name'])">
+                    <p>
+                        {$goodsInfo['dinzhi_goodsInfo']['price_info']['price_info']['base_process_info']['jewelry_name']|dingzhi_szzmzb_jewelry_name} :
+                        <input type="number" class="hand" min="6" max="27" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['hand'][$k1-1]}" key="{$k1-1}" style="text-align: center;">
+                        <span class="kc">请选择6-27之间</span>
+                    </p>
+                </if>
+                
+                <p style="height:28px;">
+                    <span class="pull-left" style="padding:0px;margin:0px;">刻字：</span>
+                    <input placeholder="最多只能填写10个字符" style="width: 170px; height: 28px; float: left; vertical-align: -webkit-baseline-middle;" maxLength="10" class="word" class="form-control" type="text" name="word" key="{$k1-1}" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['word'][$k1-1]}" />
+                </p>
+                <p>
+                    <span class="item-members">数量：
+                        <input type="number" class="goods_number" min="1" max="999" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['goods_number'][$k1-1]}" key="{$k1-1}">
+                        <span class="kc">库存: 定制产品无库存项</span>
+                    </span>
+                </p>
+                <p class="buy">
+                    <button class="btn link tocart border-radiusno" onclick="add_szzmzb_cart_order('add_ljdz','{$k1-1}')">
+                        <img src="__IMG__/goods-details_10.jpg" />
+                        立即定制
+                    </button>
+                </p>
+            </volist>
+            <p style="height:28px;">
+                <span class="pull-left" style="padding:0px;margin:0px;">国标字印：</span>
+                <input placeholder="" style="width: 170px; height: 28px; float: left; vertical-align: -webkit-baseline-middle;" maxLength="10" id="gb" class="form-control" type="text" name="gb" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['gb']}" />
+            </p>
+			<?php if($goodsInfo['goods_type'] == 4){?>
+            <p class="jhtime">预计交货时间：<?php echo $goodsInfo['expected_delivery_time'] ?>个工作日</p>
+			<p>特别说明：售价不含主钻价格，报价以出货为准</p>
+			<?php }?>
+    </div>
+</if>
+<p><span class="item-members">商品编号: {$goodsInfo.goods_sn}</span></p>
+<div class="buy">
+    <button class="btn link rapidBuy border-radiusno" onclick="add_szzmzb_cart_order('add_ljgm')">
+        立即购买
+    </button>
+    <button class="btn link gm border-radiusno" onclick="add_szzmzb_cart_order('add_cart')">
+        加入购物车
+    </button>
+</div>
+<script type="text/javascript" src="__JS__/jquery-1.6.1.js"></script>
+<script>
+
+$(function(){
+    $('.material_id').click(function(event) {
+        var v = $(this).attr('material_id');
+        set_goodsDetails('material_id',v);
+    });
+
+    $('.associateLuozuan').click(function(event) {
+        var k = $(this).attr('key');
+        var associate_luozuan_id = $(this).attr('associate_luozuan_id');
+        var luozuan_weight = $(this).attr('luozuan_weight');
+        var luozuan_number = $(this).attr('luozuan_number');
+        set_goodsDetails(
+                ['associate_luozuan_id','luozuan_weight','luozuan_number'],
+                [associate_luozuan_id,luozuan_weight,luozuan_number],k
+            );
+    });
+
+    $('.deputystone_type').change(function(event) {
+        var k = $(this).attr('key');
+        var v = $(this).val();
+        set_goodsDetails('deputystone_type',v,k);
+    });
+
+    $('.deputystone_attribute').change(function(event) {
+        var k = $(this).attr('key');
+        var v = $(this).val();
+        set_goodsDetails('deputystone_attribute',v,k);
+    });
+
+    $('.checked').click(function(event) {
+        var k = $(this).attr('key');
+        if($(this).attr('checked') == 'checked'){
+            $('#goodsDetails input[name="checked['+k+']"]').val(1);
+        }else{
+            $('#goodsDetails input[name="checked['+k+']"]').val(0);
+        }
+        ajax_goodsDetails();
+    });
+})
+
+function return_layer_msg(msg){
+    layer.msg(msg,{ shift:6, });
+}
+
+function set_goodsDetails(k,v,key){
+    if(key >= 0){
+        if(k instanceof Array){
+            for(var i=0;i<k.length;i++){
+                $('#goodsDetails input[name="'+k[i]+'['+key+']"]').val(v[i]);
+            }
+        }else{
+            $('#goodsDetails input[name="'+k+'['+key+']"]').val(v);
+        }
+    }else{
+        if(k instanceof Array){
+            for(var i=0;i<k.length;i++){
+                $('#goodsDetails input[name="'+k[i]+'"]').val(v[i]);
+            }
+        }else{
+            $('#goodsDetails input[name="'+k+'"]').val(v);
+        }    
+    }
+    ajax_goodsDetails();
+}
+
+function dingzhi_addToCart_b2c(v){
+    $.ajax({
+       type: "POST",
+       url: "{:U('Goods/dingzhi_addToCart_b2c')}",
+       data: $("#goodsDetails").serialize(),
+       success: function(data){
+            data = eval("(" + data + ")");
+            if(data.status == 100){
+                if(v == 'add_ljgm'){
+                    confirmOrder(data.id);
+                }else{
+                    layer.msg(data.msg,{ shift:6, });
+                } 
+            }else{
+                layer.msg(data.msg,{ shift:6, });
+            }
+       }
+    });
+}
+
+//加入收藏
+function add_collection(t){
+    var collection_id = $(t).attr('collection_id');
+    if(collection_id > 0){
+        layer.confirm('请勿重复添加收藏!', {
+            btn: ['查看我的收藏','好的'] //按钮
+        }, function(){
+            window.location.href = "{:U('Home/Goods/getCollectionList')}";
+        });
+    }else{
+        $.ajax({
+            type: "POST",
+            url: "{:U('Goods/dingzhi_addCollection_b2c')}",
+            data: $("#goodsDetails").serialize(),
+            success: function(data){
+                data = eval("(" + data + ")");
+                if(data.status == 100){
+                    $(t).attr('src', data.src);
+                    $(t).attr('collection_id', data.id);
+                    var msg = '收藏成功';
+                }else{
+                    var msg = '请勿重复添加收藏!';
+                }
+
+                layer.confirm(msg, {
+                    btn: ['查看我的收藏','好的'] //按钮
+                }, function(){
+                    window.location.href = "{:U('Home/Goods/getCollectionList')}";
+                });
+           }
+        });
+    }
+}
+
+function add_szzmzb_cart_order(add,k){
+    //表单赋值
+    $('.goods_number').each(function(index, el) {
+        var index = $(this).index('.goods_number');
+        var checked = $('.checked').eq(index).attr('checked') == 'checked'?1:0;
+
+        var k = $('.goods_number').eq(index).attr('key');
+        var v = $('.goods_number').eq(index).val();
+        if(!v&&checked == 1){return_layer_msg('数量不能为空');return false;}
+        $('#goodsDetails input[name="goods_number['+k+']"]').val(v);
+
+        var k = $('.hand').eq(index).attr('key');
+        var v = $('.hand').eq(index).val();
+        if((v<6||v>27)&&checked == 1){return_layer_msg('请选择6-27之间');return false;}
+        $('#goodsDetails input[name="hand['+k+']"]').val(v);
+
+        var k = $('.word').eq(index).attr('key');
+        var v = $('.word').eq(index).val();
+        $('#goodsDetails input[name="word['+k+']"]').val(v);
+    });
+
+    var v = $('#gb').val();
+    if(!v){return_layer_msg('国标字印不能为空');return false;}
+    $('#goodsDetails input[name="gb"]').val(v);
+
+
+    if(add == 'add_cart'){  //加入购物车
+        dingzhi_addToCart_b2c('add_cart');
+    }
+    if(add == 'add_ljgm'){ //立即购买
+        dingzhi_addToCart_b2c('add_ljgm');
+    }
+    if(add == 'add_ljdz'){  //立即定制
+        var dingzhi = {
+                info:{
+                luozuan_info:{},
+                jietuo_info:{},
+                total_price:0
+            },
+        };
+        $.ajax({
+           type: "POST",
+           url: "{:U('Goods/dingzhi_ajax_goodsDetails_ljdz')}",
+           data: $("#goodsDetails").serialize()+"&k="+k,
+           success: function(data){
+            data = eval("(" + data + ")"); 
+                dingzhi.info.jietuo_info.goods_id = data.goods_id;
+                dingzhi.info.jietuo_info.thumb = data.thumb;
+
+                //情侣戒副款显示
+                if(data.dinzhi_goodsInfo.selected.goods_name_bm){
+                    dingzhi.info.jietuo_info.goods_name = data.dinzhi_goodsInfo.goods_name+'('+data.dinzhi_goodsInfo.selected.goods_name_bm+')';
+                }else{
+                    dingzhi.info.jietuo_info.goods_name = data.dinzhi_goodsInfo.goods_name;
+                }
+
+                dingzhi.info.jietuo_info.goods_price = data.dinzhi_goodsInfo.goods_price;
+                dingzhi.info.jietuo_info.luozuan = {};
+                dingzhi.info.jietuo_info.luozuan.weights_name = data.dinzhi_goodsInfo.selected.associate_luozuan_weights_name;
+                dingzhi.info.jietuo_info.luozuan.gal_id = data.dinzhi_goodsInfo.selected.associate_luozuan_gal_id;
+                dingzhi.info.jietuo_info.luozuan.szzmzb_gal_id = data.dinzhi_goodsInfo.selected.associate_luozuan_gal_id;
+                dingzhi.info.jietuo_info.material = {};
+                dingzhi.info.jietuo_info.material_id = data.dinzhi_goodsInfo.selected.material_id;
+                dingzhi.info.jietuo_info.material_name = data.dinzhi_goodsInfo.selected.material_name;
+                dingzhi.info.jietuo_info.deputystone = {};
+                dingzhi.info.jietuo_info.deputystone.gad_id = '';
+                dingzhi.info.jietuo_info.hand = '';
+                dingzhi.info.jietuo_info.word = '';
+                dingzhi.info.jietuo_info.sd_id = '';
+                dingzhi.info.jietuo_info.hand1 = '';
+                dingzhi.info.jietuo_info.word1 = '';
+                dingzhi.info.jietuo_info.sd_id1 = '';
+                console.log(dingzhi);
+                setCookieNotimeOfObject('dingzhi',dingzhi.info);
+
+                layer.confirm('钻托选择成功，是否去挑选钻石？', {
+                    btn: ['是','否'] //按钮
+                    }, function(){
+                        location.href='{:U('/Home/Goods/goodsDiy')}';
+                    }
+                );
+           }
+        });
+    }
+}
+</script>

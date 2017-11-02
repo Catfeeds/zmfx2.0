@@ -1,0 +1,60 @@
+<div class="gRight ym">
+</div>
+<form action="" id="goodsDetails">
+    <input type="hidden" name="gid" value="{$goodsInfo.goods_id}">
+    <input type="hidden" name="goods_type" value="{$goodsInfo.goods_type}">
+    <input type="hidden" name="goods_sn" value="{$goodsInfo.goods_sn}">
+    <input type="hidden" name="banfang_goods_id" value="{$goodsInfo.banfang_goods_id}">
+    <input type="hidden" name="material_id" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['material_id']}">
+    <input type="hidden" name="activity_status" value="{$goodsInfo['dinzhi_goodsInfo']['activity_status']}">
+    <input type="hidden" name="gb" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['gb']}">
+
+    <volist name="goodsInfo['dinzhi_goodsInfo']['associate_luozuan_data_all']" id="associate_luozuan">
+        <input type="hidden" name="checked[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['checked'][$key]}">
+        <input type="hidden" name="associate_luozuan_id[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['associate_luozuan_id'][$key]}">
+        <input type="hidden" name="luozuan_weight[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['luozuan_weight'][$key]}">
+        <input type="hidden" name="luozuan_number[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['luozuan_number'][$key]}">
+        <input type="hidden" name="technology[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['technology'][$key]}">
+        <input type="hidden" name="deputystone_type[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['deputystone_type'][$key]}">
+        <input type="hidden" name="deputystone_attribute[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['deputystone_attribute'][$key]}">
+        <input type="hidden" name="goods_number[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['goods_number'][$key]}">
+        <input type="hidden" name="hand[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['hand'][$key]}">
+        <input type="hidden" name="word[{$key}]" value="{$goodsInfo['dinzhi_goodsInfo']['selected']['word'][$key]}">
+    </volist>
+</form>
+<script>
+//加载商品详情页
+ajax_goodsDetails();
+function ajax_goodsDetails(){
+    //表单赋值
+    $('.goods_number').each(function(index, el) {
+        var index = $(this).index('.goods_number');
+        var checked = $('.checked').eq(index).attr('checked') == 'checked'?1:0;
+
+        var k = $('.goods_number').eq(index).attr('key');
+        var v = $('.goods_number').eq(index).val();
+        $('#goodsDetails input[name="goods_number['+k+']"]').val(v);
+
+        var k = $('.hand').eq(index).attr('key');
+        var v = $('.hand').eq(index).val();
+        $('#goodsDetails input[name="hand['+k+']"]').val(v);
+
+        var k = $('.word').eq(index).attr('key');
+        var v = $('.word').eq(index).val();
+        $('#goodsDetails input[name="word['+k+']"]').val(v);
+    });
+    var v = $('#gb').val();
+    $('#goodsDetails input[name="gb"]').val(v);
+
+    //获取初始值
+    $.ajax({
+       type: "POST",
+       url: "{:U('dingzhi_ajax_goodsDetails')}",
+       data: $("#goodsDetails").serialize(),
+       success: function(data){
+        $('.gRight').empty();
+        $('.gRight').append(data);
+       }
+    });
+}
+</script>

@@ -1,0 +1,147 @@
+<include file="Public:header" />
+<!-- <include file="Public:search" /> -->
+<!-- Header -->
+	<header data-am-widget="header" class="am-header am-serch cat">
+		<div class="am-header-left am-header-nav">
+			<a href="{:U('/User/index')}" class="">
+				<img class="am-header-icon-custom" src="__ASS__/Img/search_01.png" alt=""/>
+			</a>
+		</div>
+		<h1 class="am-header-title">
+			订单列表
+		</h1>
+	</header>
+	<!--订单-->
+	<div class="wrap">
+		<div class="find">
+			<p>订单查询</p>
+		</div>
+
+		<form action="/User/orderList.html" method="get" class="">
+			<ul class="content">
+				<li>
+					<label>订单状态 ：</label>
+					<select name="order_status">
+						<option value="">所有订单</option>
+						<foreach name="orderStatus" item="vo" key="k">
+							<option value="{$k}">{$vo}</option>
+						</foreach>
+					</select>
+				</li>
+				<li>
+					<label>订 单 号 ：</label>
+					<input name="order_sn" type="text" value="{$order_sn}">
+				</li>
+				<li>
+					<label>证 书 号 ：</label>
+					<input name="certificate_no" type="text" value="{$certificate_no}">
+				</li>
+				<li>
+					<button type="submit" class="am-btn am-btn-blue am-radius">查询</button>
+				</li>
+			</ul>
+		</form>
+		<foreach name="list" item="vo" key="k" >
+			<table class="am-table am-table-bordered  table">
+				<thead>
+				<tr>
+					<th>订单号</th>
+					<th>下单时间</th>
+					<th>订单状态</th>
+					<th>操 作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td>{$vo.order_sn}</td>
+					<td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+					<td>{$vo.order_status|getOrderStatus}</td>
+					<if condition=" ($vo.confirmReceive EQ 1) and ($vo.order_status NEQ 5) and ($vo.order_status NEQ 6) ">
+						<td>
+							<a target="_self" href="/User/orderInfo.html?order_id={$vo.order_id}" >
+								查看明细
+							</a>
+							<br>
+							<a href="javascript:void(0);" onclick="if(confirm('确定收货吗?')){fuc_confirm('{$vo.order_id}');}">
+								确认收货
+							</a>
+						</td>
+					<else />
+						<td>
+							<a target="_self" href="/User/orderInfo.html?order_id={$vo.order_id}" >
+								查看明细
+							</a>
+							<if condition="$vo.order_status eq 0">
+								<br>
+								<a href="javascript:void(0)" onclick="if(confirm('确定取消订单？')){updateOrder({$vo.order_id},{$vo.order_status})}">取消订单</a>
+							</if>
+							<if condition="$vo.order_status eq -1"><a href="javascript:void(0)" onclick="if(confirm('确定删除订单？')){updateOrder({$vo.order_id},{$vo.order_status})}">删除订单</a></if>
+						</td>
+					</if>
+				</tr>
+				</tbody>
+			</table>
+			<div class="money">
+				<p> 总金额：
+					<if condition="$vo.order_status GT 0 ">
+						{$vo.order_price_up}
+						&nbsp;
+						已支付：
+						{$vo.payment_price}
+						&nbsp;
+						未支付：<big>{$vo['order_price_up']-$vo['payment_price']}</big>
+					<else/>
+						{$vo.order_price}
+						&nbsp;
+						已支付：
+						{$vo.payment_price}
+						&nbsp;
+						未支付：<big>{$vo['order_price']-$vo['payment_price']}</big>
+					</if>
+				</p>
+			</div>
+		</foreach>
+		<br>
+		<if condition="$total_page GT 1 ">
+			<table class="am-table am-table-bordered table">
+				<tr>
+					<if condition="$page GT 1 ">
+						<td><a href="/User/orderList.html?page={$page-1}&order_sn={$order_sn}&certificate_no={$certificate_no}&order_status={$order_status}" target="_self">上一页</a></td>
+					<else />
+						<td><a>无</a></td>
+					</if>
+					<td><a href="javascript:void(0);">当前第{$page}页 &nbsp;&nbsp; 共{$total_page}页</a></td>
+					<if condition=" $page LT $total_page ">
+						<td><a href="/User/orderList.html?page={$page+1}&order_sn={$order_sn}&certificate_no={$certificate_no}&order_status={$order_status}" target="_self">下一页</a></td>
+					<else />
+						<td><a>无</a></td>
+					</if>
+				</tr>
+			</table>
+		</if>
+	</div>
+	<script>
+		var fuc_confirm = function(id){
+			$.ajax({
+				url:"/User/confirmReceive.html",
+				type: 'POST',
+				data: {'order_id':id},
+				success: function(d){
+					alert(d.msg);
+					window.location.href = d.backUrl;
+				}
+			});
+		}
+		
+		$("select[name='order_status']").val("{$order_status}");
+		
+		function updateOrder(order_id,order_status){
+
+				$.post('/User/updateOrder',{order_id:order_id,order_status:order_status,href:window.location.href},function(data){
+					alert(data.msg);
+					window.location.reload(); 
+				});
+		}
+
+	</script>
+	<include file="Public:footer" />

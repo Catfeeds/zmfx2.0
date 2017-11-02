@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/user.css">
+<link href="__JS__/iCheck/skins/minimal/blue.css" rel="stylesheet">
+<link href="__JS__/iCheck/skins/square/blue.css" rel="stylesheet">
+<link href="__JS__/iCheck/skins/flat/blue.css" rel="stylesheet">
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/user.js"></script>
+<link rel="stylesheet" href="__CSS__/cart.css">
+<script src="__JS__/iCheck/jquery.icheck.js"></script>
+<script src="__JS__/icheck-init.js"></script>
+<script type="text/javascript" src="__JS__/fuelux/js/spinner.min.js"></script>
+<script src="__JS__/spinner-init.js"></script>
+<script src="__JS__/layer-mobile/layer.js"></script> 
+<!-- 商品滑动 -->
+<link rel="stylesheet" href="__CSS__/swiper.min.css">
+<title>提交订单</title>
+</head>
+<style>
+  .swiper-container { width: 100%; height: 300px; margin: 20px auto; }
+  .swiper-slide { text-align: center; font-size: 18px; background: #fff; display: -webkit-box; display: -ms-flexbox; display: -webkit-flex; display: flex; -webkit-box-pack: center; -ms-flex-pack: center; -webkit-justify-content: center; justify-content: center; -webkit-box-align: center; -ms-flex-align: center; -webkit-align-items: center; align-items: center;}
+  .footer li { float: none; width: auto; }
+  .confirm-header ul li p { white-space:normal}
+  .confirm-header ul { box-shadow: none; padding: 5px;}
+</style>
+<body class="wrap-bg">
+
+<!--     <nav class="navbar navbar-default footer user-order-empty user-order-waitpay confirm-header" role="navigation">
+     <ul class="nav">
+      <li>
+        <a onclick="ai_mutual('55');" >
+           <if condition="$user_address">
+               <p></p>
+             <p>&nbsp;&nbsp;&nbsp;{$user_address[0]}{$user_address[1]}省{$user_address[2]}市{$user_address[3]}&nbsp;&nbsp;{$user_address[address]}<p> 
+             <p>&nbsp;&nbsp;&nbsp;收货人姓名：{$user_address[name]}<p>
+             <p>&nbsp;&nbsp;&nbsp;收货人电话: {$user_address[phone]}<p>
+            <input type="hidden" class="user_address_id" data_num="{$user_address[address_id]}" />
+          <else />
+            <i class="glyphicon glyphicon-plus blue" style="display: inline-block"></i>请选择默认/添加收货人地址
+          </if>
+          
+        </a>
+      </li>
+          </ul>
+    </nav>
+ -->
+    <section>
+      <div class="confirm-address">
+
+        <if condition="$user_address">
+          <div class="address-box" onclick="ai_mutual('55');">
+            <div class="sh-left"><img src="__IMG__/map_icon.png" width="30" alt=""></div>
+            <div class="sh-center">
+              <div class="sh-head">
+                <b class="pull-left">收货人：{$user_address[name]}</b> 
+                <span class="pull-right">{$user_address[phone]}</span>
+                <div class="clearfix"></div>
+              </div>
+              <p>收货地址：{$user_address[0]}{$user_address[1]}省{$user_address[2]}市{$user_address[3]}&nbsp;&nbsp;{$user_address[address]}</p>
+            </div>
+            <div class="sh-right"><img src="__IMG__/right_icon.png" width="18" alt=""></div>
+            <div class="clearfix"></div>
+            <input type="hidden" class="user_address_id" data_num="{$user_address[address_id]}" />
+          </div>
+          <div class="bimg">
+            <img src="__IMG__/confirm_address_bg.png" alt="">
+          </div>
+        <else />
+          <div class="address-box adddz-box" onclick="ai_mutual('55');">
+            <div class="adddz">＋添加收货地址 
+              <img src="/Application/Api_view/View/default/img/right_icon.png" width="18" class="pull-right" style="margin-right: 5px;" alt="">
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </if>
+      </div>
+    </section>
+		
+		<!-- Main -->
+		<div class="container-fluid">
+			<div class="row">			
+        <section>
+          <div class="order-list">
+            <div class="col-xs-12">
+              <div class="panel panel-default">
+                <!-- <div class="panel-heading">
+                    <h6>商品清单</h6>
+                </div> -->
+                <div class="panel-body">
+                    <div id="gmap-street-view">
+                        <!-- Swiper -->
+                        <div class="swiper-container spimg">
+                          <a  onclick="ai_mutual('42,{$id}');">
+                          <ul class="swiper-wrapper">
+                          <if condition="$product">
+                            <volist name="product['data']" id="vo">
+                                <li><span class="swiper-slide"><img src="{$vo.goods_attrs.thumb}" class="border-img" alt=""></span></li>
+                                <input type="hidden" class="user_goods_id" data_num="{$vo.id}" />
+                            </volist>
+                          </if>
+                          <if condition="$luozuan">
+                            <volist name="luozuan['data']" id="vo">
+                                <li><span class="swiper-slide"><img src="/Public/images/default/luozuan.jpg" class="border-img" alt=""></span></li>
+                                <input type="hidden" class="user_goods_id" data_num="{$vo.id}" />
+                            </volist>
+                          </if>
+                          <if condition="$sanhuo">
+                            <volist name="sanhuo['data']" id="vo">
+                                <li><span class="swiper-slide"><img src="/Public/images/default/sanhuo.jpg" class="border-img" alt=""></span></li>
+                                <input type="hidden" class="user_goods_id" data_num="{$vo.id}" />
+                            </volist>
+                          </if>
+                          <if condition="$jietuo">
+                            <volist name="jietuo['data']" id="vo">
+                                <li><span class="swiper-slide"><img src="{$vo.goods_attrs.thumb}" class="border-img" alt=""></span></li>
+                                <input type="hidden" class="user_goods_id" data_num="{$vo.id}" />
+                            </volist>
+                          </if>
+                          <div class="clear"></div>
+                          </ul> </a>    
+                        </div>
+                        <div class="spsum"  onclick="ai_mutual('42,{$id}');" >
+                            共<span class="red">{$count_tip}</span>件 <i class="glyphicon glyphicon-chevron-right"></i>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <if condition="$user_pay_mode">
+                        <p class="borbot"></p>
+                        <div class="borbot payment">
+                          <h4 style="font-size: 15px;">支付方式</h4>
+                          <div class="square-blue single-row">
+                 
+                              <div class="radio-list oneradio-list">
+                                <div class="radio pull-left zfss-radio">
+                                  <input tabindex="3" type="radio"  name="pay-radio"> 
+                                </div>
+                                <span class="pull-left" style="margin-left: 5px;">在线支付<br>
+                                <small class="small">支持银行卡支付、微信支付等</small>
+                                </span>
+                                <div class="clearfix"></div>
+                              </div>
+                              
+                              <div class="radio-list">
+                                <div class="radio pull-left zfss-radio">
+                                  <input tabindex="3" type="radio"  name="pay-radio">
+                                </div>
+                                <span class="pull-left" style="line-height: 40px; margin-left: 5px;">线下转账</span>
+                                <div class="clearfix"></div>
+                              </div>
+
+                          </div>
+                          <!-- <button type="button" class="btn btn-default xxzz btn-primary">线下转账</button>
+                          <button type="button" class="btn btn-default">在线支付</button> -->
+                        </div>
+                        <!-- <div class="borbot alert alert-info xxzz-data" style="display: block">
+                          <if condition="$LinePayMode">
+                            <p>账户名称：{$LinePayMode.aname}</p>
+                            <p>账号：{$LinePayMode.abank}</p>
+                            <p>开户行： {$LinePayMode.tback}</p>
+                          </if>  
+                        </div> -->
+                    </if>
+                    <!-- <div class="rabox borbot">
+                      <div class="ratext"> 物流配送 </div>
+                      <div class="psfs">
+                        <if condition="$user_delivery_mode">
+                          <volist name="user_delivery_mode" id="vo">
+                            <div class="square-blue single-row">
+                                <div class="radio" style="float:left">
+                                    <input tabindex="3" type="radio"  name="demo-radio" ref={$vo.mode_id}>
+                                </div>
+                                {$vo.mode_name}
+                            </div>
+                          </volist>
+                        </if>
+                      </div>
+                      <div class="clear"></div>
+                    </div> -->
+                    <div class="borbot"> 
+                      <div class="square-blue single-row">
+
+                        <h4 style="font-size: 15px;">物流方式</h4>
+                        <if condition="$user_delivery_mode">
+                          <volist name="user_delivery_mode" id="vo">
+                            <div class="radio-list">
+                              <div class="radio pull-left zfss-radio">
+                                <input tabindex="3" type="radio"  name="demo-radio" ref="{$vo.mode_id}" safep="{$vo.mode_safep}" expressp="{$vo.mode_expressp}"> 
+                              </div>
+                              <span class="pull-left" style="margin-left: 5px;">{$vo.mode_name}<br>
+                              <small class="small">预计到货时间：{$vo.mode_time}</small>
+                              </span>
+                              <div class="clearfix"></div>
+                            </div>
+                          </volist>
+                        </if>
+                      </div>
+                    </div>
+
+                    <div class="oneradio-list invoice">
+						<a href="/Userorder/invoice<?php echo '?agent_id='.C('agent_id').'&token='.C('token').'&uid='.C('uid')?>">					  
+                        <span class="pull-left">发票信息</span>
+                        <span class="pull-right"><img src="__IMG__/right_icon.png" width="18" alt=""></span>
+                        <div class="clearfix"></div>
+                      </a>
+                    </div>
+
+                    <input name="id" value="{$id}" type="hidden" />
+                    <!-- <p class="submit-order"><button type="button" class="btn btn-primary exit-button" onclick="">提交订单</button></p> -->
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </section>
+			</div>
+		</div>
+
+    <section>
+      <div class="settlement">
+        <ul>
+          <li>
+            <span class="pull-left">商品总金额</span>
+            <span class="pull-right red PriceGoods">￥{$Think.session.Corder_succeed_total}</span>
+            <div class="clearfix"></div>
+          </li>
+          <li>
+            <span class="pull-left">保险费</span>
+            <span class="pull-right red">+  <span id="safep">到付</span></span>
+            <div class="clearfix"></div>
+          </li>
+          <li>
+            <span class="pull-left">运费</span>
+            <span class="pull-right red">+ <span id="expressp">到付</span></span>
+            <div class="clearfix"></div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="order-submit">
+        <a href="javascript:;" onclick="submit_data();" class="submit-btn pull-right">提交订单</a>
+        <span class="red pull-right sfk">实付款：￥<span id = "PriceToale">{$Think.session.Corder_succeed_total}</span></span>
+        <div class="clearfix"></div>
+      </div>
+    </section>
+		<!-- Main END //-->
+
+
+
+	<!-- Swiper JS -->
+	<script src="__JS__/swiper.min.js"></script>
+	<script src="__JS__/public.js"></script>
+	<script src="__JS__/layer-mobile/layer.js"></script>
+	<script>
+
+	if($('.swiper-wrapper :has(li)')){
+		if($('.swiper-wrapper li').length>4){
+			$('.swiper-wrapper li:gt(3)').hide();
+		}
+	}
+	
+
+	
+	
+	
+	var swiper = new Swiper('.swiper-container', {
+			pagination: '.swiper-pagination',
+			slidesPerView: 3,
+			paginationClickable: true,
+			spaceBetween: 30,
+			freeMode: true
+	});	
+	
+	var radio_tips='';
+	$('input[name="pay-radio"]:eq(0)').iCheck('check');
+	$('input[name="demo-radio"]:eq(0)').iCheck('check');
+	//PriceSum($('input[name="demo-radio"]:eq(0)').attr('safep'),$('input[name="demo-radio"]:eq(0)').attr('expressp'),$('.PriceGoods').text().replace(/[^0-9]/ig,""));			
+	//$("#safep").text($('input[name="demo-radio"]:eq(0)').attr('safep') 		 ? $('input[name="demo-radio"]:eq(0)').attr('safep') 	: 0);
+	//$("#expressp").text($('input[name="demo-radio"]:eq(0)').attr('expressp') ? $('input[name="demo-radio"]:eq(0)').attr('expressp') : 0);
+	radio_tips = $('input[name="demo-radio"]:eq(0)').attr('ref') 			 ? $('input[name="demo-radio"]:eq(0)').attr('ref') 		: null;	
+	
+	$(function(){
+  //支付方式 (支持在线支付后请开启) 
+		/*$('.payment button').bind('click', function(){
+			$('.payment').find('button').removeClass('btn-primary');
+			$(this).addClass('btn-primary');
+			if( $(this).hasClass('btn-primary') && $(this).hasClass('xxzz') ){
+				$('.xxzz-data').slideDown();
+			}else{
+				$('.xxzz-data').slideUp();
+			}
+		});*/
+
+	});
+
+
+	
+
+   
+	
+	$('input[name="demo-radio"]').on('ifChecked', function(event){
+		radio_tips 	= ($(this).attr('ref'));
+		//$("#safep").text($(this).attr('safep') 		? $(this).attr('safep') 	:0);
+		//$("#expressp").text($(this).attr('expressp')? $(this).attr('expressp')	:0);
+		//PriceSum($(this).attr('safep'),$(this).attr('expressp'),$('.PriceGoods').text().replace(/[^0-9]/ig,""));
+	});
+	
+	function submit_data(){
+		var uid	 	='<?php echo empty(C('uid'))   		? 0 : C('uid')?>';
+		var token	='<?php echo empty(C('token')) 		? 0 : C('token')?>';
+		var agent_id='<?php echo empty(C('agent_id')) 	? 0 : C('agent_id')?>';		
+		var attr_code = [];
+		$(".spimg input").each(function(i){			 
+			attr_code[i] = $(this).attr('data_num');
+		});
+		if(radio_tips=='' || radio_tips==null || radio_tips==undefined ){
+			layer.open({content: '请选择物流配送方式！', time: 2});	return false;
+		}	
+ 
+		address_id=$(".user_address_id").attr('data_num');
+			$.post('/Cart/Submit_Corder',{address_id:address_id,id:attr_code,radio_tips:radio_tips,uid:uid,token:token,agent_id:agent_id},function(data){
+					if(data.status == 1){
+						tan(data.msg);
+						setTimeout("ai_mutual('43')",2000);
+					 }else{
+						tan(data.msg);
+					 }
+			});                                               
+	}
+	
+
+ 
+	
+	<!-- function PriceSum(price1,price2,price3){ -->
+			<!-- price1=	price1=="" ? 0 : price1; -->
+			<!-- price2= price2=="" ? 0 : price2; -->
+			<!-- price3= price3=="" ? 0 : price3;			 -->
+			<!-- var PriceToale = (parseInt(price1)+parseInt(price2)+parseInt(price3)).toFixed(2); -->
+			<!-- $("#PriceToale").text(PriceToale); -->
+	<!-- } -->
+	
+	
+	
+		</script>
+
+
+</body>
+</html>

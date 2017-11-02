@@ -1,0 +1,123 @@
+<extend name="Manage:Default:base" />
+<block name="title">{$L['login_title']}</block>
+<block name="desc">{$L['login_description']}</block>
+<block name="body">
+    <section>
+        <div class="left-side sticky-left-side">
+            <div class="logo">
+                <a href="index.html"><img src="__IMG__/logo_<php>echo LANG_SET;</php>.png"></a>
+            </div>
+            <div class="logo-icon text-center">
+                <a href="index.html"><img src="__IMG__/logo_icon.png"></a>
+            </div>
+            <div class="nav-left">
+                <ul class="nav nav-pills nav-stacked custom-nav">
+                    <li><a href="javascript:void(0);" onclick="go('{:GetSupplyUrl('Index','index')}')"><i class="fa icon-home"></i>      <span>{$L['icon_home']}</span></a></li>
+                    <li><a href="javascript:void(0);" onclick="go('{:GetSupplyUrl('Product','index')}')"><i class="fa icon-product"></i> <span>{$L['icon_product']}</span></a></li>
+                    <li><a href="javascript:void(0);" onclick="go('{:GetSupplyUrl('Order','index')}')"><i class="fa icon-order"></i>     <span>{$L['icon_order']}</span></a></li>
+                    <li><a href="javascript:void(0);" onclick="go('{:GetSupplyUrl('Finance','index')}')"><i class="fa icon-fina"></i>    <span>{$L['icon_fina']}</span></a></li>
+                    <li><a href="javascript:void(0);" onclick="go('{:GetSupplyUrl('Setting','index')}')"><i class="fa icon-set"></i>     <span>{$L['icon_set']}</span></a></li>
+                    <?php /*<li><a href="{:U('/Index/logout')}" id="logout"><i class="fa fa-sign-in"></i>                                 <span>{$L['icon_logout']}</span></a></li> */?>
+                </ul>
+            </div>
+        </div>
+        <!-- 左边导航结束-->
+        <!-- 主要内容-->
+        <div class="main-content" >
+            <!-- 头部开始-->
+            <div class="header-section">
+                <!--切换按钮开始-->
+                <a class="toggle-btn"><i class="fa fa-bars"></i></a>
+                <!--切换按钮结束-->
+
+                <div class="menu-center">
+                    {$L['text_welcome']}<?php echo $_SESSION['supply']['corp_name']; ?>
+                </div>
+                <!--右上角菜单-->
+                <div class="menu-right">
+                    <ul class="notification-menu">
+                        <li>
+                            <a onclick="go('{:GetSupplyUrl('Setting','index','point=message')}')" href="javascript:;" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa icon-message"></i>
+                                <span class="badge">{$count_msg}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                <img src="__IMG__/user.png" />
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                                <li><a onclick="go('{:GetSupplyUrl('Setting','index')}')" href="javascript:;"><i class="fa fa-user"></i>{$L['fa_user']}</a></li>
+                                <li><a onclick="go('{:GetSupplyUrl('Setting','index','point=account')}')" href="javascript:;"><i class="fa fa-cog"></i>{$L['fa_save']}</a></li>
+                                <li><a onclick="go('{:GetSupplyUrl('Setting','index','point=feedback')}')" href="javascript:;"><i class="fa fa-star"></i>{$L['fa_opinion']}</a></li>
+                                <li><a href="{:U('/Index/logout')}"><i class="fa fa-power-off"></i>{$L['icon_logout']}</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" class="btn btn-default dropdown-toggle info-number" data-toggle="dropdown">
+                                {$nowlang}
+                                <i class="fa fa-chevron-down"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-head pull-right">
+                                <ul class="dropdown-list normal-list">
+                                    <li class="new"><a href="javascript:void(0);" onclick="setlang('zh-cn')">{$L['text_zh-cn']}</a></li>
+                                    <li class="new"><a href="javascript:void(0);" onclick="setlang('zh-tw')">{$L['text_zh-tw']}</a></li>
+                                    <li class="new"><a href="javascript:void(0);" onclick="setlang('en-us')">{$L['text_en-us']}</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 头部结束-->
+            <!-- 内容-->
+            <iframe src="{:GetSupplyUrl('Index','index')}" id="rightcont" style="width: 100%;" frameborder="no" ></iframe>
+        </div>
+    </section>
+</block>
+<block name="my_js">
+    <script>
+        function go(href_str){
+            $('iframe').attr('src',href_str);
+            $(this).has('li').addClass('active');
+        }
+        function setlang(lang_type){
+            self.location.href = '{:U('Manage/index')}?lang='+lang_type
+        }
+
+        $(function(){
+            var Wh =  $(document).height();
+            $("#rightcont").css("min-height", Wh);
+
+            $('.nav-left ul li').click(function(){
+                $('.nav-left ul li a').removeClass('active');
+                $(this).find('a').addClass('active');
+            });
+        });
+
+        //$('html').niceScroll({styler:"fb",cursorcolor:"#65cea7", cursorwidth: '6', cursorborderradius: '0px', background: '#424f63', spacebarenabled:false, cursorborder: '0',  zindex: '1000'});
+
+        $(function(){
+            //配合获取子页面iframe框架的高度
+            $("#rightcont").load(function(){
+                var mainheight = $(this).contents().find("body").height()+30;
+                $(this).height(mainheight);
+            }); 
+
+            //同步子页面提示框位置
+            $(document).delegate( window,'scroll', function() {
+                $("iframe").contents().find(".layui-layer-msg").animate({'top':$(window).scrollTop()+ 100},1);
+            });
+            
+            //初始化子页面提示框位置
+            $('#rightcont').load(function(){
+                $("iframe").contents().delegate("#submit",'click', function() {
+                    $("iframe").contents().find(".layui-layer-msg").animate({'top':$(window).scrollTop()+ 100},1);
+                });
+            }); 
+        });
+
+    </script>
+
+</block>
+<block name="zi"></block>

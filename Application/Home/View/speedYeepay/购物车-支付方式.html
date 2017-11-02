@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>速易宝-购物车-支付方式</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script src="js/jquery-1.12.3.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/public.js"></script>
+</head>
+
+<body>
+
+	<!-- header -->
+	<div class="header cart-header">
+		<div class="container">
+			<div class="shortcut cart-top">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-6 col-md-6">
+							<p class="text-left">您好，欢迎来到Munch珠宝 [<a href="#">登录</a>] [<a href="#">注册</a>]</p>
+						</div>
+						<div class="col-sm-6 col-md-6">
+							<div class="shortcut-right">
+								<ul class="list-inline text-right">
+									<li class=""><a href="#">购物车(<span class="cat-c">2件</span>)</a></li>
+									<li class="">|</li>
+									<li class=""><a href="#">我的订单</a></li>
+									<li class="">|</li>
+									<li class=""><a href="#">帮助中心</a></li>
+								</ul>   
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- header end //-->
+	
+	<!-- cart -->
+	<div class="cart">
+		<div class="steps">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h2 style="margin-top: 8px;"><img src="http://www.sghszb.com/Public/Uploads/Config/72/2016-08-27/57c13b07538d5.png" alt="" style="max-width: 150px;"> &nbsp;收银台</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+    <style>
+      .dxzf { margin-top: 20px;}
+      .dxzf .blue { color: #6574ff;}
+      .dxzf .rmbred { font-weight: bold; color: red; font-size: 18px;}
+      .dxzf .user { margin-top: 20px;}
+      .dxzf .user h5 { margin-top: 0px; padding: 30px 0 0 30px;}
+      .dxzf .user input[type=radio] { width: 17px; height: 17px; vertical-align: middle; cursor: pointer;}
+      .platform ul li { float: left; margin-right: 20px; margin-bottom: 20px;}
+      .user-address table tr td { text-align: center;}
+      .cart table { display: none;}
+    </style>
+    <div class="dxzf">
+      <div class="container">
+      <div class="user">
+        <div class="userbox">
+          <div class="cart check-cart userdata-box user-address user-message">
+            <div class="check-order">
+                <div class="txlist">
+                  <div class="shbg">
+                    <p>
+                      <span><strong>订单信息</strong></span> 共2件商品 &nbsp; <a href="#" class="blue">查看详情</a>
+                    </p> 
+                    <span class="chaozuo">
+                      共支付 <span class="rmbred">6325.00</span>元
+                    </span>
+                    <div class="clearfix"></div></div>
+                </div>
+
+                <table class="table" class="zffs">
+                  <thead>
+                    <tr>
+                      <th>商品名称</th>
+                      <th>单价</th>
+                      <th>数量</th>
+                      <th>小计</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>天籁-白18K金对戒(男) <br> 天籁-白18K金钻石对戒(女) </td>
+                      <td>¥5199.00</td>
+                      <td>1</td>
+                      <td><span class="red">¥5199.00</span></td>
+                    </tr>
+                    <tr>
+                      <td>天籁-白18K金对戒(男) <br> 天籁-白18K金钻石对戒(女) </td>
+                      <td>¥5199.00</td>
+                      <td>1</td>
+                      <td><span class="red">¥5199.00</span></td>
+                    </tr>
+
+                   <tr>
+                      <td>GIA_7196541097  圆形   0.5ct  颜色:I  净度:VS1  切工:F  抛光:VG  荧光:F 对称:VG  </td>
+                      <td>¥5199.00</td>
+                      <td>1</td>
+                      <td><span class="red">¥5199.00</span></td>
+                    </tr>
+                </tbody>
+              </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+          $(function(){
+            $('.blue').hover(function(){
+              $('.cart table').show();
+            },function(){
+              $('.cart table').hide();
+            });
+          });
+        </script>
+        <div class="user">
+          <div class="userbox">
+            <div class="cart check-cart userdata-box user-address user-message">
+              <div class="check-order">
+                <div class="txlist">
+                  <h5>支付方式</h5>
+                  <div class="platform">
+                    <ul>
+                      <li><input type="radio" name="zfb"> <img src="images/payment_07.png" alt=""></li>
+                      <li><input type="radio" name="zfb"> <img src="images/payment_07.png" alt=""></li>
+                      <li><input type="radio" name="zfb"> <img src="images/payment_07.png" alt=""></li>
+                      <li><input type="radio" name="zfb"> <img src="images/payment_07.png" alt=""></li>
+                      <li><input type="radio" name="zfb"> <img src="images/payment_07.png" alt=""></li>
+                      <li><input type="radio" name="zfb"> <img src="images/payment_07.png" alt=""></li>
+                      <div class="clearfix"></div>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-right">
+          <br>
+          <button class="btn btn-danger cart-sub">提交订单</button>
+        </div>
+      </div>
+    </div>
+
+	</div>
+</div>
+	<!-- cart end //-->
+
+	<!-- footer -->
+	<div class="footer">
+		<div class="container">
+			<div class="ensure center-block text-center">
+				<div class="row">
+					<div class="col-xs-12 col-sm-4 col-md-5ths"><img src="images/index_86.png" alt="...">一钻双证</div>
+					<div class="col-xs-12 col-sm-4 col-md-5ths"><img src="images/index_88.png" alt="...">全国免费配送</div>
+					<div class="col-xs-12 col-sm-4 col-md-5ths"><img src="images/index_90.png" alt="...">珠宝协会会员</div>
+					<div class="col-xs-12 col-sm-6 col-md-5ths"><img src="images/index_93.png" alt="...">15天免费退换</div>
+					<div class="col-xs-12 col-sm-6 col-md-5ths"><img src="images/index_95.png" alt="...">全程保险</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="foot-desc">
+			<div class="container">
+				<div class="row foot-desc-list">
+					<div class="col-xs-12 col-md-2 footer-logo">
+						<img src="images/logo.png" alt="">
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>用户指南</h5>
+						<ul class="list-group">
+							<li><a href="#">注册用户</a></li>
+							<li><a href="#">购买流程</a></li>
+							<li><a href="#">支付方式</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>关于配送</h5>
+						<ul class="list-group">
+							<li><a href="#">商品包装</a></li>
+							<li><a href="#">配送方式</a></li>
+							<li><a href="#">配送流程</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>售后服务</h5>
+						<ul class="list-group">
+							<li><a href="#">会员细节</a></li>
+							<li><a href="#">售后保障</a></li>
+							<li><a href="#">退换流程</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>常见问题</h5>
+						<ul class="list-group">
+							<li><a href="#">珠宝常识</a></li>
+							<li><a href="#">配送问题</a></li>
+							<li><a href="#">联系客服</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-12 col-md-2 gstime">
+						<img src="images/footer-phone.png" alt="">
+						<strong><h4>0755-22922183</h4></strong>
+						<span>服务时间： AM9: 00-PM23: 00</span>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				<p class="copy-link">伪验证   友情链接        钻石、钻戒、裸钻、婚戒、戒指、结婚钻戒、结婚戒指、钻石戒指、珠宝、首饰、订婚戒指、克拉钻、异形钻、30分钻石、50分钻石、钻石饰品、裸钻定制</p>
+				<p class="text-center">© 2010-2016 珠宝官网 版权所有,并保留所有权利  粤ICP备123456789号</p>
+			</div>
+		</div>
+	</div>
+	<!-- footer end //-->
+
+
+</body>
+</html>

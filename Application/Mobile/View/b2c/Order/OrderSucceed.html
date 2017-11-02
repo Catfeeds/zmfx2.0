@@ -1,0 +1,45 @@
+<include file="Public:header" />
+<body>
+    <section class="order-submit-success">
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>订单提交成功</h2>
+            </div>
+        </header>
+
+        <div class="wrapper">
+
+            <div class="paytype-box">
+                <div class="text-center">
+                    <dl class="clearfix">
+                        <dt><img src="__IMG__/order_img_03.png" alt=""></dt>
+                        <dd>
+                            <p>支付方式： <span class="rmb">线下支付</span></p>
+                            <p>订单金额： <span class="rmb">￥<?php echo base64_decode($_GET['am']);?></span></p>
+                        </dd>
+                    </dl>
+                    <div class="btn-box">
+                        <a href="/User/orderList.html" class="paytype-btn">查看订单</a>
+                        <a href="/" class="paytype-btn">去首页</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pay-details">
+                <h1>线下支付信息</h1>
+				<if condition="$LinePayMode">
+					<p><span class="h2">户 &nbsp; 名：</span>{$LinePayMode.aname}</p>
+					<p><span class="h2">账 &nbsp; 号：</span>{$LinePayMode.abank}</p>
+					<p><span class="h2">开户行：</span>{$LinePayMode.tback} </p>
+					<p class="color666">提示: 可在“个人中心”我的订单管理 查看订单信息</p>
+				</if>
+            </div>
+
+        </div>
+    </section>
+<include file="Public:foot" />	
+</body>
+</html>

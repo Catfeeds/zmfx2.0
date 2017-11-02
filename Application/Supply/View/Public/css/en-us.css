@@ -1,0 +1,46 @@
+body { font-size: 12px;}
+
+/* login */
+.form-signin .form-signin-heading a { padding: 0; margin: 0 12px;}
+.form-signin a:hover,.form-signin a:focus { text-decoration: none; cursor: pointer;}
+.btn-block { padding: 3px 12px;}
+
+/* index */
+ul.bar-legend li span { width: auto;}
+.custom-nav > li > a span { right: 42%;}
+
+@media (max-width: 1900px){
+.table-responsive {
+    width: 100%;
+    margin-bottom: 15px;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border: 1px solid #ddd;
+    -webkit-overflow-scrolling: touch;
+}}
+.form-signin input[type="text"],
+.form-signin input[type="password"]{ font-size: 14px !important;}
+.account .collapse >div li label, .account .collapseing >div li label { width: auto;}
+.notification-menu > li > a > i { margin-top: 0;}
+.data dl dt { width: 150px; text-align: right; padding-right: 10px;}
+.product h6 { margin-bottom: 0;}
+.upload .nav-tabs>li>a { width: auto; padding-left: 5px; padding-right: 5px;}
+.tab-content,.custom-tab ul li a { font-style: initial;}
+.regist-input input[type="text"] { padding: 10px 6px !important;}
+.form-signin .form-signin-heading a { font-size: 14px;}
+.sign-title { background: url('../images/en-supply.png') no-repeat left 33px; background-size: 179px auto; left: 10px; padding-left: 159px; top: -111px;}
+.data dl dd textarea { font-size: 14px;}
+#determine-emails label { margin-left: -140px !important;}
+#emails label { margin-left: -176px !important;}
+.table>thead:first-child>tr:first-child>th { font-size: 12px;}
+table tr,table td { font-size: 14px;}
+.form-inline label { min-width: 100px !important; margin-right: 5px !important;}
+@media (min-width: 768px) {
+.modal-dialog {
+    width: 800px;
+    margin: 30px auto;
+}}
+.settled-btn .btn { width: 190px !important;}
+body .bla { width: 100% !important;}
+body .account header button { margin-top: 10px;}

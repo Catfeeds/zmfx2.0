@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>证书查询</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/aftersales.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<style>
+	a,a:hover{ text-decoration:none; color:#333}
+	</style>
+</head>
+<body class="wrap-bg">
+	<!-- Main -->
+    <div class="user-info sh-progress zsquery">
+      <section class="shouhouxq-sub cxbox">
+        <table>
+          <tbody>  
+            <if condition="$data">
+                <foreach name = "data" item="d" >
+                  <tr>
+					<?php if(strpos($d['title'],'证书下载') ===false){?>
+						<th><?php echo $d['title']?></th>
+					<?php }?>
+
+					
+                    <?php if ($_GET['type'] == '3'){ ?>
+                    <td>
+                      <?php echo strtr($d['value'],">"," ")?>
+                    </td>
+                    <?php }elseif($_GET['type'] == '1'){ ?>
+                    <?php if(strpos($d['value'],'/Home/Search/onlineView/reportNumber') ==true){?>
+ 
+				<!-- <td> -->
+				  <!-- <a href="/LuoZuan/zs_ld/type/1/number/<?php echo $_GET['number'];?>">请点击此处下载证书</a>&nbsp; -->
+				  <!-- <a href="/LuoZuan/zs_ld/type/2/number/<?php echo $_GET['number'];?>">在线预览</a> -->
+				<!-- </td> -->
+ 
+                    <?php }else{ ?>
+                    <td>{$d.value}</td>
+                    <?php }?>
+                    <?php }else{ ?>
+                    <td>{$d.value}</td>
+                    <?php }?>
+                  </tr>
+                </foreach>
+				
+				
+                <p class="alert text-center"><a onclick="window.history.go(-1);" > <button  class="btn btn-block">返回</button></a></p>
+            <else />
+                <p class="alert text-center"><span>没有数据...</span></p>
+                <p class="alert text-center"><a href="{:U('LuoZuan/zhengshu')}"> <button href="{:U('LuoZuan/zhengshu')}" class="btn">返回重新查询</button></a></p>
+            </if>
+          </tbody>
+        </table>
+      </section>
+    </div>
+    <!-- Main END //-->
+
+</body>
+</html>

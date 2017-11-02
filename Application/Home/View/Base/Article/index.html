@@ -1,0 +1,120 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/UISlide/UISlide.css">
+<script type="text/javascript" src="__PUBLIC__/UISlide/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="__PUBLIC__/UISlide/jquery.UISlide.js"></script>
+<script type="text/javascript">$(function(){$('#slide').UISlide();})</script>
+<div class="baike">
+    <div class="kuang">
+		<div id="slide" class="slide_wrap">
+			<ul class="slide_imglist">
+				<volist name="ArticleAdList" id="vo">
+				<li>
+					<a href="{$vo.url}" target="_blank" title="{$vo.title}" target="_blank">
+					<img src="__PUBLIC__/{$vo.images_path}" alt=""></a>
+				</li>
+				</volist>
+			</ul>
+			<div class="slide_title">
+				<h3><a href="{$ArticleAdList[0]['url']}" target="_blank">{$ArticleAdList[0]['title']}</a></h3>
+				<dl class="slide_num"></dl>
+				<em></em>
+			</div>
+		</div>
+        <div class="news">
+            <div class="title">最新动态</div>
+            <if condition="$articles_new">
+            <ul>
+            	<volist name="articles_new" id="vo">
+                <li><a href="{:U('Home/Article/detail?aid='.$vo['aid'])}" title="{$vo.title}">{$vo.title|msubstr=0,28,'utf-8'}</a>
+                	<font>{$vo.addtime|date="Y-m-d H:i",###}</font>
+                    <div class="clear"></div>
+                </volist>
+            </ul>
+            </if>
+        </div>
+        <div class="box top">
+            <div class="title">点击热榜</div>
+            <if condition="$articles_hot">
+            <ul>
+            	<volist name="articles_hot" id="vo">
+                <li><a href="{:U('Home/Article/detail?aid='.$vo['aid'])}" title="{$vo.title}">{$vo.title|msubstr=0,18,'utf-8'}</a></li>
+                </volist>
+            </ul>
+            </if>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="kuang">
+        <if condition="$categorys">
+            <div class="content_left">
+                <volist name="categorys" id="vo" key="key">
+                    <div class="box zBaike">
+                        <div class="title">
+                            <span>{$vo.catname}</span>
+                            <if condition="$vo['childCategory']">
+                                <ul>
+                                    <volist name="vo['childCategory']" id="v">
+                                        <li><a href="{:U('Home/Article/articleList?cat_id='.$v['cid'])}">{$v.catname}</a></li>
+                                    </volist>
+                                </ul>
+                            </if>
+                        </div>
+                        <if condition="$vo['articles_baike_thumb']">
+                            <ul class="tuNews">
+                                <volist name="vo['articles_baike_thumb']" id="v" key="k">
+                                    <li <if condition="$k %2 ==1">class="fl"<else />class="fr"</if>>
+                                    <a href="{:U('Home/Article/detail?aid='.$v['aid'])}" title="{$v.title}">
+                                        <img src="__PUBLIC__/Uploads/article/{$v.thumb}" title="{$v.title}">
+                                        <div class="info">
+                                            <p class="pTitle">{$v.title|msubstr=0,20,'utf-8'}</p>
+                                            <p>{$v.description|msubstr=0,60,'utf-8'}</p>
+                                        </div>
+                                    </a>
+                                    </li>
+                                </volist>
+                                <div class="clear"></div>
+                            </ul>
+                        </if>
+                        <if condition="$vo['articles_baike']">
+                            <ul class="aNews">
+                                <volist name="vo['articles_baike']" id="v">
+                                    <li class="fl"><a href="{:U('Home/Article/detail?aid='.$v['aid'])}" title="{$v.title}">{$v.title|msubstr=0,20,'utf-8'}<font>{$v.addtime|date='Y-m-d H:i',###}</font>
+                                        <div class="clear"></div>
+                                    </a></li>
+                                </volist>
+                                <div class="clear"></div>
+                            </ul>
+                        </if>
+                    </div>
+                </volist>
+            </div>
+            <div class="content_right">
+                <volist name="categorys" id="vo" key="key">
+						<div class="box baikeCat">
+                            <div class="title">
+								<a href="{:U('Home/Article/articleList?cat_id='.$vo['cid'])}">{$vo.catname}</a>
+							</div>
+							<if condition="$vo['childCategory']">
+                            <ul>
+                                <volist name="vo['childCategory']" id="v">
+                                    <li><a href="{:U('Home/Article/articleList?cat_id='.$v['cid'])}">{$v.catname}</a></li>
+                                </volist>
+                                <div class="clear"></div>
+                            </ul>
+							</if>
+                        </div>
+                </volist>
+            </div>
+        </if>
+        <div class="clear"></div>
+    </div>
+
+    <div class="kuang"><a href="{:U('Home/Goods/goodsDiy')}"><img class="kImg" src="__IMG__/djzs.gif"></a></div>
+</div>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

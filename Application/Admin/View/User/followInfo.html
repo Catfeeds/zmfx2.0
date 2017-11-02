@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>客户跟进信息</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" /> 
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：客户跟进信息</h3>
+        <ul>
+            <volist name="menuList[1]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>  
+        </ul>
+    </div>
+    <div class="followInfo">
+    	<form action="{:U('/Admin/User/followInfo')}" method="POST">
+    	 <table>
+    	 	<tr><th>客户名称</th>
+    	 		<td>
+    	 			<select name="uid">
+    	 				<option value=-1>--请选择客户--</option>
+    	 				<volist name="users" id="vo">
+    	 					<option value="{$vo.uid}">{$vo.username}</option>
+    	 				</volist>
+    	 			</select>
+    	 		</td>
+    	 	</tr>
+    	 	<tr><th>跟进内容</th>
+    	 		<td><textarea name="content" cols="100" rows="7"></textarea></td>
+    	 	</tr>
+    	 	<tr>
+    	 		<th></th>
+    	 		<td><input type="submit" value="提交" class="button" /></td>
+    	 	</tr>
+    	 </table>
+    	 </form>
+    </div>
+</div>

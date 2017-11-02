@@ -1,0 +1,150 @@
+<extend name=".:Base:Index:index" />
+<block name="header">
+    <!DOCTYPE>
+    <html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        {:htmlspecialchars_decode(C('site_statistics_code_tsz'))}
+    <title>主页</title>
+    <link href="__CSS__/zmb2c.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.10.js"></script>
+    <script type="text/javascript">
+    // 用户退出 --> ken
+    function loginout() {
+        $.ajax({
+            url: '/Home/Public/loginout',
+            type: 'get',
+            dataType: 'json',
+            success: function (result) {
+                if (result.success) {
+                    alert(result.msg);
+                    window.location.href = '/Home/Index/index.html';
+                }
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    }
+    </script>
+    <style>
+    .w2{
+    letter-spacing:0em; /*如果需要y个字两端对齐，则为(x-y)/(y-1),这里是（4-2）/(2-1)=2em */
+
+
+    height:100px;
+    margin-right:0em; /*同上*/
+    }
+    .w3{
+    letter-spacing:0.5em; /*如果需要y个字两端对齐，则为(x-y)/(y-1),这里是（4-3）/(3-1)=0.5em */
+    margin-right:-0.5em; /*同上*/
+    }
+    </style>
+    {:htmlspecialchars_decode(C('site_statistics_code'))}
+    </head>
+</block>
+<block name="body">
+    <body>
+      <div class="header">
+        <div class="userInfo">
+          <ul>
+            <li class="fl"><span>欢迎光临{:C('site_name')}网络旗舰店</span></li>
+            <if condition="$Think.session.web.uid eq ''">
+              <li class="fl"><a href="{:U('Home/Public/login')}">会员登录</a></li>
+              <li class="fl"><a href="{:U('Home/Public/regist')}">| 会员注册</a></li>
+            <else/>
+              <li class="fl"><a href="{:U('/Home/User/index')}">{$Think.session.web.username}</a></li>
+              <li class="fl"><a href="javascript:void(0)" onClick="loginout();">退出</a></li>
+            </if>
+            <li class="fr"><a href="#">| 帮助中心</a></li>
+            <li class="fr"><a href="{:U('/Home/User/orderList')}">| 我的订单</a></li>
+            <li class="fr"><a href="{:U('/Home/Order/orderCart')}">购物车({$cartNumber}件)</a></li>
+            <div class="clear"></div>
+          </ul>
+        </div>
+      </div>
+      <!--内容-->
+
+      <div class="main">
+      <!-- -->
+        <div class="navContent banner">
+          <img src="__IMG__/juan_03.png">
+          <ul class="menu">
+          	<li class="logo">
+			<?php $is_company_name_callback=cookie('is_company_name_callback');?>
+			<if condition=" C('agent_id') == 7 &&  $is_company_name_callback"> 
+				<span class="user_experience text-center" style="width: 230px;  height: 50px;  line-height: 50px; margin-top: 18px;  overflow: hidden; display: inline-block;   font-size: 2em;  color: #fff;  text-align: center;">{:C('site_name')}</span>								
+			<else/>
+				<img src="__PUBLIC__/{:C('web_logo')}" class="logo" alt="logo">
+			</if>
+			</li>
+            <li class="action"><a href="/">首&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;页</a></li>
+            <if condition="$nav">
+            <volist name="nav" id="vo">
+            	<li class="openNav"><a href="{$vo.nav_url}">{$vo.nav_name}</a>
+            	<if condition="$vo['sub']">
+            	 <ul class="nav_zi" onmouseout="jQuery(this).hide();" onmouseover="jQuery( this ).show();">
+            	 	<volist name="vo['sub']" id="v">
+    	            <li><a href="{$v.nav_url}">{$v.nav_name}</a></li>
+    	            </volist>
+    	          </ul>
+    	          </if>
+            	</li>
+            </volist>
+            </if>
+            <div class="clear"></div>
+          </ul>
+          <img src="__IMG__/juan_06.png">
+          </div>
+
+      <!--
+          <div class="banner">
+              <img src="__IMG__/juan_03.png">
+              <ul>
+                <li class="logo"><img src="__IMG__/index-logo_07.png"></li>
+                <li><a href="#">首&nbsp;&nbsp;页</a></li>
+                <li><a href="#">裸&nbsp;&nbsp;钻</a></li>
+                <li><a href="#">钻&nbsp;&nbsp;托</a></li>
+                <li><a href="#">最新活动</a></li>
+                <li><a href="#">加入分销</a></li>
+              </ul>
+              <img src="__IMG__/juan_06.png">
+          </div>
+         -->
+          <!--输入框-->
+          <div class="main-info">
+            <!-- <div class="logo"><a href="{:U('/Home/Index/index')}"><img src="__IMG__/index-logo_03.png"></a></div> -->
+            <div class="contact">
+            		<span>Customer Center</span><br/>
+                	<span>{:C('site_contact')}</span>
+                </div>
+              <div class="search">
+                <form action="{:U('/Home/Search/goodsList')}" method="get">
+                  <input type="text" value="" name="keyword">
+                  <input type="submit" value="搜索">
+                </form>
+                <ul>
+                  <li><span>搜索热词:</span></li>
+    				<volist name="hot_search" id="vo">
+    			    <li><a href="{:U('/Home/Search/goodsList',array('keyword' => $vo))}">{$vo}</a></li>
+    				</volist>
+                  <div class="clear"></div>
+                </ul>
+              </div>
+              <h1><img src="__IMG__/yu.png"></h1>
+            </div>
+          </div>
+      </div>
+      <!--主页底部-->
+      <div class="footer-top">
+		<p class="copy-link">友情链接：
+			<volist name="linkList" id="vo">
+				<a href="{$vo['link_url']}" target="{$vo['link_target']}" title="{$vo['link_description']}" style="color: #b3905a;">{$vo['link_name']}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+			</volist>
+		</p>
+    	<p>© 2010-2015 {:C('site_name')} 版权所有,并保留所有权利</p>
+    	<p>粤ICP备6546565-1号</p>
+      </div>
+    </body>
+</block>
+<block name="footer"></block>

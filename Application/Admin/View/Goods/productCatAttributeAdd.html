@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>分类添加属性</title>
+<script>
+//上次已选择的属性民，再次点开时，会默认选中
+$(function(){
+	$('#specDivContent label input[type=checkbox]').each(function(){
+		var data_value = $(this).attr("data-value");
+		for(var i=0,len=attr_selected_arr.length;i<len;i++){
+			if(data_value == attr_selected_arr[i])
+				$(this).prop("checked",true);
+		}
+	});
+	//规格属性最多只能选择3个
+	if(type=='2'){
+		if($('#specDivContent label input[type=checkbox]:checked').length>=3){
+			$('#specDivContent label input[type=checkbox]').each(function(){
+				if(!($(this).prop('checked'))) $(this).attr('disabled','disabled');
+			});
+		}
+	}
+});
+</script> 
+</head>
+<body>
+<div class="page-main edit">
+	<div class="info">
+    	<div id="specDivContent">
+    	<volist name="list" id="vo">
+    		<label>
+    			<input type="checkbox" data-value="{$vo.attr_id}" data-name="{$vo.attr_name}" />
+    			<span>{$vo.attr_name}</span>
+    		</label>
+    	</volist>
+    	</div>
+    </div>
+</div>
+</body>
+</html>

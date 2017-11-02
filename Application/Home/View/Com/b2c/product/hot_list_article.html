@@ -1,0 +1,11 @@
+<div class="title">推荐产品</div>
+<ul> 
+    <volist name="hotGoods" id="vo">
+    <li>
+        <a href="{:U('Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}"><img src="__PUBLIC__/{$vo.thumb}"></a>
+        <a href="{:U('Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}"><p>{$vo.goods_name}</p></a>
+        <a href="{:U('Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}"><p>&yen;{$vo.goods_price}</p></a>
+    </li>
+    </volist>  
+    <div class="clear"></div>
+</ul>

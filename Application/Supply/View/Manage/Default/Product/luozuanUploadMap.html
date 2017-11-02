@@ -1,0 +1,277 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$L['icon_product']}{$L['edit']}</title>
+    <script type="text/javascript" src="__PUBLIC__/product/jquery-1.8.0.min.js"></script>
+    <script src="__JS__/layer/layer.js"></script>
+
+    <script type="text/javascript" src="__PUBLIC__/product/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/product/zm.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/product/jquery.form.js"></script>
+   
+    <link href="__CSS__/style.css" rel="stylesheet">
+    <link href="__CSS__/style-responsive.css" rel="stylesheet">
+    <link href="__CSS__/date.css" rel="stylesheet">
+    <if condition="LANG_SET eq 'en-us' ">
+        <link href="__CSS__/en-us.css" rel="stylesheet">
+    </if>
+
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="row">
+        <div class="sign">
+            <span><img src="__IMG__/left-top.jpg"></span>
+            <ul>
+                <li>{$L['heading_product_manage']}:</li>
+                <li><a href="{:GetSupplyUrl('Product','index')}">{$L['heading_product_list']}</a></li>
+                <li><a class="active" href="javascript:void(0);">{$L['heading_product_upload']}</a></li>
+            </ul>
+        </div>
+        <!--温馨提示-->
+        <div class="prompt">
+            <h4>
+                {$L['text_current_operation']}：{$L['text_business_type_luozuan']}{$L['text_bulk_upload']}
+            </h4>
+        </div>
+
+        <!--内容-->
+        <div class="upload">
+            <section class="panel">
+                <div class="table-responsive">
+                    <form id="form1" action="{:U('Product/importLuozuanSave')}" method="post">
+                        <table class="table table-hover table-responsive table-bordered">
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_GIA_type']}:</label>
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'certificate_type','id'=>'certificate_type','val'=>$fieldMap['certificate_type'],'upload_title'=>$title_col))}
+                                       
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_certificate_sn']}:</label>
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'certificate_number','id'=>'certificate_number','val'=>$fieldMap['certificate_number'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_dia_global_price']}:</label>
+                                       
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'dia_global_price','id'=>'dia_global_price','val'=>$fieldMap['dia_global_price'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_dia_discount']}:</label>
+                                        
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'dia_discount','id'=>'dia_discount','val'=>$fieldMap['dia_discount'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_shape']}:</label>
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'shape','id'=>'shape','val'=>$fieldMap['shape'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_weight']}:</label>
+                                        
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'weight','id'=>'weight','val'=>$fieldMap['weight'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_color']}:</label>
+                                       {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'color','id'=>'color','val'=>$fieldMap['color'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_clarity']}:</label>
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'clarity','id'=>'clarity','val'=>$fieldMap['clarity'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_diamond_name']}:</label>
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'goods_name','id'=>'goods_name','val'=>$fieldMap['goods_name'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+                                                                                            
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_address']}:</label>
+                                        
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'location','id'=>'location','val'=>$fieldMap['location'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+
+                               
+
+
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_cut']}:</label>
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'cut','id'=>'cut','val'=>$fieldMap['cut'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+                                                           
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_polish']}:</label>
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'polish','id'=>'polish','val'=>$fieldMap['polish'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr>     
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_symmetry']}:</label>
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'symmetry','id'=>'symmetry','val'=>$fieldMap['symmetry'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_fluor']}:</label>
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'fluor','id'=>'fluor','val'=>$fieldMap['fluor'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_milk']}:</label>
+                                       
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'milk','id'=>'milk','val'=>$fieldMap['milk'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+                            
+                                <td>
+                                    <div class="form-group">
+                                        {$L['text_product_coffee']}:
+                                       
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'coffee','id'=>'coffee','val'=>$fieldMap['coffee'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr> 
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_dia_table']}:</label>
+                                       
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'dia_table','id'=>'dia_table','val'=>$fieldMap['dia_table'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_dia_depth']}:</label>
+                                        
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'dia_depth','id'=>'dia_depth','val'=>$fieldMap['dia_depth'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_size']}:</label>
+                                       
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'dia_size','id'=>'dia_size','val'=>$fieldMap['dia_size'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+                            
+                                
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_video_address']}:</label>                                           
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'videoURL','id'=>'videoURL','val'=>$fieldMap['videoURL'],'upload_title'=>$title_col))}
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr> 
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_imgs_address']}:</label>                                            
+                                        {:getUploadLuozuanSelectHtml(array('class'=>'form-control','name'=>'imageURL','id'=>'imageURL','val'=>$fieldMap['imageURL'],'upload_title'=>$title_col))}
+                                    </div>
+
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary" id="luozuan_submit">
+                                        {$L["sure"]}
+                                    </button>
+                                </td>                                    
+                                <td></td>
+                                <td></td>
+                        </table>
+                    </form>
+                </div>                    
+            </section>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#form1").submit( function(){       
+        if( !$("#certificate_type").val() ){
+            alert({$L['text_GIA_type']});
+            return false; // 返回值为false，将阻止表单提交
+        }
+
+        if( !$("#certificate_number").val() ){
+            alert("");
+            return false; // 返回值为false，将阻止表单提交
+        }
+
+        if( !$("#dia_global_price").val() ){
+            alert("");
+            return false; // 返回值为false，将阻止表单提交
+        }
+        if( !$("#dia_discount").val() ){
+            alert("");
+            return false; // 返回值为false，将阻止表单提交
+        }
+        if( !$("#shape").val() ){
+            alert("");
+            return false; // 返回值为false，将阻止表单提交
+        }
+        if( !$("#weight").val() ){
+            alert("");
+            return false; // 返回值为false，将阻止表单提交
+        }
+        if( !$("#color").val() ){
+            alert("");
+            return false; // 返回值为false，将阻止表单提交
+        }
+        if( !$("#clarity").val() ){
+            alert("");
+            return false; // 返回值为false，将阻止表单提交
+        }
+    } );
+        
+    </script>  
+
+</body>
+</html>

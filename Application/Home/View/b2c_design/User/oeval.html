@@ -1,0 +1,38 @@
+<style>
+/* star */
+.star {position:relative;width:600px;margin:20px auto;height:24px;}
+.star ul,.star span{float:left;display:inline;height:19px;line-height:19px;}
+.star ul{margin:0; padding-left: 5px;}
+.star li{float:left;width:24px;cursor:pointer;text-indent:-9999px;background:url(__IMG__/star.png) no-repeat;}
+.star li:first-child {background:url(__IMG__/star.png) no-repeat !important;}
+.star strong{color:#f60;padding-left:10px;}
+.star li.on{background-position:0 -28px;}
+.star li:first-child.on{background-position:0 -28px !important;}
+.star p { position: absolute; z-index: 999; top: 20px; width: 216px; height: 65px; display: none; background: url(/Application/Home/View/b2c_new/Styles/Img/icon.gif) no-repeat; padding: 7px 10px 0;  border: 1px solid #ccc; background: #fff; border-radius: 5px; line-height: 15px;}
+.star p em{color:#f60;display:block;font-style:normal;}
+</style>
+
+ 
+<!-- user -->
+<div class="user">
+	<div class="container">
+		<div class="path">
+			<ol class="breadcrumb">
+				当前位置：
+			  <li><a href="{:U('User')}">首页</a></li>
+			  <li><a href="{:U('User/olist')}">我的订单</a></li>
+			  <li class="active">订单评价</li>
+			</ol>
+		</div>
+
+		<div class="userdata">
+			<div class="row">
+				<include file=".:Com:b2c:user:user_left" />
+				<div class="col-md-9">
+					<include file=".:Com:b2c:user:user_oeval" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- user end //-->

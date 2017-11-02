@@ -1,0 +1,511 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+	<script type="text/javascript" src="/Public/layer/layer.js"></script>
+
+<script src="__JS__/public.js" type="text/javascript"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/jquery.validator.js"></script>
+<script>
+	$(document).ready(function(){
+		// 取消按钮
+		  $("#cancel").click(function () {
+			$('#theForm')[0].reset();
+			$("#address_edit").css('display', 'none');
+		  });
+
+		  // 省市区地址
+		  function address(sel, hl) {
+			var parent_id = $(sel).children('option:selected').val(), html, i;
+			if (parent_id !== 0) {
+			  $.get("{:U('Admin/Public/getRegion')}", {'parent_id': parent_id}, function (data) {
+				html = '<option value="0">{$Think.lang.L9063}</option>';
+				for (i = 0; i < data.length; i++) {
+				  html += '<option value="' + data[i].region_id + '">' + data[i].region_name + '</option>';
+				}
+				$(hl).html(html);
+			  });
+			}
+		  }
+		  $('#selCountries').change(function () { address('#selCountries', '#selProvinces'); });
+		  $('#selProvinces').change(function () { address('#selProvinces', '#selCities'); });
+		  $('#selCities').change(function () { address('#selCities', '#selDistricts'); });
+	});
+
+	function cartDelete(id){
+		$.post("/Home/Order/cartDelete",{id:id},refCartOperation);
+	}
+
+	function refCartOperation(data){
+		if(data.status == 0){
+			alert(data.msg);
+		}else{
+			alert(data.msg);
+			location.reload();
+		}
+	}
+
+	// 添加后的回调
+	function refForm(data) {
+	  var obj = jQuery.parseJSON(data);
+	  if (obj.error === 'yes') {
+		alert(obj.msg);
+	  } else {
+		alert(obj.msg);
+		window.location.href="/Home/Order/orderConfirm";
+	  }
+	}
+
+	// 显示添加地址界面
+	function show_address_edit() {
+	  var addForm = $('#address_edit');
+	  $('#theForm')[0].reset();
+	  if (addForm.css('display') === 'none') {
+		$('#address_edit').css('display', "table-row");
+	  } else {
+		$('#address_edit').css('display', 'none');
+	  }
+	}
+	
+ 
+	$(function(){
+		$('.mode_name_choose').bind('click', function(){
+			$('.mode_name_choose').css('border','none').removeClass('hasborder');
+			$(this).css('border','1px solid rgb(204, 0, 0)').addClass('hasborder');
+		})
+	});
+ 
+
+	function submitOrder(){
+		var address_id = $("input[name='address_id']:checked").val();
+		if(!address_id){
+			alert("请选择收货地址");
+			return false;
+		}
+
+		var zffs = $('input[name="zffs"]:checked').val();
+		if(!zffs) {
+			alert("请选择支付方式");
+			return false;
+		}
+		var border_first_two='';
+		var DistributionId='';
+
+		$(".mode_name_choose").each(function(i){
+			border_first_two = $(this).hasClass('hasborder'); 
+			if(border_first_two){
+				 DistributionId=$(this).attr('attr_id');
+			}
+		});	
+		
+		var index =layer.msg('后台提交订单中！', { icon: 16 ,shade: 0.01	});
+		
+		$.post('/Home/Order/orderSubmit',{address_id:address_id,id:$("input[name='id']").val(),DId:DistributionId,payment:zffs},function(data){
+			if(data){
+				layer.close(index);
+				if(data.status == 1){
+					alert(data.info);
+					var order_id = data.order_id;
+					if(zffs == 1) {	//在线支付
+						window.location.href="/Home/Pay/online/order_id/"+order_id;
+					}else{
+						window.location.href = "{:U('/Home/Order/orderComplete')}?order_id=" + order_id;
+					}
+					//window.location.href = "/Home/Order/orderComplete";
+				}else{
+					alert(data.info);
+				}
+			}else{
+				alert('网络错误！');
+			}
+
+		});
+
+	}
+
+
+</script>
+<style>
+	.Method-pay { border-top: 1px solid #CCC; padding: 18px;}
+	.Method-pay .pay { width: 100px; font-size: 16px; float: left;}
+	.Method-pay ul { float: left; border-left: 1px solid #ccc; padding-left: 30px;}
+	.Method-pay ul li { width: 240px; float: left; line-height: 25px;}
+	.Method-pay li p { padding-left: 20px;}
+	.Method-pay .clear { clear: both;}
+	.Method-pay .paydata { margin-top: 10px;}
+	.Method-pay .radio-pay { cursor: pointer;}
+</style>
+<div class="gou_wrap">
+	<div class="gou_confirm"></div>
+	<div class="cart_list">
+		<h3 class="delivery">配送方式</h3>
+		<volist name="deliModeList" id="vo">
+			<div class="delivery_div">	<dd class="left mode_name_choose <if condition="$i eq 1">hasborder</if>"  <if condition="$i neq 1">style="border: none"</if>  attr_id="{$vo['mode_id']}" >{$vo['mode_name']}</dd>	<dd>{$vo['mode_note']}</dd>	</div>		
+		</volist>
+	</div>
+	<h3 class="delivery">收货地址</h3>
+	<div class="delivery_address">
+		<div class="add_address">
+			<p>收货人信息</p>
+			<p class="rt" onclick="show_address_edit();">+ 增加新地址</p>
+		</div>
+		<div class="clear"></div>
+		<div class="address">
+			<table class="add_address">
+				<if condition="$user_address">
+				<volist name="user_address" id="vo">
+				<tr>
+					<td><input <if condition="$vo['is_default'] eq 1">checked</if> type="radio" name="address_id" value="{$vo.address_id}" id="address_{$vo.address_id}" /><label for="address_{$vo.address_id}">{$vo.title}</label></td>
+					<td>{$vo.country_name}{$vo.province_name}{$vo.city_name}{$vo.district_name}{$vo.address}，{$vo.name}，{$vo.phone}</td>
+				</tr>
+				</volist>
+				</if>
+				<tr id="address_edit" style="display:none;">
+			    <td colspan="5">
+			      <!-- 收货地址form -->
+			      <form id="theForm" action="{:U('Home/User/shopAddress')}" method="post" name="theForm">
+			        <ul>
+			          <li>
+			            <span class="tit">{$Think.lang.L840}</span>
+			            <input type="text" id="address_name" class="input_mini" name="title" />
+			            <span>{$Think.lang.L842}</span>
+			          </li>
+			          <li>
+			            <span class="tit">{$Think.lang.L841}</span>
+			            <select name="country_id" id="selCountries">
+			              <option value="0">{$Think.lang.L9063}</option>
+			              <option value="1">{$Think.lang.L9078}</option>
+			            </select>
+			            <select name="province_id" id="selProvinces">
+			              <option value="0">{$Think.lang.L9063}</option>
+			            </select>
+			            <select name="city_id" id="selCities">
+			              <option value="0">{$Think.lang.L9063}</option>
+			            </select>
+			            <select name="district_id" id="selDistricts">
+			              <option value="0">{$Think.lang.L9063}</option>
+			            </select>
+			          </li>
+			          <li>
+			            <span class="tit">{$Think.lang.L9064}</span>
+			            <input name="address" class="input_long" type="text" id="address" value="" />
+			          </li>
+			          <li>
+			            <span class="tit">{$Think.lang.L9065}</span>
+			            <input name="code" type="text" id="postalcode"/>
+			          </li>
+			          <li>
+			            <span class="tit">{$Think.lang.L9066}</span>
+			            <input name="name" type="text" id="consignee_name" value="" />
+			          </li>
+			          <li>
+			            <span class="tit">{$Think.lang.L836}</span>
+			            <input name="phone" type="text" id="phone" value="" />
+			          </li>
+			          <li>
+			            <span class="tit">{$Think.lang.L9072}</span>
+			            <select name="is_default" id="is_default">
+			              <option value="1">{$Think.lang.L9073}</option>
+			              <option value="2">{$Think.lang.L9074}</option>
+			            </select>
+			          </li>
+			          <li>
+			            <span class="tit"></span>
+			            <input type="submit" class="bnt_bonus" value="{$Think.lang.L816}" />
+			            <a href="javascript:void(0)" id="cancel">{$Think.lang.L845}</a>
+			          </li>
+						<input type="hidden" class="left_val" value="{$deliModeList[0]['mode_id']}" />					  
+			        </ul>
+			      </form>
+			    </td>
+			  </tr>
+			</table>
+		</div>
+	</div>
+
+
+
+	<!-- 支付方式 -->
+	<div class="Method-pay">
+		<div class="pay">支付方式</div>
+		<ul>
+			<li>
+				<div><input type="radio" value="0" name="zffs" class="radio-pay offline"> 线下转账</div>
+				<if condition="$LinePayMode">
+				<div class="paydata" style="display: none;">
+					<p>账户名称：{$LinePayMode.aname}</p>
+					<p>账号：{$LinePayMode.abank}</p>
+					<p>开户行：{$LinePayMode.tback}</p>
+				</div>
+				</if>
+			</li>
+			<li>
+				<div><input type="radio" value="1" name="zffs" class="radio-pay" <eq name="alipay" value="0"> disabled </eq>> 在线支付</div>
+			</li>
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<script>	
+		$(function(){
+			$('.radio-pay').change(function(){
+				if($('.radio-pay:checked').hasClass('offline')){
+					$(this).parents('li').find('.paydata').show();
+				}else{
+					$('.paydata').hide();
+				}
+			});
+		});
+	</script>
+	<!-- 支付方式 end -->
+
+
+	<if condition="$product['data']">
+	<input name="id" value="{$id}" type="hidden" />
+	<div class="in">
+		<span>你选购了以下产品</span>
+	</div>
+	<div class="contain">
+		<table border="1">
+			<tr class="top">
+				<th width="">商品</th>
+				<if condition="$vo['goods_attrs']['associateInfo']"><th width="">个性符号</th></if>
+				<th width="10%">款号</th>
+				<th width="10%">匹配主石证书编号</th>
+				<th width="10%">市场价</th>
+				<th width="10%">本店价</th>
+				<th width="10%">购物数量</th>
+				<th width="10%">小计</th>
+			</tr>
+			<volist name="product['data']" id="vo">
+			<tr>
+				<td class="tdLeft">
+					<div class="tbl_cart_left">
+					<a href="{:U('/Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}" target="_blank">
+						<if condition="$vo['goods_attrs']['thumb']">
+						<img src="{$vo.goods_attrs.thumb}" />
+						<else />
+						<img src="__PUBLIC__/Uploads/product/nopic.png" />
+						</if>
+					</a></div>
+					<div class="tbl_cart_right"><a href="{:U('/Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}" target="_blank">{$vo.goods_attrs.goods_name}</a>
+					<br>
+						<if condition="$vo['goods_attrs']['associateInfo']">
+							{$vo.goods_attrs.associateInfo.material_name} 金重：{$vo.goods_attrs.associateInfo.weights_name}g 主石：{$vo.goods_attrs.luozuanInfo.weights_name}CT {$vo.goods_attrs.luozuanInfo.shape_name} {$vo.goods_attrs.deputystone_name}
+							 手寸：{$vo.goods_attrs.hand}   刻字：{$vo.goods_attrs.word}
+								<if condition="$vo['goods_attrs']['sd_images']">
+										刻字个性符号：<img src="{$vo.goods_attrs.sd_images} " />
+								</if>
+						<else />
+							{$vo.goods_attrs.category_name} {$vo.goods_attrs.attrs}
+						</if>
+					</div>
+				</td>
+				
+				<td>{$vo.goods_attrs.goods_sn}</td>
+				<td class="tdLeft">{$vo.goods_attrs.matchedDiamond}</td>
+				<td>{$vo.goods_attrs.marketPrice}</td>
+				<td>
+					<in name="vo['goods_attrs']['activity_status']" value="0,1">
+						{$vo.goods_attrs.activity_price}
+					<else/>
+						{$vo.goods_attrs.goods_price}
+					</in>
+				</td>
+				<td>{$vo.goods_number}</td>
+				<td id="count">{$vo.goods_attrs.goods_price2}</td>
+			</tr>
+			</volist>
+			<tr><td colspan="6" class="tdRight">合计</td><td colspan="2"><label class="lblMoney">￥{$product.total}</label></td></tr>
+		</table>
+	</div>
+    </if>
+    <if condition="$luozuan[data]">
+	<div class="in">
+		<span>你选购了以下证书货钻石</span>
+	</div>
+	<div>
+        <table border="1">
+            <tr class="top">
+            	<th>去向</th>
+            	<th>形状</th>
+            	<th>编号</th>
+            	<th>证书编号</th>
+            	<th>钻重</th>
+            	<th>颜色</th>
+            	<th>净度</th>
+            	<th>切工</th>
+            	<th>抛光</th>
+            	<th>对称</th>
+            	<th>荧光</th>
+            	<th>奶色</th>
+            	<th>咖色</th>
+            	<th>每粒单价</th>
+            </tr>
+            <volist name="luozuan['data']" id="vo">
+            <tr>
+            	<td>{$vo.goods_attrs.location}</td>
+            	<td>{$vo.goods_attrs.shape}</td>
+            	<td>{$vo.goods_attrs.goods_name}</td>
+            	<td>{$vo.goods_attrs.certificate_number}</td>
+            	<td>{$vo.goods_attrs.weight}</td>
+            	<td>{$vo.goods_attrs.color}</td>
+            	<td>{$vo.goods_attrs.clarity}</td>
+            	<td>{$vo.goods_attrs.cut}</td>
+            	<td>{$vo.goods_attrs.polish}</td>
+            	<td>{$vo.goods_attrs.symmetry}</td>
+            	<td>{$vo.goods_attrs.fluor}</td>
+            	<td>{$vo.goods_attrs.milk}</td>
+            	<td>{$vo.goods_attrs.coffee}</td>
+            	<td>{$vo.goods_attrs.price}</td>
+            </tr>
+            </volist>
+            <tr><td colspan="13" class="tdRight">合计</td><td><label class="lblMoney">￥{$luozuan.total}</label></td></tr>
+        </table>
+	</div>
+	</if>
+	<if condition="$sanhuo['data']">
+		<div class="in">
+		<span>你选购了以下散货钻石</span>
+	</div>
+	<div class="price">
+        <table border="1">
+			<tr class="top">
+				<th>去向</th>
+				<th>分类</th>
+				<th>货号</th>
+				<th>库存重量(CT)</th>
+				<th>颜色</th>
+				<th>净度</th>
+				<th>切工</th>
+				<th>统一定价(元/CT)</th>
+				<th>购买重量</th>
+				<th>现金小计</th>
+			</tr>
+			<volist name="sanhuo[data]" id="v">
+			<tr id="tr_{$v.rec_id}">
+				<td>{$v.goods_attrs.location}</td>
+				<td>{$v.goods_attrs.type_name}</td>
+				<td>{$v.goods_attrs.goods_sn}</td>
+				<td>{$v.goods_attrs.goods_weight}</td>
+				<td>{$v.goods_attrs.color}</td>
+				<td>{$v.goods_attrs.clarity}</td>
+				<td>{$v.goods_attrs.cut}</td>
+				<td>{$v.goods_attrs.goods_price}</td>
+				<td>{$v.goods_number}</td>
+				<td><span id="price_{$v.goods_id}">{$v.goods_attrs.goods_price2}</span></td>
+			</tr>
+			</volist>
+			<tr><td class="tdRight" colspan="9">合计</td><td colspan="2">{$sanhuo.total}</td></tr>
+		</table>
+	</div>
+	</if>
+	<div class="tag">
+		<p class="tdRight">购物车内共有：<if condition="$product">{$product.count}<else/>0</if> 件成品，<if condition="$luozuan">{$luozuan.count}<else />0</if> 颗钻石，钻石总重量：{$total_weight} 克拉 订单总金额；<label class="lblMoney">￥{$total}</label>
+	</div>
+
+	<div class="bton">
+		<p class="bt_c" onclick="submitOrder()">提交订单</p>
+	</div>
+</div>
+
+<script>
+//验证初始化
+$('#theForm').validator({
+	theme: 'simple_right',
+	focusCleanup: true,
+	stopOnError:false,
+	//debug: true,
+	timely: 2,
+	//自定义规则（PS：建议尽量在全局配置中定义规则，统一管理）
+	rules: {
+		username: [/^[a-zA-Z0-9]+$/, '用户名无效! 仅支持字母与数字。'],
+		phone: [/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/,'手机号码不正确'],
+		email:[/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})$/, '邮箱格式不正确'],
+		number:[/^[0-9]{6}$/,'邮政编码只支持6位数的数字'],
+		remote:
+        	function(element){
+			    return $.ajax({
+			        url: '/Home/Public/checkusername',
+			        type: 'post',
+			        data: element.name +'='+ element.value,
+			        dataType: 'json',
+			        success: function(d){
+			            window.console && console.log(d);
+			        }
+			    });
+		},
+		 min: function(element, param, field) {
+		 	return element.value >0 || "请选择国家";
+		}
+	},
+
+	fields: {
+		"title": {
+		    rule: "required;",
+		    tip: "输入地址标注",
+		    ok: "",
+		    msg: {required: "请输入地址标注"}
+		},
+		"address": {
+		    rule: "required;",
+		    tip: "输入你的地址",
+		    ok: "",
+		    msg: {required: "请输入地址"}
+		},
+		"code":{
+        	rule:"required;number",
+        	tip:"请输入邮政编码",
+        	ok:"",
+        	msg:{required:"请输入邮政编码"}
+        },
+		"name": {
+		    rule: "required",
+		    tip: "输入你的联系人名称",
+		    ok: "",
+		    msg: {required: "请输入联系人名称!"}
+		},
+		"phone": {
+		    rule: "required;phone",
+		    tip: "输入你的手机号码。",
+		    ok: "",
+		    msg: {required: "请输入手机号!"}
+		},
+		"country_id": {
+		    rule: "required;min;",
+		    tip: "请选择国家",
+		    ok: "",
+		    msg: {required: "请选择国家!"}
+		},
+		"province_id":{
+        	rule: "required;min;",
+		    tip: "请选择省份",
+		    ok: "",
+		    msg: {required: "请选择省份!"}
+		}
+
+
+	},
+	//验证成功
+	valid: function(form) {
+		$.ajax({
+		    url: '/Home/User/shopAddress',
+		    type: 'POST',
+		    data: $(form).serialize(),
+		    success: function(d){
+              	alert(d.msg);
+              	window.location.href='/Home/Order/orderConfirm';
+		    }
+		});
+	}
+});
+ 
+ 
+
+ 
+
+ 
+</script>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>个人信息</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/aftersales.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script src="__JS__/public.js"></script>
+	<script src="__JS__/layer-mobile/layer.js"></script>
+</head>
+<style>
+	/* star */
+	.star{position:relative;margin:20px auto;height:24px;}
+	.star ul,.star span{float:left;display:inline;height:19px;line-height:19px;}
+	.star ul{margin:0 10px;}
+	.star li{float:left;width:24px;cursor:pointer;text-indent:-9999px;background:url(/Application/App/View/default/img/star.png) no-repeat;}
+	.star strong{color:#f60;padding-left:10px;}
+	.star li.on{background-position:0 -28px;}
+	.star p{position:absolute;top:20px;width:159px;height:60px;display:none;background:url(/Application/App/View/default/img/icon.gif) no-repeat;padding:7px 10px 0;}
+	.star p em{color:#f60;display:block;font-style:normal;}
+	.pf { margin-right: 10px;}
+
+</style>
+<body class="wrap-bg">
+
+	<!-- Header -->
+	<header class="header text-center">
+      <a href="javascript:history.go(-1)" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+      商品评价
+  </header>
+  <!-- Header END //-->
+
+
+	<!-- Main -->
+    <div class="container-fluid user-info sh-progress">
+			<if condition="$orderGoodsInfo['oeval'] neq 2 ">
+			<section class="after-sales-list">
+				<div class="shouhou">
+
+					<div class="tbody">
+						<div class="cbimg pull-left"><img src="{$orderGoodsInfo['attribute']['thumb']}" alt=""></div>
+						<div class="after-data pull-left" style="width: 75%;">
+							<p>{$orderGoodsInfo['attribute']['goods_name']}</p>
+							<p>数量：x{$orderGoodsInfo['goods_number']} &nbsp;&nbsp; 价格：￥{$orderGoodsInfo['goods_price']}</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+
+				</div>
+			</section>
+			<section class="after-sales-list">
+				<div class="shlx">
+					<h4>评分</h4>
+					<div id="star" class="star">
+						<ul>
+							<li><a href="javascript:;">1</a></li>
+							<li><a href="javascript:;">2</a></li>
+							<li><a href="javascript:;">3</a></li>
+							<li><a href="javascript:;">4</a></li>
+							<li><a href="javascript:;">5</a></li>
+						</ul>
+					</div>
+				</div>
+			</section>
+			
+			
+			<section class="after-sales-list">
+				<div class="shlx">
+					<h4>评价内容</h4>
+					<p class="miaoshu">
+						<textarea name="control" id="control" class="form-control" cols="30" rows="5" placeholder="请输入200字以内，发布您的评论"></textarea>
+					</p>
+				</div>
+			</section>
+
+			<section class="shouhouxq-sub">
+				<p class="alert text-center"><button type="" id="submit" class="btn btn-primary btn-block">提交</button></p>
+				<input name="og_id" value="{$orderGoodsInfo['og_id']}" type="hidden" />
+			</section>
+			
+			<else/>
+
+			<section class="after-sales-list">
+				<div class="shouhou">
+
+					<div class="tbody">
+						<div class="cbimg pull-left"><img src="{$orderGoodsInfo['attribute']['thumb']}" alt=""></div>
+						<div class="after-data pull-left" style="width: 75%;">
+							<p>{$orderGoodsInfo['attribute']['goods_name']}</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+
+				</div>
+			</section>
+			<section class="after-sales-list">
+				<div class="shlx">
+					<div class="star">
+						<span class="pf">评分</span>
+						<ul>
+							<li <egt name="orderGoodsInfo['start']" value="1" >class="on"</egt> ><a href="javascript:;">1</a></li>
+							<li <egt name="orderGoodsInfo['start']" value="2" >class="on"</egt> ><a href="javascript:;">2</a></li>
+							<li <egt name="orderGoodsInfo['start']" value="3" >class="on"</egt> ><a href="javascript:;">3</a></li>
+							<li <egt name="orderGoodsInfo['start']" value="4" >class="on"</egt> ><a href="javascript:;">4</a></li>
+							<li <egt name="orderGoodsInfo['start']" value="5" >class="on"</egt> ><a href="javascript:;">5</a></li>
+						</ul>
+					</div>
+					<p>{$orderGoodsInfo['control']}</p>
+					<h6>{$orderGoodsInfo['createtime']|date="Y年m月d日",###}</h6>
+				</div>
+			</section>
+			</if>
+
+
+    </div>
+
+    <!-- Main END //-->
+	<if condition="$orderGoodsInfo['oeval'] neq 2 ">
+    <script type="text/javascript"> 
+			window.onload = function (){
+
+				var oStar = document.getElementById("star");
+				var aLi = oStar.getElementsByTagName("li");
+				var oUl = oStar.getElementsByTagName("ul")[0];
+				//var oSpan = oStar.getElementsByTagName("span")[1];
+				//var oP = oStar.getElementsByTagName("p")[0];
+				var i = iScore = iStar = 0;
+				var aMsg = [
+							"很不满意|差得太离谱，与卖家描述的严重不符，非常不满",
+							"不满意|部分有破损，与卖家描述的不符，不满意",
+							"一般|质量一般，没有卖家描述的那么好",
+							"满意|质量不错，与卖家描述的基本一致，还是挺满意的",
+							"非常满意|质量非常好，与卖家描述的完全一致，非常满意"
+							]
+				
+				for (i = 1; i <= aLi.length; i++){
+					aLi[i - 1].index = i;
+					
+					//鼠标移过显示分数
+					aLi[i - 1].onmouseover = function (){
+						fnPoint(this.index);
+						//浮动层显示
+						//oP.style.display = "block";
+						//计算浮动层位置
+						//oP.style.left = oUl.offsetLeft + this.index * this.offsetWidth - 104 + "px";
+						//匹配浮动层文字内容
+						//oP.innerHTML = "<em><b>" + this.index + "</b> 分 " + aMsg[this.index - 1].match(/(.+)\|/)[1] + "</em>" + aMsg[this.index - 1].match(/\|(.+)/)[1]
+					};
+					
+					//鼠标离开后恢复上次评分
+					aLi[i - 1].onmouseout = function (){
+						fnPoint();
+						//关闭浮动层
+						//oP.style.display = "none"
+					};
+					
+					//点击后进行评分处理
+					aLi[i - 1].onclick = function (){
+						iStar = this.index;
+						//oP.style.display = "none";
+						//oSpan.innerHTML = "<strong>" + (this.index) + " 分</strong> (" + aMsg[this.index - 1].match(/\|(.+)/)[1] + ")"
+					}
+				}
+				
+				//评分处理
+				function fnPoint(iArg){
+					//分数赋值
+					iScore = iArg || iStar;
+					for (i = 0; i < aLi.length; i++) aLi[i].className = i < iScore ? "on" : "";	
+				}
+				
+		  };
+		</script>
+	</if>
+</body>
+</html>
+
+<script>
+
+$(function(){
+	$('#submit').click(function(){
+		var start	= $('#star .on').length;
+		var control	= $('#control').val();
+		var og_id 	= $('input[name="og_id"]').val();
+		if(!start){
+			tan('评分不能为空');
+			return false;
+		}
+		if(!control){
+			tan('评论内容不能为空');
+			return false;
+		}
+		if(control.length > 200){
+			tan('评论内容不能超过200个字符');
+			return false;
+		}
+		$.ajax({
+			type: 'POST',
+			url	: '{:U("/Userorder/evalSave")}' ,
+			dataType:'json',
+			data: {'start':start,'control':control,'og_id':og_id},
+			success: function (ref) {
+				if(ref.status == 100){
+					tan(ref.msg);
+					setTimeout("window.location.href='{:U('Userorder/index')}'",2000);
+				}else{
+					tan(ref.msg);
+				}
+			}
+		})
+	
+	})
+	
+
+
+
+})
+
+</script>

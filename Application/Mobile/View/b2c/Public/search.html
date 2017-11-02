@@ -1,0 +1,171 @@
+<!-- 快捷搜索 start -->
+<div class="index-search-open quick-search" style="display: none">
+    <form action="" class="top-search">
+        <div class="top-bar">
+            <input type="text" class="s-input" id="searchKeyword" placeholder="商品名称、证书号、系列名称">
+            <input type="button" class="search-btn"  onclick="searchgs()">
+        </div>
+        <div class="top-bar-btn">
+            取消
+        </div>
+    </form>
+    <div class="hot-search">
+        <h1>热门搜索</h1>
+        <div class="keywords-list">
+            <volist name="hot_search" id="vo">
+				<?php if($vo=='裸钻'):?>
+					<a href="/Diamond/goodsDiy.html">{$vo}</a>
+				<?php else:?>
+					<a href="{:U('/Goods/goodsDiy', ['keyword'=>$vo])}">{$vo}</a>
+				<?php endif;?>
+
+            </volist>
+        </div>
+    </div>
+    <div class="history-search">
+        <h1><span class="pl">历史搜索</span></h1>
+        <ul>
+
+        </ul>
+    </div>
+
+    <div class="reset-search-box">
+        <button type="button" class="reset-history">清空历史搜索</button>
+    </div>
+</div>
+<!-- 快捷搜索 end -->
+
+<script>
+    /*
+     *  @obj: 触发元素
+     */
+    var quickSearch = {
+        //显示搜索
+        show : function (obj){
+            $(obj).bind('click', function(){
+                $('.quick-search').show();
+            });
+        },
+        //关闭搜索
+        hide : function (obj){
+            $(obj).bind('click', function(){
+                $('.quick-search').hide();
+            });
+        }
+    }
+
+    quickSearch.hide('.top-bar-btn'); //关闭搜索
+	quickSearch.show('.index-search');//首页快捷搜索
+	quickSearch.show('.search-icon'); //其他快捷搜索
+	
+	
+	function SetCookie(name, value) {
+		var Days = 30;
+		var exp = new Date();
+		exp.setTime(exp.getTime() + Days * 86400*1000);
+		document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString()+";path=/;";
+    }
+
+    function GetCookie(name) {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+		if (arr = document.cookie.match(reg)) return unescape(arr[2]);
+		else return null
+    }
+
+	function getCookieOfObject(name) {
+		var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+		if (arr = document.cookie.match(reg)){ 
+			arr[2] = unescape(arr[2]);
+			return JSON.parse(arr[2]);
+		}else{
+			return null;
+		}
+	}
+	
+	function delCookie(name) {
+	   setCookie(name, "", -1); 
+	}
+
+    /**
+     * 历史记录
+     * @author wangkun
+     * @date 2017/07/26
+     */
+    var historySearch = {
+        items: localStorage.getItem('historySearch'),
+        // 清空
+        clear: function(){
+            localStorage.removeItem("historySearch")
+            $('.history-search ul').html('<li>无记录</li>');
+        },
+        // 加载
+        load: function(){
+            this.items.split("|").forEach(function(ele, index){
+                $('.history-search ul').append("<li><a onclick='assignment(\""+ele+"\")' href='javascript:;'>"+ele+"</a></li>");
+            });
+        },
+        // 新增
+        add: function(keyword){
+            console.log('新增搜索记录')
+        }
+    }
+	function assignment(dt){
+		//点击历史记录，赋值给搜索框；
+		$("#searchKeyword").val(dt);
+		searchgs();
+	}
+	function searchgs(){
+		//点击搜索操作
+		var keyword	  = $("#searchKeyword").val().toString();
+
+		if(keyword==null || keyword==undefined || keyword==""){
+			layer.open({
+				   content: '请输入搜索内容'
+				   ,btn: '确定'
+			});	
+		}else{
+			//对搜索记录做特殊处理
+			var kWord = GetCookie("searchKeyword");
+			
+			var strs= new Array(); //定义一数组
+			if(kWord!=null){
+				strs=kWord.split("|"); //字符分割
+			}
+			var s = strs.indexOf(keyword);  
+			if(s==-1){
+				//当搜索记录不存在的时候
+				if(kWord!=null){
+					var newStr = strs.slice(-3);
+					var theSep = newStr.join('|');
+					var newWord = theSep+"|"+keyword;
+					var newArr = new Array();
+					newArr = newWord.split("|");
+					newArr = newArr.reverse();
+					var newKeyWord = newArr.join('|');
+				}else{
+					var newKeyWord = keyword;
+				}
+				SetCookie("searchKeyword", newKeyWord, 1000);
+			}
+			
+			var SearchUrl = '/Goods/goodsDiy.html?keyword='+keyword;
+			if(keyword=='裸钻'){
+				SearchUrl = '/Diamond/goodsDiy.html';
+			}
+			
+			window.location.href = SearchUrl;
+		}
+	}
+	
+    $(function(){
+		var keyWord = GetCookie("searchKeyword");
+        // 模拟数据
+		if(keyWord!=null){
+        	localStorage.setItem('historySearch', keyWord);
+			historySearch.load();
+			$('.reset-history').click(function(){
+				historySearch.clear();
+			}); 
+		}
+    });
+</script>

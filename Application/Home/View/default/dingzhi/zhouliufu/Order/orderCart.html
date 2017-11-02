@@ -1,0 +1,447 @@
+<include file=".:Base:layout_header" />
+<div class="w1160">
+    <!-- 步骤 -->
+    <div class="steps-box">
+        <img src="__IMG_DZ__/steps_03.png" alt="">
+    </div>
+    <!-- 步骤 end -->
+
+    <!-- 购物车商品列表 -->
+    <div class="cart-box">
+        <table class="cart-table" cellpadding="0" cellspacing="0">
+            <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" class="allchecked" name="" checked value=""> 全选
+                </th>
+                <th>序号</th>
+                <th>商品图片</th>
+                <th>数量</th>
+                <th>总计</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <!--//开始-->
+            <tbody class="my_cart_all">
+                
+            </tbody>
+            <!--结束-->
+        </table>
+    </div>
+    <!-- 购物车商品列表 end -->
+
+    <div class="cart-bottom">
+        <div class="pull-left">
+            <a href="javascript:;" class="deletes">批量删除</a>
+            <a href="/" class="shopping">继续购物</a>
+        </div>
+        <div class="pull-right">
+            <p>共 <span class="red js_total_number">0</span> 件商品</p>
+            <p>订单总金额：<span class="rmb">￥<span class="js_total_money">0</span></span></p>
+            <p><button type="submit" class="submit-btn" onclick="ajaxSubmitOrder();">提交</button></p>
+    </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<script>
+    $(function(){
+        /* 商品数量选择 */
+        //加
+
+        var cart_obj_cate_temp = {};
+        $(document).delegate('.add', 'click', function(){
+            var banfang_id = $(this).parents('.js_tbody').attr('banfang_id');
+            cart_obj_cate_temp[banfang_id] = {
+                number:$(this).parents('.js_tbody').find('.js_goods_number').val(),
+                price:$(this).parents('.js_tbody').find('.js_goods_price').html()
+            };
+            var number_cust_number = $(this).parents('.customize-box').find('.number-cust').val();
+            number_cust_number = parseInt(number_cust_number)+1;
+            var js_cart_number = $(this).parents('.child-details').prev('tr').find('.js_cart_number').html();
+            js_cart_number = parseInt(js_cart_number)+1;
+            ajax_set_cart(this,7,banfang_id,js_cart_number,number_cust_number);
+        });
+        //减
+        $(document).delegate('.reduction', 'click', function(){
+            var banfang_id = $(this).parents('.js_tbody').attr('banfang_id');
+            cart_obj_cate_temp[banfang_id] = {
+                number:$(this).parents('.js_tbody').find('.js_goods_number').val(),
+                price:$(this).parents('.js_tbody').find('.js_goods_price').html(),
+            };
+            var number_cust_number = $(this).parents('.customize-box').find('.number-cust').val();
+            number_cust_number = parseInt(number_cust_number)-1;
+            if(number_cust_number > 0){
+                var js_cart_number = $(this).parents('.child-details').prev('tr').find('.js_cart_number').html();
+                js_cart_number = parseInt(js_cart_number)-1;
+                ajax_set_cart(this,7,banfang_id,js_cart_number,number_cust_number);
+            }
+        });
+
+        //查看详情
+        $(document).delegate('.view-details','click', function(){
+            var index = $(this).index('.view-details');
+            if($.cookie('child_details_kz_'+index) == 0){
+                $.cookie('child_details_kz_'+index,'1');
+            }else{
+                $.cookie('child_details_kz_'+index,'0');
+            }
+            $(this).closest('tr').next('.child-details').toggle();
+        });
+
+        //删除主商品
+        $(document).delegate('.delete-gooods','click', function(){
+            var cid = $(this).parents('.js_top_cart').attr('cart_id');
+            ajax_set_cart(this,4,cid);
+
+        });
+
+        //全选
+        $(document).delegate('.allchecked','change', function(){
+            if($(this).prop('checked')){
+                $('.cart-table').find('.checks').prop('checked', true);
+            }else{
+                $('.cart-table').find('.checks').prop('checked', false);
+            }
+            ajax_get_Price();
+        });
+
+        $(document).delegate('.js_top_cart .checks','change',function(){
+            ajax_get_Price();
+        });
+        $('.js_add_more').bind('click',function(){
+            page_num++;
+            ajax_set_cart(null,6,null);
+        });
+
+        ajax_set_cart(null,6,null);
+
+
+
+
+        function ajax_set_cart(obj,type,id,set_now_cart_number,set_now_cust_number){
+            if(!type){
+                type = 0;
+            }
+            if(!set_now_cart_number){
+                set_now_cart_number = 0;
+            }
+            if(!set_now_cust_number){
+                set_now_cust_number = 0;
+            }
+            if(!id){
+                id = 0;
+            }
+            //type  1 添加板房商品   2 修改板房商品 3 删除单个板房商品    4 删除单个购物车商品  5 清除购物车   6 查询购物车数据（按照商品添加）
+            var data_string = {
+                type:type,
+                ban_o:1,
+                id:new Array(),       //当删除商品的时候是cart_id,当删除板房商品的时候是板房商品的id
+                obj_data:{},
+                n:13,
+            };
+            var js_cart_number,banfang_cart_money,cart_money,cart_all_money,temp;
+            if(id){
+                data_string.id.push(id);
+            }
+            switch(type){
+                case 1:
+                    data_string.ban_o = parseInt($(obj).closest('.child-table').find('tbody:last tr:first td:first').text()) + 1;
+                    break;
+                case 2:
+                    $(obj).parents('.js_tbody').find('.ajax_val').each(function(){
+                        var d_key = $(this).attr('name');
+                        var d_value = $(this).val();
+                        data_string.obj_data[d_key] = d_value;
+                    });
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    if(!id){
+                        $('.js_top_cart').each(function(){
+                            if($(this).find('.checks').prop('checked')){
+                                data_string.id.push($(this).attr('cart_id'));
+                            }
+                        });
+                    }
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    data_string.obj_data.goods_number = set_now_cust_number;
+                    break;
+                default:
+                    break;
+            }
+
+            $.ajax({
+                url: '{:U("Home/Order/ajax_set_cart")}',
+                type: 'POST',
+                data: data_string,
+                success: function(d){
+                    if(d.status==100){
+                        switch(type){
+                            case 1:
+                                // ajax_set_cart(null,6,null);
+                                // return false;
+                                $(obj).closest('.child-table').find('tbody:last').after(d.data);
+                                js_cart_number = $(obj).parents('.child-details').prev('tr').find('.js_cart_number').html();
+                                js_cart_number = parseInt(js_cart_number)+1;
+                                $(obj).parents('.child-details').prev('tr').find('.js_cart_number').html(js_cart_number);
+                                temp = $(obj).parents('.child-details').prev('tr').find('.js_cart_money').html();
+                                cart_money = accAdd(temp,d.cart_money);
+                                $(obj).parents('.child-details').prev('tr').find('.js_cart_money').html(cart_money);
+
+                                if($(obj).parents('.child-details').prev('tr').find('.js_my_checks').prop('checked')){
+                                    temp = $('.js_total_money').html();
+                                    cart_all_money = accAdd(temp,d.cart_money);
+                                    $('.js_total_money').html(cart_all_money);
+                                }
+
+                                break;
+                            case 2:
+                                //计算出的价格的值 = 当前显示的价格 + (ajax返回的值 - 以前的价格*数量)
+                                $(obj).html('修改').attr('edit', 'false');
+                                $(obj).closest('tbody').find('.edits').removeClass('border').prop('readonly', true);
+                                //banfang_cart_money = accMul($(obj).parents('.js_tbody').find('.js_goods_number').val(),$(obj).parents('.js_tbody').find('.js_goods_price').html());
+                                banfang_cart_money = accMul(cart_obj_cate_temp[id].number,cart_obj_cate_temp[id].price);
+                                $(obj).parents('.js_tbody').find('.js_goods_price').html(d.data.sub_info.goods_price);
+                                temp = $(obj).parents('.child-details').prev('tr').find('.js_cart_money').html();
+                                temp = accAdd(temp, d.data.cart_money);
+                                cart_money = accSub(temp,banfang_cart_money);
+                                $(obj).parents('.child-details').prev('tr').find('.js_cart_money').html(cart_money);
+                                if($(obj).parents('.child-details').prev('tr').find('.js_my_checks').prop('checked')){
+                                    temp = $('.js_total_money').html();
+                                    temp = accAdd(temp,d.data.cart_money);
+                                    cart_all_money = accSub(temp,banfang_cart_money);
+                                    $('.js_total_money').html(cart_all_money);
+                                }
+                                break;
+                            case 3:
+                                // ajax_set_cart(null,6,null);
+                                // return false;
+                                banfang_cart_money = accMul($(obj).parents('.js_tbody').find('.js_goods_number').val(),$(obj).parents('.js_tbody').find('.js_goods_price').html());
+                                temp = $(obj).parents('.child-details').prev('tr').find('.js_cart_money').html();
+                                cart_money = accSub(temp,banfang_cart_money);
+                                if($(obj).parents('.child-details').prev('tr').find('.js_my_checks').prop('checked')){
+                                    temp = $('.js_total_money').html();
+                                    cart_all_money = accSub(temp,banfang_cart_money);
+                                    $('.js_total_money').html(cart_all_money);
+                                }
+                                if($(obj).parents('.child-details').find('tbody').length<=1){
+                                    $(obj).parents('.child-details').prev('tr').remove();
+                                    $(obj).parents('.child-details').remove();
+                                }else{
+                                    var js_cart_number = $(obj).parents('.child-details').prev('tr').find('.js_cart_number').html();
+                                    js_cart_number = parseInt(js_cart_number)-1;
+                                    $(obj).parents('.child-details').prev('tr').find('.js_cart_money').html(cart_money);
+                                    $(obj).parents('.child-details').prev('tr').find('.js_cart_number').html(js_cart_number);
+                                    $(obj).closest('tbody').remove();
+                                }
+                                break;
+
+                            case 4:
+                                if(id){
+                                    // $('.top-right .clearfix li a .sum').text(d.cart_count);
+                                    // ajax_set_cart(null,6,null);
+                                    // return false;
+                                    //删除单个
+                                    //data_string.id.push(id);
+                                    temp = $(obj).parents('.js_top_cart').find('.js_cart_money').html();
+                                    if($(obj).parents('.js_top_cart').find('.js_my_checks').prop('checked')){
+                                        cart_all_money = accSub($('.js_total_money').html(),temp);
+                                        $('.js_total_money').html(cart_all_money);
+                                    }
+                                    $(obj).closest('tr').next('.child-details').remove();
+                                    $(obj).closest('tr').remove();
+
+                                    var js_cart_number = $(obj).parents('.child-details').prev('tr').find('.js_cart_number').html();
+                                    js_cart_number = parseInt(js_cart_number)+1;
+                                    $(obj).parents('.child-details').prev('tr').find('.js_cart_number').html(js_cart_number);
+                                }else{
+                                    temp = 0;
+                                    /*$('.js_top_cart').each(function(){
+                                     if($(this).find('.checks').prop('checked')){
+                                     temp = accSub(temp,$(this).parents('.js_top_cart').find('.js_cart_money').html());
+                                     }
+                                     });
+                                     cart_all_money = accMul($('.js_total_money').html(),temp);
+                                     $('.js_total_money').html(cart_all_money);*/
+                                    $('.js_total_money').html(0);
+                                    $('.checks:checked').closest('tr').next('.child-details').remove();
+                                    $('.checks:checked').closest('tr').remove();
+                                    /*$('.js_top_cart').each(function(){
+                                     if($(this).find('.checks').prop('checked')){
+                                     data_string.id.push($(this).attr('cart_id'));
+                                     }
+                                     });*/
+                                }
+                                break;
+                            case 5:
+                                break;
+                            case 6:
+                                $('.js_total_number').html(d.count_number);
+                                $('.js_total_money').html(d.money_all);
+                                $('.my_cart_all').html(d.data);
+                                break;
+                            case 7:
+                                //banfang_cart_money = accMul($(obj).parents('.js_tbody').find('.js_goods_number').val(),$(obj).parents('.js_tbody').find('.js_goods_price').html());
+                                banfang_cart_money = accMul(cart_obj_cate_temp[id].number,cart_obj_cate_temp[id].price);
+                                $(obj).parents('.js_tbody').find('.js_goods_price').html(d.data.sub_info.goods_price);
+                                temp = $(obj).parents('.child-details').prev('tr').find('.js_cart_money').html();
+                                temp = accAdd(temp, d.data.cart_money);
+                                cart_money = accSub(temp,banfang_cart_money);
+                                $(obj).parents('.child-details').prev('tr').find('.js_cart_money').html(cart_money);
+                                if($(obj).parents('.child-details').prev('tr').find('.js_my_checks').prop('checked')){
+                                    temp = $('.js_total_money').html();
+                                    temp = accAdd(temp,d.data.cart_money);
+                                    cart_all_money = accSub(temp,banfang_cart_money);
+                                    $('.js_total_money').html(cart_all_money);
+                                }
+                                $(obj).parents('.customize-box').find('.number-cust').val(set_now_cust_number);
+                                $(obj).parents('.child-details').prev('tr').find('.js_cart_number').html(set_now_cart_number);
+                                break;
+                            default:
+                                alert(0);
+                                break;
+                        }
+
+                    }else{
+                        alert(d.msg);
+                    }
+                }
+            });
+        }
+
+        function ajax_get_Price(price){
+            if(!price){
+                var obj = {cart_id:new Array()};
+                $('.js_top_cart').each(function(){
+                    if($(this).find('.checks').prop('checked')){
+                        obj.cart_id.push($(this).attr('cart_id'));
+                    }
+                });
+                $.ajax({
+                    url: '{:U("Home/Order/ajax_get_price")}',
+                    type: 'POST',
+                    data: obj,
+                    success: function(d){
+                        if(d.status==100){
+
+                        }else{
+                            //alert(d.msg);
+                        }
+                        $('.js_total_money').html(d.data.goods_price);
+
+                    }
+                });
+            }else{
+                $('.js_total_money').html(price);
+            }
+
+        }
+
+
+        /* 常规款操作 */
+        //添加
+        $(document).delegate('.add-cg', 'click', function(){
+            var banfang_id = $(this).closest('tbody').attr('banfang_id');
+            ajax_set_cart(this,1,banfang_id);
+
+        });
+
+        //编辑
+        $(document).delegate('.edit-cg', 'click', function(){
+            //var banfang_id = $(this).closest('tbody').attr('banfang_id');
+            var banfang_id = $(this).parents('.js_tbody').attr('banfang_id');
+            if($(this).attr('edit') == 'true'){
+                ajax_set_cart(this,2,banfang_id);
+            }else{
+                cart_obj_cate_temp[banfang_id] = {
+                    number:$(this).parents('.js_tbody').find('.js_goods_number').val(),
+                    price:$(this).parents('.js_tbody').find('.js_goods_price').html()
+                };
+                $(this).html('保存').attr('edit', 'true');
+                $(this).closest('tbody').find('.edits').addClass('border').prop('readonly', false);
+            }
+
+        });
+
+        //删除
+        $(document).delegate('.delete-cg', 'click', function(){
+            //判断是否为最后一个商品删除
+            var banfang_id = $(this).closest('tbody').attr('banfang_id');
+            ajax_set_cart(this,3,banfang_id);
+
+        });
+
+        /* 情侣对戒操作 */
+        //添加
+        /*$(document).delegate('.add-ql', 'click', function(){
+         createMyHtml(this);
+         });*/
+
+        //编辑
+        /*$(document).delegate('.edit-ql', 'click', function(){
+         if($(this).attr('edit') == 'true'){
+         $(this).html('修改').attr('edit', 'false');
+         $(this).closest('tbody').find('.edits').removeClass('border').prop('readonly', true);
+         }else{
+         $(this).html('保存').attr('edit', 'true');
+         $(this).closest('tbody').find('.edits').addClass('border').prop('readonly', false);
+         }
+         });*/
+
+        //删除
+        /*$(document).delegate('.delete-ql', 'click', function(){
+         //判断是否为最后一个商品删除
+         if($(this).closest('.child-table').find('tbody').length <= 1){
+         $(this).parents('.child-details').prev('tr').remove();
+         $(this).parents('.child-details').remove();
+         }else{
+         $(this).closest('tbody').remove();
+         }
+         });*/
+
+        $(document).delegate('.deletes', 'click', function(){
+            ajax_set_cart(this,4);
+        });
+
+        $(document).delegate('.miaoshu', 'mouseover', function(){
+            $(this).attr('title', $(this).val());
+        });
+
+
+    });
+</script>
+<script>
+    function ajaxSubmitOrder(){
+
+        var obj = {cart_id:new Array()};
+        $('.js_top_cart').each(function(){
+            if($(this).find('.checks').prop('checked')){
+                obj.cart_id.push($(this).attr('cart_id'));
+            }
+    	});
+
+
+
+        $.ajax({
+            url: '{:U("Home/Order/OrderScanPre")}',
+            type: 'POST',
+            data: obj,
+            success: function(d){
+                if(d.status==100){
+
+                    window.location.href='/Home/Order/orderConfirm';
+                }else{
+                    alert(d.msg);
+                }
+
+            }
+        });
+    }
+</script>
+<include file=".:Base:layout_footer" />

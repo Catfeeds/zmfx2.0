@@ -1,0 +1,327 @@
+<!-- diamond -->
+<include file=".:Com:b2c:product:goods_js" />
+<!-- bootstrap -->
+<link rel="stylesheet" href="__CSS__/stm.css">
+
+<script src="__JS__/stm.js"></script>
+	<div class="stm-luozuan stm-details">
+		<div class="stm-breadcrumb">
+			<a href="/">首页</a> > <a href="{:U('Home/Goods/goodsDiy')}">钻石</a> > 详情页
+		</div>
+		<div class="stm-desc-box clearfloat">
+			<div class="top-banner clearfloat">
+				<p style="border: 1px solid #ccc;">
+					<if condition="($diamond_info['videourl'] != '-') && ($diamond_info['videourl'] != '') && ($diamond_info['videourl'] != null) " >
+						<video src="{$diamond_info['videourl']}" controls="controls" class="master-video w100">your browser does not support the video tag</video>
+					<else />
+						<video src=" " controls="controls" class="master-video w100">your browser does not support the video tag</video>
+					</if>
+
+					<img src="" class="master-img" alt="" style="display: none;">
+				</p>
+				<ul>
+					<li class="video-banner active" data-url="{$diamond_info['videourl']}"><img src="__IMG__/child_img_03.png" alt=""></li>
+					<switch name="diamond_info['shape_name']" >
+						<case value="圆形" >
+							<li class="pci-banner" data-url="__IMG__/s_round_01.jpg"><img src="__IMG__/s_round_01.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_round_02.jpg"><img src="__IMG__/s_round_02.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_round_03.jpg"><img src="__IMG__/s_round_03.jpg" alt=""></li>
+						</case>
+						<case value="椭圆">
+							<li class="pci-banner" data-url="__IMG__/s_oval_01.jpg"><img src="__IMG__/s_oval_01.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_oval_02.jpg"><img src="__IMG__/s_oval_02.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_oval_03.jpg"><img src="__IMG__/s_oval_03.jpg" alt=""></li>
+						</case>
+						<case value="马眼">
+							<li class="pci-banner" data-url="__IMG__/s_marquise_01.jpg"><img src="__IMG__/s_marquise_01.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_marquise_02.jpg"><img src="__IMG__/s_marquise_02.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_marquise_03.jpg"><img src="__IMG__/s_marquise_03.jpg" alt=""></li>
+						</case>
+						<case value="心形">
+							<li class="pci-banner" data-url="__IMG__/s_heart_01.jpg"><img src="__IMG__/s_heart_01.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_heart_02.jpg"><img src="__IMG__/s_heart_02.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_heart_03.jpg"><img src="__IMG__/s_heart_03.jpg" alt=""></li>
+						</case>
+						<case value="水滴">
+							<li class="pci-banner" data-url="__IMG__/s_pear_01.jpg"><img src="__IMG__/s_pear_01.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_pear_02.jpg"><img src="__IMG__/s_pear_02.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_pear_03.jpg"><img src="__IMG__/s_pear_03.jpg" alt=""></li>
+						</case>
+						<case value="椭圆">
+							<li class="pci-banner" data-url="__IMG__/s_round_01.jpg"><img src="__IMG__/s_round_01.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_round_01.jpg"><img src="__IMG__/s_round_01.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_round_01.jpg"><img src="__IMG__/s_round_01.jpg" alt=""></li>
+						</case>
+						<case value="方形">
+							<li class="pci-banner" data-url="__IMG__/s_princess_01.jpg"><img src="__IMG__/s_round_01.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_princess_02.jpg"><img src="__IMG__/s_round_02.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_princess_03.jpg"><img src="__IMG__/s_round_03.jpg" alt=""></li>
+						</case>
+						<case value="祖母绿">
+							<li class="pci-banner" data-url="__IMG__/s_emerald_01.jpg"><img src="__IMG__/s_emerald_01.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_emerald_02.jpg"><img src="__IMG__/s_emerald_02.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_emerald_03.jpg"><img src="__IMG__/s_emerald_03.jpg" alt=""></li>
+						</case>
+						<case value="枕形">
+							<li class="pci-banner" data-url="__IMG__/s_cushion_01.jpg"><img src="__IMG__/s_cushion_01.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_cushion_02.jpg"><img src="__IMG__/s_cushion_02.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_cushion_03.jpg"><img src="__IMG__/s_cushion_03.jpg" alt=""></li>
+						</case>
+						<case value="雷蒂恩">
+							<li class="pci-banner" data-url="__IMG__/s_radiant_01.jpg"><img src="__IMG__/s_radiant_01.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_radiant_02.jpg"><img src="__IMG__/s_radiant_02.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_radiant_03.jpg"><img src="__IMG__/s_radiant_03.jpg" alt=""></li>
+						</case>
+						<case value="梯方">
+							<li class="pci-banner" data-url="__IMG__/s_baguette_01.jpg"><img src="__IMG__/s_baguette_01.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_baguette_02.jpg"><img src="__IMG__/s_baguette_02.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_baguette_03.jpg"><img src="__IMG__/s_baguette_03.jpg" alt=""></li>
+						</case>
+						<case value="方形祖母绿">
+							<li class="pci-banner" data-url="__IMG__/s_square_01.jpg"><img src="__IMG__/s_square_01.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_square_02.jpg"><img src="__IMG__/s_square_02.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_square_03.jpg"><img src="__IMG__/s_square_03.jpg" alt=""></li>
+						</case>
+						<default />
+							<li class="pci-banner" data-url="__IMG__/s_round_01.jpg"><img src="__IMG__/s_round_01.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_round_02.jpg"><img src="__IMG__/s_round_02.jpg" alt=""></li>
+							<li class="pci-banner" data-url="__IMG__/s_round_03.jpg"><img src="__IMG__/s_round_03.jpg" alt=""></li>
+					</switch>
+					<switch name="diamond_info['certificate_type']" >
+						<case value="GIA">
+							<a href="/Home/Search/detail.html?zs_id={$diamond_info['certificate_number']}&zs_type=1" target="_blank">
+						</case>
+						<case value="IGI">
+							<a href="/Home/Search/detail.html?zs_id={$diamond_info['certificate_number']}&zs_type=2" target="_blank">
+						</case>
+						<case value="HRD">
+							<a href="/Home/Search/detail.html?zs_id={$diamond_info['certificate_number']}&zs_type=3" target="_blank">
+						</case>
+						<case value="NGTC">
+							<a href="/Home/Search/detail.html?zs_id={$diamond_info['certificate_number']}&zs_type=4" target="_blank">
+						</case>
+						<default />
+							<a href=" ">
+					</switch>
+					<li class="pci-banner" data-url="__IMG__/screening_icon_01_11.png"><img src="__IMG__/child_img_05.png" alt=""></li>
+					</a>
+				</ul>
+				<div class="clearfix"></div>
+				<div class="shoucang" style="margin-top: 15px;">
+	                <img src="{$diamond_info['collection_img']}" data-goods-id="{$diamond_info['gid']}" class="shoucang-img" collection_id="{$diamond_info.collection_id}" data-toggle="tooltip" data-placement="right" title="点击加入我的收藏" alt="">
+	                <script>
+	                    $(function(){
+	                        //收藏
+	                        $('.shoucang-img').bind('click', function(){
+	                            var current = $(this);
+								addDiamondsToCollection(current,current.attr('data-goods-id'),3);
+	                        });
+	                        $('.shoucang-img').tooltip();
+	                    });
+	                </script>
+	            </div>
+			</div>
+			<div class="xianxi-box">
+				<h1>{$diamond_info['weight']}ct {$diamond_info['certificate_type']}证书 <if condition="$diamond_info['certificate_price']">特价<else />精选<if>{$diamond_info['shape_name']}钻</h1>
+				<div class="xianxi-content clearfloat">
+					<p class="stm-rmb">RMB ￥{$diamond_info['price']}</p>
+					<p>
+						<div class="mnselect pull-left">
+							<button type="button" class="operation op1 join-type">将钻石加入 <img src="__IMG__/dowm_03.png" alt=""></button>
+							<ul class="join-type-ul" style="display: none;">
+								<li><a data-value="{$diamond_info['gid']}" class="addDingzhi" href="javascript:;">匹配戒托</a></li>
+								<li><a data-value="{$diamond_info['gid']}" class="addCart" href="javascript:;">加入购物车</a></li>
+							</ul>
+						</div>
+						<p class="pull-right">
+							<button type="button" data-gid="{$diamond_info['gid']}" class="operation op2 compare2">加入对比</button>
+						</p>
+					</p>
+				</div>
+				<div class="desc-list">
+					<h1 class="bule-title">概要</h1>
+					<ul>
+						<li>形状: {$diamond_info['shape_name']}</li>
+						<li>证书编号:{$diamond_info['certificate_type']}{$diamond_info['certificate_number']}</li>
+						<li>克拉单价:￥{$diamond_info['cur_price']}</li>
+					</ul>
+				</div>
+				<div class="desc-list">
+					<h1 class="bule-title">4C标准</h1>
+					<ul>
+						<li>克拉: {$diamond_info['weight']}</li>
+						<li>颜色: {$diamond_info['color']}</li>
+						<li>净度: {$diamond_info['clarity']}</li>
+						<li>切工: {$diamond_info['cut']}</li>
+					</ul>
+				</div>
+				<div class="desc-list">
+					<h1 class="bule-title">宝石风采</h1>
+					<ul>
+						<li>抛光:{$diamond_info['polish']}</li>
+						<li>对称:{$diamond_info['symmetry']}</li>
+						<li>荧光:{$diamond_info['fluor']}</li>
+					</ul>
+				</div>
+				<div class="desc-list">
+					<h1 class="bule-title">尺寸比例</h1>
+					<ul>
+						<li>直径:{$diamond_info['dia_size']}</li>
+						<li>全深比:{$diamond_info['dia_depth']}%</li>
+						<li>台宽比 :{$diamond_info['dia_table']}%</li>
+					</ul>
+				</div>
+				<div class="pd20">
+					我们所有0.3ct以上的钻石均提供GIA品质认证书及{$diamond_info['site_name']}终身保证书。
+				</div>
+				<div class="hepls clearfloat">
+					<div class="hleft">
+						<p>需要帮助?</p>
+						<p>{$diamond_info['site_name']}在任何时候都欢迎您提出问题或意见。与我们的钻石珠宝顾问交流，以助您做出明智的决定.</p>
+					</div>
+					<div class="hright">
+						<ul>
+							<li><img src="__IMG__/screening_icon_38.png" alt=""> <a href="javascript:;" class="c1">在线咨询</a></li>
+							<li><img src="__IMG__/screening_icon_41.png" alt=""> <a href="tel:{$diamond_info['site_contact']}" class="c1">{$diamond_info['site_contact']}</a></li>
+							<li><img src="__IMG__/screening_icon_43.png" alt=""> <a href="javascript:;" class="c2">{$diamond_info['company_address']}</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+<!-- 		<div class="stm-details-Instructions">
+	<div class="ins-list">
+		<h4>国际钻石分级标准</h4>
+		<p style="text-indent: 2em;">
+			1955年美国宝石学院GIA创立了全球第一个的钻石分级制度用以评估钻石的品质，该钻石的质量评估标准就是最初的钻石4C分级系统。后来，该标准在IDC（国际钻石理
+	事会）、CIBJO(国际珠宝联合会）以及HRD（比利时钻石高阶层议会）、IGI（国际宝石学院）等国际钻石石权威组织和宝石实验室的共同完善和推广下、逐渐发展成为我们
+	今天所熟悉的国际钻石分级标准。国际钻石分级标准将钻石的品质划分为克拉重量、颜色、净度、切工等4个主要指标和对称、抛光、荧光等3个细节修饰指标。因此我们对钻
+	石这7个指标的综和评价。
+		</p>
+	</div>
+	<div class="ins-list">
+		<h4>4C标准</h4>
+		<p>
+			<span>克拉Carat</span>
+			<span>净度Carity</span>
+		</p>
+		<p>
+			<span>颜色Colour</span>
+			<span>切工Cut</span>
+		</p>
+	</div>
+	<div class="ins-list">
+		<h4>宝石风采</h4>
+		<p>
+			<span>抛光Polish</span>
+			<span>对称Symmetry</span>
+		</p>
+		<p>
+			<span>荧光Fluorescence</span>
+		</p>
+	</div>
+</div> -->
+	</div>
+</body>
+<script>
+$(function(){
+	compare_base = {
+		type		: 1,	//1：裸钻对比追加 2：裸钻对比取消
+		compare_ajax: function(gid,type){
+			$.ajax({
+				type: "post",
+				url : "{:U('Home/Goods/compare_add')}",
+				data:{'gid':gid,'type':type},
+				dataType:'json',
+				success: function(res){
+					layer.msg(res.msg,{
+						shift :6,
+					});
+					if(res.url){
+						setTimeout(function(){window.location.href = res.url},1500);
+					}
+					return false;
+				},
+			});
+		}
+	}
+
+	//显示详情媒体资源
+	$('.top-banner li').hover(function(){
+
+		var classType = $(this).attr('class');
+		var srcUrl = $(this).attr('data-url');
+		$('.top-banner li').removeClass('active');
+		$(this).addClass('active');
+
+		switch(classType){
+
+			case "video-banner" :
+			$('.master-video').attr('src', srcUrl).show();
+			$('.master-img').hide();
+			break;
+
+			case "pci-banner" :
+			$('.master-video').hide();
+			$('.master-img').attr('src', srcUrl).show();
+			break;
+
+		}
+	});
+
+	//加入购物车或匹配
+	$('.join-type, .join-type-ul li').bind('click', function(){
+		if($(this).hasClass('join-type')){
+			if($(this).next('.join-type-ul').css('display') == 'block'){
+				$(this).next('.join-type-ul').hide();
+				$(this).find('img').attr('src', '__IMG__/dowm_03.png');
+			}else{
+				$(this).next('.join-type-ul').show();
+				$(this).find('img').attr('src', '__IMG__/dowm_up_03.png');
+			}
+		}else{
+			if($(this).parents('.join-type-ul').css('display') == 'block'){
+				$(this).parents('.join-type-ul').hide();
+				$(this).parents('.join-type-ul').prev('.join-type').find('img').attr('src', '__IMG__/dowm_03.png');
+			}else{
+				$(this).parents('.join-type-ul').show();
+				$(this).parents('.join-type-ul').prev('.join-type').find('img').attr('src', '__IMG__/dowm_up_03.png');
+			}
+		}
+	});
+
+	$('.addCart').bind('click',function(){
+		var gid = $(this).attr('data-value');
+		luozuan.set_gid(gid);
+		luozuan.addThisPageToCart();
+	});
+
+	$('.addDingzhi').bind('click',function(){
+		var gid = $(this).attr('data-value');
+		luozuan.addDingzhiSelectedInfo(gid);
+		if( !$.isEmptyObject(  dingzhi.info.jietuo_info )){
+			layer.msg('尊敬的客户，您的钻戒匹配成功。',{ shift:2, });
+		}else{
+			layer.confirm('钻石选择成功，是否去挑选戒托？', {
+				btn: ['是','否'] //按钮
+				}, function(){
+					location.href='{:U('/Home/Goods/goodsCategory')}?gcid=60';
+				}
+			);
+		}
+	});
+
+	//加入裸钻对比
+	$('.compare2').click(function(){
+		var gid	= $(this).attr('data-gid');
+		if(!gid){
+			layer.msg('操作错误！',{ shift:2, });
+			return false;
+		}
+
+		compare_base.compare_ajax(gid,1);
+
+	})
+});
+</script>
+</html>

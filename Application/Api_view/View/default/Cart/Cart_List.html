@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link href="__JS__/iCheck/skins/minimal/blue.css" rel="stylesheet">
+<link href="__JS__/iCheck/skins/square/blue.css" rel="stylesheet">
+<link href="__JS__/iCheck/skins/flat/blue.css" rel="stylesheet">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/cart.css">
+<title>商品清单</title>
+</head>
+
+<body class="wrap-bg">
+	<!--头部
+    <header class=" header text-center">
+    	  <a href="javascript:history.go(-1)" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+        商品清单
+    </header> -->
+    <!--内容-->
+    <div class="container wrap">
+    	<div class="row cart">
+			<if condition="$product">
+				<volist name="product['data']" id="vo">
+				<div class="media">
+					  <a class="pull-left radius"  onclick="ai_mutual('23,{$vo.goods_id},{$vo.goods_type}');" >
+						  <img class="media-object" src="{$vo.goods_attrs.thumb}" alt="购物车" width="60">
+					  </a> 
+					  <div class="media-body">
+					  <a onclick="ai_mutual('23,{$vo.goods_id},{$vo.goods_type}');" >
+						<h5 class="media-heading">{$vo.goods_attrs.goods_name}</h5>
+						<br>
+						<div class="">
+						   <b> ¥
+							<in name="vo['goods_attrs']['activity_status']" value="0,1">
+								{$vo['goods_attrs']['activity_price']}
+							<else/>
+								{$vo['goods_attrs']['goods_price']}
+							</in>
+							</b>
+						  <span class="pull-right"><big>x{$vo.goods_number}</big></span>
+						</div>  
+						</a>
+					  </div>
+				
+				</div>
+				</volist>
+			</if>
+ 
+			<if condition="$luozuan">
+				<volist name="luozuan['data']" id="vo">
+				<div class="media">
+					  <a class="pull-left radius" href="#">
+						  <img class="media-object" src="/Public/images/default/luozuan.jpg" alt="购物车" width="60">
+					  </a> 
+					  <div class="media-body">
+						<h5 class="media-heading">{$vo.goods_attrs.certificate_type}	{$vo.goods_attrs.certificate_number}</h5>
+						<br>
+						<div class="">
+						   <b> ¥{$vo.goods_attrs.price}</b>
+						  <span class="pull-right"><big>{$vo.goods_attrs.weight} ct</big></span>
+						</div>
+					  </div>
+				</div>
+				</volist>
+			</if>
+					
+			<if condition="$sanhuo">
+				<volist name="sanhuo['data']" id="vo">
+				<div class="media">
+					  <a class="pull-left radius" href="#">
+						  <img class="media-object" src="/Public/images/default/sanhuo.jpg" alt="购物车" width="60">
+					  </a> 
+					  <div class="media-body">
+						<h5 class="media-heading">{$vo.goods_attrs.goods_name}</h5>
+						<br>
+						<div class="">
+						   <b> ¥{$vo.goods_attrs.goods_price}</b>
+						  <span class="pull-right"><big>{$vo.goods_number} ct</big></span>
+						</div>
+					  </div>
+				</div>
+				</volist>
+			</if>
+			
+			<if condition="$jietuo">
+				<volist name="jietuo['data']" id="vo">
+				<div class="media">
+					  <a class="pull-left radius" onclick="ai_mutual('23,{$vo.goods_id},{$vo.goods_type}');" >
+						  <img class="media-object" src="{$vo.goods_attrs.thumb}" alt="购物车" width="60">
+					  </a> 
+					  <div class="media-body">
+					  <a onclick="ai_mutual('23,{$vo.goods_id},{$vo.goods_type}');" >					  
+						<h5 class="media-heading">{$vo.goods_attrs.goods_name}</h5>
+						<br>
+						<div class="">
+						   <b> ¥
+						   <in name="vo['goods_attrs']['activity_status']" value="0,1">
+								{$vo['goods_attrs']['activity_price']}
+							<else/>
+								{$vo['goods_attrs']['goods_price']}
+							</in>
+							</b>
+						  <span class="pull-right"><big>x{$vo.goods_number}</big></span>
+						</div>
+						</a>
+					  </div>
+				</div>
+				</volist>
+			</if>
+
+
+   		</div>
+	</div>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/iCheck/jquery.icheck.js"></script>
+<script src="__JS__/icheck-init.js"></script>
+<script type="text/javascript" src="__JS__/fuelux/js/spinner.min.js"></script>
+<script src="__JS__/spinner-init.js"></script>
+</body>
+</html>

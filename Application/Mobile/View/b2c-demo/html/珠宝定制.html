@@ -1,0 +1,450 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>珠宝定制</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-swiper.css" /> <!-- tab -->
+    <link rel="stylesheet" type="text/css" href="../css/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="../css/style-layer.css" /> <!-- 提示 -->
+
+    <script src="../js/jquery-1.12.3.js"></script>
+    <script src="../js/swiper.min.js"></script> <!-- tab -->
+    <script src="../js/mobileSelect.js"></script> <!-- ios下弹式菜单选择 -->
+    <script src="../js/layer.js"></script> <!-- 提示 -->
+</head>
+
+
+<body>
+    <section class="custom-jewelry">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="../img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>珠宝定制 </h2>
+                <!-- new navbar menu -->
+<div class="web-top-right topbar-right">
+    <img src="../img/topbar_right_more_03.png" class="topbar-more" alt="">
+</div>
+<div class="topbar-menu" style="display: none;">
+    <div class="cont">
+        <ul>
+            <li>
+                <a href="购物车.html">
+                    <img src="../img/topbar_cart.png" alt=""> 购物车
+                </a>
+            </li>
+            <li>
+                <a href="#" class="search-icon">
+                    <img src="../img/topbar_search.png" alt=""> 搜索
+                </a>
+            </li>
+            <li>
+                <a href="index.html">
+                    <img src="../img/topbar_home.png" alt=""> 首页
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<script>
+    $(function(){
+        $('.topbar-more').bind('click', function(){
+            $('.topbar-menu').toggle();
+        });
+    });
+</script>
+<!-- new navbar menu end -->
+
+            </div>
+        </header>
+
+        <!-- content -->
+        <section class="wrapper">
+
+            <!-- 广告 -->
+            <div class="pop">
+                <img src="../img/goods_img_02.jpg" alt="">
+            </div>
+            <!-- 广告 end -->
+
+            <!-- 筛选 -->
+            <div class="search-sort">
+                <ul>
+                    <li class="active">默认</li>
+                    <li>价格 <img src="../img/down_icon.png" class="down" alt=""></li>
+                    <li>钻石大小 <img src="../img/down_icon.png" class="down" alt=""></li>
+                    <li><img src="../img/more-ss.png" alt="" class="more-ss"></li>
+                </ul>
+                <script>
+                    $(function(){
+                        //排序
+                        $('.search-sort ul li').bind('click', function(){
+                            var down = $(this).find('.down');
+                            if(down.attr('data-lock') == 'true'){
+                                down.css('transform', 'rotate(0deg)').attr('data-lock', 'false');
+                            }else{
+                                down.css('transform', 'rotate(180deg)').attr('data-lock', 'true');
+                            }
+
+                            $('.search-sort ul li').removeClass('active');
+                            $(this).addClass('active');
+                        });
+                    });
+                </script>
+            </div>
+            <!-- 筛选 end -->
+
+            <!-- 数据列表 -->
+            <div class="item-box">
+                <div class="goods-list clearfix">
+                    <ul>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 暂无数据 -->
+            <!-- <div class="nodata text-center">
+                <ul>
+                    <li>
+                        <p style="margin-top: 3.5rem"><img src="../img/nodata.png" alt=""></p>
+                        <h1>很抱歉没能找到您要的钻石</h1>
+                    </li>
+                </ul>
+            </div> -->
+            <!-- 暂无数据 -->
+
+            <!-- loading -->
+<div class="loading" style="display: none"><img src="../img/loading.gif" alt=""></div>
+<script>
+    $(function(){
+        $(window).scroll(function(){
+            if($(document).scrollTop() + $(window).height() >= $(document).height()){
+                $('.loading').show();
+            }
+        });
+    });
+</script>
+<!-- loading end -->
+
+
+            <!-- 数据列表 end -->
+
+            <!-- 全部条件筛选 -->
+            <div class="all-conditions">
+                <div class="conditions-item">
+                    <h1>产品款式</h1>
+                    <div class="item-list">
+                        <span class="checks active">男戒</span>
+                        <span class="checks">女戒</span>
+                        <span class="checks">手镯</span>
+                        <span class="checks">手链</span>
+                        <span class="checks">情侣对戒</span>
+                        <span class="checks">吊坠</span>
+                        <span class="checks">项链</span>
+                        <span class="checks">钻饰</span>
+                        <span class="checks">皇冠</span>
+                        <span class="checks">钻石胸针扣</span>
+                        <span class="checks">耳饰</span>
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>空托价格</h1>
+                    <div class="item-list">
+                        <span class="checks active">400以下</span>
+                        <span class="checks">400-600</span>
+                        <span class="checks">600-800</span>
+                        <span class="checks">800-1000</span>
+                        <span class="checks">1000-1200</span>
+                        <span class="checks">1200-1400</span>
+                        <span class="checks">1400-1600</span>
+                        <span class="checks">1600-2000</span>
+                        <span class="checks">2000以上</span>
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>钻石大小ct</h1>
+                    <div class="item-list">
+                        <span class="checks">0.2CT以下</span>
+                        <span class="checks">0.2-0.3CT</span>
+                        <span class="checks">0.4-0.49CT</span>
+                        <span class="checks">0.5-0.89CT</span>
+                        <span class="checks">0.9-1.49CT</span>
+                        <span class="checks">1.5-1.99CT</span>
+                        <span class="checks">2-2.99CT</span>
+                        <span class="checks">3-3.99CT</span>
+                        <span class="checks">4CT以上</span>
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>镶嵌类别</h1>
+                    <div class="item-list">
+                        <span class="checks">瓜镶</span>
+                        <span class="checks">排镶</span>
+                        <span class="checks">围镶</span>
+                        <span class="checks">微镶</span>
+                        <span class="checks">包镶</span>
+                        <span class="checks">壁镶</span>
+                        <span class="checks">群镶</span>
+                        <span class="checks">槽镶</span>
+                        <span class="checks">组合镶</span>
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>适用人群</h1>
+                    <div class="item-list">
+                        <span class="checks">男性</span>
+                        <span class="checks">女姓</span>
+                        <span class="checks">中性</span>
+                        <span class="checks">儿童</span>
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>材质</h1>
+                    <div class="item-list">
+                        <span class="checks">黄金</span>
+                        <span class="checks">铂金</span>
+                        <span class="checks">K金</span>
+                        <span class="checks">银</span>
+                        <span class="checks">钻石</span>
+                        <span class="checks">珍珠</span>
+                        <span class="checks">宝石</span>
+                        <span class="checks">玉石</span>
+
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>材质成色</h1>
+                    <div class="item-list">
+                        <span class="checks">千足金</span>
+                        <span class="checks">足金</span>
+                        <span class="checks">PT950</span>
+                        <span class="checks">PT900</span>
+                        <span class="checks">18K金</span>
+                        <span class="checks">14K金</span>
+                        <span class="checks">9K金</span>
+                        <span class="checks">千足银</span>
+                        <span class="checks">足银</span>
+                        <span class="checks">S925银</span>
+                    </div>
+                </div>
+            </div>
+            <div class="options">
+                <button type="button" class="conditions-btn reset-btn">重置</button>
+                <button type="button" class="conditions-btn determine-btn">确定</button>
+            </div>
+            <div class="all-conditions-bg" style="display: none"></div>
+            <script>
+                $(function(){
+                    //全部条件-选择功能
+                    $('.item-list .checks').bind('click', function(){
+                        if($(this).hasClass('active')){
+                            $(this).removeClass('active');
+                        }else{
+                            $(this).addClass('active');
+                        }
+                    });
+
+                    //显示全部条件
+                    $('.more-ss').bind('click', function(){
+                        $('.all-conditions, .options').animate({'right': '0'});
+                        $('.all-conditions-bg').show();
+                        $('body, html').css({'height': '100%', 'overflow': 'hidden'});
+                    });
+
+                    //关闭全部条件
+                    $('.determine-btn, .all-conditions-bg').bind('click', function(){
+                        $('.all-conditions, .options').animate({'right': '-80%'},function(){
+                            $('.all-conditions-bg').hide();
+                            $('body, html').css({'height': '', 'overflow': ''});
+                        });
+                    });
+
+                    //重置
+                    $('.reset-btn').bind('click', function(){
+                        $('.item-list .checks').removeClass('active');
+                        $('.number-input').val('');
+                    });
+                });
+            </script>
+            <!-- 全部条件筛选 end -->
+
+            <!-- 匹配戒托 -->
+            <style>
+                body { margin-bottom: 7.8rem;}
+            </style>
+            <div class="matching">
+                <div class="tops">
+                    <h1>匹配项目：</h1>
+                    <ul class="ma-box">
+                        <li>
+                            <div class="fl good-img"><img src="../img/matching_img_03.png" class="w4rem" alt=""></div>
+                            <div class="fr good-title">
+                                <p>裸石EX-N1编号:2024</p>
+                                <p class="rmb">￥8999</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li class="text-center link">
+                            <img src="../img/matching_img_08.png" alt="">
+                        </li>
+                        <li>
+                            <div class="fl good-img"><img src="../img/matching_img_05.png" class="w4rem" alt=""></div>
+                            <div class="fr good-title">
+                                <p>裸石EX-N1编号:2024</p>
+                                <p class="rmb">￥8999</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <div class="clearfix"></div>
+                    </ul>
+                </div>
+                <a href="#" class="custom-btn">确认定制</a>
+            </div>
+            <!-- 匹配戒托 end -->
+
+        </section>
+        <!-- content end -->
+
+    </section>
+
+    <!-- 快捷搜索 start -->
+<div class="index-search-open quick-search" style="display: none">
+    <form action="" class="top-search">
+        <div class="top-bar">
+            <input type="text" class="s-input" name="" value="" placeholder="商品名称、证书号、系列名称">
+            <input type="button" class="search-btn" onclick="javasctipt:location.href='search.html'" name="" value=" ">
+        </div>
+        <div class="top-bar-btn">
+            取消
+        </div>
+    </form>
+    <div class="hot-search">
+        <h1>热门搜索</h1>
+        <div class="keywords-list">
+            <a href="#">钻石</a>
+            <a href="#">钻石</a>
+            <a href="#">笔记本</a>
+            <a href="#">笔记本</a>
+            <a href="#">钻石</a>
+            <a href="#">钻石</a>
+            <a href="#">钻石</a>
+        </div>
+    </div>
+    <div class="history-search">
+        <h1><span class="pl">历史搜索</span></h1>
+        <ul>
+            <li><a href="#">镶嵌式</a></li>
+            <li><a href="#">手工钻</a></li>
+            <li><a href="#">花蝶系</a></li>
+        </ul>
+    </div>
+
+    <div class="reset-search-box">
+        <button type="button" class="reset-history">清空历史搜索</button>
+    </div>
+</div>
+<!-- 快捷搜索 end -->
+
+<script>
+    /*
+     *  @obj: 触发元素
+     */
+    var quickSearch = {
+        //显示搜索
+        show : function (obj){
+            $(obj).bind('click', function(){
+                $('.quick-search').show();
+            });
+        },
+        //关闭搜索
+        hide : function (obj){
+            $(obj).bind('click', function(){
+                $('.quick-search').hide();
+            });
+        }
+    }
+
+    quickSearch.hide('.top-bar-btn'); //关闭搜索
+</script>
+
+    <script>
+        //快捷搜索
+        quickSearch.show('.search-icon');
+    </script>
+</body>
+</html>

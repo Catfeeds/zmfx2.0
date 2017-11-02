@@ -1,0 +1,646 @@
+<include file="Public:header" /><body class="white diamond-query">
+    <section>
+
+		<include file="Public:localHeader"/>
+
+        <!-- content -->
+        <section class="wrapper">
+
+            <div class="diamond-tab">
+                <a href="/Diamond/goodsDiy.html" class="diamond-btn">白钻</a>
+                <a href="/Diamond/goodsDiyColor.html" class="diamond-btn diamond-btn-active">彩钻</a>
+            </div>
+
+            <!-- 快捷筛选 -->
+            <div class="screening">
+
+                <!-- 价格 -->
+                <span class="boxs">
+                    <button type="button" class="screening-btn" id="selectedPrice">价格
+                        <span class="icon"><img src="__IMG__/down_icon.png" alt=""></span>
+                    </button>
+
+                    <div class="select-list" style="display: none;">
+                        <ul id="alonePrice" class="topData">
+                            <li><span>2000-4999</span>元</li>
+                            <li><span>5000-7999</span>元</li>
+                            <li><span>8000-9999</span>元</li>
+                            <li><span>1万或以上</span></li>
+                        </ul>
+                        <p>
+                            <button type="button" class="select-ok-btn topScreen topPrice">确定</button>
+                            <button type="button" class="select-no-btn cancelPrice">取消</button>
+                        </p>
+                    </div>
+                    <div class="mask" style="display: none;"></div>
+                </span>
+                <!-- 钻重 -->
+                <span class="boxs">
+                    <button type="button" class="screening-btn" id="selectedWeight">钻重
+                        <span class="icon"><img src="__IMG__/down_icon.png" alt=""></span>
+                    </button>
+
+                    <div class="select-list" style="display: none;">
+                        <ul id="aloneWeight" class="topData">
+                            <li><span>0.30-0.49</span>ct</li>
+                            <li><span>0.50-0.79</span>ct</li>
+                            <li><span>0.80-0.99</span>ct</li>
+                            <li><span>1克拉或以上</span></li>
+                        </ul>
+                        <p>
+                            <button type="button" class="select-ok-btn topScreen topWeight">确定</button>
+                            <button type="button" class="select-no-btn cancelWeight">取消</button>
+                        </p>
+                    </div>
+                    <div class="mask" style="display: none;"></div>
+                </span>
+                <!-- 颜色 -->
+                <span class="boxs">
+                    <button type="button" class="screening-btn" id="selectedColor">颜色
+                        <span class="icon"><img src="__IMG__/down_icon.png" alt=""></span>
+                    </button>
+
+                    <div class="select-list" style="display: none;">
+                        <ul id="aloneColor" class="topData">
+                            <li><span style="display:none;">YELLOW</span>黄钻</li>
+                            <li><span style="display:none;">PINK</span>粉钻</li>
+                            <li><span style="display:none;">ORANGE</span>橙钻</li>
+                            <li><span style="display:none;">GREEN</span>绿钻</li>
+                            <li><span style="display:none;">BROWN</span>棕色</li>
+                            <li><span style="display:none;">VIOLET</span>紫罗兰</li>
+                            <li><span style="display:none;">PURPLE</span>紫钻</li>
+                            <li><span style="display:none;">GRAY</span>灰钻</li>
+                            <li><span style="display:none;">BLACK</span>黑钻</li>
+                            <li><span style="display:none;">RED</span>红钻</li>
+                            <li><span style="display:none;">BLUE</span>蓝钻</li>
+                        </ul>
+                        <p>
+                            <button type="button" class="select-ok-btn topScreen topColor">确定</button>
+                            <button type="button" class="select-no-btn cancelColor">取消</button>
+                        </p>
+                    </div>
+                    <div class="mask" style="display: none;"></div>
+                </span>
+
+                <img src="__IMG__/more-ss.png" class="more-ss" alt="">
+            </div>
+            <script>
+                $(function(){
+                    //筛选：显示参数
+                    $('.screening-btn').bind('click', function(){
+                        $('.select-list, .mask').hide();
+                        $(this).parents('.boxs').find('.select-list, .mask').show();
+                        $(this).find('.icon img').css('transform', 'rotate(180deg)');
+                        $('body, html').css({'height': '100%', 'overflow': 'hidden'});
+                    });
+                    //筛选：详细参数选择
+                    $('.select-list ul li').bind('click', function(){
+                        $(this).parents('.select-list').find('li').removeClass('active');
+                        $(this).addClass('active');
+                    });
+                    //确定条件
+                    $('.select-ok-btn').bind('click', function(){
+                        var data = $(this).parents('.boxs').find('.select-list li.active').html();
+                        if( data == undefined ){
+                            // layer.open({
+                            //     content: '请选择参数'
+                            //     ,skin: 'msg'
+                            //     ,time: 2
+                            // });
+                            /*layer.open({
+                                content: '请选择参数'
+                                ,btn: '确定'
+                            });*/
+                            return false;
+                        }else{
+                            $(this).parents('.boxs').find('.screening-btn').html(data);
+                            $('.select-list, .mask').hide();
+                            $(this).parents('.boxs').find('.screening-btn').addClass('screening-btn-active');
+                            $('body, html').css({'height': '', 'overflow': ''});
+                        }
+                    });
+                    //取消显示筛选
+                    $('.select-no-btn').bind('click', function(){
+                        $('.select-list, .mask').hide();
+                        $(this).parents('.boxs').find('.icon img').css('transform', 'rotate(0deg)');
+                        $('body, html').css({'height': '', 'overflow': ''});
+						//取消已选择的项及取消后的效果
+						if($(this).hasClass('cancelPrice')){
+							$("#selectedPrice").removeClass('screening-btn-active');
+							$("#selectedPrice").html('价格<span class="icon"><img src="__IMG__/down_icon.png" alt=""></span>');
+							$('#alonePrice li').removeClass('active');
+							$(".topPrice").click();
+						}else if($(this).hasClass('cancelWeight')){
+							$("#selectedWeight").removeClass('screening-btn-active');
+							$("#selectedWeight").html('钻重<span class="icon"><img src="__IMG__/down_icon.png" alt=""></span>');
+							$('#aloneWeight li').removeClass('active');
+							$(".topWeight").click();
+						}else if($(this).hasClass('cancelColor')){
+							$("#selectedColor").removeClass('screening-btn-active');
+							$("#selectedColor").html('颜色<span class="icon"><img src="__IMG__/down_icon.png" alt=""></span>');
+							$('#aloneColor li').removeClass('active');
+							$(".topColor").click();				
+						}
+						//$(".topScreen").click();
+						$("#nowPage").val("1");
+                    });
+                });
+            </script>
+            <!-- 快捷筛选 end -->
+
+            <!-- 数据列表 -->
+            <link rel="stylesheet" href="__CSS__/style-defaultTheme.css">
+            <script src="__JS__/jquery.fixedheadertable.min.js"></script>
+            <div class="diamond-table">
+                <p class="text-right"><span id="newTotal"></span>颗钻石</p>
+
+                <div class="diamond-table-list">
+                    <table class="fancyTable" cellpadding="0" cellspacing="0">
+            		    <thead>
+            		        <tr>
+            		            <th>形状</th>
+            		            <th><span class="sort-box orderWeight">钻重	&nbsp; <img src="__IMG__/table_down.png" class="sort-img" width="15" alt="" style="transform: rotate(180deg);"></span></th>
+            		            <th>颜色</th>
+            		            <th>净度</th>
+            		            <th><span class="sort-box orderPrice">价格 &nbsp; <img src="__IMG__/table_down.png" class="sort-img" width="15" alt="" style="transform: rotate(180deg);"></span></th>
+            		        </tr>
+            		    </thead>
+                        <!-- 暂无数据显示 -->
+                        <!-- <tbody>
+                            <tr>
+                                <td colspan="6">
+                                    <p style="margin-top: 3.5rem"><img src="__IMG__/nodata.png" alt=""></p>
+                                    <h1>很抱歉没能找到您要的钻石</h1>
+                                </td>
+                            </tr>
+                        </tbody> -->
+
+                        <!-- 数据列表 -->
+            		    <tbody>
+            		        <tr>
+            		            <td></td>
+            		            <td></td>
+            		            <td></td>
+            		            <td></td>
+                                <td class="rmb"></td>
+            		        </tr>
+            		    </tbody>
+
+            		</table>
+					<div id="load-box" style="border-top: 1px solid #EDEDED">
+						<!-- loading -->
+						<div class="loading" style="display: none"><img src="__IMG__/loading.gif" alt=""></div>
+						<!-- loading end -->
+					</div>
+                </div>
+                <script>
+                    $(function(){
+
+                        //固定table表头
+                        $('.fancyTable').fixedHeaderTable({
+                            footer: true,
+                            altClass: 'odd',
+                        });
+
+                        //排序
+                        /*$('.sort-box').bind('click', function(){
+                            if($(this).attr('data') == 'down'){
+                                $(this).find('.sort-img').css('transform', 'rotate(0deg)');
+                                $(this).attr('data', '');
+                            }else{
+                                $(this).find('.sort-img').css('transform', 'rotate(180deg)');
+                                $(this).attr('data', 'down');
+                            }
+                        });*/
+                    });
+                </script>
+            </div>
+            <!-- 数据列表 end -->
+
+            <!-- 详情参数 -->
+            <div class="detailed-content" style="display: none">
+                <div class="diamond-detailed wrapper">
+                    <h1 class="data-title">详细参数：</h1>
+                    <table class="datas-table">
+                        <tbody>
+                            <tr>
+                                <th>证书编号</th>
+                                <td id="parameter1"></td>
+                                <th>证书类型</th>
+                                <td id="parameter2"></td>
+                            </tr>
+                            <tr>
+                                <th>形状</th>
+                                <td id="parameter3"></td>
+                                <th>荧光</th>
+                                <td id="parameter4"></td>
+                            </tr>
+                            <tr>
+                                <th>重量</th>
+                                <td id="parameter5"></td>
+                                <th>全深比</th>
+                                <td id="parameter6"></td>
+                            </tr>
+                            <tr>
+                                <th>颜色</th>
+                                <td id="parameter7"></td>
+                                <th>台宽比</th>
+                                <td id="parameter8"></td>
+                            </tr>
+                            <tr>
+                                <th>净度</th>
+                                <td id="parameter9"></td>
+                                <th>奶色</th>
+                                <td id="parameter10"></td>
+                            </tr>
+                            <tr>
+                                <th>色度</th>
+                                <td id="parameter11"></td>
+                                <th>咖色</th>
+                                <td id="parameter12"></td>
+                            </tr>
+                            <tr>
+                                <th>抛光</th>
+                                <td id="parameter13"></td>
+                                <th>编号</th>
+                                <td id="parameter14"></td>
+                            </tr>
+                            <tr>
+                                <th>对称</th>
+                                <td id="parameter15"></td>
+                                <th>价格</th>
+                                <td id="parameter16"></td>
+                            </tr>
+                            <tr>
+                                <th>尺寸</th>
+                                <td id="parameter17"></td>
+                                <th>所在地</th>
+                                <td id="parameter18"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="toolbar">
+                        <div class="toolbar-left">
+                            <span class="toolbar-collection"><img src="__IMG__/toolbar_collection.png" alt=""></span>
+                            <a href="/Order/orderCart.html" class="toolbar-cart">
+                                <img src="__IMG__/toolbar_cart.png" class="" alt="">
+                                <div class="number"><?php echo isset($cartNumber) 	? $cartNumber  : '0';?></div>
+                            </a>
+                        </div>
+                        <div class="toolbar-right">
+                            <span class="to-cart" onClick="addCartluozuan()">加入购物车</span>
+                            <a href="javascript:;" class="to-match-up" onClick="matching()"><?php if(empty($jietuoInfo)){ ?>去配戒托<?php }else{ ?>确认匹配<?php } ?></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+					var GDCCondition = {
+							'type_from'	: '1',
+							'goods_type'	: 1,	
+							'gid'		: '',
+							'uid'		: '<?php echo count($_SESSION['m']);?>',
+					}
+                    //详细参数显示
+                    $('.fancyTable tr td').bind('click', function(){
+                        layer.open({
+                            type: 1
+                            ,content: $('.detailed-content').html()
+                            ,anim: 'up'
+                            ,style: 'position:fixed; bottom:0; left:0; width: 100%; border:none;'
+                        });
+                    });
+
+                    //添加收藏
+                    $(document).delegate('.toolbar-collection','click', function(){
+						if(GDCCondition.uid=='0'){
+							CommonFunction.Prompt.Tan('请先登录在收藏！');
+							return false;
+						}
+					
+                        if($(this).attr('data-lock') != 'true'){
+                            $(this).find('img').attr('src', '__IMG__/toolbar_collection_success.png');
+                            $(this).attr('data-lock', 'true');
+                        }else{
+                            $(this).find('img').attr('src', '__IMG__/toolbar_collection.png');
+                            $(this).attr('data-lock', 'false');
+                        }
+						
+
+						
+						BringAjax.IntendData.Url		 = '/Public/addCollection';
+						BringAjax.IntendData.SwitchMain  = 1;
+						EasyTransition(GDCCondition);
+                    });
+
+                    //加入购物车
+                    $(document).delegate('.to-cart','click', function(){
+                        var number = $('.toolbar-cart .number');
+                        number.html( parseInt(number.html())+1 );
+                    });
+
+            </script>
+            <!-- 详情参数 end -->
+
+
+            <!-- 全部条件筛选 -->
+			<form class="form-box" id="myform">
+            <div class="all-conditions">
+                <div class="conditions-item">
+                    <h1>颜色</h1>
+                    <div class="item-list">
+                        <a href="javascript:void(0);" class="checks" data-type="Color" data-value="YELLOW">黄钻</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Color" data-value="PINK">粉钻</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Color" data-value="ORANGE">橙钻</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Color" data-value="GREEN">绿钻</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Color" data-value="BROWN">棕色</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Color" data-value="VIOLET">紫罗兰</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Color" data-value="PURPLE">紫钻</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Color" data-value="GRAY">灰钻</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Color" data-value="BLACK">黑钻</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Color" data-value="RED">红钻</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Color" data-value="BLUE">蓝钻</a>	
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>形状</h1>
+                    <div class="item-list">
+                        <a href="javascript:void(0);" class="checks" data-type="Shape" data-value="ROUND">圆形</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Shape" data-value="OVAL">椭圆</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Shape" data-value="MARQUISE">马眼</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Shape" data-value="HEART">心形</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Shape" data-value="PEAR">水滴</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Shape" data-value="PRINCESS">方形</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Shape" data-value="EMERALD">祖母绿</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Shape" data-value="CUSHION">枕形</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Shape" data-value="RADIANT">蕾蒂恩</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Shape" data-value="BAGUETTE">梯方</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Shape" data-value="SQUARE EMERALD">方形祖母绿</a>
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>钻重ct</h1>
+                    <div class="item-list">
+                        <div class="w40">
+                            <input type="text" id="minWeight" name="minWeight" class="number-input Weight">
+                        </div>
+                        <div class="w20">
+                            <span class="hx"></span>
+                        </div>
+                        <div class="w40">
+                            <input type="text" id="maxWeight" name="maxWeight" class="number-input Weight">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>价格</h1>
+                    <div class="item-list">
+                        <div class="w40">
+                            <input type="text" id="minPrice" name="minPrice" class="number-input Price">
+                        </div>
+                        <div class="w20">
+                            <span class="hx"></span>
+                        </div>
+                        <div class="w40">
+                            <input type="text" id="maxPrice" name="maxPrice" class="number-input Price">
+                        </div>
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>色度</h1>
+                    <div class="item-list span2">
+						<a href="javascript:void(0);" class="checks" data-type="Intensity" data-value="FAINT">微 FAINT</a>
+						<a href="javascript:void(0);" class="checks" data-type="Intensity" data-value="VERY LIGHT">很淡 VERY LIGHT</a>
+						<a href="javascript:void(0);" class="checks" data-type="Intensity" data-value="LIGHT">淡 LIGHT</a>
+						<a href="javascript:void(0);" class="checks" data-type="Intensity" data-value="FANCY LIGHT">淡彩 FANCY LIGHT</a>
+						<a href="javascript:void(0);" class="checks" data-type="Intensity" data-value="FANCY">彩 FANCY</a>
+						<a href="javascript:void(0);" class="checks" data-type="Intensity" data-value="FANCY INTENSE">浓彩 FANCY INTENSE</a>
+						<a href="javascript:void(0);" class="checks" data-type="Intensity" data-value="FANCY DEEP">深彩 FANCY DEEP</a>
+						<a href="javascript:void(0);" class="checks" data-type="Intensity" data-value="FANCY DARK">暗彩 FANCY DARK</a>
+						<a href="javascript:void(0);" class="checks" data-type="Intensity" data-value="FANCY DARK">艳彩 FANCY VIVID</a>
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>净度</h1>
+                    <div class="item-list">
+						<a href="javascript:void(0);" class="checks" data-type="Clarity" data-value="FL">IF</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Clarity" data-value="VVSI">VVSI</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Clarity" data-value="VVS2">VVS2</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Clarity" data-value="VS1">VS1</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Clarity" data-value="VS2">VS2</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Clarity" data-value="SI1">SI1</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Clarity" data-value="SI2">SI2</a>
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>抛光</h1>
+                    <div class="item-list">	
+                        <a href="javascript:void(0);" class="checks" data-type="Polish" data-value="EX">EX</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Polish" data-value="VG">VG</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Polish" data-value="GD">GOOD</a>
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>荧光</h1>
+                    <div class="item-list">
+                        <a href="javascript:void(0);" class="checks" data-type="Fluor" data-value="F">F</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Fluor" data-value="N">N</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Fluor" data-value="S">S</a>
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>对称</h1>
+                    <div class="item-list">
+                        <a href="javascript:void(0);" class="checks" data-type="Symmetry" data-value="EX">EX</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Symmetry" data-value="VG">VG</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Symmetry" data-value="GD">GD</a>
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>来源</h1>
+                    <div class="item-list">
+                        <a href="javascript:void(0);" class="checks" data-type="Location" data-value="现货">现货</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Location" data-value="订货">订货</a>
+                    </div>
+                </div>
+                <div class="conditions-item">
+                    <h1>证书</h1>
+                    <div class="item-list">
+                        <a href="javascript:void(0);" class="checks" data-type="Cert" data-value="GIA">GIA</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Cert" data-value="HRD">HRD</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Cert" data-value="IGI">IGI</a>
+                        <a href="javascript:void(0);" class="checks" data-type="Cert" data-value="NGTC">国检</a>
+                    </div>
+                </div>
+            </div>
+			<input type="hidden" class="leftData" id="Color" name="Color" />
+			<input type="hidden" class="leftData" id="Shape" name="Shape" />
+			<input type="hidden" class="leftData" id="Intensity" name="Intensity" />
+			<input type="hidden" class="leftData" id="Clarity" name="Clarity" />
+			<input type="hidden" class="leftData" id="Polish" name="Polish" />
+			<input type="hidden" class="leftData" id="Fluor" name="Fluor" />
+			<input type="hidden" class="leftData" id="Location" name="Location" />
+			<input type="hidden" class="leftData" id="Cert" name="Cert" />
+			<input type="hidden" class="leftData" id="Weight" name="Weight" />
+			<input type="hidden" class="leftData" id="Price" name="Price" />
+			<input type="hidden" class="leftData" id="Symmetry" name="Symmetry" />
+            <div class="options">
+                <button type="button" class="conditions-btn reset-btn" id="resetData">重置</button>
+                <button type="button" class="conditions-btn determine-btn determine" id="determine">确定</button>
+            </div>
+			</form>
+            <div class="all-conditions-bg" style="display: none"></div>
+            <script>
+                $(function(){
+					//设置是否显示底部匹配信息
+					var dingzhi = getCookieOfObject("dingzhi"); 
+					if( !$.isEmptyObject(dingzhi) ){ 
+						$("#matchingItem").css('display','block');
+					}else{
+						$("#matchingItem").css('display','none');
+					}
+                    //全部条件-选择功能
+                    $('.item-list .checks').bind('click', function(){
+                        if($(this).hasClass('active')){
+                            $(this).removeClass('active');
+                        }else{
+                            $(this).addClass('active');
+                        }
+                    });
+
+                    //显示全部条件
+                    $('.more-ss').bind('click', function(){
+                        $('.all-conditions, .options').animate({'right': '0'});
+                        $('.all-conditions-bg').show();
+                        $('body, html').css({'height': '100%', 'overflow': 'hidden'});
+                    });
+
+                    //关闭全部条件
+                    $('.determine-btn, .all-conditions-bg').bind('click', function(){
+                        $('.all-conditions, .options').animate({'right': '-80%'},function(){
+                            $('.all-conditions-bg').hide();
+                            $('body, html').css({'height': '', 'overflow': ''});
+                        });
+                    });
+
+                    //重置
+                    $('.reset-btn').bind('click', function(){
+                        $('.item-list .checks').removeClass('active');
+                        $('.number-input').val('');
+                    });
+					
+					
+					load_dingzhi();
+					function load_dingzhi(){
+						var dingzhi = getCookieOfObject("dingzhi"); 
+						if(!$.isEmptyObject(dingzhi) ){
+							luozuanInfo  = dingzhi.luozuan_info;
+							if( !$.isEmptyObject(dingzhi.luozuan_info) ){
+								var luozuanStr = '<div class="fl good-img"><img src="__IMG__/luozhuan.png" class="w4rem" alt=""></div><div class="fr good-title"><p>证书号：'+luozuanInfo.certificate_number+'</p><p class="rmb">￥'+luozuanInfo.price+'</p></div><div class="clearfix"></div>';					
+							}else{
+								var luozuanStr = '<div class="fl good-img"><img src="__IMG__/matching_img_08.jpg" class="w4rem" alt=""></div><div class="fr good-title"><p>请选择裸钻</p></div><div class="clearfix"></div>';	
+							}
+						}
+						if(!$.isEmptyObject(dingzhi) ){
+							jietuoInfo  = dingzhi.jietuo_info;
+							if( !$.isEmptyObject(dingzhi.jietuo_info) ){
+								var jietuoStr  = '<div class="fl good-img"><img src="'+jietuoInfo.thumb+'" class="w4rem" alt=""></div><div class="fr good-title"><p>'+jietuoInfo.goods_name+'<br /> '+jietuoInfo.material.material_id+" &nbsp;"+' <br />'+luozuanInfo.shape_name+'  &nbsp;&nbsp;'+jietuoInfo.luozuan.weights_name+'Ct </p><p class="rmb">￥'+jietuoInfo.goods_price+'</p></div><div class="clearfix"></div>'; 
+							}else{
+								var jietuoStr = '<div class="fl good-img" onclick="matching(1)"><img src="__IMG__/matching_img_05.png" class="w4rem" alt=""></div><div class="fr good-title"><p>请选择戒托</p></div><div class="clearfix"></div>';	
+							}	
+						}
+						$("#luozuanInfo").html(luozuanStr);
+						$("#jietuoInfo").html(jietuoStr);
+					}					
+					
+					
+                });
+            </script>
+            <!-- 全部条件筛选 end -->
+
+            <!-- 匹配钻石 -->
+            <style>
+                body { margin-bottom: 7rem;}
+            </style>
+			<input type="hidden" id="goodsSn" name="goodsSn" value="{$goodsSn}" />
+			<input type="hidden" id="order" name="order" value="weight" />
+			<input type="hidden" id="desc" name="desc" value="asc" />
+			<input type="hidden" id="nowPage" name="nowPage" value="1" />
+			<input type="hidden" id="gal_id" name="gal_id" value="{$gal_id}" />
+            <div class="matching" id="matchingItem">
+                <div class="tops">
+                    <h1>匹配项目：</h1>
+                    <ul class="ma-box">
+                        <li id="luozuanInfo">
+                        </li>
+                        <li class="text-center link">
+                            <img src="__IMG__/matching_img_08.png" alt="">
+                        </li>
+                        <li id="jietuoInfo">
+                        </li>
+                        <div class="clearfix"></div>
+                    </ul>
+                </div>
+                <a  class="custom-btn">确认定制</a>
+            </div>			
+            <!-- 匹配钻石 end -->
+
+            <div class="index-bottom">
+				<div class="phone clearfix">
+					<a href="tel:{:C('site_contact')}" class="fl"><img src="__IMG__/phone_icon.png" alt="">{:C('site_contact')}</a>
+					<?php
+						$DEFAULT_AGENT_DOMAIN = C('DEFAULT_AGENT_DOMAIN');
+						if(substr_count($DEFAULT_AGENT_DOMAIN,'.')==1){
+							$defaultDomain = 'www.'.$DEFAULT_AGENT_DOMAIN.'?is_inside_callback=1';
+						}else{
+							$defaultDomain = $DEFAULT_AGENT_DOMAIN.'?is_inside_callback=1';
+						}
+					?>
+					<a href="http://<?php echo $defaultDomain;?>" title="官方网站" class="fr">查看官方网站(网页版）</a>
+				</div>
+				<div class="copyright">© 2010-2019 {:C('site_name')} 版权所有<br/>{:C('case_number')}</div>
+			</div>
+
+<!-- 返回顶部 start -->
+<a href="javascript:;" class="back-top" style="display: none;">
+    <img src="__IMG__/back_top.png" alt="">
+</a>
+
+<script>
+    $(function(){
+        //返回顶部
+        $(window).scroll(function(){
+              if($(document).scrollTop() + $(window).height() >= $(document).height()){
+                 $('.back-top').fadeIn();
+              }else{
+                 $('.back-top').hide();
+              }
+        });
+        $('.back-top').bind('click', function(){
+            $('body,html').animate({scrollTop : 0},400);
+        });
+    });
+</script>
+<!-- 返回顶部 end -->
+
+
+        </section>
+        <!-- content end -->
+
+    </section>
+
+    <!-- 快捷搜索 start -->
+
+<!-- 快捷搜索 end -->
+<include file="Public:search" />
+<include file="Public:matching" />
+<script>
+	//快捷搜索
+	quickSearch.show('.search-icon');
+</script>
+<include file="Public:foot" />
+<include file="goodsDiyColor_js" />
+
+</body>
+</html>

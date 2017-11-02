@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>物流列表</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+  <script src="__JS__/jquery.min.js"></script>
+  <script src="__JS__/bootstrap.min.js"></script>
+  <script src="__JS__/public.js"></script> 
+</head>
+<style>
+  body { background: #F6F5F3;}
+  .wulist { max-width: 960px; margin: 0 auto;}
+  .wulist header { background: #FFF;}
+  .wulist header h4 { font-weight: 500; margin: 12px 0; padding: 15px 10px; border-top: 1px solid #EBEBEB; border-bottom: 1px solid #EBEBEB;}
+  .wulist .wulist-box { background: #FFF; margin: 15px 0; border-top: 1px solid #EBEBEB; border-bottom: 1px solid #EBEBEB;}
+  .wulist .wulist-box .wulist-box-top { padding: 20px 15px;}
+  .wulist .wulist-box-left { width: 80%; height: 65px; overflow: hidden; float: left;}
+  .wulist .wulist-box-left img { width: 60px; height: 60px; margin-right: 8px;}
+  .wulist .wulist-box-right { width: 20%; height: 60px; line-height: 60px; float: right;}
+  .wulist .wulist-box-bottom { border-top: 1px solid #E6E6E6; padding: 10px 15px;}
+  .wulist .wulist-box-bottom .hj {font-size: 16px; height: 32px; line-height: 32px;}
+  .wulist .wulist-box-bottom .wlbtn { padding: 5px 10px; color: #000; text-decoration: none; display: inline-block; border: 1px solid #999; border-radius: 3px; -webkit-border-radius: 3px; -moz-border-radius: 3px; -ms-border-radius: 3px;}
+</style>
+<body>
+ 
+ <div class="wulist">
+   <header>
+     <h4>订单编号：<?php  echo(isset($data[0][0]['certificate_no']) ?  ($data[0][0]['certificate_no']) :  '暂无'); ?></h4>
+   </header>
+   <section>
+	<?php if ($data): ?>
+		<?php foreach ($data as $k=>$v):?>
+			<?php if (is_numeric($k)): ?>
+				 <div class="wulist-box">
+				   <div class="wulist-box-top">
+					 <!-- <div class="wulist-box-left  expert_list_img_nums_<?php echo $v['order_id']?>"> -->
+					 <div class="wulist-box-left  ">
+					 <?php foreach ($v as $key=>$val):?>
+						<?php if ($val['img']): ?>
+						<img src="<?php echo ($val['img']['small_path']);?>" alt="">
+						<?php endif; ?>	 
+					 <?php endforeach;?>	 
+					 </div>    
+					 <div class="wulist-box-right">
+					 共 <?php echo (count($v))-1;?> 件 <i class="glyphicon glyphicon-chevron-right"></i>
+					 </div>    
+					 <div class="clearfix"></div>
+				   </div>
+				   <div class="wulist-box-bottom">
+				    <span class="pull-left hj">合计：￥<?php  echo ($v['sum_price']);  ?></span>
+					 <span class="pull-right"> <a  onclick="ai_mutual('525,<?php  echo $v[0]['delivery_id']; ?>')" class="wlbtn">查看物流</a> </span>
+					 <div class="clearfix"></div>
+				   </div>
+				 </div>
+			<?php endif; ?>	 
+		<?php endforeach;?>	 
+	<?php endif; ?>
+ 
+   </section>
+   
+ 
+   
+ </div>
+</body>
+</html>

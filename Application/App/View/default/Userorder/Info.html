@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>个人信息-订单详情_待付款</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/user.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script src="__JS__/user.js"></script>
+	<script src="__JS__/public.js"></script> 
+	<script src="__JS__/layer-mobile/layer.js"></script> 
+</head>
+<body class="wrap-bg">
+	<!-- Header -->
+	<header class="header text-center">
+	 {$orderInfo.status}
+        <a href="/Userorder?os={$orderInfo.order_status}" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    </header>
+    <!-- Header END //-->
+
+	<!-- Main -->
+    <div class="container-fluid user-info user-order-detail">
+		<div class="panel panel-default border-radius-none">
+		  <div class="panel-body username user-order-pad">
+		  	<h5>订单编号：{$orderInfo.order_sn}</h5>
+			<h5>订单汇率：{$orderInfo.dollar_huilv}</h5>
+		    <p>
+		    	<span class=""><i class="glyphicon glyphicon-map-marker font-1em" style="visibility: hidden"></i> {$addressInfo.name}</span>
+		    	<span class="pull-right" style="margin-top: 8px;">{$addressInfo.phone}</span>
+		    	<div class="clear"></div>
+		    </p>
+		    <p><i class="glyphicon glyphicon-map-marker font-1em"></i> {$addressInfo.addressInfo}</p>
+			
+			<div class="clear"></div>
+		  </div>
+		</div>
+
+		<div class="panel panel-default border-radius-none">
+			<div class="panel-body username usbox order-detail-list">
+				<ul class="user-info-sex-ul user-order-detail-more">
+<!--订单代销货产品-->
+<notempty name="goodsList['consignment']"> 
+	<volist name="goodsList['consignment']" id="vo">
+		<li> 
+			<div class="orderimgl">
+			  <if condition="$vo.attribute.thumb">
+				<a href="{:U('/Goods/goodsInfo/goods_id/'.$vo['goods_id'].'/type/'.$vo['goods_type'].'')}">
+					<img class="media-object" src="{$vo.attribute.thumb}" alt="...">       
+				</a>
+			  </if>
+			</div>
+			<div class="titleright">
+				<h6 class="media-heading">
+					<a href="{:U('/Goods/goodsInfo/goods_id/'.$vo['goods_id'].'/type/'.$vo['goods_type'].'')}">
+						{$vo.goods_name}
+					</a>
+				</h6>
+				<p>
+					<span class="rmb">
+						￥<eq name="orderInfo.order_status" value="0">{$vo.goods_price}<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />{$vo.goods_price}<else />{$vo.goods_price_up}</eq> 
+
+						<span style="color: #a58989; font-size: 13px;">
+							<eq name="orderInfo.order_status" value="0">x{$vo.goods_number}<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />x{$vo.goods_number}<else />x{$vo.goods_number_up}</eq>
+						</span>
+					</span>
+					<span class="sum">
+						<in name="orderInfo['order_status']" value="5,6">
+						<if condition="$vo['oeval'] neq 2 " >
+							<a href="{:U('/Userorder/goodsEval/',array('og_id'=>$vo['og_id']))}" class="btn btn-default btn-sm">评论</a>
+						<else />
+							<a href="{:U('/Userorder/goodsEval/',array('og_id'=>$vo['og_id']))}">已评论</a>
+						</if>
+						</in>
+					</span>
+				</p>
+			</div>	
+			<div class="clear"></div>
+		</li>
+	</volist>
+</notempty>
+
+<!--裸钻订单-->
+
+<notempty name="goodsList['luozuan']">
+	<volist name="goodsList['luozuan']" id="vo" >
+		<li> 
+			<div class="orderimgl"></div>
+				<div class="titleright">
+				  	<h6 class="media-heading">证书号：{$vo.goods_sn_a}</h6>
+					<h6>4C属性：{$vo.4c}{$vo.attribute.milk}--{$vo.attribute.coffee}</h6>
+					<p>
+						<span class="rmb">￥
+							<eq name="orderInfo.order_status" value="0">{$vo.goods_price}<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />{$vo.goods_price}<else />{$vo.goods_price_up}</eq>
+						</span> 
+						<span class="sum">
+							<range name="orderInfo.order_status" value="-1,-2,0" type="in">x{$vo.goods_number}<else />x{$vo.goods_number_up}</range>
+						</span>
+					</p>
+				</div>	
+				<div class="clear"></div>
+		</li>
+	</volist>
+</notempty>
+
+<!--珠宝订单-->
+<notempty name="goodsList['goods']">
+	<volist name="goodsList['goods']" id="vo" >
+		<li> 
+			<div class="orderimgl">
+			  <if condition="$vo.attribute.thumb">
+				<img class="media-object" src="{$vo.attribute.thumb}" alt="...">       
+			  </if>
+			</div>
+				<div class="titleright">
+				  	<h6 class="media-heading">{$vo.goods_name}</h6>
+					<p>
+						<span class="rmb">￥<eq name="orderInfo.order_status" value="0">{$vo.goods_price}<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />{$vo.goods_price}<else />{$vo.goods_price_up}</eq></span> 
+						<span class="sum"><eq name="orderInfo.order_status" value="0">x{$vo.goods_number}<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />x{$vo.goods_number}<else />x{$vo.goods_number_up}</eq></span>
+					</p>
+				</div>	
+				<div class="clear"></div>
+		</li>
+	</volist>
+</notempty>
+<!--散货订单-->
+
+<notempty name="goodsList['sanhuo']">
+	<volist name="goodsList['sanhuo']" id="vo" >
+		<li> 
+			<div class="orderimgl"></div>
+				<div class="titleright">
+				  	<h6 class="media-heading">产品编号:{$vo['attribute']['goods_sn']}</h6>
+					<h6 class="media-heading">每卡单价:{$vo.goods_price_sanhuo}</h6>
+					<p>
+						<span class="rmb">￥<eq name="orderInfo.order_status" value="0">{$vo.goods_price}<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />{$vo.goods_price}<else />{$vo.goods_price_up}</eq></span> 
+						<span class="sum">重&nbsp;<eq name="orderInfo.order_status" value="0">{$vo.goods_number}<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />{$vo.goods_number}<else />{$vo.goods_number_up}</eq></span>
+					</p>
+				</div>	
+				<div class="clear"></div>
+		</li>
+	</volist>
+</notempty>
+
+				</ul>
+				<!--<p class="text-center gdsp">更多商品 <img src="__IMG__/x_03.png" alt=""></p>-->
+			</div>
+		</div>
+
+		<div class="panel panel-default border-radius-none">
+			<div class="panel-body username usbox">
+				<ul class="user-info-sex-ul">
+					<!--<li> 
+				  		支付方式 <span class="pull-right">银行转账汇款</span>
+					</li>-->
+					<li> 
+				  		配送方式: <span class="pull-right">{$addressInfo.mode_name}</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="panel panel-default border-radius-none">
+			<div class="panel-body username usbox order-settlement">
+				<ul class="user-info-sex-ul">
+					<li> 
+				  		总金额<span class="pull-right">￥{$orderInfo.order_price}</span>
+					</li>
+					
+					<!--<li> 
+				  		运费 <span class="pull-right">￥25</span>
+					</li>
+					<li> 
+				  		实际付款 <span class="pull-right">￥<?php echo $orderInfo['order_price']+25?></span>
+					</li>-->
+				</ul>
+			</div>
+		</div>
+
+		<div class="order-time">
+			<div class="panel-body username usbox order-settlement">下单时间：{$orderInfo.create_time|date="Y-m-d H:i:s",###}</div>
+		</div>
+
+		<div class="to-payment">
+			<div class="panel-body username usbox order-settlement">
+				<div class="row">
+					<div class="col-xs-6">
+					            <if condition="$orderInfo['order_status'] eq 0">
+									<button type="button" class="btn btn-primary exit-button" onclick='update_order(this,{$orderInfo.order_id},0)'>取消订单</button>            
+								<elseif condition="$orderInfo['order_status'] eq -1" />
+									<button type="button" class="btn btn-primary exit-button" onclick='update_order(this,{$orderInfo.order_id},-1)'>删除订单</button> 
+								<elseif condition="$orderInfo['order_status'] eq 4" />
+									<button type="button" class="btn btn-primary exit-button" onclick='update_order(this,{$orderInfo.order_id},4)'>确认收货</button> 
+								</if>
+						
+					</div>
+					<if condition="$orderInfo['order_status'] eq 0 || $orderInfo['order_status'] eq 1">
+						<div class="col-xs-6"><button type="button" class="btn btn-primary exit-button" onclick="window.location.href='/Userorder/payment'">去付款</button></div>
+					</if>
+				</div>
+			</div>
+		</div>
+	</div>
+    <!-- Main END //-->
+</body>
+<script>
+	function update_order(obj,order_id,order_status){
+	if(order_status=='0'){			var strs='你确定取消吗？';}
+	if(order_status=='-1'){			var strs='你确定删除吗？';}
+	if(order_status=='4'){			var strs='你确认收货吗？';}
+		layer.open({
+			content: strs,
+			btn: ['确认', '取消'],
+			shadeClose: false,
+			yes: function(){
+				$.post('/Userorder/update_order',{Action:"POST",order_id:order_id,order_status:order_status},function(data){
+				 if(data.status!='0'){
+					setTimeout(function () {   window.location.reload();   }, 3000);
+				 }
+				layer.open({ content:data.msg,  time: 2});return false;
+				});
+			}, no: function(){
+				//layer.open({content: '你选择了取消', time: 1});
+			}
+		});
+	}
+</script>
+
+</html>

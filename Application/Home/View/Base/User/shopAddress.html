@@ -1,0 +1,222 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<script type="text/javascript" src="__PUBLIC__/Js/shopAddress.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/jquery.validator.js"></script>
+<div id="UserInfo">
+	<div class="navigation"><a href="{:U('/Home/Index/index')}">首页 </a>&gt;<a href="{:U('/Home/User/index')}"> 用户中心 </a>&gt; 用户中心首页</div>
+	<include file=".:Base:User:menu" />
+	<div id="user_right">
+	<div id="user_default">
+	  <div class="user_info_top">
+	    <h3>{$Think.lang.L9062}</h3>
+	  </div>
+	  <div class="blank"></div>
+	    <div class="boxCenterList">
+	      <table width="100%" cellspacing=0 cellspadding=0>
+	        <tbody class="consignee_list"><!-- 地址列表 -->
+	          <tr class="top">
+	            <th width="113" align="center">{$Think.lang.L840}</th>
+	            <th width="489" align="left">{$Think.lang.L833}</th>
+	            <th width="150" align="center">{$Think.lang.L348}</th>
+	            <th width="150" colspan=2 align="center">{$Think.lang.L834}</th>
+	          </tr>
+	          <if condition= '$userAddList neq ""'>  <!-- 地址列表 -->
+	            <foreach name="userAddList" item="vo" key="k" >
+	              <tr id="{$vo.address_id}">
+	                <td align="center">{$vo.title}</td>
+	                <td>
+	                  <div class="user_address">
+	                    <p>{$Think.lang.L835}：{$vo.name}&nbsp;&nbsp;&nbsp;&nbsp;{$Think.lang.L836}：{$vo.phone} </p>
+	                    <p>{$Think.lang.L9064}：
+	                      {$vo.country_name} {$vo.province_name} {$vo.city_name} {$vo.district_name} {$vo.address}</p>
+	                    <p>{$Think.lang.L9065}：{$vo.code}</p>
+	                  </div>
+	                </td>
+	                <td width="20%" align="center">
+	                  <input class="defaultAddress" name="defaultAddress" type="radio" onClick="setDefaultAddress({$vo.address_id})" value="{$vo.address_id}" <if condition="$vo.is_default eq 1">checked</if>>
+	                </td>
+	                <td width="10%" align="center">
+	                  <a href="#" onClick="if(confirm('{$Think.lang.L9077}')){deleteAdd({$vo.address_id});}">{$Think.lang.L838}</a>
+	                </td>
+	              </tr>
+	            </foreach>
+	          </if>
+	        </tbody>
+	        <tbody class="add_address"> <!-- 添加地址按钮 -->
+	          <tr>
+	            <td colspan="5">
+	              <p onClick="show_address_edit();" class="btn_common">{$Think.lang.L839}</p>
+	            </td>
+	          </tr>
+	          <tr id="address_edit" style="display:none;">
+	            <td colspan="5">
+	              <!-- 收货地址form -->
+	              <form id="theForm" method="post" name="theForm">
+	                <ul>
+	                  <li>
+	                    <span class="tit">{$Think.lang.L840}</span>
+	                    <input type="text" id="address_name" class="input_mini" name="title"/>
+	                    <span>{$Think.lang.L842}</span>
+	                  </li>
+	                  <li>
+	                    <span class="tit">{$Think.lang.L841}</span>
+	                    <select name="country_id" id="selCountries">
+	                      <option value="0">{$Think.lang.L9063}</option>
+	                      <option value="1">{$Think.lang.L9078}</option>
+	                    </select>
+	                    <select name="province_id" id="selProvinces">
+	                      <option value="0">{$Think.lang.L9063}</option>
+	                    </select>
+	                    <select name="city_id" id="selCities">
+	                      <option value="0">{$Think.lang.L9063}</option>
+	                    </select>
+	                    <select name="district_id" id="selDistricts">
+	                      <option value="0">{$Think.lang.L9063}</option>
+	                    </select>
+	                  </li>
+	                  <li>
+	                    <span class="tit">{$Think.lang.L9064}</span>
+	                    <input name="address" class="input_long" type="text" id="address" value="" />
+	                  </li>
+	                  <li>
+	                    <span class="tit">{$Think.lang.L9065}</span>
+	                    <input name="code" type="text" id="postalcode"/>
+	                  </li>
+	                  <li>
+	                    <span class="tit">{$Think.lang.L9066}</span>
+	                    <input name="name" type="text" id="consignee_name" value="" />
+	                  </li>
+	                  <li>
+	                    <span class="tit">{$Think.lang.L836}</span>
+	                    <input name="phone" type="text" id="phone" value="" />
+	                  </li>
+	                  <li>
+	                    <span class="tit">{$Think.lang.L9072}</span>
+	                    <select name="is_default" id="is_default">
+	                      <option value="1">{$Think.lang.L9073}</option>
+	                      <option value="2">{$Think.lang.L9074}</option>
+	                    </select>
+	                  </li>
+	                  <li>
+	                    <span class="tit"></span>
+	                    <input type="submit" class="bnt_bonus" value="{$Think.lang.L816}" />
+	                    <a href="javascript:void(0)" id="cancel" onClick="reset();">{$Think.lang.L845}</a>
+	                  </li>
+	                </ul>
+	              </form>
+	            </td>
+	          </tr>
+	        </tbody>
+	      </table>
+	    </div>
+	</div>
+	</div>
+</div>
+<script>
+//验证初始化
+$('#theForm').validator({
+    theme: 'simple_right',
+    focusCleanup: true,
+    stopOnError:false,
+    //debug: true,
+    timely: 2,
+    //自定义规则（PS：建议尽量在全局配置中定义规则，统一管理）
+    rules: {
+        username: [/^[a-zA-Z0-9]+$/, '用户名无效! 仅支持字母与数字。'],
+        phone: [/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/,'手机号码不正确'],
+        email:[/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})$/, '邮箱格式不正确'],
+        number:[/^[0-9]{6}$/,'邮政编码只支持6位数的数字'],
+        remote:
+        	function(element){
+	            return $.ajax({
+	                url: '/Home/Public/checkusername',
+	                type: 'post',
+	                data: element.name +'='+ element.value,
+	                dataType: 'json',
+	                success: function(d){
+	                    window.console && console.log(d);
+	                }
+	            });
+		},
+		 min: function(element, param, field) {
+		 	return element.value >0 || "必填项";
+        }
+    },
+
+    fields: {
+        "title": {
+            rule: "required;",
+            tip: "输入地址标注",
+            ok: "",
+            msg: {required: "请输入地址标注"}
+        },
+        "address": {
+            rule: "required;",
+            tip: "输入你的地址",
+            ok: "",
+            msg: {required: "请输入地址"}
+        },
+        "code":{
+        	rule:"required;number",
+        	tip:"请输入邮政编码",
+        	ok:"",
+        	msg:{required:"请输入邮政编码"}
+        },
+        "name": {
+            rule: "required",
+            tip: "输入你的联系人名称",
+            ok: "",
+            msg: {required: "请输入联系人名称!"}
+        },
+        "phone": {
+            rule: "required;phone",
+            tip: "输入你的手机号码。",
+            ok: "",
+            msg: {required: "请输入手机号!"}
+        },
+        "country_id": {
+            rule: "required;min;",
+            tip: "请选择国家",
+            ok: "",
+            msg: {required: "请选择国家!"}
+        },
+        "province_id":{
+        	rule: "required;min;",
+            tip: "请选择省份",
+            ok: "",
+            msg: {required: "请选择省份!"}
+        },
+         "city_id": {
+            rule: "required;min;",
+            tip: "请选择城市",
+            ok: "",
+            msg: {required: "请选择城市!"}
+        },
+        "district_id":{
+        	rule: "required;min;",
+            tip: "请选择区县",
+            ok: "",
+            msg: {required: "请选择区县!"}
+        }
+
+    },
+    //验证成功
+    valid: function(form) {
+        $.ajax({
+            url: '/Home/User/shopAddress',
+            type: 'POST',
+            data: $(form).serialize(),
+            success: function(d){
+              	alert(d.msg);
+              	window.location.href=d.backUrl;
+            }
+        });
+    }
+});
+</script>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>门店详情</title>
+<js file="__PUBLIC__/ueditor/ueditor.config.js" /> 
+<js file="__PUBLIC__/ueditor/ueditor.all.min.js" /> 
+<script type="text/javascript">
+window.onload=function(){ 
+	window.UEDITOR_CONFIG.initialFrameHeight=300;//编辑器的高度
+	window.UEDITOR_CONFIG.initialFrameWidth=900;//编辑器的高度
+	UE.getEditor('content');
+}
+</script>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：添加门店</h3>
+    </div>
+    <form id="myform" enctype="multipart/form-data" action="" method="POST">
+    	<div style="padding-top:10px;">
+        <div class="info">
+            <div class="title">门店名称:</div>
+            <input type="text" name="name" value="{$storeInfo.name}" size="25" />
+        </div>
+        <div class="info">
+            <div class="title">门店图片:</div>
+            <input type="file" name="thumb" />
+            <span class="red">&nbsp;*上传要求：上传图片参考尺寸600*376px，图片大小不得超过2M，图片格式为PNG/JPG</span>
+        </div>
+        <if condition="$storeInfo['thumb'] neq '' ">
+    	<div class="info">
+            <div class="title">缩略图:</div>
+            <img style="width: 280px;" src="__PUBLIC__/Uploads/store/{$storeInfo.thumb}">
+        </div>
+        </if>
+		<div class="info">
+            <div class="title">联系人:</div>
+            <input type="text" name="contacts" value="{$storeInfo.contacts}" size="25" /><span></span>
+        </div>
+		<div class="info">
+            <div class="title">邮箱:</div>
+            <input type="text" name="email" value="{$storeInfo.email}" size="25" /><span></span>
+        </div>
+		<div class="info">
+            <div class="title">电话:</div>
+            <input type="text" name="phone" value="{$storeInfo.phone}" size="25" /><span class="red">&nbsp;*手机号或者座机号</span>
+        </div>
+		<div class="info">
+            <div class="title">所属地区:</div>
+            <select id="area" class="f1" name="area" >
+				<option value="" selected="selected">请选择地区</option>
+				<option value="华北地区" <if condition="$storeInfo['area'] eq '华北地区' ">selected="selected"</if> >华北地区</option>
+				<option value="华中地区" <if condition="$storeInfo['area'] eq '华中地区' ">selected="selected"</if> >华中地区</option>
+				<option value="华东地区" <if condition="$storeInfo['area'] eq '华东地区' ">selected="selected"</if> >华东地区</option>
+				<option value="华南地区" <if condition="$storeInfo['area'] eq '华南地区' ">selected="selected"</if> >华南地区</option>
+				<option value="东北地区" <if condition="$storeInfo['area'] eq '东北地区' ">selected="selected"</if> >东北地区</option>
+				<option value="西北地区" <if condition="$storeInfo['area'] eq '西北地区' ">selected="selected"</if> >西北地区</option>
+				<option value="西南地区" <if condition="$storeInfo['area'] eq '西南地区' ">selected="selected"</if> >西南地区</option>
+			</select>
+        </div>
+		<div class="info">
+			<div class="title">所在城市:</div>
+			<select id="province" class="f1" name="province_id" >
+				<option value="" selected="selected">请选择省份</option>
+				<volist name="province" id="val">
+				<option value="{$val['region_id']}" <if condition="$storeInfo['province_id'] eq $val['region_id']">selected="selected"</if> >{$val['region_name']}</option>
+				</volist>
+			</select>
+			<select id="city" class="f1" name="city_id" >
+				<option value="" selected="selected">请选择城市</option>
+			</select> 
+			<select id="district" name="district_id">
+				<option value="" selected="selected">请选择县区</option>
+			</select>
+		</div>
+		<div class="info">
+            <div class="title">详细地址:</div>
+            <input type="text" name="address" value="{$storeInfo.address}" size="25" placeholder="" /><span></span>
+        </div>
+		<div class="info">
+            <div class="title">排序:</div>
+            <input type="text" name="sort" value="{$storeInfo.sort}" size="25" placeholder="请输入≥0的数字" /><span class="red">&nbsp;*数字越大越靠前</span>
+        </div>
+		<div class="info">
+            <div class="title">是否显示:</div>
+            <label>
+                <input type="radio" <if condition="$storeInfo['is_show'] eq 1">checked</if> name="is_show" value="1"/>
+                <span>显示</span>
+            </label>
+            <label>
+            	<input type="radio" name="is_show" value="0" <if condition="$storeInfo['is_show'] neq 1">checked</if> />
+                <span>不显示</span>
+            </label>
+        </div>
+        <div class="info">
+            <div class="title">关键字:</div>
+            <input type="text" name="keywords" value="{$storeInfo.keywords}" size="25" /><span class="red">&nbsp;*关键字以，分开</span>
+        </div>
+        <div class="info">
+            <div class="title">摘要:</div>
+            <textarea name="description" cols="140" rows="5">{$storeInfo.description}</textarea>
+        </div>
+        <div class="info">
+            <div class="title">门店描述:</div>
+            <div class="fl">
+            <textarea name="content" id="content">{$storeInfo.content}</textarea>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="info">
+            <div class="title">&nbsp;</div>
+            <input type="hidden" name="thumb" value="{$storeInfo.thumb}" />
+            <a class="button fl save">确定</a>
+			<div class="fl">&nbsp;&nbsp;</div> 
+			<a class="button fl reset">重置</a>
+            <div class="clear"></div>
+        </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+
+<script>
+//获取下级城市或者县区，id: 作为父级ID查询，type：1 查询出城市，2 查询出县区，select_id：选中id
+function getaddress(parent_id,type,select_id){
+	$.ajax({
+		type: "get",
+		url : "{:U('Admin/Public/getRegion/parent_id/"+parent_id+"')}", 
+		dataType:'json', 
+		success: function(res){
+			if(res){
+				switch(type){
+					case 1:
+						var content = '<option value="" selected="selected">请选择城市</option>';
+						break;
+					case 2:
+						var content = '<option value="" selected="selected">请选择县区</option>';
+						break;
+				}
+				$.each( res, function(index,item){
+					if(select_id && select_id == item.region_id){
+						content +='<option selected value="'+item.region_id+'" >'+item.region_name+'</option>';
+					}else{
+						content +='<option value="'+item.region_id+'" >'+item.region_name+'</option>';
+					}
+					
+				});
+				if(type == 1){
+					$('#city').html(content);
+				}else{
+					$('#district').html(content);
+				}
+				
+			}else{
+				layer.msg('网络错误',{
+					shift :6,
+					icon: 5
+				});
+				return false;
+			}
+		},
+	});
+}
+$(document).ready(function(){
+	<!-- 进入页面选中省，市，区 -->
+	var province_id	= "{$storeInfo['province_id']}";
+	var city_id 	= "{$storeInfo['city_id']}";
+	var district_id	= "{$storeInfo['district_id']}";
+	if(city_id){
+		getaddress(province_id,1,city_id);
+	}
+	if(district_id){
+		getaddress(city_id,2,district_id);
+	}
+	<!-- 选择省份ajax返回城市地址 -->
+	$('#province').change(function(){
+		var id = $(this).find ("option:selected").val();
+		if(!id){
+			$('#city').html('<option value="" selected="selected">请选择城市</option>');
+			$('#district').html('<option value="" selected="selected">请选择县区</option>');
+			return false;
+		}
+		getaddress(id,1);
+	})
+	$('#city').change(function(){
+		var id = $(this).find ("option:selected").val();
+		if(!id){
+			$('#district').html('<option value="" selected="selected">请选择县区</option>');
+			return false;
+		}
+		getaddress(id,2);
+	})
+	
+	$('.save').click(function(){
+		if(checkeinput_length('name','','50','门店名称不能为空且不能超过50个字符') == false){
+			return false;
+		}
+		if(checkeinput_length('contacts','','','联系人不能为空') == false){
+			return false;
+		}
+		if(checkeinput('email','email') == false){
+			return false;
+		}
+		/*if(checkeinput_length('phone','','','联系电话不能为空') == false){
+			return false;
+		}*/
+		if(checkeselect('area','请选择所属地区') == false){
+			return false;
+		}
+		if(checkeselect('province_id','请选择省份') == false){
+			return false;
+		}
+		if(checkeselect('city_id','请选择城市') == false){
+			return false;
+		}
+		if(checkeselect('district_id','请选择县区') == false){
+			return false;
+		}
+		if(checkeinput_length('address','','200','详细地址不能为空且不能超过200个字符') == false){
+			return false;
+		}
+		<!-- if(checketextarea_length('content','','','门店描述不能为空') == false){ -->
+			<!-- return false; -->
+		<!-- } -->
+		$('#myform').submit();
+	
+	})
+	
+	<!-- 重置表单 -->
+	$('.reset').click(function(){
+		$('input').val('');
+		$('select').val('');
+		$('textarea').val('');
+		$("#ueditor_0").contents().find("body").html("");
+	})
+	
+})
+
+
+</script>

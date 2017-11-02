@@ -1,0 +1,54 @@
+<include file="Public:header" />
+<body class="product-wrap">
+<!-- Header -->
+<header data-am-widget="header" class="am-header am-serch cat">
+    <div class="am-header-left am-header-nav">
+        <a href="{:U('/Index/index')}" class="">
+            <img class="am-header-icon-custom" src="__ASS__/Img/search_01.png" alt=""/>
+        </a>
+    </div>
+    <h1 class="am-header-title">
+        <a class="product_cat_tab active" href="{:U('Goods/goodsCatelog',array('tab'=>'1'))}">产品分类</a>
+        <a class="goods_series_tab" href="{:U('Goods/goodsCatelog',array('tab'=>'2'))}">品牌系列</a>
+    </h1>
+</header>
+<div class="product-cat" id="product_cat">
+    <ul>
+        <volist name="goods_cat_info" id="vo">
+        <li>
+            <a href="{:U('Goods/goodsCat',array('tab'=>'1','category_id'=>$vo['category_id']))}">{$vo.name_alias}</a>
+            <span><i class="am-gotop-icon am-icon-chevron-right"></i></span>
+        </li>
+        </volist>
+    </ul>
+</div>
+<div class="product-cat" id="goods_series">
+    <ul>
+        <volist name="goods_series_info" id="vo">
+            <li>
+                <a href="{:U('Goods/goodsCat',array('tab'=>'2','series_id'=>$vo['goods_series_id']))}">{$vo.series_name}</a>
+                <span><i class="am-gotop-icon am-icon-chevron-right"></i></span>
+            </li>
+        </volist>
+    </ul>
+</div>
+<script>
+    $(function(){
+		$('#goods_series').hide();
+		//2016-4-5 增加初始化页面tab选中
+		var tab = "{$_GET['tab']}";
+			if(tab == 1){
+				$('.product_cat_tab').addClass('active');
+                $('.goods_series_tab').removeClass('active');
+				$('#product_cat').show();
+				$('#goods_series').hide();
+			}else if(tab == 2){
+				$('.goods_series_tab').addClass('active');
+                $('.product_cat_tab').removeClass('active');
+				$('#product_cat').hide();
+				$('#goods_series').show();
+			} 
+    });
+</script>
+</body>
+</html>

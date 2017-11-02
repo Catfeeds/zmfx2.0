@@ -1,0 +1,304 @@
+
+<style>
+	.zlf_query .form-horizontal .qtabs,
+	.zlf_query .form-horizontal .element { background: rgba(0,0,0,0.2); box-shadow: none; margin-top: 5px;}
+	.zlf_query .element h3,
+	.zlf_query .element h4 { color: #FFF; text-align: center;}
+	.zlf_query .element h4 { margin-bottom: 1em; margin-top: 20px; font-family: "宋体";}
+	.zlf_query .qtabs ul { width: 100%; padding: 0;}
+	.zlf_query .qtabs ul li a { font-size: 14px;}
+	.zlf_query .qtabs ul li a.active { border-bottom: 2px solid red; color: red; display: inline-block; padding: 10px 0;}
+	.zlf_query .btn-bg { background: url('images/button_bg.jpg'); border: none;}
+	.zlf_query .form-horizontal .control-label,
+	.zlf_query .form-control { color: #979797;}
+	.zlf_query .form-horizontal .control-label { font-size: 14px; color: #FFF; font-family: "宋体"; font-weight: 500;}
+	.zlf_query .ftitle { padding: 15px 0;}
+	.footer { margin-top: 0;}
+	.experience { min-height: 400px; background-repeat: no-repeat;background: url('__IMG__/tiyan.jpg') no-repeat;}
+	.login .form-horizontal .element { padding: 10px; margin: 15px 0;}
+	.login .element .titlebox { margin-bottom: 1.2em;}
+	.login .form-horizontal { margin-top: -5px;}
+	.region-list { margin-top: 20px;}
+	.region-list .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover { border-radius: 0; -webkit-border-radius: 0; -moz-border-radius: 0; -ms-border-radius: 0; border: 1px solid #FE7425; color: #fff; background-color: #FE7425;}
+	.region-list .nav>li>a:focus, .region-list .nav>li>a:hover { border-radius: 0; -webkit-border-radius: 0; -moz-border-radius: 0; -ms-border-radius: 0; background-color: #FE7425;}
+	.region-list .nav-tabs { border-width: 1px; border: 1px solid #DCDCDC; border-bottom-color: #FE7425;}
+	.region-list .nav-tabs>li>a { border-bottom: none; border: 1px solid transparent;}
+	.region-list .col-md-6 { padding: 0; margin-bottom: 10px; min-height: 150px;}
+	.region-list .col-md-6 p { margin: 0;}
+	.region-list .media-body { padding-top: 10px;}
+	.region-list .media-body p { margin-bottom: 0; line-height: 25px; color: #666; font-size: 14px;}
+	.region-list .media-body h4 { margin-bottom: 10px;}
+	.region-list .tab-content { margin-top: 30px;}
+	@media (max-width: 768px){ .col-md-6 { padding: 0 20px !important;} }
+	.yuyue-btn { width: 100%; margin-top: 1em; background: #FE7425; border: none; padding: 10px 12px;}
+
+	.mi-select { background: #fff; height: 31px; display: inline-block; margin: 0; margin-left: -1px; width: 100%; margin-left: 5px; padding-left: 5px; position: relative;}
+
+	.mi-select > ul { width: 100%; max-height: 200px; overflow: auto; border: 1px solid #C1C1C1; padding: 1px; margin: 0; text-align: left; background: #fff; position: absolute; top: 31px; left: 0px; z-index: 999; padding: 1px !important;}
+	.mi-select > ul > li { cursor: pointer;}
+	.mi-select > ul > li > ul li { padding-left: 10px; line-height: 20px; cursor: pointer;}
+	.mi-select > ul > li > ul li:hover { background: #1D90FE; color: #FFF;}
+	.mi-select > ul > li h5 { margin: 5px;}
+	.mi-select h5 { padding: 0; margin: 0; cursor: pointer;}
+	.mi-select .xiala_select { width: 100%; height: 31px; line-height: 31px; overflow: hidden;}
+	.test { background: #fff; height: 31px; display: inline-block; margin: 0; margin-left: -1px; width: 100%; margin-left: 5px; padding-left: 5px;}
+	.mi-select .caret { position: absolute; right: 10px; top: 14px;}
+	.mi-select .xuanzhe { max-width: 150px; display: inline-block; overflow: hidden;}
+	.media-object { width: 190px; height: 118px; margin-bottom: 10px;}
+	.dq-box { background: #FFF;}
+	.sex-box { color: #FFF; margin-top: 10px;}
+	.sex-box label,
+	.sex-box input { float: left; margin-right: 5px;}
+	.sex-box label { margin-right: 15px;}
+</style>
+	<!-- tab -->
+	<div class="login zlf_query experience" <if condition="$StoreAdList['images_path']"> style="background:url(__PUBLIC__/{$StoreAdList['images_path']}) no-repeat left top;"  </if> >
+	  <div class="container">
+	    <div class="col-md-5 col-md-offset-7 col-sm-5 col-sm-offset-7">
+		  <form class="form-horizontal">
+  			<div class="qtabs">
+			  <div class="element tab-dz">
+				<div class="titlebox">
+				  <h3>欢迎光临体验中心</h3>
+				  <h4>请选择体验中心，享受顾问式贴心服务</h4>
+				</div>
+    				  <div class="form-group">
+    					<label for="inputEmail3" class="col-md-5 control-label">请选择体验中心：</label>
+    				<div class="col-md-7">
+    						  <!-- <select name="" id="" class="form-control">
+                    <option value="">广东·深圳分店</option>
+                    <option value="">广东·深圳分店</option>
+                  </select> -->
+                  <div class="mi-select">
+                    <h5 class="xiala_select">
+                      <span class="xuanzhe" title="-请选择-" data-sid="">-请选择-</span>
+                      <span class="caret"></span>
+                    </h5>
+                    <ul class="xiala" style="display: none;">
+						<volist name="storeList" id="val" key="key">
+						<li>
+							<if condition="$val">
+							<h5><strong>{$key}</strong></h5>
+							</if>
+                          <ul>
+							<volist name="val" id="v">
+                            <li data-sid="{$v['id']}">{$v['province_name']}·{$v['name']}</li>
+							</volist>
+                          </ul>
+                        </li>
+						</volist>
+                    </ul>
+                </div>
+                <script>
+                  $(function(){
+                    $('.xiala_select').bind('click', function(){
+                      $('.xiala').toggle();
+                    });
+                    $('.mi-select > ul > li > ul li').bind('click', function(){
+                      $('.xuanzhe').html($(this).html()).attr('title', $(this).html()).attr('data-sid',$(this).attr('data-sid'));
+                      $('.xiala').toggle();
+                    });
+                  });
+                </script>
+    						</div>
+    					</div>
+    			<div class="form-group">
+					<label for="inputPhone11" class="col-md-5 control-label">请输入手机号码：</label>
+					<div class="col-md-7">
+					  <input type="text" name="phone" class="test" id="inputPhone11">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputName11" class="col-md-5 control-label">请输入姓名：</label>
+					<div class="col-md-7">
+						<input type="text" name="name" class="test" id="inputName11">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-5 control-label">请选择性别：</label>
+					<div class="col-md-7">
+						<div class="sex-box">
+							<input type="radio" name="sex" checked value="1">
+							<label>男</label>
+							<input type="radio" name="sex" value="2">
+							<label>女</label>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+              	</div>
+				<div class="form-group">
+					<div class="col-md-12">
+					  <button type="submit" id="submit" class="btn btn-warning yuyue-btn">立即预约</button>
+					</div>
+				</div>
+    				</div>
+          </div>
+  			</form>
+			</div>
+      <div class="clearfix"></div>
+		</div>
+	</div>
+
+  <div class="region-list">
+    <div class="container">
+      <div class="row">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs dq-box" role="tablist">
+
+          <li role="presentation" class="active">
+			<a href="#0" role="tab" data-toggle="tab" aria-expanded="false">全部</a>
+          </li>
+
+		  <volist name="storeList" id="val" key="key">
+		  <if condition="$val">
+          <li role="presentation"  ><a href="#{$val[0]['id']}" role="tab" data-toggle="tab">{$key}</a></li>
+		  </if>
+		  </volist>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+
+
+		<div role="tabpanel" class="tab-pane active" id="0">
+			<volist name="storeList" id="val" key="key">
+			<volist name="val" id="v">
+			<div class="col-md-6">
+              <ul class="media-list">
+                <li class="media">
+                  <a class="col-md-4 col-sm-4 col-xs-12" href="{:U('/Home/Store/detail',array('id'=>$v['id']))}"><img class="media-object" src="__PUBLIC__/Uploads/store/{$v['thumb']}"></a>
+                  <div class="col-md-8 col-sm-6 col-xs-12">
+                    <h4 class="media-heading">
+						<a href="{:U('/Home/Store/detail',array('id'=>$v['id']))}">{$v['province_name']}·{$v['name']}</a>
+					</h4>
+                    <p>地址：{$v.province_name}{$v.city_name}市{$v.district_name}{$v.address}</p>
+                    <p>电话：{$v.phone}</p>
+                  </div>
+                  <div class="clearfix"></div>
+                </li>
+              </ul>
+            </div>
+			</volist>
+			</volist>
+            <div class="clearfix"></div>
+        </div>
+
+
+		  <volist name="storeList" id="val" key="key">
+          <div role="tabpanel" class="tab-pane" id="{$val[0]['id']}">
+			<volist name="val" id="v">
+            <div class="col-md-6">
+              <ul class="media-list">
+                <li class="media">
+                  <a class="col-md-4 col-sm-4 col-xs-12" href="{:U('/Home/Store/detail',array('id'=>$v['id']))}"><img class="media-object" src="__PUBLIC__/Uploads/store/{$v['thumb']}"></a>
+                  <div class="col-md-8 col-sm-6 col-xs-12">
+                    <h4 class="media-heading">
+						<a href="{:U('/Home/Store/detail',array('id'=>$v['id']))}">{$v['province_name']}·{$v['name']}</a>
+					</h4>
+                    <p>地址：{$v.province_name}{$v.city_name}市{$v.district_name}{$v.address}</p>
+                    <p>电话：{$v.phone}</p>
+                  </div>
+                  <div class="clearfix"></div>
+                </li>
+              </ul>
+            </div>
+			</volist>
+            <div class="clearfix"></div>
+          </div>
+          </volist>
+		  <!-- <div role="tabpanel" class="tab-pane" id="1">
+            <div class="col-md-6">
+              <ul class="media-list">
+                <li class="media">
+                  <a class="pull-left" href="#"><img class="media-object" src="http://placehold.it/190x118"></a>
+                  <div class="media-body">
+                    <h4 class="media-heading"><a href="#">江苏·南京奥体分店</a></h4>
+                    <p>地址：江苏省淮安市经济开发区承德南路266号5号楼2楼</p>
+                    <p>电话：4006-578-478</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="media-list">
+                <li class="media">
+                  <a class="pull-left" href="#"><img class="media-object" src="http://placehold.it/190x118"></a>
+                  <div class="media-body">
+                    <h4 class="media-heading"><a href="#">江苏·南京奥体分店</a></h4>
+                    <p>地址：江苏省淮安市经济开发区承德南路266号5号楼2楼</p>
+                    <p>电话：4006-578-478</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+	<!-- tab end //-->
+
+<script>
+  $(function(){
+	//type: 0 在线预约 ， 1 下单预约  ， 3 电话预约
+	$('#submit').click(function(){
+		var phone	= $('input[name="phone"]').val();
+		var name	= $('input[name="name"]').val();
+		var sex	= $('input[name="sex"]:checked').val();
+		var store_id= $('.xuanzhe').attr('data-sid');
+		if(!store_id){
+			layer.msg('请选择体验中心', {
+				shift: 6,
+			});
+			return false;
+		}
+		if(checkeinput_length('phone', '', '', '预约电话不能为空') == false) {
+			return false;
+		}
+		if(checkeinput('phone', 'phone', '联系电话格式错误') == false) {
+			return false;
+		}
+		if(checkeinput_length('name', '', '', '姓名不能为空') == false) {
+			return false;
+		}
+		var index = layer.load(2, {
+			shade: false
+		}); //0代表加载的风格，支持0-2
+		$.ajax({
+			type: "post",
+			url: "{:U('Home/Store/onlineBooked')}",
+			data: {'store_id':store_id,'phone':phone,'type':3,name:name,sex:sex},
+			dataType: 'json',
+			success: function(res) {
+				if(res.status == 100) {
+					layer.close(index);
+					layer.msg(res.msg, {
+						shift: 6,
+						icon: 6
+					});
+					return false;
+				} else {
+					layer.close(index);
+					layer.msg(res.msg, {
+						shift: 6,
+						icon: 5
+					});
+					return false;
+				}
+			},
+		});
+		return false;
+	});
+
+	var top = $(".dq-box").offset().top; //获取元素位置到顶部的距离
+    $(window).scroll(function() {
+        if ($(window).scrollTop() >= top) {
+            $(".dq-box").attr("style", "position:fixed; z-index:10; top: 0; width: 100%; max-width: 1170px;");
+        } else {
+            $(".dq-box").removeAttr("style");
+        }
+    }).trigger("scroll");
+
+
+  });
+</script>

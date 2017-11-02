@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>地址管理</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/public.css">
+	<link rel="stylesheet" href="css/user.css">
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+</head>
+<body class="wrap-bg">
+	<!-- Header -->
+	<header class="header text-center">
+		<a href="#" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    	地址管理      
+    </header>
+    <!-- Header END //-->
+	
+	<!-- Main -->
+    <div class="container-fluid">
+    	<div class="panel panel-default border-radius-none user-address-list">
+		  <div class="panel-body username user-address">
+		    <ul>
+		    	<li onclick="location.href=''">
+		    		<div class="contleft">
+		    			<h5><strong>林大富 18688888315</strong></h5>
+		    			<p>广东省深圳市罗湖区东晓街道太白路松泉山庄三栋三层大富钻石</p>
+		    		</div>
+		    		<div class="contright text-right">
+		    			<img src="img/user_address_03.png" alt="">
+		    		</div>		
+		    		<div class="clear"></div>    		
+		    	</li>
+		    </ul>
+		  </div>
+		</div>
+
+		<div class="panel panel-default border-radius-none user-address-list">
+		  <div class="panel-body username user-address">
+		    <ul>
+		    	<li onclick="location.href=''">
+		    		<div class="contleft">
+		    			<h5><strong>林大富 18688888315</strong></h5>
+		    			<p>广东省深圳市罗湖区东晓街道太白路松泉山庄三栋三层大富钻石</p>
+		    		</div>
+		    		<div class="contright text-right">
+		    			<img src="img/user_address_03.png" alt="">
+		    		</div>		
+		    		<div class="clear"></div>    		
+		    	</li>
+		    </ul>
+		  </div>
+		</div>
+    </div>
+    <!-- Main END //-->
+	<script>
+		$(".contright").height($(".contleft").height());
+	</script>
+    <!-- Footer -->
+    <footer class="footer">
+    	<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+              <ul class="nav">
+                 <li><a href="#"><i class="glyphicon glyphicon-plus"></i>添加新地址</a></li>
+                 
+              </ul>
+		</nav>
+    </footer>
+	<!-- Footer NED //-->
+</body>
+</html>

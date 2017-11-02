@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>速易宝</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script src="js/jquery-1.12.3.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/public.js"></script>
+</head>
+
+<!-- 商品展示切换 flexise 轮播 -->
+<link href="css/jquery.flexisel.css" rel="stylesheet" />
+<script src="js/jquery.flexisel.js"></script>
+<!-- banner -->
+<link rel="stylesheet" href="css/owl.carousel.css">
+<link rel="stylesheet" href="css/owl.theme.css">
+<script src="js/owl.carousel.js"></script>
+
+<body class="index-bg">
+
+	<!-- header -->
+	<div class="header">
+		<div class="container">
+			<div class="shortcut hidden-xs">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-6 col-md-6">
+							<p class="text-left">您好，欢迎来到Munch珠宝 [<a href="#">登录</a>] [<a href="#">注册</a>]</p>
+						</div>
+						<div class="col-sm-6 col-md-6">
+							<div class="shortcut-right">
+								<ul class="list-inline text-right">
+									<li class=""><a href="#">购物车(<span class="cat-c">2件</span>)</a></li>
+									<li class="">|</li>
+									<li class=""><a href="#">我的订单</a></li>
+									<li class="">|</li>
+									<li class=""><a href="#">帮助中心</a></li>
+								</ul>   
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="top">
+				<div class="logo">
+						<div class="col-xs-12 col-sm-6 col-md-7 text-right">
+							<img src="images/logo.png" alt="logo">
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-5">
+							<form class="navbar-left pull-right">
+								<div class="form-group">
+									<div class="input-group">
+									      <input type="text" class="form-control search-text radius" placeholder="产品搜索">
+									      <span class="input-group-btn">
+									        <button type="submit" class="btn btn-default search-btn radius"><i class="glyphicon glyphicon-search"></i></button>
+									      </span>
+									</div>
+									<div class="tag">
+										热搜：
+										<a href="#">裸钻</a>
+										<a href="#">钻石</a>
+										<a href="#">对接</a>
+										<a href="#">女戒</a>
+										<a href="#">男戒</a>
+										<a href="#">女戒</a>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+		<div class="nav">
+			<nav class="navbar navbar-default border-radiusno">
+				<div class="container">
+			    <!-- Brand and toggle get grouped for better mobile display -->
+				    <div class="navbar-header">
+				      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				        <span class="sr-only">Toggle navigation</span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				      </button>
+				      <a class="navbar-brand hidden" href="#">LOGO</a>
+				    </div>
+
+				    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				      <ul class="nav navbar-nav center-nav">
+				        <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
+				        <li><a href="#">钻石定制</a></li>
+				        <li><a href="#">商城热卖</a></li>
+				        <li><a href="#">品牌系列街</a></li>
+				        <li><a href="#">珠宝资讯</a></li>
+				      </ul>
+				      <!-- <form class="navbar-form navbar-left" role="search">
+				        <div class="form-group">
+				          <input type="text" class="form-control" placeholder="Search">
+				        </div>
+				        <button type="submit" class="btn btn-default">Submit</button>
+				      </form> -->
+				    </div><!-- /.container-fluid -->
+				</div>
+			</nav>
+		</div>
+	</div>
+	<!-- header end //-->
+	
+	<!-- main -->
+	<div class="main">
+
+		<!-- banner -->
+		<div class="banner-box">
+			<div class="container-fluid padno">
+			
+				<div id="owl-navlist" class="owl-carousel owl-theme">
+				  <div class="item"><img src="images/index_06.png"></div>
+				  <div class="item"><img src="images/index_06.png"></div>
+				  <div class="item"><img src="images/index_06.png"></div>
+				</div>
+				<script>
+					$(document).ready(function() {
+						$("#owl-navlist").owlCarousel({
+							navigation : false, // Show next and prev buttons
+							slideSpeed : 300,
+							paginationSpeed : 400,
+							singleItem:true
+
+							// "singleItem:true" is a shortcut for:
+							// items : 1, 
+							// itemsDesktop : false,
+							// itemsDesktopSmall : false,
+							// itemsTablet: false,
+							// itemsMobile : false
+						});
+					});
+				</script>
+			</div>
+		</div>
+		<!-- banner end //-->
+
+		<!-- 特价抢购 -->
+		<div class="special">
+			<div class="container-fluid padno">	
+				<div class="qianggou">
+					<div class="container">
+						<h1 class="text-center"><img src="images/sz.png" alt="">特价抢购 <br > Preferential</h1>
+					</div>
+				</div>
+				<div class="qianggou-list">
+					<div class="container">
+						<ul id="flexiselDemo3">
+							<li>
+						    	<div class="price">
+						    		<div class="row">
+										<div class="col-sm-12 col-md-12">
+											<div class="thumbnail border-radiusno">
+											  <a href="#"><img src="images/index_13.png" alt=""></a>
+											  <div class="caption">
+											    <h3>白18K金钻石对戒 尊贵定制</h3>
+											    <p><strong class="red">￥5999</strong>  原价 8000 元 <a href="#" class="btn btn-default border-radiusno btn-danger" role="button">立即抢购</a></p>
+											  </div>
+											</div>
+										</div>
+									</div>
+						    	</div>
+						    </li>
+
+						    <li>
+						    	<div class="price">
+						    		<div class="row">
+										<div class="col-sm-12 col-md-12">
+											<div class="thumbnail border-radiusno">
+											  <a href="#"><img src="images/index_13.png" alt=""></a>
+											  <div class="caption">
+											    <h3>白18K金钻石对戒 尊贵定制</h3>
+											    <p><strong class="red">￥5999</strong>  原价 8000 元 <a href="#" class="btn btn-default border-radiusno btn-danger" role="button">立即抢购</a></p>
+											  </div>
+											</div>
+										</div>
+									</div>
+						    	</div>
+						    </li>
+
+						    <li>
+						    	<div class="price">
+						    		<div class="row">
+										<div class="col-sm-12 col-md-12">
+											<div class="thumbnail border-radiusno">
+											  <a href="#"><img src="images/index_13.png" alt=""></a>
+											  <div class="caption">
+											    <h3>白18K金钻石对戒 尊贵定制</h3>
+											    <p><strong class="red">￥5999</strong>  原价 8000 元 <a href="#" class="btn btn-default border-radiusno btn-danger" role="button">立即抢购</a></p>
+											  </div>
+											</div>
+										</div>
+									</div>
+						    	</div>
+						    </li>
+
+						    <li>
+						    	<div class="price">
+						    		<div class="row">
+										<div class="col-sm-12 col-md-12">
+											<div class="thumbnail border-radiusno">
+											  <a href="#"><img src="images/index_13.png" alt=""></a>
+											  <div class="caption">
+											    <h3>白18K金钻石对戒 尊贵定制</h3>
+											    <p><strong class="red">￥5999</strong>  原价 8000 元 <a href="#" class="btn btn-default border-radiusno btn-danger" role="button">立即抢购</a></p>
+											  </div>
+											</div>
+										</div>
+									</div>
+						    	</div>
+						    </li>
+
+						    <li>
+						    	<div class="price">
+						    		<div class="row">
+										<div class="col-sm-12 col-md-12">
+											<div class="thumbnail border-radiusno">
+											  <a href="#"><img src="images/index_13.png" alt=""></a>
+											  <div class="caption">
+											    <h3>白18K金钻石对戒 尊贵定制</h3>
+											    <p><strong class="red">￥5999</strong>  原价 8000 元 <a href="#" class="btn btn-default border-radiusno btn-danger" role="button">立即抢购</a></p>
+											  </div>
+											</div>
+										</div>
+									</div>
+						    	</div>
+						    </li>
+						</ul> 
+
+						<script type="text/javascript">
+							$(window).load(function() {
+							    $("#flexiselDemo3").flexisel({
+							        visibleItems: 5,
+							        animationSpeed: 1000,
+							        autoPlay: true,
+							        autoPlaySpeed: 3000,            
+							        pauseOnHover: true,
+							        enableResponsiveBreakpoints: true,
+							        responsiveBreakpoints: { 
+							            portrait: { 
+							                changePoint:480,
+							                visibleItems: 1
+							            }, 
+							            landscape: { 
+							                changePoint:640,
+							                visibleItems: 2
+							            },
+							            tablet: { 
+							                changePoint:768,
+							                visibleItems: 3
+							            }
+							        }
+							    });
+							});
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 特价抢购 end //-->
+		
+		<!-- 钻石定制 -->
+		<div class="custom">
+			<div class="container">
+				<div class="custom-header">
+					<h1 class="text-center"><strong>钻石定制</strong> <br /> <span class="custom-text">Diamond  Custom</span></h1>
+					<hr>
+				</div>
+				<div class="text-center">
+					<div class="col-md-12 col-md-6 cus-left">
+						<a href="#"><img src="images/index_17.png" alt=""></a>
+					</div>
+					<div class="col-md-12 col-md-6 cus-right">
+						<a href="#"><img src="images/index_19.png" alt=""></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 钻石定制 end //-->
+
+		<!-- 商城热卖 -->
+		<div class="mallhot">
+			<div class="container">
+				<div class="mallhot-header">
+					<h1 class="text-center"><strong>商城热卖</strong> <br /> <span class="mallhot-text">The hot sales</span></h1>
+				</div>
+
+				<div class="mallhot-list">
+					<div class="tagtitle">
+						<div class="col-xs-12 col-md-6 text-left"><img src="images/tagtitle_03.png" alt=""></div>
+						<div class="col-xs-12 col-md-6 text-right">
+							<a href="#">铂金钻戒</a> | <a href="#">k金钻戒</a> | <a href="#">30分钻戒</a> | <a href="#">50分钻戒</a> | <a href="#">克拉钻戒</a>  <a href="#">更多》</a></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="contbox">
+						<div class="col-xs-12 col-md-6 padno">
+							<div class="contleft">
+								<div class="bannerbar"><a href="#"><img src="images/index_23.png" alt=""></a></div>
+								<div class="imgleft">
+									<div class="sl">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="imgright">
+									<div class="sl">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-md-6 padno">
+							<div class="contright">
+								<div class="imgleft2">
+									<div class="descheight">
+										<span class="absolutes_name">永恒之心</span><br> 
+										<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+										<span class="red">￥20663</span>
+									</div>
+									<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+								</div>
+								<div class="imgright2">
+									<div class="sl">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="s1">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+
+				<div class="mallhot-list">
+					<div class="tagtitle">
+						<div class="col-xs-12 col-md-6 text-left"><img src="images/tagtitle_08.png" alt=""></div>
+						<div class="col-xs-12 col-md-6 text-right">
+							<a href="#">蓝宝石戒指</a> | <a href="#">蓝宝石项链</a> | <a href="#">红宝石吊坠</a> | <a href="#">碧玺吊坠</a> | <a href="#">托帕石</a>  <a href="#">更多》</a></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="contbox">
+						<div class="col-xs-12 col-md-6 padno">
+							<div class="contleft">
+								<div class="bannerbar"><a href="#"><img src="images/index_23.png" alt=""></a></div>
+								<div class="imgleft">
+									<div class="sl">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="imgright">
+									<div class="sl">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-md-6 padno">
+							<div class="contright">
+								<div class="imgleft2">
+									<div class="descheight">
+										<span class="absolutes_name">永恒之心</span><br> 
+										<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+										<span class="red">￥20663</span>
+									</div>
+									<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+								</div>
+								<div class="imgright2">
+									<div class="sl">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="s1">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+
+				<div class="mallhot-list">
+					<div class="tagtitle">
+						<div class="col-xs-12 col-md-6 text-left"><img src="images/tagtitle_11.png" alt=""></div>
+						<div class="col-xs-12 col-md-6 text-right">
+							<a href="#">翡翠手镯</a> | <a href="#">翡翠吊坠</a> | <a href="#">玉佛</a> | <a href="#">平安扣</a> | <a href="#">白玉</a> | <a href="#">观音</a> <a href="#">更多》</a></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="contbox">
+						<div class="col-xs-12 col-md-6 padno">
+							<div class="contleft">
+								<div class="bannerbar"><a href="#"><img src="images/index_23.png" alt=""></a></div>
+								<div class="imgleft">
+									<div class="sl">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="imgright">
+									<div class="sl">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-md-6 padno">
+							<div class="contright">
+								<div class="imgleft2">
+									<div class="descheight">
+										<span class="absolutes_name">永恒之心</span><br> 
+										<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+										<span class="red">￥20663</span>
+									</div>
+									<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+								</div>
+								<div class="imgright2">
+									<div class="sl">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="s1">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+
+				<div class="mallhot-list">
+					<div class="tagtitle">
+						<div class="col-xs-12 col-md-6 text-left"><img src="images/tagtitle_13.png" alt=""></div>
+						<div class="col-xs-12 col-md-6 text-right">
+							<a href="#">珍珠戒指</a> | <a href="#">珍珠吊坠</a> | <a href="#">珍珠耳饰</a> | <a href="#">淡水珍珠</a> | <a href="#">海水珍珠</a> <a href="#">更多》</a></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="contbox">
+						<div class="col-xs-12 col-md-6 padno">
+							<div class="contleft">
+								<div class="bannerbar"><a href="#"><img src="images/index_23.png" alt=""></a></div>
+								<div class="imgleft">
+									<div class="sl">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="imgright">
+									<div class="sl">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-md-6 padno">
+							<div class="contright">
+								<div class="imgleft2">
+									<div class="descheight">
+										<span class="absolutes_name">永恒之心</span><br> 
+										<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+										<span class="red">￥20663</span>
+									</div>
+									<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+								</div>
+								<div class="imgright2">
+									<div class="sl">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="s1">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+
+				<div class="mallhot-list">
+					<div class="tagtitle">
+						<div class="col-xs-12 col-md-6 text-left"><img src="images/tagtitle_15.png" alt=""></div>
+						<div class="col-xs-12 col-md-6 text-right">
+							<a href="#">珍珠戒指</a> | <a href="#">珍珠吊坠</a> | <a href="#">珍珠耳饰</a> | <a href="#">淡水珍珠</a> | <a href="#">海水珍珠</a> <a href="#">更多》</a></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="contbox">
+						<div class="col-xs-12 col-md-6 padno">
+							<div class="contleft">
+								<div class="bannerbar"><a href="#"><img src="images/index_23.png" alt=""></a></div>
+								<div class="imgleft">
+									<div class="sl">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="imgright">
+									<div class="sl">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-md-6 padno">
+							<div class="contright">
+								<div class="imgleft2">
+									<div class="descheight">
+										<span class="absolutes_name">永恒之心</span><br> 
+										<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+										<span class="red">￥20663</span>
+									</div>
+									<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+								</div>
+								<div class="imgright2">
+									<div class="sl">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="s1">
+										<div class="descleft">
+											<span class="absolutes_name">永恒之心</span><br> 
+											<span class="absolutes_desc">18K金/PT950钻石女戒</span><br> 
+											<span class="red">￥20663</span>
+										</div>
+										<div class="contrights">
+											<a href="#"><img src="images/demoimg.jpg" alt=""></a>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<!-- 商城热卖 end //-->
+
+		<!-- 品牌系列 -->
+		<div class="brand">
+			<div class="container">
+				<div class="brand-header">
+					<h1 class="text-center"><strong>品牌系列</strong> <br /> <span class="brand-text">Brand Series</span></h1>
+				</div>
+			</div>
+
+			<div class="brand-tab">
+				<div class="container">
+					<ul id="brand-tab-list">
+						<li><a href="#"><img src="images/index_brand_01.png" alt=""></a></li>
+						<li><a href="#"><img src="images/index_brand_02.png" alt=""></a></li>
+						<li><a href="#"><img src="images/index_brand_03.png" alt=""></a></li>
+					</ul>
+				</div>
+			</div>
+
+			<script type="text/javascript">
+				$(window).load(function() {
+				    $("#brand-tab-list").flexisel({
+				        visibleItems: 3,
+				        animationSpeed: 1000,
+				        autoPlay: true,
+				        autoPlaySpeed: 3000,            
+				        pauseOnHover: true,
+				        enableResponsiveBreakpoints: true,
+				        responsiveBreakpoints: { 
+				            portrait: { 
+				                changePoint:480,
+				                visibleItems: 1
+				            }, 
+				            landscape: { 
+				                changePoint:640,
+				                visibleItems: 2
+				            },
+				            tablet: { 
+				                changePoint:768,
+				                visibleItems: 3
+				            }
+				        }
+				    });
+				});
+			</script>
+		</div>
+		<!-- 品牌系列 end //-->
+	
+		<!-- 新闻动态 -->
+		<div class="new">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12 col-md-6">
+						<div class="con-md-12">
+							<div class="new-header">
+							  <h3>最新动态 <small class="pull-right"><a href="#">更多》</a></small></h3>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-5 col-md-5"><img src="images/index_10kl.png" alt=""></div>
+						<div class="col-xs-12 col-sm-7 col-md-7">
+							<ul>
+								<li><a href="#">2016年5月上海国际珠宝展</a></li>
+								<li><a href="#">钻明钻石520甜蜜说爱-为真爱代言</a></li>
+								<li><a href="#">钻明钻石O2O模式 珠宝业的未来与发展</a></li>
+								<li><a href="#">估价达6.3亿人民币 南非发现122克拉罕见...</a></li>
+								<li><a href="#">10克拉的粉色钻石</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-xs-12 col-md-6">
+						<div class="con-md-12">
+							<div class="new-header">
+							  <h3>行业信息 <small class="pull-right"><a href="#">更多》</a></small></h3>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-5 col-md-5"><img src="images/hanyexingxi.png" alt=""></div>
+						<div class="col-xs-12 col-sm-7 col-md-7">
+							<ul>
+								<li><a href="#">卡地亚是怎样成功的及代表作品一览钻明...</a></li>
+								<li><a href="#">如何看蜜蜡琥珀品质检测指标有哪些</a></li>
+								<li><a href="#">PANDORA 2016春季新品预览会 </a></li>
+								<li><a href="#">钻石批发 钻明最资深 十二年行业采购经验</a></li>
+								<li><a href="#">估价达6.3亿人民币 南非发现122克拉罕见...</a></li>
+							</ul>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<!-- 新闻动态 end //-->
+
+		<script>
+			$(function(){
+				//调整栏目和图片大小 
+				$(window).resize(function(){
+					$('.imgleft2').height($('.imgright2').height());
+					$('.imgleft,.imgright').height($('.imgright2').height()-$('.bannerbar').height());
+					
+				});
+			});
+		</script>
+	</div>
+	<!-- main end //-->
+
+
+	<!-- footer -->
+	<div class="footer">
+		<div class="container">
+			<div class="ensure center-block text-center">
+				<div class="row">
+					<div class="col-xs-12 col-sm-4 col-md-5ths"><img src="images/index_86.png" alt="...">一钻双证</div>
+					<div class="col-xs-12 col-sm-4 col-md-5ths"><img src="images/index_88.png" alt="...">全国免费配送</div>
+					<div class="col-xs-12 col-sm-4 col-md-5ths"><img src="images/index_90.png" alt="...">珠宝协会会员</div>
+					<div class="col-xs-12 col-sm-6 col-md-5ths"><img src="images/index_93.png" alt="...">15天免费退换</div>
+					<div class="col-xs-12 col-sm-6 col-md-5ths"><img src="images/index_95.png" alt="...">全程保险</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="foot-desc">
+			<div class="container">
+				<div class="row foot-desc-list">
+					<div class="col-xs-12 col-md-2 footer-logo">
+						<img src="images/logo.png" alt="">
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>用户指南</h5>
+						<ul class="list-group">
+							<li><a href="#">注册用户</a></li>
+							<li><a href="#">购买流程</a></li>
+							<li><a href="#">支付方式</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>关于配送</h5>
+						<ul class="list-group">
+							<li><a href="#">商品包装</a></li>
+							<li><a href="#">配送方式</a></li>
+							<li><a href="#">配送流程</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>售后服务</h5>
+						<ul class="list-group">
+							<li><a href="#">会员细节</a></li>
+							<li><a href="#">售后保障</a></li>
+							<li><a href="#">退换流程</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>常见问题</h5>
+						<ul class="list-group">
+							<li><a href="#">珠宝常识</a></li>
+							<li><a href="#">配送问题</a></li>
+							<li><a href="#">联系客服</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-12 col-md-2 gstime">
+						<img src="images/footer-phone.png" alt="">
+						<strong><h4>0755-22922183</h4></strong>
+						<span>服务时间： AM9: 00-PM23: 00</span>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				<p class="copy-link">伪验证   友情链接        钻石、钻戒、裸钻、婚戒、戒指、结婚钻戒、结婚戒指、钻石戒指、珠宝、首饰、订婚戒指、克拉钻、异形钻、30分钻石、50分钻石、钻石饰品、裸钻定制</p>
+				<p class="text-center">© 2010-2016 珠宝官网 版权所有,并保留所有权利  粤ICP备123456789号</p>
+			</div>
+		</div>
+	</div>
+	<!-- footer end //-->
+</body>
+</html>

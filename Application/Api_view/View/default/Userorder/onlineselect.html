@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/main.css">
+<link rel="stylesheet" href="__CSS__/user.css">
+<link rel="stylesheet" href="__CSS__/aftersales.css">
+<link href="__JS__/iCheck/skins/minimal/blue.css" rel="stylesheet">
+<link href="__JS__/iCheck/skins/square/blue.css" rel="stylesheet">
+<link href="__JS__/iCheck/skins/flat/blue.css" rel="stylesheet">
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/user.js"></script>
+<link rel="stylesheet" href="__CSS__/cart.css">
+<script src="__JS__/iCheck/jquery.icheck.js"></script>
+<script src="__JS__/icheck-init.js"></script>
+<script type="text/javascript" src="__JS__/fuelux/js/spinner.min.js"></script>
+<script src="__JS__/spinner-init.js"></script>
+<script src="__JS__/layer-mobile/layer.js"></script> 
+<!-- 商品滑动 -->
+<link rel="stylesheet" href="__CSS__/swiper.min.css">
+<title>收银台-支付方式</title>
+</head>
+<body class="wrap-bg">
+  <section>
+    <div class="invoice-info payment-info">
+      <div class="list-item">
+        <span class="pull-left">订单金额</span>
+        <span class="pull-right red">￥{$orderInfo['order_price']}</span>
+        <div class="clearfix"></div>
+      </div>
+      <div class="borbot"> 
+        <div class="square-blue single-row">
+          <h4 style="font-size: 15px;">支付方式</h4>
+          <a href="{:U('Userorder/payonline',array('order_id'=>$orderInfo['order_id'],'token'=>C('token'),'uid'=>C('uid'),'agent_id'=>C('agent_id')))}">
+            <div class="payment-data">
+              <span class="pull-left" style="color: #000;"><img src="__IMG__/alipay.png" width="40" alt=""> 支付宝</span>
+              <span class="pull-right red right-icon"><img src="__IMG__/right_icon.png" width="18" class="wl" alt=""></span>
+              <div class="clearfix"></div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--<section class="shouhouxq-sub">
+    <div class="payment-submit">
+      <p class="text-center">
+		<button type="submit" id="my_submit" class="btn btn-danger btn-block" onclick="window.location='{:U('Userorder/payonline',array('token'=>C('token'),'uid'=>C('uid'),'agent_id'=>C('agent_id')))}'">立即支付</button>
+      </p>
+    </div>
+  </section>-->
+</body>
+</html>

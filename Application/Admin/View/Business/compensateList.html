@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>应退款记录</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.css" />
+<script type="text/javascript" src="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/datepicker-tw.js"></script>
+<script type="text/javascript">
+$(function() {
+	$( "#from" ).datepicker($.datepicker.regional[ "zh-TW" ] );
+});
+</script>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：应退款记录</h3>
+    </div>
+    <div class="filter">
+    <form action="{:U('Admin/Business/compensateList')}" method="get">
+        <div class="fl">订单编号：</div>
+        <input class="input" type="text" name="order_sn" value="{$order_sn}"/>
+        <div class="fl">状态：</div>
+        <select name="compensate_status" class="fl" style="width: 120px;">
+        	<option value="0">全部</option>
+            <option value="1" <eq name="compensate_status" value="1">selected</eq>>未核销</option>
+            <option value="2" <eq name="compensate_status" value="2">selected</eq>>核销部分</option>
+            <option value="3" <eq name="compensate_status" value="3">selected</eq>>已核销</option>
+        </select>
+		<div class="fl">退款类型：</div>
+		<select name='period_type'>
+			<option value='0' <eq name="period_type" value="0">selected</eq>>全部</option>
+			<option value='21' <eq name="period_type" value="21">selected</eq>>退货退款</option>
+			<option value='12' <eq name="period_type" value="12">selected</eq>>退差价</option>
+		</select>
+		<div class="fl">退款时间：</div>
+		<input type='text' name='refund_time' class='datepicker' id="from" value="{$time}" >
+        <div class="fl">&nbsp;</div>
+        <input class="button" type="submit" value="查询" />
+    </form>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+            <th width="10%">退款ID</th>
+            <th width="10%">订单编号</th>
+            <th width="10%">应退类型</th>
+            <th width="15%">生成时间</th>
+            <th width="10%">应退金额</th>
+            <th width="10%">已核销金额</th>
+            <th width="10%">核销状态</th>
+            <th width="10%">操作</th>
+        </tr>
+        <volist name="list" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+            <td>{$vo.compensate_id}</td>
+            <td><a href="{:U('Admin/Order/orderInfo?order_id='.$vo['order_id'])}" showOrder="{$vo.order_id}">{$vo.order_sn}</a></td>
+            <td>
+            	<eq name="vo.period_type" value="21">退货退款</eq>
+            	<eq name="vo.period_type" value="12">退差价</eq>
+            </td>
+            <td>{$vo.create_time|date="Y-m-d H:i",###}</td>
+            <td>{$vo.compensate_price}</td>
+            <td>{$vo.payment_price}</td>
+            <td>
+                <eq name="vo.compensate_status" value="1">未核销</eq>
+                <eq name="vo.compensate_status" value="2">核销部分</eq>
+                <eq name="vo.compensate_status" value="3">已核销</eq>
+            </td>
+            <td>
+            	<neq name="vo.compensate_status" value="3">
+	            	<a href="{:U('Admin/Business/checkRefundInfo?compensate_id='.$vo['compensate_id'])}">核销到应付款</a>
+	            	<a href="{:U('Admin/Business/refundInfo?order_id='.$vo['order_id'])}">去退款</a>
+            	</neq>
+            </td>
+        </tr>
+        </volist>
+    </table>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>

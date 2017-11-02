@@ -1,0 +1,13 @@
+<div class="tiao">
+    <input type="text" value="" style="width: 50px;" name="material[size][{$material_id}][{$uuid}][min_size]" placeholder="最小值">
+    <input type="text" value="" style="width: 50px;" name="material[size][{$material_id}][{$uuid}][max_size]" placeholder="最大值">
+	<input type="text" value="" style="width: 60px;" name="material[size][{$material_id}][{$uuid}][size_price]" placeholder="价格">
+	<if condition="InStringByLikeSearch($category_name,array('对戒'))">
+		<span class="sex">
+			<label>男<input type="radio" checked="checked" name="material[size][{$material_id}][{$uuid}][sex]" value='1' ></label>
+			<label>女<input type="radio" name="material[size][{$material_id}][{$uuid}][sex]"value='2' ></label> 
+		</span>
+	</if>
+	<button type="button" class="luozuan_button del3" style="float: none;">删除</button>
+    <div class="clear"></div>
+</div>

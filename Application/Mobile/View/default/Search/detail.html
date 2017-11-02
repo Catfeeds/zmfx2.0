@@ -1,0 +1,76 @@
+<include file="Public:header" />
+<body>
+    <style>
+        .certificate-detail { background: #FFF; margin: 1rem;}
+        .certificate-detail table { width: 100%;}
+        .certificate-detail table th { width: 30%;}
+        .certificate-detail table td { width: 70%;}
+        .certificate-detail table td a { color: blue;}
+        .certificate-detail table th,
+        .certificate-detail table td { border: 1px solid #ccc; padding: .5rem; text-align: center;}
+    </style>
+    <section class="certificate-detail">
+		<table class="table table-striped table-bordered">
+			<tr><th colspan="2"><h1>数据查询中，请稍等！</h1></th></tr>
+		</table>
+   </section>
+ 
+	
+<script>
+  var id ='<?php echo empty(I('get.zs_id'))?0:I('get.zs_id'); ?>';
+  var type ='<?php echo empty(I('get.zs_type'))?0:I('get.zs_type'); ?>';
+
+  function select_reportdata(id,type){
+    if(id=='self'){	
+      id=$('input[name="zs_id"]').val();
+      type =<?php echo empty(I('get.zs_type'))?0:I('get.zs_type'); ?>;
+    }
+    var html="";
+		$.post("/Search/detail/",{Action:"POST",zs_id:id,zs_type:type},function(data){	
+			if(data){
+				if(data.status==1){
+					$.each(data.data ,function(c ,b) {
+						$.each(b,function(e,f) {
+							html += "<tr>";
+							if(f==null){	f='无';	}
+							html += "<th>"+e+"</th>";
+							if(type=='3')	{
+							  html += "<td>"+f.replace(">","")+"</td>";
+							}else			{
+							  html += "<td>"+f+"</td>";
+							}
+							html += "</tr>";
+						});
+					});
+				}else{
+				  html +="<tr class='title'><th><h1>没有查询到相关数据或网络延迟时间过长，请稍后重试！</h1></th></tr>"
+				}
+				$(".table-bordered").html(html);
+				$(".btn-link")[1].remove();
+			}else{
+				alert('网络错误！');			
+			}
+        });
+ 
+  }
+  
+  if( id && type ){	
+    select_reportdata(id,type); 
+  }
+  
+	function download_pdf_ajax(id){
+	  $.post("/Search/giaReportPDF",{Action:"POST",reportNumber:id},function(data){	
+		if(data){
+			window.location.href=data;
+		}else{
+			alert('网络错误！');	
+		}
+	  });
+	}
+
+</script>	
+	
+	
+ 
+</body>
+</html>

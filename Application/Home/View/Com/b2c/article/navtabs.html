@@ -1,0 +1,14 @@
+<div class="navtab">
+    <ul class="nav nav-tabs">
+        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+       <volist name="categorys" id="vo" key='k'>
+			<if condition="$cid eq '' ">
+			<li <eq name="k" value="1"> class="active" </eq> >
+				<a href="{:U('Article/index',array('cat_id'=>$vo['cid']))}">{$vo['catname']}</a>
+			</li>
+			<else/>
+			<li <if condition="$vo['cid'] eq $cid " > class="active" </if> ><a href="{:U('Article/index',array('cat_id'=>$vo['cid']))}">{$vo['catname']}</a></li>
+			</if>
+		</volist>
+    </ul>
+</div>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>编辑地址</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/public.css">
+	<link rel="stylesheet" href="css/user.css">
+	<link rel="stylesheet" href="css/titatoggle-dist-min.css">
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/PCASClass.js"></script>
+</head>
+<body class="wrap-bg">
+	<!-- Header -->
+	<header class="header text-center">
+		<a href="#" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    	编辑地址
+        <a href="#" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a>
+    </header>
+    <!-- Header END //-->
+	
+	<!-- Main -->
+    <div class="container-fluid user-edit-address user-info">
+		<div class="panel panel-default border-radius-none">
+			<div class="panel-body username usbox fxs">
+				<ul>
+					<li>
+						收货人
+						<span class="una"><input type="text" name="" value="林大富"></span>
+					</li>
+					<li>
+						联系方式
+						<span class="una"><input type="text" name="" value="18688888315">
+					</li>
+					<li>
+						所在地
+						<span class="select-box">
+							<select name="province2" class="select-form"></select>
+							<select name="city2" class="select-form"></select>
+							<select name="area2" class="select-form"></select>
+							<div class="clear"></div>
+						</span>
+						<div class="clear"></div>
+						<script>
+							new PCAS("province2","city2","area2","广东省","深圳市","罗湖区");
+						</script>
+					</li>
+					<li>
+						详细地址
+						<span class="una"><input type="text" name="" value="太白路松泉三庄三栋三层">
+					</li>
+					<li>
+						地址标注
+						<span class="una"><input type="text" name="" value="公司">
+					</li>
+					<li>
+						设为默认地址
+						<span class="una">
+							<div class="checkbox checkbox-slider-lg checkbox-slider--b-flat  checkbox-slider-info una-checkbox">
+								<label>
+									<input type="checkbox" checked=""><span></span>
+								</label>
+							</div>
+						</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="container">
+			<button type="button" class="btn btn-primary exit-button">保存</button>
+		</div>
+    </div>
+    <!-- Main END //-->				
+</body>
+</html>

@@ -1,0 +1,95 @@
+<include file="Public:header" />
+<!-- <include file="Public:search" /> -->
+<!-- Header -->
+<header data-am-widget="header" class="am-header am-serch cat">
+	<div class="am-header-left am-header-nav">
+		<a href="javascript:;" onclick="javascript:history.go(-1);" class="">
+			<img class="am-header-icon-custom" src="__ASS__/Img/search_01.png" alt="" />
+		</a>
+	</div>
+	<h1 class="am-header-title">
+		商品详情
+	</h1>
+</header>
+<script src="__JS__/Jquery.Cookie.js" type="text/javascript"></script>
+<div class="wrap">
+	<p style="clear:both"></p>
+	<!-- 轮播-->
+	<div class="am-slider am-slider-default" data-am-flexslider id="demo-slider-0">
+		<ul class="am-slides">
+			<volist name="goodsImages" id="vo">
+				<li><img src="{$vo.big_path}" alt="" class=""></li>
+			</volist>
+		</ul>
+	</div>
+	<div class="list-default">
+		<h3>{$goodsInfo.goods_name}</h3>
+		<p>价格:<big>&yen;<b class="goods_price">
+			<in name="goodsInfo['activity_status']" value="0,1">
+				{$goodsInfo.activity_price}
+			<else/>
+				{$goodsInfo.goods_price}
+			</in>
+		</b></big></p>
+	</div>
+	<input type="hidden" name="goods_id" value="{$goodsInfo.goods_id}" />
+	<input type="hidden" name="goods_type" value="{$goodsInfo.goods_type}" />
+	<div id="goods_type">
+		<!--成品货显示规格-->
+		<switch name="goodsInfo.goods_type">
+			<case value="3">
+				<include file="Goods:goodsSpec" />
+				<script type="text/javascript">
+					$(document).ready(function() { //载入时重新获取默认的价格，而不是一口价
+						var selString = '';
+						$('#spec dd').each(function(index) {
+							if($(this).hasClass('active')) {
+								selString += ',' + $(this).attr('data-id');
+							}
+						})
+						selString = selString.substr(1);
+						goods_id = $('input[name="goods_id"]').val();
+						goods_type = $('input[name="goods_type"]').val();
+						data = {
+							goods_id: goods_id,
+							type: goods_type,
+							selString: selString
+						};
+						$.get('/index.php' + $.getGoodsPrice, data, function(data) {
+							$('#goods_type').html(data.html);
+							$('.goods_price').html(data.price);
+						});
+					});
+				</script>
+			</case>
+			<case value="4">
+				<include file="Goods:goodsJgs" />
+				<script type="text/javascript">
+					$(document).ready(function() { //载入时重新获取默认的价格，而不是一口价
+						getGoodsJGS1();
+					});
+				</script>
+			</case>
+			<default />
+		</switch>
+	</div>
+
+	<!--产品参数详情-->
+	<div class="sign">
+		<h3>产品参数详情</h3><b>-</b></div>
+	<div data-am-widget="list_news" class="am-list-news list-news-default">
+		<div class="am-list-news-bd">
+			<h5><i class="icon"></i>产品信息</h5>
+			<ul class="am-list list">
+				<volist name="attr" id="vo">
+					<li class="am-g am-list-item-dated">{$vo.attribute_name}：{$vo.attribute_value}</li>
+				</volist>
+			</ul>
+		</div>
+	</div>
+	<div class="content">
+		{$goodsInfo.content} {$public_content|htmlspecialchars_decode}
+	</div>
+</div>
+<include file="Public:footer" />
+<script src="__JS__/index.js"></script>

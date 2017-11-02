@@ -1,0 +1,36 @@
+<include file="Public:header" />
+<!--导航-->
+<div class="am-g ">
+	<!-- <include file="Public:search" /> -->
+	<!--内容-->
+	<div class="wrap">
+		<header data-am-widget="header" class="am-header am-serch cat">
+			<div class="am-header-left am-header-nav">
+				<a href="{:U('/Index/index')}" class="">
+					<img class="am-header-icon-custom" src="__ASS__/Img/search_01.png" alt=""/>
+				</a>
+			</div>
+			<h1>
+				<a class="am-header-title">最新资讯</a>
+			</h1>
+		</header>
+		<p class="clear"></p>
+		<!-- 轮播-->
+		<php>include("./Application/Mobile/View/default/Ad/ad_8_".C("agent_id").".html");</php>
+		<!--内容-->
+		<div data-am-widget="list_news" class="am-list-news am-list-news-default news">
+			<div class="am-list-news-bd">
+				<ul class="am-list">
+					<volist name="list" id="vo">
+					<li class="am-g am-list-item-dated">
+						<a href="{:U('Article/articleInfo?aid='.$vo['aid'])}" class="am-list-item-hd ">{$vo.title}</a>
+						<span class="am-list-date">{$vo.addtime|date="Y/m/d",###}</span>
+					</li>
+					</volist>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>	
+<include file="Public:footer" />
+<script src="__JS__/index.js"></script>

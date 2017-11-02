@@ -1,0 +1,427 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<script src="__PUBLIC__/Js/public.js"></script>
+<script src="__PUBLIC__/Js/jquery.ui.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/Css/jquery-ui.css">
+<style>
+.luozuan_type{
+	display:inline-flex;
+}
+.luozuan_type span{
+	padding: 5px 10px;
+	margin-right: 5px;
+	display: inline-block;
+	cursor: pointer;
+}
+.luozuan_type .active {
+	background: #ccc;
+}
+</style>
+<script>
+	function luozuan_show(id){
+		switch(id){
+			case 'diamondDialogForm':
+				$('.checkBox').prop('checked', false);
+				$('#diamondDialogForm').show();
+				$('#caizuanForm').hide();
+				$('.left').addClass('active');
+				$('.right').removeClass('active');
+				break;
+			case 'caizuanForm':
+				$('.checkBox').prop('checked', false);
+				$('#diamondDialogForm').hide();
+				$('#caizuanForm').show();
+				$('.left').removeClass('active');
+				$('.right').addClass('active');
+				break;
+		}
+	}
+
+	function cartDelete(id){
+		$.post("/Home/Order/cartDelete",{id:id},refCartOperation);
+	}
+
+	function refCartOperation(data){
+		location.reload();
+	}
+
+	function cartClear(){
+		$.post("/Home/Order/cartClear",refCartOperation);
+	}
+	function changeGoodsNumber(obj,cartId,goods_type){
+		var stock = $("input[type=hidden][name="+cartId+"_stock]").val().trim();
+		var buy_quantity;
+		switch(goods_type){
+			case 2:	//散货
+				stock = parseFloat(stock);
+				buy_quantity = parseFloat(obj.value);
+				break;
+			case 3:	//成品
+				stock = parseInt(stock);
+				buy_quantity = parseInt(obj.value);
+				break;
+			case 4:	//成品
+				stock = parseInt(stock);
+				buy_quantity = parseInt(obj.value);
+				break;
+		}
+		if(buy_quantity <= 0){
+			alert('购买数量必须大于0');
+			buy_quantity = $("input[type=hidden][cartId="+cartId+"]").attr("default_val");
+			obj.value = buy_quantity;
+		}
+		if(buy_quantity > stock){
+			alert('购买数量大于库存！现库存为'+stock);
+			buy_quantity = $("input[type=hidden][cartId="+cartId+"]").attr("default_val");
+			obj.value = buy_quantity;
+		}
+		$.post("/Home/Order/changeGoodsNumber",{goods_number:buy_quantity,cartId:cartId,goods_type:goods_type},refCartOperation);
+	}
+
+	function submitOrder(){
+		if($("#total").html() != 0) {
+				var goods_number_array=[];
+				$(".goods_number").each(function(i){	
+					goods_number_array[i] = $(this).val();
+				});
+			
+				for(var i in goods_number_array){
+				  if(goods_number_array[i]=='0.000'){
+					alert("请先添加货品数量再提交订单！");	return false;
+				  }	
+				}
+				
+				$.post("/Home/User/checkUserLogin",function(data){
+				   if(data.status == 1){
+						window.location.href="/Home/Order/orderConfirm";
+				   }else{
+						alert("请先登录，再提交订单");
+						window.location.href="/Home/Public/login";
+				   }
+				});
+		}else{
+			alert("请先添加货品再提交订单");
+		}
+	}
+
+	function addDingzhi2Cart(){
+		var matchDiamonds = new Array();
+		if($("input[name='matchDiamond[]']:checked").length>getCookie("Dgoods_number")){
+			alert("所选的钻石的数量大于该产品的总数量");
+			return;
+		}
+		 $("input[name='matchDiamond[]']:checked").each(function () {
+			matchDiamonds.push(this.value);
+		});
+
+		$.post('/Home/Order/addDingzhi2Cart',{Action:'post',goods_type:getCookie("Dgoods_type"),cartId:getCookie("DcartId"),matchDiamonds:matchDiamonds},function(data){
+			if(data.status == 100 ){
+				dialog = $( "#diamondDialog" ).dialog({ });
+				dialog.dialog("close");
+				window.location.reload();
+			}else{
+				alert(data.msg);
+			}
+		});
+	}
+
+	$(function() {
+		var dialog, form;
+	});
+
+	function matchDiamond(goods_number,goods_type,cartId,weight,shape_id,shape_name){
+		dialog = $( "#diamondDialog" ).dialog({
+			autoOpen: false,
+			minWidth:1000,
+			width:1000,
+			height:400,
+			modal:true,
+			show:{effect:'drop', direction:'up'},
+			buttons: {
+				"确定": addDingzhi2Cart, 
+				"取消": function() {
+					dialog.dialog( "close" );
+				}
+			}
+		});
+		$.post('/Home/Goods/getDiamondByCart',{Action:'post',cartId:cartId,weight:weight,shape_id:shape_id},function(data){
+			if(data){
+				html = "<div class='luozuan_type'><span class='left active' onclick=\"luozuan_show('diamondDialogForm')\">白钻</span><span class='right' onclick=\"luozuan_show('caizuanForm')\">彩钻</span></div>";
+				html += "<form id='diamondDialogForm'>";
+				if(data.price_display_type!=1){
+					table_title = "<table id='baizuan' border='1'><tr class='top'><th>去向</th><th>形状</th><th>编号</th><th>证书编号</th><th>钻重</th><th>颜色</th><th>净度</th><th>切工</th><th>抛光</th><th>对称</th><th>荧光</th><th>全深比</th><th>台宽比</th><th>奶色</th><th>咖色</th><th>国际报价</th><th>人民币</th><th>折扣</th><th>价格</th><th>勾选</th>";
+				}else{
+					table_title = "<table id='baizuan' border='1'><tr class='top'><th>去向</th><th>形状</th><th>编号</th><th>证书编号</th><th>钻重</th><th>颜色</th><th>净度</th><th>切工</th><th>抛光</th><th>对称</th><th>荧光</th><th>全深比</th><th>台宽比</th><th>奶色</th><th>咖色</th><th>价格</th><th>勾选</th>";
+				}
+				html += table_title;
+				if(data.data.luozuan){
+					data.data.luozuan.forEach(function (e) {
+						html += "<tr><td>" + e.location + "</td>";
+						html += "<td>" + e.shape + "</td>";
+						html += "<td>" + e.goods_name + "</td>";
+						html += "<td>" + e.certificate_number + "</td>";
+						html += "<td>" + e.weight + "</td>";
+						html += "<td>" + e.color + "</td>";
+						html += "<td>" + e.clarity + "</td>";
+						html += "<td>" + e.cut + "</td>";
+						html += "<td>" + e.polish + "</td>";
+						html += "<td>" + e.symmetry + "</td>";
+						html += "<td>" + e.fluor + "</td>";
+						html += "<td>" + e.dia_depth + "</td>";
+						html += "<td>" + e.dia_table + "</td>";
+						html += "<td>" + e.milk + "</td>";
+						html += "<td>" + e.coffee + "</td>";
+						if(data.price_display_type!=1){
+							html += "<td>$" + e.dia_global_price + "</td>";
+							html += "<td>&yen;" + e.cur_price + "</td>";
+							html += "<td>" + e.dia_discount_all + "</td>";
+						}
+						html += "<td>&yen;" + e.price + "</td>";
+						html += "<td><input type='checkbox' name='matchDiamond[]' class='checkBox' value='" + e.gid + "'></td>";
+						html += "</tr>";
+					});
+				}else{
+					html += "<tr>暂无数据</tr>";
+				}
+				html += "</table></form>";
+				html += "<form id='caizuanForm' style='display:none'>";
+				html +=	"<table id='caizuan' border='1'><tr class='top'><th>去向</th><th>形状</th><th>编号</th><th>证书编号</th><th>钻重</th><th>颜色</th><th>色度</th><th>净度</th><th>抛光</th><th>对称</th><th>荧光</th><th>全深比</th><th>台宽比</th><th>价格</th><th>勾选</th>";
+				if(data.data.caizuan){
+					data.data.caizuan.forEach(function (e) {
+						html += "<tr><td>" + e.location + "</td>";
+						html += "<td>" + e.shape + "</td>";
+						html += "<td>" + e.goods_name + "</td>";
+						html += "<td>" + e.certificate_number + "</td>";
+						html += "<td>" + e.weight + "</td>";
+						html += "<td>" + e.color + "</td>";
+						html += "<td>" + e.intensity + "</td>";
+						html += "<td>" + e.clarity + "</td>";
+						html += "<td>" + e.polish + "</td>";
+						html += "<td>" + e.symmetry + "</td>";
+						html += "<td>" + e.fluor + "</td>";
+						html += "<td>" + e.dia_depth + "</td>";
+						html += "<td>" + e.dia_table + "</td>";
+						html += "<td>&yen;" + e.price + "</td>";
+						html += "<td><input type='checkbox' name='matchDiamond[]' class='checkBox' value='" + e.gid + "'></td>";
+						html += "</tr>";
+					});
+
+				}else{
+					html += "<tr>暂无数据</tr>";
+				}
+				html += "</table></form>";
+			}
+			$("#ui-id-1").html("选中的钻石将用于匹配戒托");
+			$("#diamondDialog").html(html);
+		});
+		setCookie("Dgoods_number",goods_number);
+		setCookie("Dgoods_type",goods_type);
+		setCookie("DcartId",cartId);
+		dialog.dialog( "open" );
+	}
+</script>
+
+	<body>
+		<div class="gou_wrap">
+			<div class="gou"></div>
+			<if condition="$product['data']">
+			<div class="in">
+				<span>你选购了以下产品</span>
+			</div>
+			<div class="contain">
+				<table border="1">
+					<tr class="top">
+						<th width="">商品</th>
+						<if condition="$vo['goods_attrs']['associateInfo']"><th width="">个性符号</th></if>
+						<th width="10%">款号</th>
+						<th width="10%">匹配主石证书编号</th>
+						<th width="8%">市场价</th>
+						<th width="8%">本店价</th>
+						<th width="8%">购物数量</th>
+						<th width="8%">小计</th>
+						<th width="8%">操作</th>
+					</tr>
+					<volist name="product['data']" id="vo">
+					<tr>
+						<td class="tdLeft">
+							<div class="tbl_cart_left">
+							<a href="{:U('/Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}" target="_blank">
+								<if condition="$vo['goods_attrs']['thumb']">
+								<img src="{$vo.goods_attrs.thumb}" />
+								<else />
+								<img src="__PUBLIC__/Uploads/product/nopic.png" />
+								</if>
+							</a></div>
+							<div class="tbl_cart_right">
+								<a href="{:U('/Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}" target="_blank">{$vo.goods_attrs.goods_name}</a>
+						
+								<if condition="$vo['have_goods'] lt 1">【<span style="color:red;">无货</span>】 </if>
+								<br>
+								<if condition="$vo['goods_type'] eq 16">
+									{$vo.goods_attrs.associateInfo.material_name}
+									金重：{$vo.goods_attrs.associateInfo.weights_name}g 主石：{$vo.goods_attrs.luozuanInfo.weights_name}{$vo.goods_attrs.luozuanInfo.ct_mm}
+									{$vo.goods_attrs.luozuanInfo.shape_name} {$vo.goods_attrs.deputystone_name} 
+									<if condition="dingzhi_szzmzb_jewelry_name($vo['goods_attrs']['jewelry_name'])">
+										{$vo['goods_attrs']['jewelry_name']|dingzhi_szzmzb_jewelry_name}：{$vo.goods_attrs.hand}
+									</if>
+									
+									刻字：{$vo.goods_attrs.word}
+								<else/>
+									<if condition="$vo['goods_attrs']['associateInfo']">
+										{$vo.goods_attrs.associateInfo.material_name}
+										金重：{$vo.goods_attrs.associateInfo.weights_name}g 主石：{$vo.goods_attrs.luozuanInfo.weights_name}CT
+										{$vo.goods_attrs.luozuanInfo.shape_name} {$vo.goods_attrs.deputystone_name} 手寸：{$vo.goods_attrs.hand}  刻字：{$vo.goods_attrs.word} 
+										<if condition="$vo['goods_attrs']['sd_images']">
+													<br>
+													刻字个性符号：<img src="{$vo.goods_attrs.sd_images} " />
+										</if>
+									<else />
+										{$vo.goods_attrs.category_name} {$vo.goods_attrs.attrs}
+									</if>
+								</if>
+								
+							</div>
+						</td>
+						<td>
+							{$vo.goods_attrs.goods_sn}
+						</td>
+						<td class="tdLeft">{$vo.goods_attrs.matchedDiamond}</td>
+						<td>{$vo.goods_attrs.marketPrice}</td>
+						<td>
+							<in name="vo['goods_attrs']['activity_status']" value="0,1">
+								{$vo['goods_attrs']['activity_price']}
+							<else/>
+								{$vo['goods_attrs']['goods_price']}
+							</in>
+						</td>
+						<td>
+						<if condition="$uType eq 3">
+							{$vo.goods_number}
+						<else />
+							<input type="text" class="goods_number" name="goods_number" onBlur="changeGoodsNumber(this,{$vo['id']},{$vo.goods_type})" value="{$vo.goods_number}" />
+							<input type="hidden" name="{$vo['id']}_stock" value="{$vo.goods_attrs.goods_sku.goods_number}" cartId="{$vo['id']}" default_val="{$vo.goods_number}"></input>	<!-- 此成品规格对应的sku库存 -->
+						</if>
+						</td>
+						<td id="count">{$vo.goods_attrs.goods_price2}</td>
+						<td><a href="javascript:void(0)" onClick="cartDelete({$vo.id})">删除</a>
+						<if condition="$vo['goods_type'] eq 5 OR ($vo['goods_type'] eq 4) OR ($vo['goods_type'] eq 16)">
+						<a href="javascript:void(0)" onClick="matchDiamond({$vo.goods_number},{$vo.goods_type},{$vo.id},{$vo.goods_attrs.luozuanInfo.weights_name},'{$vo.goods_attrs.luozuanInfo.shape_id}','{$vo.goods_attrs.luozuanInfo.shape_name}')">匹配钻石</a>
+						</if>
+						</td>
+					</tr>
+					</volist>
+					<tr><td colspan="6" class="tdRight">合计</td><td colspan="2"><label class="lblMoney">￥{$product.total}</label></td></tr>
+				</table>
+			</div>
+           	</if>
+           	<if condition="$luozuan[data]">
+			<div class="in">
+				<span>你选购了以下证书货钻石</span>
+			</div>
+			<div>
+            	<table border="1" class="tblLuozuan">
+            		<tr class="top">
+            			<th>去向</th>
+            			<th>形状</th>
+            			<th>编号</th>
+            			<th>证书编号</th>
+            			<th>钻重</th>
+            			<th>颜色</th>
+            			<th>净度</th>
+            			<th>切工</th>
+            			<th>抛光</th>
+            			<th>对称</th>
+            			<th>荧光</th>
+            			<th>奶色</th>
+            			<th>咖色</th>
+            			<th>每粒单价</th>
+            			<th>操作</th>
+            		</tr>
+            		<volist name="luozuan['data']" id="vo">
+            		<tr>
+            			<td>{$vo.goods_attrs.location}</td>
+            			<td>{$vo.goods_attrs.shape}</td>
+            			<td>
+							<eq name="vo['goods_attrs']['luozuan_type']" value="1">
+								彩钻
+							</eq>
+							{$vo.goods_attrs.goods_name}<if condition="$vo['have_goods'] lt 1">【<span style="color:red;">无货</span>】 </if>
+						</td>
+            			<td>
+							{$vo.goods_attrs.certificate_type}_{$vo.goods_attrs.certificate_number}
+						</td>
+            			<td>{$vo.goods_attrs.weight}</td>
+            			<td>{$vo.goods_attrs.color}</td>
+            			<td>{$vo.goods_attrs.clarity}</td>
+            			<td>{$vo.goods_attrs.cut}</td>
+            			<td>{$vo.goods_attrs.polish}</td>
+            			<td>{$vo.goods_attrs.symmetry}</td>
+            			<td>{$vo.goods_attrs.fluor}</td>
+            			<td>{$vo.goods_attrs.milk}</td>
+            			<td>{$vo.goods_attrs.coffee}</td>
+            			<td>{$vo.goods_attrs.price}</td>
+            			<td><a href="javascript:void(0)" onClick="cartDelete({$vo.id})">删除</a></td>
+            		</tr>
+            		</volist>
+            		<tr><td colspan="13" class="tdRight">合计</td><td colspan="2"><label class="lblMoney">￥{$luozuan.total}</label></td></tr>
+            	</table>
+			</div>
+			</if>
+			<if condition="$sanhuo[data]">
+				<div class="in">
+					<span>你选购了以下散货钻石</span>
+				</div>
+				<table border="1">
+					<tr class="top">
+						<th>去向</th>
+						<th>分类</th>
+						<th>货号</th>
+						<th>库存重量(CT)</th>
+						<th>颜色</th>
+						<th>净度</th>
+						<th>切工</th>
+						<th>统一定价(元/CT)</th>
+						<th>购买重量</th>
+						<th>现金小计</th>
+						<th>操作</th>
+					</tr>
+					<volist name="sanhuo[data]" id="v">
+					<tr id="tr_{$v.rec_id}">
+						<td>{$v.goods_attrs.location}</td>
+						<td>{$v.goods_attrs.type_name}</td>
+						<td>{$v.goods_attrs.goods_sn}<if condition="$v['have_goods'] lt 1">【<span style="color:red;">无货</span>】 </if></td>
+						<td><if condition="$v['have_goods'] gt 0">{$v.goods_attrs.goods_weight}<else />0</if></td>
+						<td>{$v.goods_attrs.color}</td>
+						<td>{$v.goods_attrs.clarity}</td>
+						<td>{$v.goods_attrs.cut}</td>
+						<td>{$v.goods_attrs.goods_price}</td>
+						<td><input type="text" name="weight" class="goods_number" value="{$v.goods_number}" onBlur="changeGoodsNumber(this,{$v['id']},2)" id="weight_{$v.goods_id}" /></td>
+						<input type="hidden" name="{$v['id']}_stock" value="{$v.goods_attrs.goods_weight}" cartId="{$v['id']}" default_val="{$v.goods_number}"></input>	<!-- 此成品规格对应的sku库存 -->
+						<td><span id="price_{$v.goods_id}">{$v.goods_attrs.goods_price2}</span></td>
+						<td>
+							<a href="javascript:void(0)" onClick="cartDelete({$v.id})">删除</a>
+						</td>
+					</tr>
+					</volist>
+					<tr><td colspan="9" class="tdRight">合计</td><td colspan="2"><label class="lblMoney">￥{$sanhuo.total}</label></td></tr>
+				</table>
+			</if>
+			<div class="tag">
+				<p class="tdRight">购物车内共有：<if condition="$product">{$product.count}<else/>0</if> 件成品，<if condition="$luozuan">{$luozuan.count}<else />0</if> 颗钻石，钻石总重量：{$total_weight} 克拉 订单总金额；<label class="lblMoney">￥<label id="total">{$total}</label></label>
+			</div>
+			<div class="bton">
+				<p class="bt_o" onClick="cartClear()">清空购物车</p>
+				<p class="bt_a"><a href="{:U('/Home/Goods/goodsDiy')}">继续挑选</a></p>
+				<p class="bt_c" onClick="submitOrder()">提交订单</p>
+
+			</div>
+		</div>
+        <div id="diamondDialog"></div>
+	</body>
+</html>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

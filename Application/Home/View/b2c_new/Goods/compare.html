@@ -1,0 +1,190 @@
+<link rel="stylesheet" href="__CSS__/stm.css">
+<include file=".:Com:b2c:product:goods_js" />
+<script src="__JS__/stm.js"></script>
+	<div class="stm-luozuan stm-details stm-contrast">
+		<div class="stm-breadcrumb">
+			<a href="/">首页</a> > <a href="{:U('Home/Goods/goodsDiy')}">钻石</a> > 钻石对比
+		</div>
+		<div class="stm-contrast-box clearfloat">
+			<div class="left-title">
+				<ul>
+					<li>操作</li>
+					<li class="h180">图片</li>
+					<li>放大</li>
+					<li>查看详情</li>
+					<li>添加至</li>
+					<li>价格</li>
+					<li>克拉重量</li>
+					<li>形状</li>
+					<li>切工</li>
+					<li>颜色</li>
+					<li>净度</li>
+					<li>对称</li>
+					<li>全深比</li>
+					<li>台宽比</li>
+					<li>抛光</li>
+					<li>奶色</li>
+					<li>咖色</li>
+					<li>荧光</li>
+				</ul>
+			</div>
+			<div class="right-list">
+				<volist name="compare_list" id="vo">
+				<div class="colum {$i}">
+					<ul>
+						<li class="colum-tab clearfloat">
+							<a href="javascript:;" class="pull-left"><img src="__IMG__/stm_contrast_03.png" height="12" width="23" alt=""></a>
+							<a href="javascript:;" data-gid="{$vo['gid']}" class="compare_del">取消</a>
+							<a href="javascript:;" class="pull-right"><img src="__IMG__/stm_contrast_05.png" height="12" width="23" alt=""></a>
+						</li>
+						<li class="h180">
+							<if condition="($vo['imageurl'] != '-') && ($vo['imageurl'] != '') && ($vo['imageurl'] != null) " >
+								<img src="{$vo['imageurl']}" class="colum-pic" alt="">
+							<else />
+								<img src="__IMG__/stm_contrast_10.png" class="colum-pic" alt="">
+							</if>
+						</li>
+						<li class="even-bg"><img src="__IMG__/stm_contrast_14.png" class="cursor" alt=""></li>
+						<li><a href="{:U('/Home/Goods/diamondDetails',array('gid'=>$vo['gid']))}">{$vo['goods_name']}</a></li>
+						<li class="even-bg">
+							<div class="mnselect">
+								<button type="button" class="operation op1 join-type">将钻石加入 <img src="__IMG__/dowm_03.png" alt=""></button>
+								<ul class="join-type-ul" style="display: none;">
+									<li><a data-value="{$vo['gid']}" class="addDingzhi" href="javascript:;">匹配戒托</a></li>
+									<li><a data-value="{$vo['gid']}" class="addCart" href="javascript:;">加入购物车</a></li>
+								</ul>
+							</div>
+						</li>
+						<li>RMB 
+						<if condition="$vo['preferential_id'] neq '' ">
+							{$vo['preferential_price']}
+						<else/>
+							{$vo['price']}
+						</if>
+						</li>
+						<li class="even-bg">{$vo['weight']}</li>
+						<li>{$vo['shape_name']}</li>
+						<li class="even-bg">{$vo['cut']}</li>
+						<li>{$vo['color']}</li>
+						<li class="even-bg">{$vo['clarity']}</li>
+						<li>{$vo['symmetry']}</li>
+						<li class="even-bg">{$vo['dia_depth']}</li>
+						<li>{$vo['dia_table']}</li>
+						<li class="even-bg">{$vo['polish']}</li>
+						<li>{$vo['milk']}</li>
+						<li class="even-bg">{$vo['coffee']}</li>
+						<li>{$vo['fluor']}</li>
+					</ul>
+				</div>
+				</volist>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	$(function(){
+		$('.colum .pull-left').bind('click', function(){
+			contrast.tabLeft($(this));
+		});
+		$('.colum .pull-right').bind('click', function(){
+			contrast.tabRight($(this));
+		});
+
+		var contrast = {
+			tabLeft: function(_this){
+				//var columIndex = _this.parents('.colum').index(); //获取当前元素index
+				//console.log(columIndex);
+				//$('.colum').eq(index).before( $('.colum').eq(index+1) );
+				//$('.colum').eq(columIndex + 1).css({transform: 'translate(174px, 0)'});
+				//$('.colum').eq(columIndex + 2).css({transform: 'translate(-174px, 0)'});
+				var prev = _this.parents('.colum').prev('.colum');
+				_this.parents('.colum').after( prev );
+				
+			},
+			tabRight: function(_this){
+				//var columIndex = _this.parents('.colum').index(); //获取当前元素index
+				//_this.parents('.colum').css({transform: 'translate(174px, 0)'});
+				//_this.parents('.colum').next().css({transform: 'translate(-174px, 0)'});
+				var next = _this.parents('.colum').next('.colum');
+				_this.parents('.colum').before( next );
+				
+			}
+		}
+		/*$(document).delegate('.colum-tab .pull-left', 'click', function(event) {
+			var prev = $(this).parents('.colum').prev('.colum');
+			$(this).parents('.colum').after( prev );
+		});*/
+		//加入购物车或匹配
+		$('.join-type, .join-type-ul li').bind('click', function(){
+			if($(this).hasClass('join-type')){
+				if($(this).next('.join-type-ul').css('display') == 'block'){
+					$(this).next('.join-type-ul').hide();
+					$(this).find('img').attr('src', '__IMG__/dowm_03.png');
+				}else{
+					$(this).next('.join-type-ul').show();
+					$(this).find('img').attr('src', '__IMG__/dowm_up_03.png');
+				}
+			}else{
+				if($(this).parents('.join-type-ul').css('display') == 'block'){
+					$(this).parents('.join-type-ul').hide();
+					$(this).parents('.join-type-ul').prev('.join-type').find('img').attr('src', '__IMG__/dowm_03.png');
+				}else{
+					$(this).parents('.join-type-ul').show();
+					$(this).parents('.join-type-ul').prev('.join-type').find('img').attr('src', '__IMG__/dowm_up_03.png');
+				}
+			}
+		});
+		//取消对比
+		$(document).delegate('.compare_del','click',function(){
+			var gid	= $(this).attr('data-gid');
+			if(!gid){
+				layer.msg('操作错误！',{ shift:2, });
+				return false;
+			}
+			
+			layer.confirm('确认取消？', {
+			  btn: ['确定','再想想'] //按钮
+			}, function(index){
+				layer.close(index);
+				$.ajax({
+					type: "post",
+					url : "{:U('Home/Goods/compare_add')}",
+					data:{'gid':gid,'type':2},
+					dataType:'json',
+					success: function(res){
+						layer.msg(res.msg,{
+							shift :6,
+						});
+						if(res.code == 100 ){
+							setTimeout(function(){window.location.reload()},1500);
+						}
+						return false;
+					},
+				});
+				
+			})
+		})
+		
+		$('.addCart').bind('click',function(){
+			var gid = $(this).attr('data-value');
+			luozuan.set_gid(gid);
+			luozuan.addThisPageToCart();
+		});
+
+		$('.addDingzhi').bind('click',function(){
+			var gid = $(this).attr('data-value');
+			luozuan.addDingzhiSelectedInfo(gid);
+			if( !$.isEmptyObject(  dingzhi.info.jietuo_info )){
+				layer.msg('尊敬的客户，您的钻戒匹配成功。',{ shift:2, });
+			}else{
+				layer.confirm('钻石选择成功，是否去挑选戒托？', {
+					btn: ['是','否'] //按钮
+					}, function(){
+						location.href='{:U('/Home/Goods/goodsCategory')}?gcid=60';
+					}
+				);
+			}
+		});
+	})
+</script>
+</html>

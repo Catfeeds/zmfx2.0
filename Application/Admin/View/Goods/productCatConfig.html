@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>配置产品分类</title>
+<script type="text/javascript" src="__JS__/categoryConfig.js"></script>
+</head>
+<body>
+<style>
+  .fl-title-name { cursor: pointer;}
+</style>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：配置我的产品分类</h3>
+        <ul>
+            <li class=""><a href="{:U('productCatLits')}">产品分类</a></li>
+        </ul>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <thead>
+            <tr class="top">
+                <th width="5%">全选<input type="checkbox" id="catConfigCheckAll"/></th>
+                <th width="20%">产品分类</th>
+                <th>别名(点击可修改)</th>
+                <th width="15%">首页展示</th>
+                <th width="10%">排序<th>
+                <if condition="$isSuperAgent">
+                    <td></td>
+                </if>
+            </tr>
+        </thead>
+        <volist name="list" id="vo" mod="2">
+        <thead>
+        <tr class="{$mod?'bg2':'bg1'} fl-title">
+            <td><input type="checkbox" class="catConfigCheck" cid="{$vo.category_id}" pid="{$vo.pid}" categoryConfigId="{$vo.category_config_id}" <eq name="vo.is_show" value="1">checked</eq>/></td>
+
+            <td class="tl pl10 fl-title-name"><span class="fhicon">―</span> {$vo.category_name}</td>
+            <td><input type="text" value="{$vo.name_alias}" class="aliasInput" aliasId="{$vo.category_id}" cid="{$vo.category_id}" pid="{$vo.pid}" categoryConfigId="{$vo.category_config_id}"></td>
+            <td>
+                <input type="radio" <eq name="vo['home_show']" value="0"> checked </eq> value="0" class="showInput" name="home_show_{$vo['category_config_id']}">不展示&nbsp;&nbsp;
+                <input type="radio" <eq name="vo['home_show']" value="1"> checked </eq> value="1" class="showInput" name="home_show_{$vo['category_config_id']}">展示
+            </td>
+            <td><input size="8" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" type="text" class="sortInput" name="sort_id_{$vo['category_config_id']}" value="{$vo['sort_id']}"></td>
+            <if condition="$isSuperAgent">
+            <td>
+                <a href="{:U('Admin/Goods/productCatInfo?pid='.$vo['category_id'])}">修改</a>
+            </td>
+            </if>
+        </tr>
+        </thead>
+            <!--二级分类-->
+            <tbody>
+            <volist name="vo[sub]" id="io" mod="2"> 
+            <tr class="{$mod?'bg2':'bg1'}">
+                <!--<input type="text" value="{$io.name_alias}" class="aliasInput" aliasId="{$io.category_config_id}"> -->
+                <td><input type="checkbox" class="catConfigCheck" cid="{$io.category_id}" pid="{$io.pid}" categoryConfigId="{$io.category_config_id}" <eq name="io.is_show" value="1">checked</eq>></td>
+
+                <td class="tl pl10">&nbsp;&nbsp;&nbsp;|----{$io.category_name}</td>
+                <td><input type="text" value="{$io.name_alias}" class="aliasInput" aliasId="{$io.category_id}" cid="{$io.category_id}" pid="{$io.pid}" categoryConfigId="{$io.category_config_id}"></td>
+                <td></td>
+                <td></td>
+                <if condition="$isSuperAgent">
+                    <td>
+                        <a  href="{:U('Admin/Goods/productCatInfo?pid='.$vo['category_id'])}">修改</a>
+                    </td>
+                </if>
+            </tr>
+            </volist>
+            </tbody>
+            <!--二级分类结束-->
+        </volist> 
+    </table>
+    
+    <script>
+      $(function(){
+          //树形菜单
+          $('.fl-title-name').bind('click', function(){
+            var tbody = $(this).parents('thead').next('tbody');
+            if(tbody.css('display') == "block" || tbody.css('display') == "table-row-group"){
+              tbody.hide();
+              $(this).find('.fhicon').html('+');
+            }else{
+              tbody.show();
+              $(this).find('.fhicon').html('―');
+            }
+          });
+      });
+    </script>
+</div>
+</body>
+</html>

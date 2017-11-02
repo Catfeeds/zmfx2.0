@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品列表</title>
+<script type="text/javascript" src="__JS__/disGoods.js"></script>
+</head>
+
+<style>
+.opention{
+	width:100%;
+	height:25px;
+	margin-top:25px;
+	line-height:25px;
+	font-size:12px;
+}
+.opention .cut{
+	border: 1px solid;
+    cursor: pointer;
+    float: left;
+    margin: 0 20px;
+    text-align: center;
+    width: 8%;
+	background:#E1E1E1;
+	border:1px solid #ADADAD;
+}
+.opention .cut a{
+	color:#000;
+}
+.opention .cut:hover{
+	background:#E1FBFF;
+}
+.chongzhi{
+	height: 20px !important;
+    line-height: 20px !important;
+	width:35px;
+	text-align:center;
+}
+
+
+</style>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：产品列表</h3>
+        <ul>
+            <volist name="menuList[104]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+    </div>
+	<div class="filter">
+	
+	
+	<form action="" method="get">
+		<div class="fl">公司款式:&nbsp;</div>
+		<input type='text' name='goodsSn' value="<?php echo $_GET['goodsSn'];?>">
+		<div class="fl">产品名称:&nbsp;</div>
+		<input type='text' name='goodsName' value="<?php echo $_GET['goodsName'];?>">
+		<!--<div class="fl">产品分类:&nbsp;</div>
+		<select name="category">
+			<option>选择一级分类</option>
+			<?php if ($category == true): ?>
+				<?php foreach($category as $val):?>
+					<option id="cateId" value="<?php echo $val['category_id']?>" <?php if($_GET['category']==$val['category_id'])	echo 'selected';?>   ><?php echo $val['category_name']?></option>
+				<?php endforeach; ?>
+			<?php endif; ?> 			
+ 
+		</select>
+		<div class="fl">产品款式:&nbsp;</div>
+        <select name="category2">
+			<option>请先选择一级分类</option>
+			<?php if ($cate_children == true): ?>
+				<?php foreach($cate_children as $val):?>
+					<option id="cateId" value="<?php echo $val['jewelry_id']?>" <?php if($_GET['category2']==$val['jewelry_id'])	echo 'selected';?>   ><?php echo $val['jewelry_name']?></option>
+				<?php endforeach; ?>
+			<?php endif; ?>
+		</select>-->
+		<div class="fl">上架状态：</div>
+		<select name="gStatus" class="fl">
+			<option value="">全部产品</option>
+			<option <?php if($_GET['gStatus']=='0') echo 'selected'; ?>	value="0" >未上架</option>
+			<option <?php if($_GET['gStatus']=='1') echo 'selected'; ?>	value="1" >已上架</option>
+        </select>
+		<input type="hidden" name='p' value='1'/>
+        <div class="fl">&nbsp;</div>
+		<div class="f1" style="float:left;">
+			<input class="button" type="submit" value="查询" />
+		</div>
+	</form>
+	
+	</div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+        <tr class="top">
+			<th width="5%"><input class='MySelfChoice' type="checkbox"></th>		
+            <th width="5%">产品ID</th>
+            <th width="15%">公司款号</th>			
+            <th width="9%">产品名称</th>
+            <th width="9%">产品分类</th>
+            <th width="9%">上架状态</th>
+            <th width="9%">预估产品价格</th>
+            <th width="5%">产品库存</th>
+            <th width="10%">操作</th>
+        </tr>
+ 
+ 
+        <volist name="dataList" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+			<td attr_id='{$vo.goods_id}'><input type="checkbox" name="SzzmzbBanFanId" class="productId" value="{$vo.goods_id}"></td>
+            <td>{$vo.goods_id}</td>
+            <td><a href="/Admin/Zgoods/goodsInfo/goods_id/{$vo.goods_id}">{$vo.goods_sn}</a></td>
+            <td>{$vo.goods_name}</td>
+            <td>{$vo.ca_name}</td>
+            <td>
+				<?php if($vo['g_status']!=0) echo '已上架'; else echo '未上架';?>
+			</td>
+            <td>{$vo.goods_price}</td>
+            <td>0</td>
+            <td>
+				<?php if($vo['g_status']!=0){ ?> 
+                	<a class='MySelfOneButton lower' data="{$vo['goods_id']}">下架</a>	
+				<?php }else{ ?>
+                	<a class='MySelfOneButton upper' data="{$vo['goods_id']}">上架</a> 
+				<?php } ?> 
+				<a class='MySelfOneButton' href="">查看</a>
+				<a class='MySelfOneButton' href="/Admin/Zgoods/goodsInfo/goods_id/{$vo.goods_id}">修改</a>		
+            </td>
+        </tr>
+        </volist>
+		
+		
+		
+		
+		
+    </table>
+	<div class="opention">
+		<a class="cut" href="http://zlfyun.btbzm.com/Home/Zlf/addGoods.html">同步商品信息</a>
+		<div class="cut MySelfOneButton shangjia">批量上架</div>
+		<div class="cut MySelfOneButton xiajia">批量下架</div>
+		<div class="cut MySelfOneButton gengxin">批量更新</div>
+		<p style="color:red">*只更新当前已上架产品</p>
+	</div>
+    <div class="page">{$page}</div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		$(".MySelfOneButton").click(function(){
+			var goods_id = $(this).attr("data");
+			//修改商品的上下架状态
+			if($(this).hasClass('lower')){
+				var g_status = 2;
+			}else if($(this).hasClass("upper")){
+				var g_status = 1;
+			}
+			if(g_status==1 || g_status==2){
+				$.ajax({
+					url: '/Admin/Zgoods/updGoodsGStatus',
+					type: 'POST',
+					dataType: 'json',
+					data: {'goods_id':goods_id,'g_status':g_status},
+					success: function(data){
+						if(data["success"]==true){
+							window.location.reload();	
+						}
+						alert(data["msg"]);	
+					}
+				});		
+			}
+		});
+		$(".MySelfChoice").click(function(){
+			if($("input[class='MySelfChoice']").is(':checked')){
+				$(".productId").attr("checked",true);	
+			}else{
+				$(".productId").attr("checked",false);		
+			}
+		});
+		$(".shangjia").click(function(){
+			var goodsVal = "";
+			$("input:checkbox[name='SzzmzbBanFanId']:checked").each(function(){
+				goodsVal += $(this).val()+",";
+			});	
+			if(goodsVal==""){
+				alert("请选择产品！");
+			}else{
+				updStatus(goodsVal,1);	
+			}
+		});
+		$(".xiajia").click(function(){
+			var goodsVal = "";
+			$("input:checkbox[name='SzzmzbBanFanId']:checked").each(function(){
+				goodsVal += $(this).val()+",";
+			});	
+			if(goodsVal==""){
+				alert("请选择产品！");
+			}else{
+				updStatus(goodsVal,2);	
+			}
+		});
+		function updStatus(goodsVal,g_status){
+			$.ajax({
+				type:"post",
+				url:"/Admin/Zgoods/updGStatus",
+				data:{"goodsVal":goodsVal,"g_status":g_status},
+				datatype:"json",
+				success:function(data){
+					alert(data.msg);
+					window.location.reload();
+				}
+			});
+		}
+	});
+</script>
+
+</html>

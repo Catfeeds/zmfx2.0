@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品属性列表</title>
+<script type="text/javascript" src="__JS__/productAttributes.js"></script>
+</head>
+<body>
+<div class="page-main">
+	<div class="subMenu">
+        <h3>当前操作：产品属性列表</h3>
+        <if condition="$isSuperAgent">
+        <ul>
+            <li><a href="{:U('Admin/Goods/productAttributeInfo')}" class="layer-attr">添加属性</a></li>
+        </ul>
+        </if>
+    </div>
+    <div class="list" style="padding-bottom:20px;">
+    <form action="{:U('Admin/Goods/productAttributeSort')}" method="post">
+        <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+            <tr class="top">
+            	<th width="5%">属性ID</th>
+                <th width="10%">属性名称</th>
+                <th width="40%">属性值</th>
+                <th width="10%">输入类型</th>
+                <th width="5%">输入模型</th>
+                <th width="5%">是否筛选</th>
+                <if condition="$isSuperAgent">
+                    <th width="8%">操作</th>
+                </if>
+            </tr>
+            <volist name="list" id="vo" mod="2">
+            <tr class="{$mod?'bg2':'bg1'}">
+            	<td class="tl pl20"><span>{$vo.attr_id}</span></td>
+                <td class="tl pl20"><span>{$vo.attr_name}</span></td>
+                <td>
+                	<volist name="vo.sub" id="io">{$io.attr_value_name},</volist>
+                </td>
+                <td>
+                	<eq name="vo.input_type" value="1">单选属性</eq>
+                	<eq name="vo.input_type" value="2">多选属性</eq>
+                	<eq name="vo.input_type" value="3">手填属性</eq>
+                </td>
+                <td>
+                	<eq name="vo.input_mode" value="1">数字</eq>
+                	<eq name="vo.input_mode" value="2">字母</eq>
+                	<eq name="vo.input_mode" value="3">字符串</eq>
+                </td>
+                <td>
+                	<neq name="vo.input_type" value="3">
+                		<span class="whether <eq name="vo.is_filter" value="1">yes</eq>" data-id="{$vo.attr_id}"></span>
+                	</neq>
+                </td>
+                <if condition="$isSuperAgent">
+                    <td>
+                        <a href="{:U('Admin/Goods/productAttributeValueList?attr_id='.$vo['attr_id'])}" class="layer-attr-value">查看属性值列表</a>
+                    </td>
+                </if>
+            </tr>
+            </volist> 
+        </table>
+    </form>
+    </div>
+</div>
+</body>
+</html>

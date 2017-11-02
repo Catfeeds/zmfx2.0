@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>速易宝-周六福-设计报价查询</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../b2c_new/Styles/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../b2c_new/Styles/css/style.css">
+	<script src="../Base/js/jquery-1.12.3.js"></script>
+	<script src="../Base/js/bootstrap.min.js"></script>
+	<script src="../Base/js/public.js"></script>
+</head>
+<body>
+
+	<!-- header -->
+	<div class="header">
+		<div class="container">
+			<div class="shortcut hidden-xs">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-6 col-md-6">
+							<p class="text-left">您好，欢迎来到Munch珠宝 [<a href="#">登录</a>] [<a href="#">注册</a>]</p>
+						</div>
+						<div class="col-sm-6 col-md-6">
+							<div class="shortcut-right">
+								<ul class="list-inline text-right">
+									<li class=""><a href="#">购物车(<span class="cat-c">2件</span>)</a></li>
+									<li class="">|</li>
+									<li class=""><a href="#">我的订单</a></li>
+									<li class="">|</li>
+									<li class=""><a href="#">帮助中心</a></li>
+								</ul>   
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="top">
+				<div class="logo">
+						<div class="col-xs-12 col-sm-6 col-md-7 text-right">
+							<img src="images/logo.png" alt="logo">
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-5">
+							<form class="navbar-left pull-right">
+								<div class="form-group">
+									<div class="input-group">
+									      <input type="text" class="form-control search-text radius" placeholder="产品搜索">
+									      <span class="input-group-btn">
+									        <button type="submit" class="btn btn-default search-btn radius"><i class="glyphicon glyphicon-search"></i></button>
+									      </span>
+									</div>
+									<div class="tag">
+										热搜：
+										<a href="#">裸钻</a>
+										<a href="#">钻石</a>
+										<a href="#">对接</a>
+										<a href="#">女戒</a>
+										<a href="#">男戒</a>
+										<a href="#">女戒</a>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+		<div class="nav">
+			<nav class="navbar navbar-default border-radiusno">
+				<div class="container">
+			    <!-- Brand and toggle get grouped for better mobile display -->
+				    <div class="navbar-header">
+				      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				        <span class="sr-only">Toggle navigation</span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				      </button>
+				      <a class="navbar-brand hidden" href="#">LOGO</a>
+				    </div>
+
+				    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				      <ul class="nav navbar-nav center-nav">
+				        <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
+				        <li><a href="#">钻石定制</a></li>
+				        <li><a href="#">商城热卖</a></li>
+				        <li><a href="#">品牌系列街</a></li>
+				        <li><a href="#">珠宝资讯</a></li>
+				      </ul>
+				      <!-- <form class="navbar-form navbar-left" role="search">
+				        <div class="form-group">
+				          <input type="text" class="form-control" placeholder="Search">
+				        </div>
+				        <button type="submit" class="btn btn-default">Submit</button>
+				      </form> -->
+				    </div><!-- /.container-fluid -->
+				</div>
+			</nav>
+		</div>
+	</div>
+	<!-- header end //-->
+
+
+  	<style>
+    .zlf_query .form-horizontal .qtabs,
+    .zlf_query .form-horizontal .element { background: rgba(0,0,0,0.2); box-shadow: none; margin-top: 5px;}
+    .zlf_query .element h3,
+    .zlf_query .element h4 { color: #FFF; text-align: center;}
+    .zlf_query .element h4 { margin-bottom: 40px; margin-top: 20px; font-family: "宋体";}
+    .zlf_query .qtabs ul { width: 100%; padding: 0;}
+    .zlf_query .qtabs ul li a { font-size: 14px;}
+    .zlf_query .qtabs ul li a.active { border-bottom: 2px solid red; color: red; display: inline-block; padding: 10px 0;}
+    .zlf_query .btn-bg { background: url('images/button_bg.jpg'); border: none;}
+    .zlf_query .form-horizontal .control-label,
+    .zlf_query .form-control { color: #979797;}
+    .zlf_query .form-horizontal .control-label { font-size: 14px; color: #FFF; font-family: "宋体"; font-weight: 500;}
+    .zlf_query .ftitle { padding: 15px 0;}
+    .footer { margin-top: 0;}
+    .experience { min-height: 400px; background-repeat: no-repeat;}
+    .login .form-horizontal .element { padding: 20px;}
+    .login .element .titlebox { margin-bottom: 30px;}
+    .login .form-horizontal { margin-top: 20px;}
+    .region-list { margin-top: 20px;}
+    .region-list .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover { border-radius: 0; -webkit-border-radius: 0; -moz-border-radius: 0; -ms-border-radius: 0; border: 1px solid #FE7425; color: #fff; background-color: #FE7425;}
+    .region-list .nav>li>a:focus, .region-list .nav>li>a:hover { border-radius: 0; -webkit-border-radius: 0; -moz-border-radius: 0; -ms-border-radius: 0; background-color: #FE7425;}
+    .region-list .nav-tabs { border-width: 1px; border: 1px solid #DCDCDC; border-bottom-color: #FE7425;}
+    .region-list .nav-tabs>li>a { border-bottom: none; border: 1px solid transparent;}
+    .region-list .col-md-6 { padding: 0; margin-bottom: 20px;}
+    .region-list .media-body { padding-top: 10px;}
+    .region-list .media-body p { margin-bottom: 0; line-height: 25px; color: #666; font-size: 14px;}
+    .region-list .media-body h4 { margin-bottom: 10px;}
+    .region-list .tab-content { margin-top: 30px;}
+    @media (max-width: 768px){ .col-md-6 { padding: 0 20px !important;} }
+    .yuyue-btn { width: 100%; margin-top: 30px; background: #FE7425; border: none; padding: 10px 12px;}
+
+    .mi-select { background: #fff; height: 31px; display: inline-block; margin: 0; margin-left: -1px; width: 100%; margin-left: 5px; padding-left: 5px; position: relative;}
+    
+    .mi-select > ul { width: 100%; max-height: 200px; overflow: auto; border: 1px solid #C1C1C1; padding: 1px; margin: 0; text-align: left; background: #fff; position: absolute; top: 31px; left: 0px; z-index: 999; padding: 1px !important;}
+    .mi-select > ul > li { cursor: pointer;}
+    .mi-select > ul > li > ul li { padding-left: 10px; line-height: 20px; cursor: pointer;}
+    .mi-select > ul > li > ul li:hover { background: #1D90FE; color: #FFF;}
+    .mi-select > ul > li h5 { margin: 5px;}
+    .mi-select h5 { padding: 0; margin: 0; cursor: pointer;}
+    .mi-select .xiala_select { width: 100%; height: 31px; line-height: 31px; overflow: hidden;}
+    .test { background: #fff; height: 31px; display: inline-block; margin: 0; margin-left: -1px; width: 100%; margin-left: 5px; padding-left: 5px;}
+    .mi-select .caret { position: absolute; right: 10px; top: 14px;}
+    .mi-select .xuanzhe { max-width: 150px; display: inline-block; overflow: hidden;}
+  </style>
+	<!-- tab -->
+	<div class="login zlf_query experience" style="background: url('../b2c_new/Styles/img/tiyan.jpg') no-repeat">
+		<div class="container">
+			<div class="col-md-5 col-md-offset-7 col-sm-5 col-sm-offset-7">
+				<form class="form-horizontal">
+  				<div class="qtabs">
+    				<div class="element tab-dz">
+              <div class="titlebox">
+                <h3>欢迎光临体验中心</h3>
+                <h4>请选择体验中心，享受顾问式贴心服务</h4>
+              </div>
+    					<div class="form-group">
+    						<label for="inputEmail3" class="col-md-5 control-label">请选择体验中心：</label>
+    						<div class="col-md-7">
+    						  <!-- <select name="" id="" class="form-control">
+                    <option value="">广东·深圳分店</option>          
+                    <option value="">广东·深圳分店</option>          
+                  </select> -->
+                  <div class="mi-select">
+                    <h5 class="xiala_select">
+                      <span class="xuanzhe" title="-请选择-">-请选择-</span> 
+                      <span class="caret"></span>
+                    </h5>
+                    <ul class="xiala" style="display: none;">
+                        <li><h5><strong>华东地区</strong></h5>
+                          <ul>
+                            <li>广东·深圳分店1广东·深圳分店1</li>
+                            <li>广东·深圳分店2</li>
+                            <li>广东·深圳分店3</li>
+                            <li>广东·深圳分店4</li>
+                          </ul>
+                        </li>
+                        <li><h5><strong>华东地区</strong></h5>
+                          <ul>
+                            <li>广东·深圳分店5</li>
+                            <li>广东·深圳分店6</li>
+                            <li>广东·深圳分店7</li>
+                            <li>广东·深圳分店8</li>
+                          </ul>
+                        </li>
+                    </ul>
+                </div>
+                <script>
+                  $(function(){
+                    $('.xiala_select').bind('click', function(){
+                      $('.xiala').toggle();
+                    });
+                    $('.mi-select > ul > li > ul li').bind('click', function(){
+                      $('.xuanzhe').html($(this).html()).attr('title', $(this).html());
+                      $('.xiala').toggle();
+                    });
+                  });
+                </script>
+    						</div>
+    					</div>
+    					<div class="form-group">
+                <label for="inputEmail3" class="col-md-5 control-label">请输入手机号码：</label>
+                <div class="col-md-7">
+                  <input type="text" class="test">
+                </div>
+              </div>
+    					<div class="form-group">
+    						<div class="col-md-12">
+    						  <button type="submit" class="btn btn-warning yuyue-btn">立即预约</button>
+    						</div>
+    					</div>
+    				</div>
+          </div>
+  			</form>
+			</div>
+      <div class="clearfix"></div>
+		</div>
+	</div>
+
+  <div class="region-list">
+    <div class="container">
+      <div class="row">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">华东地区</a></li>
+          <li role="presentation"><a href="#profile" role="tab" data-toggle="tab">华南地区</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="home">
+            <div class="col-md-6">
+              <ul class="media-list">
+                <li class="media">
+                  <a class="pull-left" href="#"><img class="media-object" src="http://placehold.it/190x118"></a>
+                  <div class="media-body">
+                    <h4 class="media-heading"><a href="#">江苏·南京奥体分店</a></h4>
+                    <p>地址：江苏省淮安市经济开发区承德南路266号5号楼2楼</p>
+                    <p>电话：4006-578-478</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="media-list">
+                <li class="media">
+                  <a class="pull-left" href="#"><img class="media-object" src="http://placehold.it/190x118"></a>
+                  <div class="media-body">
+                    <h4 class="media-heading"><a href="#">江苏·南京奥体分店</a></h4>
+                    <p>地址：江苏省淮安市经济开发区承德南路266号5号楼2楼</p>
+                    <p>电话：4006-578-478</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="media-list">
+                <li class="media">
+                  <a class="pull-left" href="#"><img class="media-object" src="http://placehold.it/190x118"></a>
+                  <div class="media-body">
+                    <h4 class="media-heading"><a href="#">江苏·南京奥体分店</a></h4>
+                    <p>地址：江苏省淮安市经济开发区承德南路266号5号楼2楼</p>
+                    <p>电话：4006-578-478</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="media-list">
+                <li class="media">
+                  <a class="pull-left" href="#"><img class="media-object" src="http://placehold.it/190x118"></a>
+                  <div class="media-body">
+                    <h4 class="media-heading"><a href="#">江苏·南京奥体分店</a></h4>
+                    <p>地址：江苏省淮安市经济开发区承德南路266号5号楼2楼</p>
+                    <p>电话：4006-578-478</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="profile">
+            <div class="col-md-6">
+              <ul class="media-list">
+                <li class="media">
+                  <a class="pull-left" href="#"><img class="media-object" src="http://placehold.it/190x118"></a>
+                  <div class="media-body">
+                    <h4 class="media-heading"><a href="#">江苏·南京奥体分店</a></h4>
+                    <p>地址：江苏省淮安市经济开发区承德南路266号5号楼2楼</p>
+                    <p>电话：4006-578-478</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="media-list">
+                <li class="media">
+                  <a class="pull-left" href="#"><img class="media-object" src="http://placehold.it/190x118"></a>
+                  <div class="media-body">
+                    <h4 class="media-heading"><a href="#">江苏·南京奥体分店</a></h4>
+                    <p>地址：江苏省淮安市经济开发区承德南路266号5号楼2楼</p>
+                    <p>电话：4006-578-478</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+	<!-- tab end //-->
+
+	<!-- footer -->
+	<div class="footer">
+		
+		<div class="foot-desc">
+			<div class="container">
+				<div class="row foot-desc-list">
+					<div class="col-xs-12 col-md-2 footer-logo">
+						<img src="images/logo.png" alt="">
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>用户指南</h5>
+						<ul class="list-group">
+							<li><a href="#">注册用户</a></li>
+							<li><a href="#">购买流程</a></li>
+							<li><a href="#">支付方式</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>关于配送</h5>
+						<ul class="list-group">
+							<li><a href="#">商品包装</a></li>
+							<li><a href="#">配送方式</a></li>
+							<li><a href="#">配送流程</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>售后服务</h5>
+						<ul class="list-group">
+							<li><a href="#">会员细节</a></li>
+							<li><a href="#">售后保障</a></li>
+							<li><a href="#">退换流程</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>常见问题</h5>
+						<ul class="list-group">
+							<li><a href="#">珠宝常识</a></li>
+							<li><a href="#">配送问题</a></li>
+							<li><a href="#">联系客服</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-12 col-md-2 gstime">
+						<img src="images/footer-phone.png" alt="">
+						<strong><h4>0755-22922183</h4></strong>
+						<span>服务时间： AM9: 00-PM23: 00</span>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				<p class="copy-link">伪验证   友情链接        钻石、钻戒、裸钻、婚戒、戒指、结婚钻戒、结婚戒指、钻石戒指、珠宝、首饰、订婚戒指、克拉钻、异形钻、30分钻石、50分钻石、钻石饰品、裸钻定制</p>
+				<p class="text-center">© 2010-2016 珠宝官网 版权所有,并保留所有权利  粤ICP备123456789号</p>
+			</div>
+		</div>
+	</div>
+	<!-- footer end //-->
+
+
+</body>
+</html>

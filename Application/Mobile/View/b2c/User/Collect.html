@@ -1,0 +1,290 @@
+<include file="Public:header" />
+<body>
+    <section class="cart collection">
+
+        <!-- top -->
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="location='/User/index'" class="back-img" alt="">
+                </div>
+                <h2>我的收藏</h2>
+                <div class="web-top-right">
+                    <span class="cart-edit">编辑</span>
+                </div>
+            </div>
+        </header>
+        <!-- top end -->
+
+ 
+		
+        <section class="cart-list wrapper">
+			<?php if ($publicdataList): ?>
+					<?php foreach($publicdataList as $val):?>
+						<div class="goods-item"  attr_id='<?php echo ($val['id']);?>'>
+						<div class="head"><input type="checkbox" class="zdy-checkbox " name="" value="">【<?php if($val['goods_type']==0){	echo '白钻'; }elseif($val['goods_type']==1){	echo '彩钻';	}elseif($val['goods_type']==2){	echo '散货';	}elseif($val['goods_type']==3){	echo '成品';	}elseif($val['goods_type']==4){	echo '定制';	}?>】编号：<?php echo $val['goods_sn'];?> </div>
+						<div class="goods-layout clearfix">
+						<?php if($val['goods_type']==0 || $val['goods_type']==1 || $val['goods_type']==2) :?>
+							<h2>
+							形状：<?php echo !empty($val['goods_attr']['shape_name']) ? $val['goods_attr']['shape_name'] : ' ';?>    重量：<?php echo !empty($val['goods_attr']['weight']) ? $val['goods_attr']['weight'] : ' ';?>ct    颜色：<?php echo !empty($val['goods_attr']['color']) ? $val['goods_attr']['color'] : ' ';?>    净度：<?php echo !empty($val['goods_attr']['clarity']) ? $val['goods_attr']['clarity'] : ' ';?>
+                            切工：<?php echo !empty($val['goods_attr']['cut']) ? $val['goods_attr']['cut'] : ' ';?>      抛光：<?php echo !empty($val['goods_attr']['polish']) ? $val['goods_attr']['polish'] : ' ';?>        对称：<?php echo !empty($val['goods_attr']['symmetry']) ? $val['goods_attr']['symmetry'] : ' ';?>
+							</h2>
+						<?php else: ?>
+							<div class="goods-img">
+								<a href="{:U('/Goods/detail/gid/'.$val['goods_id'].'/goods_type/'.$val['goods_type'].'')}"><img  src="<?php echo !empty($val['goods_attr']['thumb']) ? $val['goods_attr']['thumb'] : ' ';?>" alt="..."></a>							
+							</div>
+						<?php endif; ?>
+							<div class="goods-right">
+								<h2><a href="{:U('/Goods/detail/gid/'.$val['goods_id'].'/goods_type/'.$val['goods_type'].'')}"><?php echo !empty($val['goods_name']) ? $val['goods_name'] : ' ';?></a></h2>
+								<p class="goods-title"></p>
+								<div class="goods-fangshi clearfix">
+									<span class="fl c9 rmb">￥<span class="price"><?php echo !empty($val['goods_price']) ? $val['goods_price'] : ' ';?></span></span>
+		 
+								</div>
+							</div>
+						</div>
+					</div>						
+					<?php endforeach;?>
+			<?php else: ?>
+				<div class="empty-cart">
+					<p><img src="__IMG__/collection_img.png" alt="" class="empty-img"></p>
+					<p>
+						<h2>您的收藏夹空空如也~~</h2>
+					</p>
+					<p><a href="/" class="toindex">去首页</a></p>
+				</div>
+			<?php endif; ?>
+ 
+
+            <!-- 空购物车 -->
+            <div class="empty-cart" style="display: none;">
+                <p><img src="__IMG__/collection_img.png" alt="" class="empty-img"></p>
+                <p>
+                    <h2>您的收藏夹空空如也~~</h2>
+                </p>
+                <p><a href="/" class="toindex">去首页</a></p>
+            </div>
+            <!-- 空购物车 end -->
+
+            <!-- 结算 -->
+            <style>
+                body { margin-bottom: 3rem !important;}
+            </style>
+            <div class="settlement">
+                <input type="checkbox" id="check-all" class="zdy-checkbox" name="" value="">
+                <label for="check-all" class="mr">全选</label>
+                <a  class="set-btn" id="settlement-btn">加入购物车(<span class="sum">0</span>)</a>
+                <a  class="set-btn" id="removeData" style="display: none;">删除(<span class="sum">0</span>)</a>
+            </div>
+            <!-- 结算 end -->
+        </section>
+        <script>
+		
+			
+			
+            $(function(){
+                /*
+                 * @author: songjingwen;
+                 * @date: 2017-8-1;
+                 * 实现购物车交互功能：
+                 * 1.全选、反选计算改变商品数量和价格
+                 * 2.单选计算改变商品数量和价格
+                 * 3.监听删除商品后改变商品数量
+                 * 4.监听单个商品改变数量后计算改变商品数量和价格
+                 */
+
+                var cart = {
+                    //计算价格
+                    price: function(){
+                        var price = 0;
+                        $('.goods-item').each(function(){
+                            if($(this).find('.zdy-checkbox').prop('checked')){
+                                var cust = $(this).find('.number-cust').val();
+                                price = price + parseInt($(this).find('.price').html() * cust);
+                            }
+                        });
+                        $('.total-price').html(price);
+                    },
+                    //计算商品数量
+                    goodsNumber: function(){
+                        var lengths = 0;
+                        $('.goods-item').each(function(){
+                            if($(this).find('.zdy-checkbox').prop('checked')){
+                                lengths = lengths + 1;
+                            }
+                        });
+                        $('.sum').html(lengths);
+
+                        //如果商品全不选后改变全选按钮为取消状态
+                        if(lengths == 0){
+                            reset.checkboxAllFalse();
+                        }
+                    },
+                    //删除购物车商品
+                    removeGoods: function(){
+						var ids = '';
+                        var sum = 0;
+                        //获取选择商品数量
+                        $('.goods-item').each(function(i){
+                            if($(this).find('.zdy-checkbox').prop('checked')){
+								ids += $(this).attr('attr_id')+',';
+                                sum += 1;
+                            }
+                        });
+                        if(sum >= 1){
+                            layer.open({
+                                content: '确定要删除这'+ sum +'件宝贝吗？'
+                                ,btn: ['确定', '取消']
+                                ,yes: function(index){
+									var _index = index;
+									BringAjax.IntendData.SwitchMain=1;
+									EasyTransition({'deid':CommonFunction.String.Trim(ids)},function(){
+										CommonFunction.Prompt.Tan(BringAjax.CacheData[BringAjax.IntendData.CacheHtmlKey].msg);
+										//删除商品
+										$('.goods-item').each(function(){
+											if($(this).find('.zdy-checkbox').prop('checked')){
+												$(this).remove();
+												cart.goodsNumber();
+												//判断购物车是否有商品，没有则显示购物车为空
+												if($('.goods-item').length <= 0){
+													$('.empty-cart').show();
+													$('.settlement').hide();
+													cart.editCart();
+												}else {
+													$('.settlement').show();
+													$('.empty-cart').hide();
+												}
+											}
+										});
+										layer.close(_index);
+									});
+                                }
+                            });
+                        }else{
+                            layer.open({
+                                content: '请选择商品'
+                                ,btn: ['确定']
+                            });
+                        }
+                    },
+                    //编辑购物车
+                    editCart: function(){
+                        if($('.cart-edit').attr('data') == 'edit'){
+                            reset.checkboxAll();//设置全选
+                            $('.cart-edit').html('编辑');
+                            $('.cart-edit').attr('data', '');
+                            $('#settlement-btn, .total-box').show();
+                            $('#removeData').hide();
+                        }else{
+                            reset.checkboxAllFalse();//设置全不选
+                            $('.cart-edit').html('完成');
+                            $('.cart-edit').attr('data', 'edit');
+                            $('#settlement-btn, .total-box').hide();
+                            $('#removeData').show();
+                        }
+                    }
+                }
+
+                //1.全选、反选计算改变商品数量和价格
+                $(document).delegate('#check-all', 'change', function(){
+                    cart.goodsNumber();
+                    cart.price();
+                });
+
+                //2.单选计算改变商品数量和价格
+                $('.goods-item').each(function(){
+                    $(this).find('.zdy-checkbox').change(function(){
+                        cart.goodsNumber();
+                        cart.price();
+                    });
+                });
+
+                //3.删除商品后改变商品数量
+                $('#removeData').bind('click', function(){
+                    cart.removeGoods();
+                });
+
+                /*
+                 * 商品数量选择
+                 * 4.单个商品改变数量后计算改变商品数量和价格
+                 */
+                $('.customize-box').each(function(){
+                    var str = $(this).find('.number-cust');
+                    //加
+                    $(this).find('.add').bind('click', function(){
+                        str.val( parseInt(str.val())+1 );
+                        cart.goodsNumber();
+                        cart.price();
+                    });
+                    //减
+                    $(this).find('.reduction').bind('click', function(){
+                        if(str.val() > 1){
+                            str.val( parseInt(str.val())-1 );
+                            cart.goodsNumber();
+                            cart.price();
+                        }
+                    });
+
+                    //监听单件商品数量变化
+                    $(this).find('.number-cust').on('input propertychange',function(){
+                        cart.goodsNumber();
+                        cart.price();
+                    }).blur(function(){
+                        if($(this).val() == ''){
+                            $(this).val(1);
+                            cart.goodsNumber();
+                            cart.price();
+                        }
+                    });
+                });
+
+                //编辑购物车按钮
+                $('.cart-edit').bind('click', function(){
+                    cart.editCart();
+                    cart.goodsNumber();
+                    cart.price();
+                });
+
+                /**
+                 * 初始化：
+                 * 1.reset.checkboxAll() //默认全选商品
+                 * 2.cart.goodsNumber() //计算己选择商品数量
+                 * 3.cart.price()       //计算己选择商品价格
+                 */
+                reset.checkboxAll();
+                cart.goodsNumber();
+                cart.price();
+
+            });
+			
+
+
+
+			
+			
+				$('body').delegate('#settlement-btn','click',function () {
+					var ids = [];
+					$('.goods-item').each(function(i){
+						if($(this).find('.zdy-checkbox').prop('checked')){
+							ids[i]  = $(this).attr('attr_id');
+						}
+					});
+					
+					if(ids==''){
+						CommonFunction.Prompt.Tan('请选择商品');
+						return false;
+					}
+				
+					BringAjax.IntendData.SwitchMain = 1;
+					EasyTransition({'addid':ids},function(){
+						CommonFunction.Prompt.Tan(BringAjax.CacheData[BringAjax.IntendData.CacheHtmlKey][BringAjax.IntendData.Message]);
+					});
+
+				});			
+			
+ 
+        </script>
+    </section>
+<include file="Public:foot" />
+</body>
+</html>

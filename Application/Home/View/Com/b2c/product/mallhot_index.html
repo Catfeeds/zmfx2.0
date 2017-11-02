@@ -1,0 +1,174 @@
+<eq name="positionList[2]['is_show']" value="1">
+<if condition="$hot_list['count']">
+<style>
+.font-family-there{
+	font-family:"{$positionList[2]['font']}" ;
+}
+</style>
+<!-- 商城热卖 -->
+<div class="mallhot scrm">
+    <div class="container">
+        <div class="mallhot-header">
+            <h1 class="text-center font-family-there"><strong>{$positionList[2]['title']}</strong> <br /> <span class="mallhot-text">{$positionList[2]['english_title']}</span></h1>
+        </div>
+        <volist name="hot_list" id="vo">
+        <if condition="$vo['goods_list'] neq '' ">
+        <div class="mallhot-list">
+            <div class="tagtitle">
+                <div class="col-xs-6 col-md-6 text-left">{$vo['name_alias']}</div>
+                <div class="col-xs-6 col-md-6 text-right">
+                    <a href="{:U('/Home/Goods/hotGoodsList',array('cid'=>$vo['category_id']))}" target="_blank">更多》</a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="contbox">
+                <div class="col-xs-12 col-md-6 padno">
+                    <div class="contleft">
+                        <div class="bannerbar"><a href="{:U('/Home/Goods/hotGoodsList',array('cid'=>$vo['category_id']))}" target="_blank">
+                        <if condition="$vo['img']">
+                            <img src="/Public/{$vo.img}" alt="">
+                        <else/>
+                            <img src="__IMG__/noimage5.jpg" alt="">
+                        </if>
+                        </a></div>
+                        <div class="imgleft">
+                            <if condition="$vo['goods_list'][0]">
+                            <div class="sl">
+                                <div class="descleft">
+                                    <span class="absolutes_desc">
+                                    <a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_list'][0]['goods_type'],'gid'=>$vo['goods_list'][0]['goods_id']))}" target="_blank">{$vo['goods_list'][0]['goods_name']}
+                                    </a>
+                                    </span><br> 
+                                    <span class="red">￥{$vo['goods_list'][0]['goods_price']}</span>
+                                </div>
+                                <div class="contrights">
+                                    <a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_list'][0]['goods_type'],'gid'=>$vo['goods_list'][0]['goods_id']))}" target="_blank">
+                                    <if condition="$vo['goods_list'][0]['thumb']">
+                                    <img src="{$vo['goods_list'][0]['thumb']}" alt="{$vo['goods_list'][0]['goods_name']}">
+                                    <else />
+                                    <img src="__IMG__/noimage.jpg" alt="">
+                                    </if>
+                                    </a>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            </if>
+                        </div>
+                        <div class="imgright">
+                            <div class="sl">
+                                <if condition="$vo['goods_list'][1]">
+                                <div class="descleft">
+                                    <span class="absolutes_desc">
+                                    <a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_list'][1]['goods_type'],'gid'=>$vo['goods_list'][1]['goods_id']))}" target="_blank" target="_blank">
+                                    {$vo['goods_list'][1]['goods_name']}
+                                    </a>
+                                    </span><br> 
+                                    <span class="red">￥{$vo['goods_list'][1]['goods_price']}</span>
+                                </div>
+                                <div class="contrights">
+                                    <a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_list'][1]['goods_type'],'gid'=>$vo['goods_list'][1]['goods_id']))}" target="_blank" target="_blank">
+                                    <if condition="$vo['goods_list'][1]['thumb']">
+                                    <img src="{$vo['goods_list'][1]['thumb']}" alt="{$vo['goods_list'][1]['goods_name']}">
+                                    <else />
+                                    <img src="__IMG__/noimage.jpg" alt="">
+                                    </if>
+                                    </a>
+                                </div>
+                                <div class="clearfix"></div>
+                                <else/>
+                                <img src="__IMG__/noimage3.jpg" alt="">
+                                </if>
+                            </div>
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6 padno">
+                    <div class="contright">
+                        <div class="imgleft2">
+                            <if condition="$vo['goods_list'][2]">
+                            <div class="descheight">
+                                <span class="absolutes_desc">
+                                <a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_list'][2]['goods_type'],'gid'=>$vo['goods_list'][2]['goods_id']))}" target="_blank">
+                                {$vo['goods_list'][2]['goods_name']}
+                                </a>
+                                </span><br> 
+                                <span class="red">￥{$vo['goods_list'][2]['goods_price']}</span>
+                            </div>
+                                <a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_list'][2]['goods_type'],'gid'=>$vo['goods_list'][2]['goods_id']))}" target="_blank">
+                                <if condition="$vo['goods_list'][2]['thumb']">
+                                <img src="{$vo['goods_list'][2]['thumb']}" alt="{$vo['goods_list'][2]['goods_name']}">
+                                <else />
+                                <img src="__IMG__/noimage.jpg" alt="">
+                                </if>
+                                </a>
+                            <else/>
+                            <img src="__IMG__/noimage2.jpg" alt="">
+                            </if>
+                        </div>
+                        <div class="imgright2">
+                            <div class="sl">
+                                <if condition="$vo['goods_list'][3]">
+                                <div class="descleft"> 
+                                    <span class="absolutes_desc">
+                                    <a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_list'][3]['goods_type'],'gid'=>$vo['goods_list'][3]['goods_id']))}" target="_blank">
+                                    {$vo['goods_list'][3]['goods_name']}
+                                    </a>
+                                    </span><br> 
+                                    <span class="red">￥{$vo['goods_list'][3]['goods_price']}</span>
+                                </div>
+                                <div class="contrights">
+                                    <a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_list'][3]['goods_type'],'gid'=>$vo['goods_list'][3]['goods_id']))}" target="_blank">
+                                    <if condition="$vo['goods_list'][3]['thumb']">
+                                    <img src="{$vo['goods_list'][3]['thumb']}" alt="{$vo['goods_list'][3]['goods_name']}">
+                                    <else />
+                                    <img src="__IMG__/noimage.jpg" alt="">
+                                    </if>
+                                    </a>
+                                </div>
+                                <div class="clearfix"></div>
+                                <else/>
+                                <img src="__IMG__/noimage4.jpg" alt="">
+                                </if>
+                            </div>
+                            
+                            <div class="s1">
+                                <if condition="$vo['goods_list'][4]">
+                                <div class="descleft">
+                                    <span class="absolutes_desc">
+                                    <a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_list'][4]['goods_type'],'gid'=>$vo['goods_list'][4]['goods_id']))}" target="_blank">
+                                    {$vo['goods_list'][4]['goods_name']}
+                                    </a>
+                                    </span><br> 
+                                    <span class="red">￥{$vo['goods_list'][4]['goods_price']}</span>
+                                </div>
+                                <div class="contrights">
+                                    <a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_list'][4]['goods_type'],'gid'=>$vo['goods_list'][4]['goods_id']))}" target="_blank">
+                                    <if condition="$vo['goods_list'][4]['thumb']">
+                                    <img src="{$vo['goods_list'][4]['thumb']}" alt="{$vo['goods_list'][4]['goods_name']}">
+                                    <else />
+                                    <img src="__IMG__/noimage.jpg" alt="">
+                                    </if>
+                                    </a>
+                                </div>
+                                <div class="clearfix"></div>
+                                <else/>
+                                <img src="__IMG__/noimage4.jpg" alt="">
+                                </if>
+                            </div>
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        </if>
+        </volist>
+    </div>
+</div>
+</if>
+</eq>
+<!-- 商城热卖 end //-->

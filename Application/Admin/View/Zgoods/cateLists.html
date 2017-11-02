@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>分类管理</title>
+    <link rel="stylesheet" type="text/css" href="__CSS__/admin.css" />
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：订单列表</h3>
+        <ul>
+            <volist name="menuList[104]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+    </div>
+    <div class="filter">
+        <form action="{$my_all_param['submit_url']}" method="post">
+            <div class="fl">类型：</div>
+            <select name="ca_rank">
+                <option value="">全部</option>
+                <volist name="cate_arr" id="vo">
+                    <option value="{$vo['id']}" <if condition="$vo['id'] eq $searchs['ca_rank']">selected</if> >{$vo['name']}</option>
+                </volist>
+            </select>
+            <div class="fl">&nbsp;</div>
+            <input class="button" type="submit" value="查询" />
+        </form>
+    </div>
+
+    <form action="{:U('Admin/User/export')}" method="POST">
+        <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+            <tr class="top">
+
+                <th>分类名称</th>
+                <th>分类编码</th>
+                <th>分类所属</th>
+
+                <th width="220">操作</th>
+            </tr>
+            <volist name="lists" id="vo" mod="2">
+                <tr class="{$mod?'bg2':'bg1'}">
+
+                    <td>{$vo.ca_name}</td>
+                    <td>{$vo.ca_code}</td>
+                    <td>{$vo.ca_rank_name}</td>
+
+                    <td>
+                        <a href="{:U('Admin/Zgoods/editCate?id='.$vo['id'])}" >编辑</a>
+                        <a href="javascript:void(0);" onclick="deleteData('{$vo[\'id\']}');">删除</a>
+                    </td>
+                </tr>
+            </volist>
+        </table>
+    </form>
+    <div class="page">{$page}</div>
+</div>
+<script>
+    function deleteData(id){
+        $.post("{:U('Admin/Zgoods/deleteCate?id='.$vo['id'])}",{id:id},function(res){
+            if(res.status==100){
+                window.location.reload();
+            }else{
+                alert(res.msg);
+            }
+        });
+    }
+</script>
+</body>
+</html>

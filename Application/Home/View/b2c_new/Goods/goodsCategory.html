@@ -1,0 +1,94 @@
+<include file=".:Com:b2c:product:goods_js" />
+<div class="mallhot mallhot-type diamond diamond-select">
+	<div class="container">
+		<div class="path">
+			<ol class="breadcrumb">
+				当前位置：<li><a href="javascript:void(0);">首页</a></li><li class="active">戒托定制</li>
+			</ol>
+		</div>
+
+		
+		<if condition="($agent_id eq 85 or $agent_id eq 87) and $category_id eq 65">
+			<!--兰柏和他的子站不显示-->
+		<else />
+			<div class="select-tab">
+				<h3 class="text-center">
+					<div class="col-md-12">
+						<span class="select-tab-left" onclick="javascript:location.href='{:U('/Home/Goods/goodsDiy')}';" >
+							挑选祼钻 <span></span>
+						</span>
+						<span class="hidden-xs">|</span>
+						<span class="select-tab-right tabactive">
+							挑选戒托 <span class="caret"></span>
+						</span>
+						<div class="clearfix"></div>
+					</div>
+					<div class="clearfix"></div>
+				</h3>
+			</div>		
+			<div class="diamond-banner">
+				<if condition="$customAdList[0]['url'] neq '' ">
+					<a href="{$customAdList[0]['url']}">
+				</if> 
+				<if condition="$customAdList[0]['images_path'] neq '' ">
+					<img src="/Public{$customAdList[0]['images_path']}">
+				<else/>
+					<img src="__IMG__/jt_steps_03.jpg">
+				</if>
+				<if condition="$customAdList[0]['url'] neq '' ">
+					</a>
+				</if>
+			</div>
+		</if>
+		<div class="tiaoxuan" id='k'>
+			<ul>
+				<li>
+					<button type="button" class="btn btn-default" id="reset_select" style="position: absolute; right: 30px; top: 22px; z-index: 9;">重选</button>
+					<div class="tiaoxuan-left">
+						<ul class="tiaoxuan-list">
+							<li><img src="__IMG__/tiaoxuanimg_03.jpg" alt=""></li>
+							<li id="selected_luozuan" ></li>
+							<li></li>
+						</ul>
+					</div>
+					<img src="__IMG__/pjt_03.jpg" alt="">
+				</li>
+				<li id="sellist">
+					<button type="button" class="btn btn-default" style="position: absolute; right: 65px; top: 22px; z-index: 999;" onclick="location.href='#listbox'">重选</button>
+					<div class="tiaoxuan-center">
+						<ul></ul>
+					</div>
+					<img src="__IMG__/pjt_04.jpg" alt="">	
+				</li>
+				<li>
+					<div class="tiaoxuan-right">
+						<p><h5 class="red">总价:¥<span id="price"></span></h5></p>
+						<p><img src="__IMG__/srdz_03.jpg" class="btn btn-link" style="padding: 0" id="addCart"></p>
+					</div>
+					<img src="__IMG__/pjt_05.jpg" alt="">
+				</li>
+				<div class="clearfix"></div>
+			</ul>
+		</div>
+		<script>
+			$(function(){
+				dingzhi.get_luozuan_info(func_selected_luozuan_info);
+				dingzhi.get_jietuo_info(func_selected_jietuo_info);
+				$('#reset_select').click(function(){
+					dingzhi.clear_luozuan_info();
+					location.href='{:U('/Home/Goods/goodsDiy')}';
+				});
+				$('#addCart').click(function(){
+					dingzhi.submit();
+				});
+				var count_num = dingzhi.count_total_price();
+				if( count_num == 0 ){
+					$('.tiaoxuan').hide();
+				}
+			});
+		</script>
+		<include file=".:Com:b2c:product:class_nav" />
+		<include file=".:Com:b2c:product:attributes_select" />
+		<include file=".:Com:b2c:product:goods_list_category" />
+	</div>
+</div>

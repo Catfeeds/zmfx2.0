@@ -1,0 +1,466 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<script src="__JS__/public.js" type="text/javascript"></script>
+<script src="__JS__/diamond.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function(){
+        $("._dataSort").click(function(){
+			var thisIndex = $(this).attr("index");	//索引存放排序关键字
+            var thisData = $(this).attr("data");	//数据属性存放排序方式
+            $("._dataSort span").removeClass('asc').removeClass('desc');	//还原默认排序背景图标
+            switch(thisData){
+                case 'ASC':
+                    $(this).attr("data",'DESC').find("span").removeClass('asc').addClass('desc');
+                    setCookie('diamondsDataUrl',setUrlParam(getCookie('diamondsDataUrl'),'orderby',thisIndex));
+                    setCookie('diamondsDataUrl',setUrlParam(getCookie('diamondsDataUrl'),'orderway','DESC'));
+                    break;
+                case 'DESC':
+                    $(this).attr("data",'ASC').find("span").removeClass('desc').addClass('asc');
+                    setCookie('diamondsDataUrl',setUrlParam(getCookie('diamondsDataUrl'),'orderby',thisIndex));
+                    setCookie('diamondsDataUrl',setUrlParam(getCookie('diamondsDataUrl'),'orderway','ASC'));
+                    break;
+                default:
+                    $(this).attr("data",'ASC').find("span").removeClass('desc').addClass('asc');
+                    setCookie('diamondsDataUrl',setUrlParam(getCookie('diamondsDataUrl'),'orderby',thisIndex));
+                    setCookie('diamondsDataUrl',setUrlParam(getCookie('diamondsDataUrl'),'orderway','ASC'));
+                    break;
+            }
+            submitData();
+        });
+    });
+
+</script>
+<style>
+.filterContent .kuang .chose {
+		background: #bfbfff none repeat scroll 0 0;
+		color: #000000;
+	}
+.filterContent .kuang{
+		background:none !important;
+		border:none !important;
+	}
+.filterContent .kuang li{
+		background:#fff;
+		border:1px solid #bcbcbc;
+		margin-left:-1px;
+	}
+.filterContent .kuang li.mf{
+		margin-left:15px;
+	}
+#Shape li{
+		width:56px;
+	}
+#Shape li i{
+		left:12px;
+	}
+#Color li{
+		width:46px;
+	}
+#Color li i{
+		left:7px;
+	}
+#Intensity li{
+		height: 50px;
+		width: 76px !important;
+		margin-right: 10px;
+	}
+#Intensity li i{
+		top: 15px;
+		font-size:12px;
+		text-align:center;
+		font-style: normal;
+		width:40px;
+	}
+#Intensity li span{
+		font-size:9px;
+		line-height: 25px !important;
+	}
+    #Intensity li {
+        height: 48px;
+        width: 76px !important;
+        /* margin-right: 10px; */
+        line-height: 0;
+        padding-top: 25px;
+    }
+.info .fr a { width: auto; float: left; display: inline-block; margin-left: 5px; margin-right: 5px; padding: 1px 5px;}
+</style>
+<div class="goodsDiy">
+	<input name="luozuan_type"	value="{$navActive}" type="hidden" />
+	<input name="goods_sn"	value="{$goods_sn}" type="hidden" />
+	<!--<div class="title">珠宝定制</div>-->
+    <div class="step">
+        <if condition="$templateSetting['custom_view_show'] neq 1 ">
+		     <include file=".:Base:Goods:goodsStep" />
+        </if>
+	</div>
+    <div class="filter fl">
+    	<div class="filterTitle">
+        	<div class="fl"><span>选择钻石<if condition=" $step2.associate_luozuan.shape_name neq '' and $step2 neq '' ">:<a  name="selectDiamonds">{$step2.associate_luozuan.shape_name} {$step2.associate_luozuan.weights_name}CT</a></if></span></div>
+            <button class="fr clearFilter" onclick="clearParameters();">清空已选条件</button>
+            <div class="clear"></div>
+        </div>
+        <div class="filterContent">
+			<div class="info">
+                <div class="fl iTitle"><p style="height:40px;line-height:40px;">裸钻颜色</p><span></span></div>
+                <ul class="kuang t5">
+                    <a href="{:U('/Home/Goods/goodsDiy/')}"><li class="<eq name="ACTION_NAME" value="goodsDiy" > chose </eq> ">白钻</li></a>
+                    <a href="{:U('/Home/Goods/goodsDiyColor/')}"><li class="<eq name="ACTION_NAME" value="goodsDiyColor" > chose </eq> ">彩钻</li></a>
+                    <div class="clear"></div>
+                </ul>
+                <div class="clear"></div>
+            </div>
+			<div class="info">
+                <div class="fl iTitle shapeT"><p>颜色</p><span>Color</span></div>
+                    <ul class="shape" id="Color" data-click="no">
+                        <li name="Color" ref="YELLOW" class="selectList"><i><img src="__PUBLIC__/images/c_06.gif"></i><span ref="YELLOW">黄钻</span></li>
+						<li name="Color" ref="PINK" class="selectList"><i><img src="__PUBLIC__/images/c_08.gif"></i><span ref="PINK">粉钻</span></li>
+                        <li name="Color" ref="ORANGE" class="selectList"><i><img src="__PUBLIC__/images/c_12.gif"></i><span ref="ORANGE">橙钻</span></li>
+                        <!-- <li name="Color" ref="CHAMPAGNE" class="selectList"><i><img src="__PUBLIC__/images/c_10.gif"></i><span ref="CHAMPAGNE">香槟钻</span></li> -->
+                        <li name="Color" ref="GREEN" class="selectList"><i><img src="__PUBLIC__/images/c_14.gif"></i><span ref="GREEN">绿钻</span></li>
+                        <li name="Color" ref="BROWN" class="selectList"><i><img src="__PUBLIC__/images/c_16.gif"></i><span ref="BROWN">棕色</span></li>
+                        <li name="Color" ref="VIOLET"  class="selectList"><i><img src="__PUBLIC__/images/c_18.gif"></i><span ref="VIOLET">紫罗兰</span></li>
+                        <li name="Color" ref="PURPLE" class="selectList"><i><img src="__PUBLIC__/images/c_20.gif"></i><span ref="PURPLE">紫钻</span></li>
+                        <li name="Color" ref="GRAY" class="selectList"><i><img src="__PUBLIC__/images/c_03.gif"></i><span ref="GRAY">灰钻</span></li>
+                        <li name="Color" ref="BLACK" class="selectList"><i><img src="__PUBLIC__/images/c_23.gif"></i><span ref="BLACK">黑钻</span></li>
+						<li name="Color" ref="RED" class="selectList"><i><img src="__PUBLIC__/images/c_25.gif"></i><span ref="RED">红钻</span></li>
+						<li name="Color" ref="BLUE" class="selectList"><i><img src="__PUBLIC__/images/c_27.gif"></i><span ref="BLUE">蓝钻</span></li>
+						<!-- <li name="Color" ref="CHARMELEON" class="selectList"><i><img src="__PUBLIC__/images/c_29.gif"></i><span ref="CHARMELEON">变色龙</span></li> -->
+                </ul>
+                <div class="clear"></div>
+            </div>
+        	<div class="info">
+                <div class="fl iTitle shapeT"><p>形状</p><span>Shape</span></div>
+                    <if condition="$shape neq ''">
+                    <ul class="shape" id="Shape" data-isclick="no">
+                        <if condition="$shape eq 'ROUND'">
+                            <li name="Shape" ref="ROUND" class="selectList selectd"><i class="shapeIco shapeIco12"></i><span ref="ROUND">圆形</span></li>
+                        <else />
+                            <li name="Shape" ref="ROUND" class="selectList"><i class="shapeIco shapeIco12"></i><span ref="ROUND">圆形</span></li>
+                        </if>
+
+                        <if condition="$shape eq 'OVAL'">
+                            <li name="Shape" ref="OVAL" class="selectList  selectd"><i class="shapeIco shapeIco11"></i><span ref="OVAL">椭圆</span></li>
+                        <else />
+                            <li name="Shape" ref="OVAL" class="selectList"><i class="shapeIco shapeIco11"></i><span ref="OVAL">椭圆</span></li>
+                        </if>
+
+                        <if condition="$shape eq 'MARQUISE'">
+                            <li name="Shape" ref="MARQUISE" class="selectList selectd"><i class="shapeIco shapeIco10"></i><span ref="MARQUISE">马眼</span></li>
+                        <else />
+                            <li name="Shape" ref="MARQUISE" class="selectList"><i class="shapeIco shapeIco10"></i><span ref="MARQUISE">马眼</span></li>
+                        </if>
+
+
+                        <if condition="$shape eq 'HEART'">
+                            <li name="Shape" ref="HEART" class="selectList selectd"><i class="shapeIco shapeIco9"></i><span ref="HEART">心形</span></li>
+                        <else />
+                            <li name="Shape" ref="HEART" class="selectList"><i class="shapeIco shapeIco9"></i><span ref="HEART">心形</span></li>
+                        </if>
+
+                        <if condition="$shape eq 'PEAR'">
+                            <li name="Shape" ref="PEAR" class="selectList selectd"><i class="shapeIco shapeIco8"></i><span ref="PEAR">水滴</span></li>
+                        <else />
+                             <li name="Shape" ref="PEAR" class="selectList"><i class="shapeIco shapeIco8"></i><span ref="PEAR">水滴</span></li>
+                        </if>
+
+                        <if condition="$shape eq 'PRINCESS'">
+                            <li name="Shape" ref="PRINCESS" class="selectList selectd"><i class="shapeIco shapeIco7"></i><span ref="PRINCESS">方形</span></li>
+                        <else />
+                            <li name="Shape" ref="PRINCESS" class="selectList"><i class="shapeIco shapeIco7"></i><span ref="PRINCESS">方形</span></li>
+                        </if>
+
+
+                        <if condition="$shape eq 'EMERALD'">
+                            <li name="Shape" ref="EMERALD" class="selectList selectd"><i class="shapeIco shapeIco6"></i><span ref="EMERALD">祖母绿</span></li>
+                        <else />
+                            <li name="Shape" ref="EMERALD" class="selectList"><i class="shapeIco shapeIco6"></i><span ref="EMERALD">祖母绿</span></li>
+                        </if>
+
+                        <if condition="$shape eq 'CUSHION'">
+                            <li name="Shape" ref="CUSHION" class="selectList selectd"><i class="shapeIco shapeIco2"></i><span ref="Cushion">枕形</span></li>
+                        <else />
+                             <li name="Shape" ref="CUSHION" class="selectList"><i class="shapeIco shapeIco2"></i><span ref="Cushion">枕形</span></li>
+                        </if>
+
+                        <if condition="$shape eq 'RADIANT'">
+                            <li name="Shape" ref="RADIANT" class="selectList selectd"><i class="shapeIco shapeIco4"></i><span ref="RADIANT">蕾蒂恩</span></li>
+                        <else />
+                            <li name="Shape" ref="RADIANT" class="selectList"><i class="shapeIco shapeIco4"></i><span ref="RADIANT">蕾蒂恩</span></li>
+                        </if>
+
+                        <if condition="$shape eq 'BAGUETTE'">
+                            <li name="Shape" ref="BAGUETTE" class="selectList selectd"><i class="shapeIco shapeIco1"></i><span ref="BAGUETTE">梯方</span></li>
+                        <else />
+                            <li name="Shape" ref="BAGUETTE" class="selectList"><i class="shapeIco shapeIco1"></i><span ref="BAGUETTE">梯方</span></li>
+                        </if>
+
+
+                    <else />
+                    <ul class="shape" id="Shape" data-click="no">
+                        <li name="Shape" ref="ROUND"    class="selectList"><i class="shapeIco shapeIco12"></i><span ref="ROUND">圆形</span></li>
+                        <li name="Shape" ref="OVAL"     class="selectList"><i class="shapeIco shapeIco11"></i><span ref="OVAL">椭圆</span></li>
+                        <li name="Shape" ref="MARQUISE"  class="selectList"><i class="shapeIco shapeIco10"></i><span ref="MARQUISE">马眼</span></li>
+                        <li name="Shape" ref="HEART"    class="selectList"><i class="shapeIco shapeIco9"></i><span ref="HEART">心形</span></li>
+                        <li name="Shape" ref="PEAR"     class="selectList"><i class="shapeIco shapeIco8"></i><span ref="PEAR">水滴</span></li>
+                        <li name="Shape" ref="PRINCESS" class="selectList"><i class="shapeIco shapeIco7"></i><span ref="PRINCESS">方形</span></li>
+                        <li name="Shape" ref="EMERALD"  class="selectList"><i class="shapeIco shapeIco5"></i><span ref="EMERALD">祖母绿</span></li>
+                        <li name="Shape" ref="CUSHION"  class="selectList"><i class="shapeIco shapeIco2"></i><span ref="Cushion">枕形</span></li>
+                        <li name="Shape" ref="RADIANT"  class="selectList"><i class="shapeIco shapeIco4"></i><span ref="RADIANT">蕾蒂恩</span></li>
+                        <li name="Shape" ref="BAGUETTE" class="selectList"><i class="shapeIco shapeIco1"></i><span ref="BAGUETTE">梯方</span></li>
+						<li style="width:65px;" name="Shape" ref="SQUARE EMERALD" class="selectList"><i class="shapeIco shapeIco6"></i><span ref="SQUARE EMERALD">方形祖母绿</span></li>
+                    </if>
+
+
+                    <div class="clear"></div>
+                </ul>
+                <div class="clear"></div>
+            </div>
+           <div class="info">
+                <div class="fl iTitle shapeT"><p>色度</p><span>Intensity</span></div>
+                    <ul class="shape" id="Intensity" data-click="no">
+                        <li name="Intensity" ref="FAINT" class="selectList"><i>微</i><span ref="FAINT">FAINT</span></li>
+						<li name="Intensity" ref="VERY LIGHT" class="selectList"><i>很淡</i><span ref="PINK">VERY LIGHT</span></li>
+                        <li name="Intensity" ref="LIGHT" class="selectList"><i>淡</i><span ref="LIGHT">LIGHT</span></li>
+                        <li name="Intensity" ref="FANCY LIGHT" class="selectList"><i>淡彩</i><span ref="FANCY LIGHT">FANCY LIGHT</span></li>
+                        <li name="Intensity" ref="FANCY" class="selectList"><i>彩</i><span ref="FANCY">FANCY</span></li>
+                        <li style="width:90px" name="Intensity" ref="FANCY INTENSE" class="selectList"><i>浓彩</i><span ref="FANCY INTENSE">FANCY INTENSE</span></li>
+                        <li name="Intensity" ref="FANCY DEEP"  class="selectList"><i>深彩</i><span ref="FANCY DEEP">FANCY DEEP</span></li>
+                        <li name="Intensity" ref="FANCY DARK" class="selectList"><i>暗彩</i><span ref="FANCY DARK">FANCY DARK</span></li>
+                        <li name="Intensity" ref="FANCY VIVID" class="selectList"><i>艳彩</i><span ref="FANCY VIVID">FANCY VIVID</span></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="fl iTitle"><p>钻重</p><span>Weight</span></div>
+
+                    <if condition="$weight gt 0">
+                    <ul class="kuang t5" id="Weight" data-isclick="no">
+                        <li name="Weight" ref="0.3-0.49" class="selectList radio"><span>0.30-0.49 CT</span></li>
+                        <li name="Weight" ref="0.5-0.79" class="selectList radio"><span>0.50-0.79 CT</span></li>
+                        <li name="Weight" ref="0.8-0.99" class="selectList radio"><span>0.80-0.99 CT</span></li>
+                        <li name="Weight" ref="1-100"    class="selectList radio"><span>1克拉以上</span></li>
+                        <li  name="Weight" ref="{$weight}-{$weight}" class="selectList selectd"><span>{$weight}克拉</span></li>
+                    <else />
+                    <ul class="kuang t5" id="Weight">
+                        <li name="Weight" ref="0.3-0.49" class="selectList radio"><span>0.30-0.49 CT</span></li>
+                        <li name="Weight" ref="0.5-0.79" class="selectList radio"><span>0.50-0.79 CT</span></li>
+                        <li name="Weight" ref="0.8-0.99" class="selectList radio"><span>0.80-0.99 CT</span></li>
+                        <li name="Weight" ref="1-100"    class="selectList radio"><span>1克拉以上</span></li>
+                        <li id="weightCustomBtn" name="Weight" class="selectList radio">
+							<div style="float:left;position:relative;z-index:999;width:100%;">
+								<span id="txtWeight">自定义</span>
+							</div>
+                        </li>
+						<div id="weightCustom" style="display:none">
+							<div class="f_l" style="font-size:12px;">
+								<input type="text" name="minWeight" id="txtWeightMin" class="B_gray tc" />
+								&nbsp;&nbsp;至&nbsp;&nbsp;
+								<input type="text" name="maxWeight" id="txtWeightMax" class="B_gray tc" />
+								&nbsp;克拉
+							</div>
+							<div class="f_r"><input type="button" onclick="customWeightCheck()" value="确定" /></div>
+						</div>
+
+                    </if>
+                    <div class="clear"></div>
+                </ul>
+				<div class="fl iTitle"><p>对称</p><span>S.M.</span></div>
+                <ul class="kuang tt3" id="SM">
+                	<li name="Symmetry" ref="EX" class="selectList"><span>EX</span></li>
+                    <li name="Symmetry" ref="VG" class="selectList"><span>VG</span></li>
+                    <li name="Symmetry" ref="GD" class="selectList"><span>GD</span></li>
+                    <div class="clear"></div>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="fl iTitle"><p>价格</p><span>Price</span></div>
+                <ul class="kuang t5" id="Price">
+                    <li name="Price" ref="2000-4999" class="selectList radio"><span>2000-4999</span></li>
+                    <li name="Price" ref="5000-7999" class="selectList radio"><span ref="5000-7999">5000-7999</span></li>
+                    <li name="Price" ref="8000-9999" class="selectList radio"><span ref="8000-9999">8000-9999</span></li>
+                    <li name="Price" ref="10000"     class="selectList radio"><span ref="10000">1万元以上</span></li>
+                    <li id="priceCustomBtn" name="Price" class="selectList radio">
+                    	<div style="float:left;position:relative;width:100%;">
+							<span id="txtPrice">自定义</span>
+						</div>
+	                </li>
+					<div id="priceCustom" style="display:none">
+						<div class="f_l" style="font-size:12px;">
+							<input type="text" name="minPrice" id="txtPriceMin" class="B_gray tc" />
+							&nbsp;&nbsp;至&nbsp;&nbsp;
+							<input type="text" name="maxPrice" id="txtPriceMax" class="B_gray tc" />
+							&nbsp;元
+						</div>
+						<div class="f_r"><input type="button" onclick="customPriceCheck()" value="确定" /></div>
+		            </div>
+
+                    <div class="clear"></div>
+                </ul>
+                <div class="fl iTitle"><p>抛光</p><span>Polish</span></div>
+                <ul class="kuang tt3" id="Polish">
+                    <li name="Polish" ref="EX" class="selectList"><span>EX</span></li>
+                    <li name="Polish" ref="VG" class="selectList"><span>VG</span></li>
+                    <li name="Polish" ref="GD" class="selectList"><span>GD</span></li>
+                    <div class="clear"></div>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="fl iTitle"><p>净度</p><span>Clarity</span></div>
+                <ul class="kuang t8 t9" id="Clarity">
+                    <li name="Clarity" ref="FL" class="selectList"><span ref="FL">Fl</span></li>
+                    <li name="Clarity" ref="IF" class="selectList"><span ref="IF">IF</span></li>
+                    <li name="Clarity" ref="VVS1" class="selectList"><span ref="VVS1">VVS1</span></li>
+                    <li name="Clarity" ref="VVS2" class="selectList"><span ref="VVS2">VVS2</span></li>
+                    <li name="Clarity" ref="VS1" class="selectList"><span ref="VS1">VS1</span></li>
+                    <li name="Clarity" ref="VS2" class="selectList"><span ref="VS2">VS2</span></li>
+                    <li name="Clarity" ref="SI1" class="selectList"><span ref="SI1">SI1</span></li>
+                    <li name="Clarity" ref="SI2" class="selectList"><span ref="SI2">SI2</span></li>
+                    <li name="Clarity" ref="I1" class="selectList"><span ref="I1">I1</span></li>
+                    <li name="Clarity" ref="I2" class="selectList"><span ref="I2">I2</span></li>
+                    <li name="Clarity" ref="I3" class="selectList"><span ref="I3">I3</span></li>
+                    <div class="clear"></div>
+                </ul>
+                <div class="fl iTitle"><p>证书</p><span>Cert</span></div>
+                <ul class="kuang t8" id="Cert">
+                    <li name="Cert" ref="GIA" class="selectList"><span ref="GIA">GIA</span></li>
+                    <li name="Cert" ref="HRD" class="selectList"><span ref="HRD">HRD</span></li>
+                    <li name="Cert" ref="IGI" class="selectList"><span ref="IGI">IGI</span></li>
+					<li name="Cert" ref="NGTC" class="selectList"><span ref="NGTC">国检</span></li>
+					<li name="Cert" ref="GTC" class="selectList"><span ref="GTC">省检</span></li>
+					<li name="Cert" ref="Other" class="selectList"><span ref="Other">其它</span></li>
+                    <div class="clear"></div>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+				<div class="fl iTitle"><p>荧光</p><span>Fluor</span></div>
+                <ul class="kuang t8 guat" id="Fluor">
+				    <li name="Fluor" ref="N" class="selectList"><span ref="N">N</span></li>
+				    <li name="Fluor" ref="F" class="selectList"><span ref="F">F</span></li>
+				    <li name="Fluor" ref="M" class="selectList"><span ref="M">M</span></li>
+				    <li name="Fluor" ref="S" class="selectList"><span ref="S">S</span></li>
+				    <li name="Fluor" ref="VS" class="selectList"><span ref="VS">VS</span></li>
+				    <li name="NaiKa" ref="NoMilk" class="selectList"><span ref="NoMilk">无奶</span></li>
+				    <li name="NaiKa" ref="NoCoffee" class="selectList"><span ref="NoCoffee">无咖</span></li>
+			     	<div class="clear"></div>
+				 </ul>
+                <div class="fl iTitle"><p>来源</p><span>Location</span></div>
+                <ul class="kuang t5" id="Location">
+                    <li name="Stock" ref="xianhuo" class="selectList radio"><span ref="现货">现货</span></li>
+                    <li name="Stock" ref="dinghuo" class="selectList radio"><span ref="订货">订货</span></li>
+                    <div class="clear"></div>
+                </ul>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <div class="box fr">
+        <div class="certificate">
+            <div class="title">证书查询</div>
+            <ul>
+            	<li class="bb"><a href="http://www.gia.edu/" target="_blank"><img src="__IMG__/gia.gif"></a></li>
+                <li><a href="http://www.ngtc.com.cn/" target="_blank"><img src="__IMG__/ngstg.gif"></a></li>
+            </ul>
+        </div>
+        <div class="baikeB">
+        	<div class="title">钻石4C</div>
+            <ul>
+            	<li><a href="{:U('Home/Article/detail?name=钻石重量')}">重量(Carat)</a></li>
+                <li><a href="{:U('Home/Article/detail?name=钻石颜色')}">颜色(Color)</a></li>
+                <li><a href="{:U('Home/Article/detail?name=钻石净度')}">净度(Calarity)</a></li>
+                <li><a href="{:U('Home/Article/detail?name=钻石切工')}">切工(Cut)</a></li>
+                <div class="clear"></div>
+            </ul>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="zList">
+    	<div class="info">
+        	<div class="fl"><span>共找到<label id="count">0</label>颗钻石供你挑选</span><if condition="$price_display_type neq '1'"><span>,当前美元汇率为<lable id="dollar_huilv"></lable></span></if></div>
+			<div class="fr">
+				<span>
+				    <a href="javascript:;" onclick="etdata('1','4');">导出当前页数据</a>
+					<a href="javascript:;" onclick="etdata('2','4');">导出选中数据</a>
+					<a href="{:U('/Home/Order/orderCart')}">购物车(<label id="cart">{$cartCount}</label>)</a>
+					<div style="clear: both"></div>
+				</span>
+			</div>
+
+			<div class="clear"></div>
+            <input name="custom_view_show" value="{$templateSetting['custom_view_show']}" type="hidden" />
+        </div>
+
+        <div id="diamondData">
+			<table class="data" border="0" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+                        <td>详细</td>
+                        <td>来源</td>
+                        <td>形状</td>
+                        <td>证书</td>
+                        <td>编号</td>
+                        <td class="_dataSort sort" index="Weight">钻重</td>
+                        <td>颜色</td>
+						<td>色度</td>
+                        <td>净度</td>
+                        <td>抛光</td>
+                        <td>对称</td>
+                        <td>荧光</td>
+                        <td>全深比</td>
+                        <td>台宽比</td>
+						<td>每卡单价</td>
+						<td class="_dataSort sort" index="price">单粒价格</td>
+                        <td><input type="checkbox" name="selectThisPage" id="selectThisPage" onclick="selectThisPage()" /></td>
+					    <td><input name="" type="button"  onclick="addThisPageToCart();" value="批量购买"/></td>
+					</tr>
+			    </thead>
+                <tbody id="_dataRows">
+                </tbody>
+		    </table>
+	    </div>
+        <!--结束-->
+        <div class="page" id="page">{$page}</div>
+    </div>
+</div>
+
+<div id="filter">
+<div id="dialog" style="width:1000px;" title="">
+	<div class="model-header" id="model-header1">
+		<button class="btn btn_video" id="viewVideo">查看视频</button>
+	</div>
+	<div class="model-body">
+		<div class="contain">
+			<div class="imageVideo">
+				<div class="row-fluid img" style="width: 472px; margin-bottom:20px;" id="diamondImg"></div>
+				<div class="video" style="width: 472px; float: right;">
+					<div class="row-fluid" id="diamondVideo"></div>
+				</div>
+			</div>
+			<div id="luozuanDetail" class="row-fluid">
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<div id="filterVideo">
+<div id="dialogVideo">
+	<div class="model-header" id="model-header2">
+		<button class="btn close" onclick="closeVideoDialog()">关闭</button>
+		<span>裸钻3D视频展示</span>
+	</div>
+	<div class="videoDetail" id="videoDetail">
+	</div>
+</div>
+</div>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

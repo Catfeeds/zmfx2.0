@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>个人信息-订单支付</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/user.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script src="__JS__/user.js"></script>
+<script src="__JS__/public.js"></script> 
+</head>
+<body>
+	<!-- Header -->
+	<header class="header text-center">
+    	订单支付
+        <a href="javascript:history.go(-1);" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    </header>
+    <!-- Header END //-->
+
+	<!-- Main -->
+    <div class="container-fluid user-info user-order-payment">
+		<div class="panel panel-default border-radius-none border-none">
+			<div class="panel-body username usbox">
+				<h5>订单总额: <span class="red">￥{$Think.session.info_price_to_payment}</span></h5>
+				<p class="zffs">支付方式：线下支付</p><br/> 
+						<volist name="LinePayMode" id="vo">
+							<p class="text-left">账户名称：	{$vo.aname}</p>
+							<p class="text-left">账号：		{$vo.abank}</p>
+							<p class="text-left">开户行：	{$vo.tback}</p>
+							<br/> 
+						</volist>
+				
+				<p>您可以联系公司财务，完成线下转账支付电话：{:C('site_contact')}<br> </p>
+			</div>
+		</div>
+	</div>
+    <!-- Main END //-->
+
+</body>
+<script>	
+ 
+ </script>
+</html>

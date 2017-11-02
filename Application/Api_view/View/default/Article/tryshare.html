@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>文章详情</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="/Application/Api_view/View/default/Css/bootstrap.min.css">
+	<link rel="stylesheet" href="/Application/Api_view/View/default/Css/public.css">
+	<script src="/Application/Api_view/View/default/Js/jquery.min.js"></script>
+	<script src="/Application/Api_view/View/default/Js/bootstrap.min.js"></script>
+</head>
+<style>
+  .newdata img,.newdata video { max-width: 100%;}
+  .newdata { max-width: 100%; overflow: hidden;} 
+</style>
+<body>
+    <div class="container wrap newdata">
+    	<div class="row detail">
+        	<div class="panel panel-default">
+               <div class="panel-heading">
+                  <h3 class="panel-title">
+                     <big>{$data.title}</big>
+                  </h3>
+                  <small class="text-muted">{$data.create_time|date="Y-m-d",###} </small>
+               </div>
+            </div>
+            <div class="panel panel-default">
+               <div class="panel-body">
+					<img src="{$data['image_path']}" />
+               </div>
+            </div>
+   		</div>
+	</div>
+</body>
+

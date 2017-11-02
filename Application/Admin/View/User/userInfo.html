@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>客户信息编辑</title>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：客户信息</h3>
+    </div>
+    <form action="{:U('Admin/User/userInfo')}" method="post">
+    	<div style="padding:10px;">
+        	<div class="info">
+                <div class="title">帐号:</div>
+                {$userInfo.username}
+            </div>
+			<if condition="in_array('admin/user/allocationuserrank',$AuthList)">
+            <div class="info">
+            	<div class="title">客户等级:</div>
+                <select name="rank_id">
+                <volist name="userRankList" id="vo">
+                <option value="{$vo.rid}">{$vo.name}</option>
+                </volist>
+                </select>
+                <script>$('select[name="rank_id"]').val('{$userInfo.rank_id}');</script>
+            </div>
+            </if>
+            <if condition="in_array('admin/user/allocationuserbusiness',$AuthList)">
+			<div class="info">
+                <div class="title">业务员:</div>
+                <select name="parent_id">
+                <volist name="businessList" id="vo">
+                <option <if condition="$userInfo['parent_id'] eq $vo['user_id']">selected</if> value="{$vo.user_id}">{$vo.nickname}</option>
+                </volist>
+                </select>
+            </div>
+            </if>
+            <if condition="in_array('admin/user/checkuserinfo',$AuthList)">
+            <div class="info">
+                <div class="title">审核:</div>
+                <select name="is_validate">
+                    <option value="0" <eq name="userInfo.is_validate" value="0">selected</eq>>未审核</option>
+                    <option value="1"<eq name="userInfo.is_validate" value="1">selected</eq>>已验证</option>
+                </select>
+            </div>
+            </if>
+            <div class="info">
+                <div class="title">密码:</div>
+                <input type="password" name="password" >
+            </div>
+            <div class="info">
+                <div class="title">重复密码:</div>
+                <input type="password" name="repassword" >
+            </div>
+            <div class="info">
+                <div class="title">真实姓名:</div>
+                <input type="text" name="realname" value="{$userInfo.realname}" >
+            </div>
+            <div class="info">
+                <div class="title">性别:</div>
+                <input type="radio" name="sex" value="0" <eq name="userInfo['sex']" value="0">checked</eq> />男
+                <input type="radio" name="sex" value="1" <eq name="userInfo['sex']" value="1">checked</eq>>女
+            </div>
+            <div class="info">
+                <div class="title">出生日期:</div>
+                <select name='year'>
+               	 	<foreach name='year' item='vo'>
+                		<option  <?php if(date("Y",$userInfo['birthday'])==$vo){ echo 'selected';}?> value="{$vo}">{$vo}</option>
+                	</foreach>
+                </select>
+                 <select name='month'>
+               	 	<volist name='month' id='vo'>
+                		<option  <?php if(date("m",$userInfo['birthday'])==$vo){ echo 'selected';}?> value="{$vo}">{$vo}</option>
+                	</volist>
+                </select>
+                 <select name='day'>
+               	 	<volist name='day' id='vo'>
+                		<option <?php if(date("d",$userInfo['birthday'])==$vo){ echo 'selected';}?> value="{$vo}">{$vo}</option>
+                	</volist>
+                </select>
+            </div>
+             <div class="info">
+                <div class="title">外文名称:</div>
+                <input type="text" name="englishname" value="{$userInfo.englishname}" >
+            </div>
+            <if condition="in_array('admin/user/usercontact',$AuthList)">
+            <div class="info">
+                <div class="title">手机:</div>
+                <input type="text" name="phone" value="{$userInfo.phone}" >
+            </div>
+            </if>
+            <div class="info">
+                <div class="title">主要联系人:</div>
+                <input type="text" name="contact" value="{$userInfo.contact}" >
+            </div>
+            <if condition="in_array('admin/user/usercontact',$AuthList)">
+            <div class="info">
+                <div class="title">QQ:</div>
+                <input type="text" name="qq" value="{$userInfo.qq}" >
+            </div>
+            </if>
+             <div class="info">
+                <div class="title">职业:</div>
+                <input type="text" name="job" value="{$userInfo.job}" >
+            </div>
+            <div class="info">
+                <div class="title">邮箱:</div>
+                <input type="text" name="email" value="{$userInfo.email}" size="50" >
+            </div>
+            <div class="info">
+                <div class="title">公司名称:</div>
+                <input type="text" name="company_name" value="{$userInfo.company_name}" size="50"  >
+            </div>
+            <div class="info">
+                <div class="title">企业法人:</div>
+                <input type="text" name="legal" value="{$userInfo.legal}"  size="50" >
+            </div>
+             <div class="info">
+                <div class="title">传真:</div>
+                <input type="text" name="fax" value="{$userInfo.fax}" >
+            </div>
+			<div class="info">
+                <div class="title">客户证书货白钻折扣:</div>
+                <input type="text" name="luozuan_discount"  value="{$userInfo.luozuan_discount}">
+            </div>
+			<div class="info">
+                <div class="title">客户证书货彩钻折扣:</div>
+                <input type="text" name="caizuan_discount"  value="{$userInfo.caizuan_discount}">
+            </div>
+            <div class="info">
+                <div class="title">客户散货货折扣:</div>
+                <input type="text" name="sanhuo_discount"  value="{$userInfo.sanhuo_discount}">
+            </div>
+            <div class="info">
+                <div class="title">客户成品折扣:</div>
+                <input type="text" name="goods_discount"  value="{$userInfo.goods_discount}">
+            </div>
+            <div class="info">
+                <div class="title">客户定制折扣:</div>
+                <input type="text" name="consignment_discount"  value="{$userInfo.consignment_discount}">
+            </div>
+            <if condition="in_array('admin/user/usercontact',$AuthList)">
+            <div class="info">
+                <div class="title">老板联系方式:</div>
+                <input type="text" name="bosscontact" value="{$userInfo.bosscontact}" >
+            </div>
+            <div class="info">
+                <div class="title">财务联系方式:</div>
+                <input type="text" name="financecontact" value="{$userInfo.financecontact}" >
+            </div>
+            <div class="info">
+                <div class="title">采购联系方式:</div>
+                <input type="text" name="buyercontact" value="{$userInfo.buyercontact}" >
+            </div>
+            <div class="info">
+                <div class="title">出纳联系方式:</div>
+                <input type="text" name="cashiercontact" value="{$userInfo.cashiercontact}" >
+            </div>
+            </if>
+            <div class="info">
+                <div class="title">开票地址:</div>
+                <input type="text" name="billingaddress" value="{$userInfo.billingaddress}"  style="width:350px" >
+            </div>
+            <div class="info">
+                <div class="title">运达地址:</div>
+                <input type="text" name="windeyaddress" value="{$userInfo.windeyaddress}"  style="width:350px" >
+            </div>
+            <div class="info">
+                <div class="title">公司地址:</div>
+                <input type="text" style="width: 350px;" name="company_address" value="{$userInfo.company_address}" >
+            </div>
+            <div class="info">
+                <div class="title">常用货品需求:</div>
+                <input type="text" style="width: 350px;" name="criterion" value="{$userInfo.criterion}" >
+            </div>
+            <div class="info">
+                <div class="title">营业执照编号:</div>
+                <input type="text" name="company_lincense" value="{$userInfo.company_lincense}" style="width:350px" >
+            </div>
+            <div class="info">
+                <div class="title">备注:</div>
+                <textarea name="note">{$userInfo.note}</textarea>
+            </div>
+            <if condition="in_array('admin/user/edituser',$AuthList)">
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="hidden" name="uid" value="{$userInfo.uid}" />
+                <input type="submit" class="button fl" value="保存">
+                <input type="reset" class="button fl ml10" value="重置">
+                <div class="clear"></div>
+            </div>
+            </if>
+        </div>
+    </form>
+</div>
+</body>
+</html>

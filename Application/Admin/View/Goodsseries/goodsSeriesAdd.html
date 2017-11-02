@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加产品系列</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/html5sortable.css" /> 
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：添加产品系列</h3>
+    </div>
+    <form action="{:U('Admin/Goodsseries/goodsSeriesAdd')}" method="post">
+        <div style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">产品系列名称:</div>
+                <input name="series_name" type="text" value="{$info.series_name}">
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="保存">
+                <input type="reset" class="button fl ml10" value="重置">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

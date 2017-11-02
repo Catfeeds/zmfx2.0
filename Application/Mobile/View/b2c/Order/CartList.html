@@ -1,0 +1,72 @@
+<include file="Public:header" />
+<body>
+    <section class="cart cart-listing">
+
+        <!-- top -->
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>商品清单</h2>
+            </div>
+        </header>
+        <!-- top end -->
+
+        <section class="cart-list wrapper">
+
+			<if condition="$product">
+				<volist name="product['data']" id="vo">
+					<div class="goods-item">
+						<div class="goods-layout clearfix">
+							<div class="goods-img">
+								<a href="/Goods/detail/gid/{$vo.goods_id}/goods_type/{$vo.goods_type}"><img src="{$vo.goods_attrs.thumb}" alt=""></a>
+							</div>
+							<div class="goods-right">
+								<h2><a href="/Goods/detail/gid/{$vo.goods_id}/goods_type/{$vo.goods_type}">{$vo.goods_attrs.goods_name}</a></h2>
+								<!-- <p class="goods-title">颜色:18k白金+GIA+纯度99%</p> -->
+								<div class="goods-fangshi clearfix">
+									<span class="fl c9 rmb">￥<span class="price">							
+									<in name="vo['goods_attrs']['activity_status']" value="0,1">
+										{$vo['goods_attrs']['activity_price']}
+									<else/>
+										{$vo['goods_attrs']['goods_price']}
+									</in>
+							</span></span>
+									<span class="fr">
+										<small>x<?php echo intval($vo['goods_number']);?></small>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</volist>
+			</if>		
+		
+ 
+			<if condition="$luozuan">
+				<volist name="luozuan['data']" id="vo">
+					<div class="goods-item">
+						<div class="goods-layout clearfix">
+							<div class="goods-img">
+								<img src="<?php echo ($vo['goods_type']) ? '__IMG__/luozuan_img.png' : '__IMG__/caizuan_img.png ';?>" alt="">
+							</div>
+							<div class="goods-right">
+								<h2>{$vo.goods_attrs.certificate_type}	{$vo.goods_attrs.certificate_number}</h2>
+								<!-- <p class="goods-title">颜色:18k白金+GIA+纯度99%</p> -->
+								<div class="goods-fangshi clearfix">
+									<span class="fl c9 rmb">￥<span class="price">{$vo.goods_attrs.price}</span></span>
+									<span class="fr">
+										<small>{$vo.goods_attrs.weight}ct</small>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</volist>
+			</if>
+        </section>
+    </section>
+<include file="Public:foot" />	
+</body>
+</html>

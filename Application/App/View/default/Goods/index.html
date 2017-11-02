@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/product.css">
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/public.js"></script> 
+<script src="__JS__/layer-mobile/layer.js"></script> 
+<script src="__JS__/common.js"></script>
+<title>产品分类</title>
+</head>
+<body class="wrap-bg">
+	<!--头部-->
+    <header class="header text-center sort-head">
+        <a href="/goods" class="active">产品分类</a>
+        <a href="/goods/brand" class="">品牌系列</a>
+    </header>
+    <!--内容-->
+    <div class="container wrap">
+    	<div class="row">
+        	<!--搜索-->
+                <div class="col-lg-12 search">
+                    <div class="input-group">
+                    	<span class="input-group-btn">
+                            <button onclick="Search()" class="btn btn-default" type="button"><span  class="glyphicon glyphicon-search"></span></button>
+                        </span>
+                        <input type="text" class="form-control" placeholder="编号、名称、系列">
+                    </div>
+                </div>
+           <!--分类列表-->
+            <div class="panel-group product-list" id="accordion">
+                  <if condition="$categorys">
+                  <volist name="categorys" key="key" id="vo" mod="9">
+
+                  <div class="panel panel-default goods-list-box">
+          					<div class="tibox" data-key="{$key}">
+                      <a class="tipid" data-toggle="collapse" data-parent="#accordion" href="#collapse{$key}" alt="{$vo.name_alias}" >
+                        <if condition="$vo['img']">
+                              <img src="/Public/{$vo.img}" >
+                        <elseif condition="$vo['cimg']" />
+                              <img src="/Public/{$vo.cimg}" > 
+                        <else/>
+                              <img src="/Public/images/category/zuan_temp.jpg" >
+                        </if> 
+                      </a>           
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <!-- href="#collapse{$key}" -->
+                          <a  data-toggle="collapse" data-parent="#accordion" class="tipid" alt="{$vo.name_alias}"> {$vo.name_alias}  </a>
+                        </h4>
+                      </div>     
+                    </div>
+                      <!--  id="collapse{$key}" -->
+                    <div class="panel-collapse collapse hidecoll">
+                       <div class="panel-body">
+              						<if condition="$vo['sub']">
+                            <ul>
+              							 <volist name="vo['sub']" id="v"><li><a class="tipids" href="{:U('/Goods/goodsCat/cid/'.$v['category_id'])}">{$v.name_alias}</a></li></volist>
+                             </ul>
+              						</if>
+                      </div>
+                    </div>
+                  </div>
+				  </volist>
+				  </if>
+                </div>
+   		</div>
+	</div>
+    <!--底部-->
+	{:W('Frame/footer', array('Goods'))}
+    
+<script>
+
+$(function(){
+  
+  //默认显示第一个列表
+  $('.tibox').each(function(){
+    if($(this).attr('data-key') == 1){
+      $(this).next('.hidecoll').show();
+    }
+  });
+  //列表滑动
+  $('.tibox').bind('click', function(){
+
+    var sum = $('.tibox').length;
+    var key = $(this).attr('data-key');
+
+    if($(this).next('.hidecoll').css('display') != "block"){
+      $('.hidecoll').slideUp();
+      $(this).next('.hidecoll').slideDown();
+
+      if($(this).index() == sum){
+        $('body').scrollTop( $('body').height() );
+      }
+    }
+    if(sum == key){
+      $('body').scrollTop( $('body').height() );
+    }
+  });
+
+
+ 
+ setCookie('crumbs_master',$(".tipid").attr("alt")); 
+
+  $(".tipid").click(function(){
+   var category=($(this).attr("alt"));
+   setCookie('crumbs_master',category); 
+  });
+
+  $(".tipids").click(function(){
+   var category=($(this).text());
+   setCookie('crumbs_subset',category); 
+  });
+});
+
+	
+
+	function Search(){ 
+		content=$('.form-control').val();
+		if(content=='' || content==undefined ||content==null)
+		{
+			tan('请输入搜索内容！');
+			return false;
+		}
+		window.location.href="/Goods/goodsCat?content="+content;
+	}
+</script>
+</body>
+</html>

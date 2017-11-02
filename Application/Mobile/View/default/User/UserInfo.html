@@ -1,0 +1,164 @@
+<include file="Public:header" />
+<link rel="stylesheet" type="text/css" href="/Public/Js/JqueryUI/jquery-ui-1.9.2.css" />
+<script type="text/javascript" src="/Public/Js/JqueryUI/jquery-ui-1.9.2.js"></script>
+<script type="text/javascript" src="/Public/Js/datepicker-tw.js"></script>
+<!--导航-->
+<div class="am-g ">
+<!-- Header -->
+	<header data-am-widget="header" class="am-header am-serch cat">
+		<div class="am-header-left am-header-nav">
+			<a href="{:U('/User/index')}" class="">
+				<img class="am-header-icon-custom" src="__ASS__/Img/search_01.png" alt=""/>
+			</a>
+		</div>
+		<h1 class="am-header-title">
+			个人信息
+		</h1>
+	</header>
+
+	<div class="am-content wrap">
+		<form id="form_1" for="am-form" action="#" onsubmit="return func_check_value();" method="post" >
+			<ul class="content">
+				<li>
+					<label>用户名：</label>{$info.username}
+				</li>
+				<li>
+					<label>出生日期：</label>
+					<select name="year">
+						<for start="1950" end="2030">
+							<option value="{$i}">{$i}</option>
+						</for>
+					</select>&nbsp;
+					<select name="month">
+						<for start="1" end="13">
+							<option value="{$i}">{$i}</option>
+						</for>
+					</select>&nbsp;
+					<select name="day">
+						<for start="1" end="32">
+							<option value="{$i}">{$i}</option>
+						</for>
+					</select>
+					<if condition="$info.birthday">
+						<script>
+							$("select[name='year']").val('{$info.birthday|date="Y",###}');
+							$("select[name='month']").val('{$info.birthday|date="n",###}');
+							$("select[name='day']").val('{$info.birthday|date="j",###}');
+						</script>
+					</if>
+				</li>
+				<li class="sex">
+					<label>性别:</label>
+					<input type="radio" name="sex" value="0" checked >男
+					<input type="radio" name="sex" value="1" >女
+					<script>$("input[name='sex'][value='{$info.sex}']").attr("checked",true);</script>
+				</li>
+				<li>
+					<label>电子邮件：</label>
+					<input type="text" placehloder="" name="email" value="{$info.email}">
+				</li>
+				<li>
+					<label>手机号码：</label>
+					<input type="text" placehloder="" name="phone" value="{$info.phone}">
+				</li>
+				<li>
+					<label>真实姓名：</label>
+					<input type="text" placehloder="" name="realname" value="{$info.realname}">
+				</li>
+				<li>
+					<label>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 业 ：</label>
+					<input type="text" placehloder="" name="job" value="{$info.job}">
+				</li>
+				<li>
+					<label>公司名称：</label>
+					<input type="text" placehloder="" name="company_name" value="{$info.company_name}">
+				</li>
+				<li>
+					<label>企业法人：</label>
+					<input type="text" placehloder="" name="legal" value="{$info.legal}">
+				</li>
+				<li>
+					<label>公司地址：</label>
+					<input type="text" placehloder="" name="company_address" value="{$info.company_address}">
+				</li>
+				<li class="pace">
+					<input type="submit" value="提交" class="am-btn am-btn-blue am-radius"/>
+				</li>
+			</ul>
+		</form>
+	</div>
+</div>
+<script >
+	var getLength = function (str) {
+		///<summary>获得字符串实际长度，中文2，英文1</summary>
+		///<param name="str">要获得长度的字符串</param>
+		var realLength = 0, len = str.length, charCode = -1;
+		for (var i = 0; i < len; i++) {
+			charCode = str.charCodeAt(i);
+			if (charCode >= 0 && charCode <= 128) realLength += 1;
+			else realLength += 2;
+		}
+		return realLength;
+	};
+	function check_num(str){
+		return str.match(/\D/) == null;
+	}
+	var check_email = function(str){
+		if (str.match(/[A-Za-z0-9_-]+[@](\S*)(net|com|cn|org|cc|tv|[0-9]{1,3})(\S*)/g) == null) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	};
+	function check_mobilephone(str){
+		if (str.match(/^(?:13\d|15[89]|1[\d][\d])-?\d{5}(\d{3}|\*{3})$/) == null) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	var check_telephone = function(str){
+		if (str.match(/^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/) == null) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	};
+	var func_check_value = function(){
+
+		if(check_email($('#form_1 input[name="email"]').val())==false ){
+			alert("请填写准确的邮箱");
+			return false;
+		}
+		if(check_mobilephone($('#form_1 input[name="phone"]').val())==false ){
+			alert("请填写准确的手机号");
+			return false;
+		}
+		if(getLength($('#form_1 input[name="realname"]').val())<2){
+			alert("长度不够,请填写正确的真实姓名");
+			return false;
+		}
+
+		if(getLength($('#form_1 input[name="job"]').val())<2){
+			alert("长度不够,请完善职业信息");
+			return false;
+		}
+		if(getLength($('#form_1 input[name="company_name"]').val())<2){
+			alert("长度不够,请填写正确的公司名称");
+			return false;
+		}
+		if(getLength($('#form_1 input[name="legal"]').val())<2){
+			alert("长度不够,请填写正确的公司法人信息");
+			return false;
+		}
+		if(getLength($('#form_1 input[name="company_address"]').val())<2){
+			alert("长度不够,请填写正确的公司地址信息");
+			return false;
+		}
+		return true;
+	}
+</script>
+<include file="Public:footer" />

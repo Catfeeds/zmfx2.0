@@ -1,0 +1,203 @@
+<include file=".:Base:layout_header" />
+
+<style>
+	.login { /* min-width: 1250px !important; width: 100%; */ position: relative;/* min-height: 600px; */ }
+	.login .loginBg { min-width: 1250px !important; width: 100%; /* position: absolute; */z-index:-1;min-height: 100%;margin-bottom: -4px; }
+	.login .loginM { width: auto; margin: 0 auto; padding: 10px;position: absolute;top:5%;right:10%; }
+	.login .loginK { width: 300px; /*height: 340px;*/height: auto; opacity: 0.6;filter:alpha(opacity=60); background: #000; float: right;     padding: 60px 30px;/*position: absolute;*/top:38px;right: 20%; }
+	.login .title span{ color:#FFFFFF; font-size:16px;}
+	.login span{ color: #FFF;font-size:14px; }
+	.login .info span{font-size:12px; line-height:20px;}
+	.login .loginK .info a { margin-right: 10px; }
+	.login .loginK .info img { width: 120px; }
+	.login input[type="text"],.login input[type="password"]{ width:290px; background:#EEE5DF; border:none; padding:3px 5px; height:24px; line-height:24px; }
+	.login .loginRegist{ background:#C9C8C8; border-radius:5px; width:100px; height:32px;min-height:32px; line-height:32px; text-align:center; display:block; color:#000000; float:left; margin-left:50px;}
+	.login input[type="submit"]{background: -moz-linear-gradient(top, #12000B, #91007F);background: -webkit-linear-gradient(top, #12000B, #91007F);background: -ms-linear-gradient(top, #12000B, #91007F); border:#330066 1px solid; color: #FFF; width:100%;height:32px; line-height:32px; float:left; border-radius:5px;cursor:pointer;}
+	.mb10 { margin-bottom: 10px;}
+	.login input[type="text"], .login input[type="password"] { width: 290px; background: #EEE5DF; border: none; padding: 3px 5px; height: 24px; line-height: 24px;}
+</style>
+<div class="login">
+	<img class="loginBg" src="__PUBLIC__/{$LoginAdList[0]['images_path']}">
+    <div class="loginM">
+        <form action="" method="post" class="loginK" onsubmit="return false;">
+        	<div class="title mb10"><span>{:C('site_name')}订单管理系统</span></div>
+            <div><span>{$Think.lang.L801}:</span></div>
+            <div class="mb10">
+            	<input type="text" id="username" name="username" value="">
+			</div>
+            <div><span>{$Think.lang.L9098}:</span></div>
+            <div class="mb10">
+            	<input type="password" id="password" name="password" value="">
+            </div>
+            <div class="mb10">
+                <label>
+                    <input type="checkbox" id="rememberuser" value="1" name='rememberuser'><span>{$Think.lang.L9099}</span>
+                </label>
+                <!--<label>
+                    <input type="checkbox" id="autologin" value="1" name='autologin'><span>{$Think.lang.L9100}</span>
+                </label>-->
+				<br>
+            </div>
+            <div class="mb10">
+                <input type="submit" id='loginSubmit' value="{$Think.lang.L863}">
+                <if condition="$zgoods_show neq 1">
+                    <a href="{:U('Home/Public/regist')}" class="loginRegist">{$Think.lang.L9101}</a>
+                    <div class="clear"></div>
+                </if>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    // 检查用户名长度
+    function checkuser() {
+        var user = $('#username');
+        if (user.val().length <= 2) {
+            // alert("{$Think.lang.L9011}");
+            return false;
+        }
+        return true;
+    }
+    // 检查密码长度
+    function checkpas() {
+        var ps = $('#password');
+        // if (ps.val().length < 6) {
+            // alert("{$Think.lang.L9010}");
+            // return false;
+        // }
+        return true;
+    }
+    //加密后才存cookie
+    function setEncodeCookie(key, plain){
+        var code = strToASC(plain);
+        $.cookie(key, code, { expires: 7, path:'/'});
+    }
+
+    function getEncodeCookie(key){
+        var arr = JSON.parse($.cookie(key));
+        return ASCToStr(arr);
+    }
+
+    function ASCToStr(arr){
+        var temp = '';
+        for(var i = 0 ; i < arr.length ; i++)
+            temp += String.fromCharCode(arr[i]-8);
+        return temp;
+    }
+
+    function strToASC(plain){
+        var arr = new Array();
+        for(var i = 0 ; i < plain.length ; i++)
+            arr[i] = plain.charCodeAt(i)+8; 	//每个ascii码加8以加密
+        return JSON.stringify(arr);
+    }
+
+    function init(){
+        // 记住用户名
+        if ($.cookie('rememberuser')) {
+            $('#rememberuser').attr('checked', true);
+            $('#username').val(getEncodeCookie('username'));
+        }
+        // 自动登陆
+        if ($.cookie('autologin')) {
+            $('#username').val(getEncodeCookie('username'));
+            $('#password').val(getEncodeCookie('password'));
+            $('#autologin').attr('checked', true);
+            $('#rememberuser').attr('checked', true);
+            //$('#loginSubmit').trigger('click');
+        }
+        //如果cookie同时有用户名和密码，则勾上"自动登录","记住用户名"
+        if($.cookie('username') && $.cookie('password')){
+            $('#username').val(getEncodeCookie('username'));
+            $('#password').val(getEncodeCookie('password'));
+            $('#autologin').trigger('click');
+        }
+    }
+
+    $(document).ready(function () {
+        // cookie 记录
+        $('#rememberuser').click(function () {
+            var name = $('#username');
+            if ($(this).is(':checked')) {
+                if (isEmpty(name.val())) {
+                    alert('{$Think.lang.L9096}');
+                    $(this).attr('checked', false);
+                } else {
+                    setEncodeCookie('username',name.val());
+                    $.cookie('rememberuser', 1, {expires: 30,path:'/'});
+                }
+            } else {
+                $.cookie('rememberuser', null, {path:'/'});
+                $.cookie('username', null, {path:'/'});
+            }
+        });
+        $('#autologin').click(function () {
+            var ru = $('#rememberuser'), name = $('#username'), pass = $('#password');
+            if (isEmpty(pass.val()) || isEmpty(name.val())) {
+                alert('{$Think.lang.L9097}');
+                $(this).attr('checked', false);
+            } else {
+                if ($(this).is(':checked')) {
+                    ru.attr('checked', true);
+                    //$.cookie('autologin', 1, { expires: 7 });
+                    $.cookie('autologin', 1, { expires: 7, path:'/' });
+                    $.cookie('rememberuser', 1, {expires: 30,path:'/'});
+                    setEncodeCookie('username',name.val());	//以asc码+8的方式加密cookie
+                    setEncodeCookie('password',pass.val());
+                    //$.cookie('username', name.val(), { expires: 7, path:'/'});
+                    //$.cookie('password', pass.val(), { expires: 7, path:'/' });
+                } else {
+                    ru.attr('checked', false);
+                    $.cookie('username', null, {path:'/'});
+                    $.cookie('autologin', null, {path:'/'});
+                    $.cookie('password', null, {path:'/'});
+                }
+            }
+        });
+        // 登陆
+        $('#loginSubmit').click(function () {
+            var name = $('#username'), pass = $('#password');
+            if($('#rememberuser').is(':checked')){
+                $.cookie('rememberuser', 1, {expires: 30,path:'/'});
+                setEncodeCookie('username',name.val());
+            }
+            if($('#autologin').is(':checked')){
+                $.cookie('autologin', 1, { expires: 7, path:'/' });
+                setEncodeCookie('username',name.val());	//以asc码+8的方式加密cookie
+                setEncodeCookie('password',pass.val());
+            }
+            //&& !isEmpty(pass.val())
+            if (!isEmpty(name.val()) ) {
+                //&& checkpas()
+                if (checkuser()) {
+                    $.ajax({
+                        url: "{:U('Home/Public/login')}",
+                        type: 'post',
+                        dataType: 'json',
+                        data: {'username': name.val(), 'password': pass.val()},
+                        success: function (result, a, g) {
+                            if (result.success) {
+                                window.location.href = result.url;
+                            } else {
+                                alert(result.msg);
+                            }
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    });
+                } else {
+                    alert('用户名和密码没有通过验证！');
+                }
+            } else {
+                alert('{$Think.lang.L9097}');
+                $('#username').focus();
+            }
+        });
+
+        init();
+    });
+</script>
+<include file=".:Base:layout_footer" />

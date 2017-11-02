@@ -1,0 +1,87 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<script src="__JS__/goodsCategory.js" type="text/javascript"></script>
+<div id="main">
+<include file=".:Base:Public:cat" />
+<div class="goodsCat">
+	<div class="slide hide"><img src="__IMG__/catBg.gif"></div>
+	<if condition="$goods_series_array">
+		<div class="series">
+			<span>系列分类：</span>
+			<div class="series-into">
+				<volist name="goods_series_array" id="v" mod="7" key="k">
+					<eq name="mod" value="0"><ul class="series_info" id="info_{++$h}" <if condition="$k gt 1 ">style="display:none;"</if>></eq>
+						<li><a href="javascript:void(0);" id="series_id_{$v.goods_series_id}"  onclick="func_series_set({$v.goods_series_id});" >{$v.series_name}</a></li>
+					<eq name="mod" value="6"></ul></eq>
+				</volist>
+			</div>
+			<if condition="count($goods_series_array) gt 8 ">
+				<a class="more" href="javascript:void(0);" onclick="openShutManager(this,'series_info','收起-','更多+')">更多+</a>
+			</if>
+		</div>
+		<div class="clear"></div>
+	</if>
+	<if condition="$cateAttrs">
+	<div class="attrs">
+	<volist name="cateAttrs" id="vo">
+    <ul class="attr">
+    	<span>{$vo.attr_name}:</span>
+    	<!-- <li selectAll="{$vo.attr_id}" onclick="setAllAttribute(this,{vo.category_id},{$vo.attr_id})"><a href="javascript:void(0)">全部</a></li> -->
+    	<if condition="$vo['attr_values']">
+        	<volist name="vo['attr_values']" id="v">
+        		<li attr_id="{$v.attr_id}" attr_code="{$v.attr_code}" tid="{$tid}" cid="{$cid}" title="{$v.attr_value_name}" onclick="setAttributeId(this,{$tid},{$vo.category_id},{$goodsType},{$v.attr_id},{$tid})"><a href="javascript:void(0)">{$v.attr_value_name}</a></li>
+        	</volist>
+        </if>
+    </ul>
+    </volist>
+    </div>
+    </if>
+    <div class="filter">
+    	<ul class="filterTo">
+        	<li ref="create_time" txt="上架时间">上架时间</li>
+            <li ref="goods_price" txt="价格">价格</li>
+            <li ref="update_time" txt="更新时间">更新时间</li>
+        </ul>
+        <ul class="pageNum">
+        	<span>共<label id="count">{$data.count}</label>款&nbsp; 每页显示:</span>
+            <li>8</li>
+            <li>12</li>
+            <li>16</li>
+            <li>20</li>
+        </ul>
+    </div>
+    <div class="goodsList">
+    	<ul id="dataList">
+    		<if condition="$data">
+    		<volist name="data['data']" id="vo">
+        	<li>
+        		<div class="data_img">
+            	<a href="{:U('Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}"><img src="{$vo.thumb}"></a>
+            	</div>
+            	<div class="data_text">
+                <p><a href="{:U('Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}">{$vo.goods_name|msubstr=0,10,'utf-8'}</a></p>
+                <b>&yen;
+				<in name="vo['activity_status']" value="0,1">
+					{$vo['activity_price']}
+				<else/>
+					{$vo['goods_price']}
+				</in>
+				</b>
+                </div>
+            </li>
+            </volist>
+            </if>
+            <div class="clear"></div>
+        </ul>
+    </div>
+   <div id="page" class="page">{$data.page}</div>
+   <INPUT type="hidden" name="categroyId" value="{$cid}" />
+   <INPUT type="hidden" name="goodsType" value="{$goodsType}" />
+</div>
+</div>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

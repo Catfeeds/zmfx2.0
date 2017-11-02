@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>{:C("seo_title")}</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="{$keyword|default='关键字'}" />
+    <meta name="description" content="{$description|default='描述'}" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="__IMG__/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="__CSS__/style-index.css?v1.2" />
+    <link rel="stylesheet" type="text/css" href="__CSS__/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="__CSS__/style-swiper.css" />
+    <link rel="stylesheet" type="text/css" href="__CSS__/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="__CSS__/style-layer.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="__CSS__/<?php echo C('agent_id');?>.css" /> <!-- ios下弹式菜单选择 -->
+
+    <script src="__JS__/jquery-1.12.3.js"></script>
+    <script src="__JS__/swiper.min.js"></script>
+    <script src="__JS__/mobileSelect.js"></script> <!-- 下弹菜单 -->
+    <script src="__JS__/layer.js"></script> <!-- 下弹菜单 -->
+    <script src="__JS__/public.js"></script>
+	<script type="text/javascript" src="/Public/Js/Jquery/Jquery.Cookie.js"></script>
+</head>
+
+<style>
+	<?php if ($themeConfig['foot_bgcolor'] == true): ?>
+		.footer-box {
+			background: <?php echo $themeConfig['foot_bgcolor'];?>;
+		}
+	<?php endif; ?>
+
+	<?php if ($themeConfig['foot_colors'] == true): ?>
+		.footer-box ul li a {
+			color: <?php echo $themeConfig['foot_colors'];?>;
+		}
+	<?php endif; ?>
+
+	<?php if ($themeConfig['foot_colors'] == true): ?>
+		.footer-box ul .active a {
+			color: <?php echo $themeConfig['foot_colors'];?>;
+		}
+	<?php endif; ?>
+
+	<?php if ($themeConfig['nav_bgcolor'] == true): ?>
+		.web-top ,.header-wrap .home-head {
+			background: <?php echo $themeConfig['nav_bgcolor'];?>;
+		}
+	<?php endif; ?>
+
+	<?php if ($themeConfig['nav_colors'] == true): ?>
+		.web-top h2{
+			color: <?php echo  $themeConfig['nav_colors'];?>;
+		}
+	<?php endif; ?>
+</style>
+
+<?php if(C('new_rules')['kefu_show']==1){ ?>
+<a id="ibangkf" href="http://www.ibangkf.com">客服系统</a>
+<script type="text/javascript" src="http://c.ibangkf.com/i/c-jtf-b2bzm.js"></script>
+<?php } ?>

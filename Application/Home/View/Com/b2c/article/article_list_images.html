@@ -1,0 +1,28 @@
+<!-- <h3><span></span></h3> -->
+<volist name="articleList" id="vo">
+<div class="new-list">
+    <div class="media">
+        <div class="media-left">
+            <a href="{:U('Home/Article/detail?aid='.$vo['aid'])}" target="_blank">
+                <if condition="$vo['thumb']">
+                <img class="media-object" src="__PUBLIC__/Uploads/article/{$vo['thumb']}" width="100%" height="100%">
+                <else/>
+                <img src="__IMG__/noimage6.jpg">
+                </if>
+                
+            </a>
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading"><a href="{:U('Home/Article/detail?aid='.$vo['aid'])}" title="{$vo.title}" target="_blank">{$vo.title|msubstr=0,28,'utf-8'}</a></h4>
+            <p>{$vo.addtime|date='Y年m月d号 H:i',###}</p>
+            <p>{$vo.description|msubstr=0,60,'utf-8'}
+            <!-- <span class="pull-right details"><a href="{:U('Home/Article/detail?aid='.$vo['aid'])}">查看详情</a></span> -->
+            </p>
+        </div>
+    </div>
+</div>
+</volist>
+
+<div class="mallhot mallhot-type diamond diamond-select" id="page">
+    {$page}
+</div>

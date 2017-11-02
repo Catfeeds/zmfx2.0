@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>速易宝-会员中心-消息中心</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script src="js/jquery-1.12.3.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/public.js"></script>
+</head>
+
+<body>
+
+	<!-- header -->
+	<div class="header">
+		<div class="container">
+			<div class="shortcut hidden-xs">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-6 col-md-6">
+							<p class="text-left">您好，欢迎来到Munch珠宝 [<a href="#">登录</a>] [<a href="#">注册</a>]</p>
+						</div>
+						<div class="col-sm-6 col-md-6">
+							<div class="shortcut-right">
+								<ul class="list-inline text-right">
+									<li class=""><a href="#">购物车(<span class="cat-c">2件</span>)</a></li>
+									<li class="">|</li>
+									<li class=""><a href="#">我的订单</a></li>
+									<li class="">|</li>
+									<li class=""><a href="#">帮助中心</a></li>
+								</ul>   
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="top">
+				<div class="logo">
+						<div class="col-xs-12 col-sm-6 col-md-7 text-right">
+							<img src="images/logo.png" alt="logo">
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-5">
+							<form class="navbar-left pull-right">
+								<div class="form-group">
+									<div class="input-group">
+									      <input type="text" class="form-control search-text radius" placeholder="产品搜索">
+									      <span class="input-group-btn">
+									        <button type="submit" class="btn btn-default search-btn radius"><i class="glyphicon glyphicon-search"></i></button>
+									      </span>
+									</div>
+									<div class="tag">
+										热搜：
+										<a href="#">裸钻</a>
+										<a href="#">钻石</a>
+										<a href="#">对接</a>
+										<a href="#">女戒</a>
+										<a href="#">男戒</a>
+										<a href="#">女戒</a>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+		<div class="nav">
+			<nav class="navbar navbar-default border-radiusno">
+				<div class="container">
+			    <!-- Brand and toggle get grouped for better mobile display -->
+				    <div class="navbar-header">
+				      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				        <span class="sr-only">Toggle navigation</span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				      </button>
+				      <a class="navbar-brand hidden" href="#">LOGO</a>
+				    </div>
+
+				    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				      <ul class="nav navbar-nav center-nav">
+				        <li><a href="#">首页 <span class="sr-only">(current)</span></a></li>
+				        <li><a href="#">钻石定制</a></li>
+				        <li><a href="#">商城热卖</a></li>
+				        <li><a href="#">品牌系列街</a></li>
+				        <li><a href="#">珠宝资讯</a></li>
+				      </ul>
+				      <!-- <form class="navbar-form navbar-left" role="search">
+				        <div class="form-group">
+				          <input type="text" class="form-control" placeholder="Search">
+				        </div>
+				        <button type="submit" class="btn btn-default">Submit</button>
+				      </form> -->
+				    </div><!-- /.container-fluid -->
+				</div>
+			</nav>
+		</div>
+	</div>
+	<!-- header end //-->
+	
+	<!-- user-message -->
+	<div class="user">
+		<div class="container">
+			<div class="path">
+				<ol class="breadcrumb">
+					当前位置：
+				  <li><a href="#">首页</a></li>
+				  <li><a href="#">会员中心</a></li>
+				  <li class="active">消息中心</li>
+				</ol>
+			</div>
+
+			<div class="userdata">
+				<div class="row">
+					<div class="col-md-3">
+						<ul class="list-group text-center">
+						  <li class="list-group-item">个人中心</li>
+						  <li class="list-group-item">用户资料 </li>
+						  <li class="list-group-item">地址管理</li>
+						  <li class="list-group-item">我的订单</li>
+						  <li class="list-group-item">账户安全</li>
+						  <li class="list-group-item list-group-item-warning">消息中心 <span class="caret pull-right"></span></li>
+						</ul>
+					</div>
+					<div class="col-md-9">
+						<div class="cart check-cart userdata-box user-address user-message">
+								<div class="row1">
+									<div class="check-order">
+										<div class="txlist">
+											<div class="shbg"><p><span><strong>消息中心</strong></span></p> <span class="chaozuo"><button class="btn btn-default">全部删除</button><button class="btn btn-default">设为己读</button><button class="btn btn-default">忽略所有</button></span><div class="clearfix"></div></div>
+											<div class="table-responsive">
+												<table class="table text-center message-table">
+													<tr>
+														<th><input type="checkbox" class="user-message-checked"> 全选 </th>
+														<th>发送人</th>
+														<th>内容</th>
+														<th>发送时间</th>
+														<th>状态</th>
+														<th>操作</th>
+													</tr>
+													<tr>
+														<td><input type="checkbox"></td>
+														<td>系统消息</td>
+														<td>请尽快完成支付！</td>
+														<td>2016-04-16 18:21:08</td>
+														<td><img src="images/user-message_03.png" alt=""> 未读</td>
+														<td><a href="#" class="btn-link">删除</a></td>
+													</tr>
+													<tr>
+														<td><input type="checkbox"></td>
+														<td>系统消息</td>
+														<td>恭喜您注册成功！</td>
+														<td>2016-04-16 18:21:08</td>
+														<td><img src="images/user-message_07.jpg" alt=""> 己读</td>
+														<td><a href="#" class="btn-link">删除</a></td>
+													</tr>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- user-message end //-->
+
+	<!-- footer -->
+	<div class="footer">
+		<div class="container">
+			<div class="ensure center-block text-center">
+				<div class="row">
+					<div class="col-xs-12 col-sm-4 col-md-5ths"><img src="images/index_86.png" alt="...">一钻双证</div>
+					<div class="col-xs-12 col-sm-4 col-md-5ths"><img src="images/index_88.png" alt="...">全国免费配送</div>
+					<div class="col-xs-12 col-sm-4 col-md-5ths"><img src="images/index_90.png" alt="...">珠宝协会会员</div>
+					<div class="col-xs-12 col-sm-6 col-md-5ths"><img src="images/index_93.png" alt="...">15天免费退换</div>
+					<div class="col-xs-12 col-sm-6 col-md-5ths"><img src="images/index_95.png" alt="...">全程保险</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="foot-desc">
+			<div class="container">
+				<div class="row foot-desc-list">
+					<div class="col-xs-12 col-md-2 footer-logo">
+						<img src="images/logo.png" alt="">
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>用户指南</h5>
+						<ul class="list-group">
+							<li><a href="#">注册用户</a></li>
+							<li><a href="#">购买流程</a></li>
+							<li><a href="#">支付方式</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>关于配送</h5>
+						<ul class="list-group">
+							<li><a href="#">商品包装</a></li>
+							<li><a href="#">配送方式</a></li>
+							<li><a href="#">配送流程</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>售后服务</h5>
+						<ul class="list-group">
+							<li><a href="#">会员细节</a></li>
+							<li><a href="#">售后保障</a></li>
+							<li><a href="#">退换流程</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>常见问题</h5>
+						<ul class="list-group">
+							<li><a href="#">珠宝常识</a></li>
+							<li><a href="#">配送问题</a></li>
+							<li><a href="#">联系客服</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-12 col-md-2 gstime">
+						<img src="images/footer-phone.png" alt="">
+						<strong><h4>0755-22922183</h4></strong>
+						<span>服务时间： AM9: 00-PM23: 00</span>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				<p class="copy-link">伪验证   友情链接        钻石、钻戒、裸钻、婚戒、戒指、结婚钻戒、结婚戒指、钻石戒指、珠宝、首饰、订婚戒指、克拉钻、异形钻、30分钻石、50分钻石、钻石饰品、裸钻定制</p>
+				<p class="text-center">© 2010-2016 珠宝官网 版权所有,并保留所有权利  粤ICP备123456789号</p>
+			</div>
+		</div>
+	</div>
+	<!-- footer end //-->
+
+
+</body>
+</html>

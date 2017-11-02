@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加或编辑管理员</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" /> 
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：管理员信息</h3>
+    </div>
+    <form action="{:U('Admin/User/adminSavepwd?id='.$adminUserInfo['user_id'])}" method="post">
+    	<div style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">帐号:</div>
+                <if condition="$adminUserInfo['user_id']">
+                <span>{$adminUserInfo.user_name}</span>
+                <else />
+                <input type="text" name="user_name" >
+                </if>
+            </div>
+            <div class="info">
+                <div class="title">密码:</div>
+                <input type="password" name="password" >
+            </div>
+            <div class="info">
+                <div class="title">重复密码:</div>
+                <input type="password" name="repassword">
+            </div>
+            <div class="info">
+                <div class="title">邮箱:</div>
+                <input type="text" name="email"  value="{$adminUserInfo.email}">
+            </div>
+            <div class="info">
+                <div class="title">备注:</div>
+                <span>{$adminUserInfo.note}</span>
+            </div><br />
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="保存">
+                <input type="reset" class="button fl ml10" value="重置">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

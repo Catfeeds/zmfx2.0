@@ -1,0 +1,224 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+    <style>
+        .steps { width: 1200px; margin: 0 auto; border: 1px solid #838383;}
+        .steps .breadcrumb li { float: left; font-size: 14px;}
+        .steps .breadcrumb { padding: 15px; background: #F3F3F3;}
+        .gou_wrap { margin-top: 30px;}
+        input[type='checkbox'] { width: 15px; height: 15px;}
+    </style>
+    <div class="steps" style="margin-top: 20px;">
+        <div class="container">
+            <div class="path">
+                <ol class="breadcrumb" style="margin: 0;">
+                    <li>当前位置：</li>
+                    <li><a href="javascript:void(0);">首页</a></li>
+                    <li> > </li>
+                    <li class="active">我的收藏</li>
+                    <div style="clear: both;"></div>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="gou_wrap">
+        <if condition="!empty($product['data'])">
+        <div class="contain">
+            <table border="1">
+                <tbody>
+                    <tr class="top">
+                        <th width="5%"><input type="checkbox" class="check-all" name="" value=""></th>
+                        <th width="">商品名称</th>
+                        <th width="10%">货品编号/货号</th>
+                        <th>收藏时间</th>
+                        <th width="10%">单价</th>
+                        <th width="8%">操作</th>
+                    </tr>
+                        <volist name="product['data']" id="vo" >
+                            <tr>
+                                    <td><input type="checkbox" data-id="chk_{$vo['id']}" class="checkboxs" name="" value=""></td>
+
+                                <if condition="$vo['goods_type'] gt 2">
+                                    <td class="tdLeft">
+                                        <div class="tbl_cart_left">
+                                            <a href="{:U('/Home/Goods/goodsInfo',array('goods_type'=>$vo['goods_type'],'gid'=>$vo['goods_id']))}" target="_blank">
+                                                <img src="{$vo['goods_attrs']['thumb']}">
+                                            </a></div>
+                                        <div class="tbl_cart_right">
+                                            <a href="{:U('/Home/Goods/goodsInfo',array('goods_type'=>$vo['goods_type'],'gid'=>$vo['goods_id']))}" target="_blank">
+                                                {$vo['goods_attrs']['goods_name']} {$vo['goods_attrs']['attrs']}
+                                            </a>
+                                            <br>
+                                            <?php echo !empty($vo['goods_attrs']['associateInfo']['material_name']) 	? '材质:'.$vo['goods_attrs']['associateInfo']['material_name']		 	: '';?>
+
+                                            <?php echo !empty($vo['goods_attrs']['hand']) 				? '手寸:'.$vo['goods_attrs']['hand']		 			: '';?>
+                                            <?php echo !empty($vo['goods_attrs']['word']) 				? '刻字:'.$vo['goods_attrs']['word']		 			: '';?>
+
+                                            <?php echo !empty($vo['goods_attrs']['hand1']) 				? '手寸（女戒）:'.$vo['goods_attrs']['hand1']		 	: '';?>
+                                            <?php echo !empty($vo['goods_attrs']['word1']) 				? '刻字:'.$vo['goods_attrs']['word1']		 			: '';?>
+                                        </div>
+                                    </td>
+                                    <td>{$vo['goods_attrs']['goods_sn']}<if condition="$vo['have_goods'] lt 1">【<span style="color:red;">无货</span>】</if></td>
+                                <elseif condition="$vo['goods_type'] eq 2"/>
+                                    <td>{$vo['goods_attrs']['goods_sn']} 分类:{$vo['goods_attrs']['type_name']} 颜色:{$vo['goods_attrs']['color']}  净度:{$vo['goods_attrs']['clarity']}  切工:{$vo['goods_attrs']['cut']}  库存重量:{$vo['goods_attrs']['goods_weight']} CT</td>
+                                    <td>
+                                        {$vo['goods_attrs']['goods_sn']}
+                                    </td>
+                                <else/>
+                                    <td>{$vo['goods_attrs']['certificate_type']} <if condition="$yn_certificate_num_cv neq 1">_{$vo['goods_attrs']['certificate_number']}</if>  <if condition="$vo['have_goods'] lt 1">【<span style="color:red;">无货</span>】 </if>{$vo['goods_attrs']['shape_name']}   {$vo['goods_attrs']['weight']}ct  颜色:{$vo['goods_attrs']['color']}  净度:{$vo['goods_attrs']['clarity']}  切工:{$vo['goods_attrs']['cut']}  抛光:{$vo['goods_attrs']['polish']}  荧光:{$vo['goods_attrs']['fluor']} 对称:{$vo['goods_attrs']['symmetry']}  </td>
+                                    <td>
+                                        <eq name="vo['goods_attrs']['luozuan_type']" value="1">彩钻&nbsp;</eq>
+                                        {$vo['goods_attrs']['goods_name']}
+                                    </td>
+                                </if>
+
+                                    <td>{$vo['create_time']}</td>
+                                    <td>{$vo['goods_price']}</td>
+                                    <td>
+                                        <a href="javascript:void(0);" onclick="deleteColletion('确定要删除吗？',{$vo['id']});" class="delete">删除</a>
+                                    </td>
+                            </tr>
+                        </volist>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="bton">
+            <p class="bt_o">批量删除</p>
+            <p class="bt_a"><a href="javascript:void(0);">加入购物车</a></p>
+        </div>
+        <else/>
+        <div class="container null" style="padding: 100px 0">
+            <p style="margin-bottom: 5px; font-size: 14px;text-align: center;">您的收藏夹还是空的！</p>
+        </div>
+        </if>
+        <script>
+            //全选
+
+            function selectAll(){
+                if($('.check-all').prop('checked')){
+                    $('.checkboxs').each(function(){
+                        $(this).prop('checked', true);
+                    });
+                }else{
+                    $('.checkboxs').each(function(){
+                        $(this).prop('checked', false);
+                    });
+                }
+            }
+
+            // 批量删除，单个删除-->
+            function getSelectObjArray(id){
+                var collection_obj = {};
+                if(id){
+                    collection_obj[id] = id;
+                }else{
+                    $('.checkboxs').each(function(){
+                        if($(this).prop('checked')){
+                            var now_id = $(this).attr('data-id').replace('chk_','');
+                            collection_obj[now_id] = now_id;
+                        }
+                    });
+                }
+                var tempdata   = new Array();
+                for( var key in collection_obj ){
+                    tempdata.push(collection_obj[key]);
+                }
+                return tempdata;
+            }
+            function deleteColletion(msg,id){
+                var tempdata = getSelectObjArray(id);
+                if(tempdata.length==0){
+                    layer.msg('请选择操作对象');
+                    return;
+                }
+                layer.confirm(msg, {
+                            btn: ['确定','再想想'] //按钮
+                        }, function(){
+                            $.ajax({
+                                type: "post",
+                                url : "{:U('/Home/Goods/deleteColletion')}",
+                                dataType:'json',
+                                data: {id:tempdata},
+                                success: function(res){
+                                    if(res.status == 100){
+                                        layer.msg(res.msg,{
+                                            shift:6,
+                                            icon: 6
+                                        });
+                                        setTimeout(function(){
+                                            window.location.reload();
+                                        },1500)
+                                    }else{
+                                        layer.msg(res.msg,{
+                                            shift:6,
+                                            icon: 5
+                                        });
+                                    }
+                                },
+                            });
+                        }
+                );
+            }
+            function addAllCollectionToCart(){
+                var tempdata = getSelectObjArray();
+                if(tempdata.length==0){
+                    layer.msg('请选择操作对象');
+                    return;
+                }
+                $.ajax({
+                    type: "post",
+                    url : "{:U('/Home/Goods/addCollectionToCart')}",
+                    dataType:'json',
+                    data: {id:tempdata},
+                    success: function(res){
+                        if(res.status == 100){
+                            layer.msg(res.msg,{
+                                shift:6,
+                                icon: 6
+                            });
+                            setTimeout(function(){
+                                window.location.reload();
+                            },1500)
+                        }else{
+                            layer.msg(res.msg,{
+                                shift:6,
+                                icon: 5
+                            });
+                        }
+                    },
+                });
+
+
+            }
+            // 全部选中产品 -->
+            $(function(){
+                //全选
+                $(document).delegate('.check-all', 'click', function(){
+                    selectAll();
+                });
+                //批量删除
+                $(document).delegate('.bt_o', 'click', function(){
+                    deleteColletion('确定要批量删除吗？');
+                });
+                //加入购物车
+                $(document).delegate('.bt_a', 'click', function(){
+                    addAllCollectionToCart();
+                });
+                //单个删除
+                /*$(document).delegate('.delete', 'click', function(){
+                    $(this).parents('tr').remove();
+                });*/
+                $('.checkboxs').each(function(){
+                    $(this).prop('checked', true);
+                });
+                $('.check-all').prop('checked',true);
+            });
+        </script>
+    </div>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

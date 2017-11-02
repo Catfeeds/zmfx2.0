@@ -1,0 +1,62 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<link href="__CSS__/help.css" rel="stylesheet" type="text/css" />
+<style>
+.active{
+	background:#EDF0FF;
+}
+
+</style>
+<block name="body">
+	<!-- help -->
+	<div class="help">
+		<div class="container">
+
+			<div class="path">
+				<ol class="breadcrumb">
+					当前位置：
+				  <li><a href="/">首页</a></li>
+				  <li><a href="{:U('/Home/Article/help')}">帮助中心</a></li>
+				  <li class="">{$helpArticleInfo['title']}</li>
+				</ol>
+			</div>
+
+			<div class="row">
+				<div class="col-ms-3 col-md-3">
+					<div class="panel panel-default">
+						<!-- Default panel contents -->
+						<div class="panel-heading text-center help-l-title"><img src="__IMG__/help_03.png">帮助中心</div>
+						<!-- List group -->
+						<ul class="list-group sidebar-list">
+							<volist name="helpArticleList" id="vo">
+							<li class="list-group-item">
+								<h6><img src="__IMG__/help_07.png" data="true" alt=""> {$vo['catname']}</h6>
+								<ul>
+									<volist name="vo['articleList']" id="v">
+									<li <eq name="v['aid']" value="$aid">class="active"</eq> >
+										<a href="{:U('Home/Article/help',array('aid'=>$v['aid']))}">
+											{$v['title']}
+										</a>
+									</li>
+									</volist>
+								</ul>
+							</li>
+							</volist>
+						</ul>
+					</div>
+				</div>
+				<div class="col-ms-9 col-md-9">
+					<div class="help-content">
+					  <h5>{$helpArticleInfo['title']}</h5>
+					  {$helpArticleInfo['content']|htmlspecialchars_decode}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- help end //-->
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

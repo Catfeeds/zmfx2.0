@@ -1,0 +1,240 @@
+<include file="Public:header" />
+<!--导航-->
+<div class="am-g ">
+<!-- Header -->
+	<header data-am-widget="header" class="am-header am-serch cat">
+		<div class="am-header-left am-header-nav">
+			<a href="{:U('/User/index')}" class="">
+				<img class="am-header-icon-custom" src="__ASS__/Img/search_01.png" alt=""/>
+			</a>
+		</div>
+		<h1 class="am-header-title">
+			收货地址
+		</h1>
+	</header>
+	<!--订单-->
+	<div class="wrap">
+		<div class="find">
+			<p>收货人信息</p>
+		</div>
+
+		<section data-am-widget="accordion" class="am-accordion am-accordion-basic address" data-am-accordion='{  }'>
+			<foreach name="list" item="vo" key="k">
+				<dl class="am-accordion-item
+					<if condition="$vo.is_default eq '1'">am-active</if>
+				">
+					<dt class="am-accordion-title">{$vo.title}&nbsp;&nbsp;{$vo.name}&nbsp;&nbsp;{$vo.phone}
+						<span>
+
+							<label for="is_default_{$k}" >
+								<if condition="$vo.is_default neq '1'">
+									<!--<input id="is_default_{$k}" name="is_default" onchange="setDefaultAddress({$vo.address_id});" onchange="return false" type="radio" value="1" >-->
+								<else />
+									<input id="is_default_{$k}" name="is_default" onchange="setDefaultAddress({$vo.address_id});" onchange="return false" type="radio" value="1" checked> &nbsp;默认地址
+								</if>
+							</label>
+						</span>
+					</dt>
+					<dd class="am-accordion-bd am-collapse address-in
+							<if condition="$vo.is_default eq '1'">am-in<else /></if>
+					">
+						<div class="am-accordion-content">
+							收货人：{$vo.name}
+							<if condition="$vo.is_default neq '1'">
+								<span class="address-del">
+									<input type="button" onClick="if(confirm('你确认要删除该收货地址吗？')){deleteAdd({$vo.address_id});}" value="删除">
+									&nbsp;&nbsp;
+									<input type="button" onClick="if(confirm('确定地址为默认地址吗？')){setDefaultAddress({$vo.address_id});}" value="标记默认">
+								</span>
+							</if>
+							<br/>联系电话：{$vo.phone}
+							<br/>{$vo.country_id|getRegion}{$vo.province_id|getRegion}{$vo.city_id|getRegion}{$vo.district_id|getRegion}{$vo.address}
+							<br/>邮政编码：{$vo.code}
+						</div>
+					</dd>
+				</dl>
+			</foreach>
+			<dl class="am-accordion-item">
+				<dt class="am-accordion-title newly"><b>新增收货地址</b></dt>
+				<dd class="am-accordion-bd am-collapse ">
+					<div class="am-accordion-content">
+						<form id="address_data" method="post" class="" data-am-validator>
+							<label>地址标注</label>
+							<input type="text" name="title" placeholder="例：公司">
+							<br/>
+							配送区域 
+							<select name="country_id" id="selCountries">
+								<option value="1">中国</option>
+							</select>
+							<select name="province_id" id="selProvinces">
+								<option value="0">请选择</option>
+							</select>
+							<select name="city_id" id="selCities">
+								<option value="0">请选择</option>
+							</select>
+							<select name="district_id" id="selDistricts">
+								<option value="0">请选择</option>
+							</select>
+							<br>
+							<label>地址详情</label>
+							<input type="text" name="address">
+							<br>
+							<label>邮政编码</label>
+							<input type="text" name="code">
+							<br>
+							<label>收货姓名</label>
+							<input type="text" name="name">
+							<br>
+							<label>联系电话</label>
+							<input type="text" name="phone">
+							<br/>设为默认
+							<select name="is_default" class="address-in">
+								<option value="1">是</option>
+								<option value="0">否</option>
+							</select>
+						</form>
+					</div>
+					<div>
+						<!--<button type="button" class="am-btn am-btn-blue am-radius">取消</button>-->
+						<button id="save_address" type="button" class="am-btn am-btn-blue am-radius">确认添加</button>
+					</div>
+				</dd>
+			</dl>
+		</section>
+		<br>
+		<br>
+	</div>
+	<script>
+		var getLength = function (str) {
+			///<summary>获得字符串实际长度，中文2，英文1</summary>
+			///<param name="str">要获得长度的字符串</param>
+			var realLength = 0, len = str.length, charCode = -1;
+			for (var i = 0; i < len; i++) {
+				charCode = str.charCodeAt(i);
+				if (charCode >= 0 && charCode <= 128) realLength += 1;
+				else realLength += 2;
+			}
+			return realLength;
+		};
+		function check_num(str){
+			return str.match(/\D/) == null;
+		}
+		var check_email = function(str){
+			if (str.match(/[A-Za-z0-9_-]+[@](\S*)(net|com|cn|org|cc|tv|[0-9]{1,3})(\S*)/g) == null) {
+				return false;
+			}
+			else {
+				return true;
+			}
+		};
+		function check_mobilephone(str){
+			if (str.match(/^(?:13\d|15[89]|1[\d][\d])-?\d{5}(\d{3}|\*{3})$/) == null) {
+				return false;
+			}
+			else {
+				return true;
+			}
+		}
+		var check_telephone = function(str){
+			if (str.match(/^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/) == null) {
+				return false;
+			}
+			else {
+				return true;
+			}
+		};
+		$(function() {
+			$("#save_address").click(function(){
+				var selTitle = $('input[name="title"]').val();
+				var selProvinces = $("#selProvinces").val();
+				var selCities = $("#selCities").val();
+				var selDistricts = $("#selDistricts").val();
+				if(selTitle){
+					if(getLength(selTitle)>10){
+						alert("地址标注不能超过4个汉字或者8个字符");
+						return false;
+					}
+				}else{
+					alert('请填写地址标注');
+					return false;
+				}
+				
+				if(selProvinces == 0 || !selProvinces){
+					alert("请选择省份");
+					return false;
+				}
+				if(selCities == 0 || !selCities){
+					alert("请选择城市");
+					return false;
+				}
+				if(selDistricts == 0 || !selDistricts){
+					alert("请选择区");
+					return false;
+				}
+				if(getLength($('#address_data input[name="address"]').val())<2){
+					alert("请填写准确地址");
+					return false;
+				}
+				var codeLen = $('#address_data input[name="code"]').val().trim().length;
+				if(codeLen != 6 || check_num($('#address_data input[name="code"]').val())===false){
+					alert("请填写正确的邮政编码");
+					return false;
+				}
+				if(getLength($('#address_data input[name="name"]').val())<2){
+					alert("长度不够,请填写准确的收货姓名");
+					return false;
+				}
+				if(check_mobilephone($('#address_data input[name="phone"]').val())==false && check_telephone($('#address_data input[name="phone"]').val())==false ){
+					alert("请填写准确的联系电话");
+					return false;
+				}
+				$.ajax({
+					url:"/User/addressList",
+					type: 'POST',
+					data: $('#address_data').serialize(),
+					success: function(d){
+						alert(d.msg);
+						window.location.href=d.backUrl;
+					}
+				});
+			});
+		});
+		var deleteAdd = function(id){
+			$.ajax({
+				url:"/User/deleteAddress",
+				type: 'POST',
+				data: {'id':id},
+				success: function(d){
+					alert(d.msg);
+					window.location.href=d.backUrl;
+				}
+			});
+		};
+		var setDefaultAddress = function(id){
+			$.ajax({
+				url:"/User/setDefaultAddress",
+				type: 'POST',
+				data: {'id':id},
+				success: function(d){
+					window.location.href=d.backUrl;
+				}
+			});
+		}
+		function address(sel, hl) {
+			var parent_id = $(sel).children('option:selected').val(), html, i;
+			if (parent_id !== 0) {
+				$.get("/Public/getRegion",{'parent_id': parent_id}, function (data) {
+					html = '<option value="0">请选择</option>';
+					for (i = 0; i < data.length; i++) {
+						html += '<option value="' + data[i].region_id + '">' + data[i].region_name + '</option>';
+					}
+					$(hl).html(html);
+				});
+			}
+		}
+		$('#selCountries').change(function () { address('#selCountries', '#selProvinces'); });
+		$('#selProvinces').change(function () { address('#selProvinces', '#selCities'); });
+		$('#selCities').change(function () { address('#selCities', '#selDistricts'); });
+		address('#selCountries', '#selProvinces');
+	</script>
+	<include file="Public:footer" />

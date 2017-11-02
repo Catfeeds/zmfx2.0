@@ -1,0 +1,109 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心-个人信息</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-swiper.css" /> <!-- tab -->
+    <link rel="stylesheet" type="text/css" href="../css/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="../css/style-layer.css" /> <!-- 提示 -->
+
+    <script src="../js/jquery-1.12.3.js"></script>
+    <script src="../js/swiper.min.js"></script> <!-- tab -->
+    <script src="../js/mobileSelect.js"></script> <!-- ios下弹式菜单选择 -->
+    <script src="../js/layer.js"></script> <!-- 提示 -->
+</head>
+
+
+<body>
+    <section class="user user-info">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="../img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>个人信息</h2>
+                <div class="web-top-right">
+                    <a href="个人中心-消息.html"><img src="../img/msg_icon.png" class="msg-icon" alt=""></a>
+                </div>
+            </div>
+        </header>
+
+        <div class="wrapper">
+
+            <!-- 时间选择 -->
+            <link rel="stylesheet" type="text/css" href="../css/style-date.css" />
+            <script src="../js/date.js"></script>
+            <script src="../js/iscroll.js"></script>
+            <!-- 时间选择 end -->
+
+            <div class="module-box user-main-list">
+                <ul>
+                    <li>
+                        <div class="input-box">
+                            <label>昵称：</label> <input type="text" name="" value="" placeholder="输入您的昵称" class="user-text" />
+                        </div>
+                    </li>
+                    <li>
+                        <div class="input-box">
+                            <label>性别：</label> <div id="sex" class="inline-block user-text alink">请选择性别</div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="input-box">
+                            <label>生日：</label> <input type="text" id="beginTime" name="" placeholder="请输入您的出生日期" class="user-text alink" />
+                            <div id="datePlugin"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="input-box">
+                            <label>手机号：</label> <input type="text" name="" value="" placeholder="输入您的手机号码" class="user-text" />
+                        </div>
+                    </li>
+                    <li>
+                        <div class="input-box">
+                            <label>电子邮件：</label> <input type="text" name="" value="" placeholder="输入您的邮箱" class="user-text" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="add-box">
+                <button type="submit" class="add-address-btn">确定修改</button>
+            </div>
+            
+        </div>
+        <script>
+        $(function(){
+
+            //性别
+            var arr1 = ['男','女'];
+            var mobileSelect1 = new MobileSelect({
+            trigger: '#sex',
+            title: '请选择性别',
+            wheels: [
+                        {data: arr1}
+                    ],
+            position:[0] //初始化定位
+            });
+
+            //时间选择
+            $('#beginTime').date();
+
+            $(document).delegate('#dateconfirm', 'click', function(){
+                console.log($('#beginTime').val());
+            });
+        });
+        </script>
+    </section>
+</body>
+</html>

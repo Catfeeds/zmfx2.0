@@ -1,0 +1,46 @@
+<eq name="dingzhi_type" value="0">
+	<!doctype html>
+	<html>
+	<head>
+		<meta charset="utf-8">
+		<title>{:C("seo_title")}</title>
+		<meta name="Keywords" content="{:C('seo_keywords')}" />
+		<meta name="Description" content="{:C('seo_description')}" />
+		{:htmlspecialchars_decode(C('site_statistics_code_tsz'))}
+		<include file=".:Base:Public:head_css" />
+		<include file=".:Base:Public:head_js" />
+		<!--可以在这里添加当前模版需要的一些css和js-->
+	</head>
+	<body>
+	<include file=".:Base:Public:head_header" />
+</eq>
+<eq name="dingzhi_type" value="1">
+	<!doctype html>
+	<html>
+	<head>
+		<meta charset="utf-8">
+		<title>{:C("seo_title")}</title>
+		<meta name="Keywords" content="{:C('seo_keywords')}" />
+		<meta name="Description" content="{:C('seo_description')}" />
+		{:htmlspecialchars_decode(C('site_statistics_code_tsz'))}
+		<!--<link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>-->
+
+		<link rel="stylesheet" type="text/css" href="__CSS_DZ__/style-normalize.css" />
+		<link rel="stylesheet" type="text/css" href="__CSS_DZ__/style-layer.css" />
+		<link rel="stylesheet" type="text/css" href="__CSS_DZ__/style-zlfzb.css" />
+		<script src="__JS_DZ__/jquery-1.12.3.js"></script>
+		<script src="__JS_DZ__/layer.js"></script>
+		<if condition="!$zgoods_show_type">
+			<include file=".:Base:Public:head_css" />
+			<include file=".:Base:Public:head_js" />
+			<else/>
+			<script type="text/javascript" src="__JS_DZ__/public.js"></script>
+			<script type="text/javascript" src="__PUBLIC__/Js/Jquery/Jquery.Cookie.js"></script>
+		</if>
+
+	</head>
+	<body>
+	<include file=".:Base:dingzhi:zhouliufu:header" />
+</eq>
+
+

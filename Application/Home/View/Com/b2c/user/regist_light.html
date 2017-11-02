@@ -1,0 +1,113 @@
+<script type="text/javascript">
+    // 空值检查 --> ken
+    function isEmpty(val) {
+        var result = true;
+        switch (typeof val) {
+        case 'string':
+            if (val === '0') { result = true; } else { result = val.trim().length === 0 ? true : false; }
+            break;
+        case 'number':
+            result = val === 0;
+            break;
+        case 'object':
+            result = val === null;
+            break;
+        case 'array':
+            result = val.length === 0;
+            break;
+        default:
+            result = true;
+        }
+        return result;
+    }
+
+    // 用户注册 --> ken
+    function regUser() {
+        var username = $('#username'),
+            password = $('#password');
+        if (!isEmpty(username.val()) && !isEmpty(password.val())) {
+            $.ajax({
+                url: "/Home/Public/registr",
+                type: 'post',
+                dataType: 'json',
+                data: {'username': username.val(), 'password': password.val()},
+                success: function (result) {
+                    if (result.success) {
+                        alert(result.msg);
+                        window.location.href = result.url;
+                    } else {
+                        alert(result);
+                    }
+                },
+                error: function (e) {
+                    console.log(e);
+                },
+            });
+        } else {
+            alert('{$Think.lang.L9097}');
+        }
+    }
+    //检查用户名
+    function checkusername() {
+        var username = $('#username');
+        if (!isEmpty(username.val())) {
+            if (username.val().length <= 2) {
+                alert("{$Think.lang.L9011}");
+                username.focus();
+                return false;
+            }
+            $.ajax({
+                url: "/Home/Public/checkusername",
+                type: "get",
+                data: {'username': username.val()},
+                dataType: "json",
+                success: function (result) {
+                    if (!result.success) {
+                        alert(result.msg);
+                        username.val('');
+                    }
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        } else {
+            alert('{$Think.lang.L9096}');
+        }
+    }
+    function checkps() {
+        var ps = $('#password'), reg = /^([0-9a-zA-Z])+$/;
+        if (!reg.test(ps.val())) {
+            alert("{$Think.lang.L9010}");
+            return false;
+        }
+    }
+</script>
+<div class="registr">
+    <div class="regMain">
+        <div class="regleft">
+            <span>新用户注册</span>
+            <p>注册本站会员后，将手机号码做为卡号。<br/>
+            此卡全国通用，凭卡号累计消费、接收最新优惠信息、参与精彩活动。</p>
+            <form action="" onsubmit="return false;" method="post">
+                <ul>
+                    <li>{$Think.lang.L801}：<input type="text" id="username" onblur="checkusername();"></li>
+                    <li>{$Think.lang.L9102}：<input type="password" id="password" onblur="checkps();"></li>
+                    <li>请阅读<a href="#"> 《网站服务条款及隐私条款》 </a></li>
+                    <li><input type="button" class="regBtn" value="{$Think.lang.L9103}" onclick="regUser();"></li>
+                </ul>
+            </form>
+        </div>
+        <div class="regright">
+           我已有账号，马上去登录<br/><br/>
+            <a href="{:U('Home/Public/login')}" class="logBtn">{$Think.lang.L863}</a><br/>
+            <p>如果你已经是XX会员，
+            即可通过手机号/Email与初始密码登录，并完善个人信息。</p><br/>
+            <ul>
+                <li><a href="#">*【如何成为会员】</a></li>
+                <li><a href="#">*【会员积分规则】</a></li>
+                <li><a href="#">*【会员等级升降规则】</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

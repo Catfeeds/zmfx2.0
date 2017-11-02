@@ -1,0 +1,265 @@
+<div class="stm-diamond-list" id="stm-diamond-list">
+	<div class="tab-inventory">
+		<span class="spot-tltle active" data-type="0">国内现货 <span class="spot-color xianhuo">{$domestic_count}</span></span>
+		<span class="font20">|</span>
+		<span class="spot-tltle" data-type="1">比利时库存 <span class="spot-color bilishi">{$belgium_count}</span></span>
+	</div>
+	<div class="duibi clearfloat">
+		<div class="pull-left">
+			<button type="button" class="duibi-btn">加入对比（<span class="compare_count">{$compare_count}</span>）>></button>
+			<span class="thui"><input name="preferential" type="checkbox" class="duibi-checkbox"> 特惠钻石</span>
+		</div>
+		<div class="pull-right">
+			<select name="weight_section_two" id="" class="border optioned-select">
+				<option data-min-value="0" data-max-value="500" value="全部">全部</option>
+				<option data-min-value="0.30" data-max-value="0.39" value="0.30-0.39">0.30-0.39ct</option>
+				<option data-min-value="0.40" data-max-value="0.49" value="0.40-0.49">0.40-0.49ct</option>
+				<option data-min-value="0.50" data-max-value="0.59" value="0.50-0.59">0.50-0.59ct</option>
+				<option data-min-value="0.60" data-max-value="0.69" value="0.60-0.69">0.60-0.69ct</option>
+				<option data-min-value="0.70" data-max-value="0.79" value="0.50-0.59">0.70-0.79ct</option>
+				<option data-min-value="0.80" data-max-value="0.89" value="0.80-0.89">0.80-0.89ct</option>
+				<option data-min-value="0.90" data-max-value="0.99" value="0.90-0.99">0.90-0.99ct</option>
+				<option data-min-value="1.00" data-max-value="1.49" value="1.00-1.49">1.00-1.49ct</option>
+				<option data-min-value="1.50" data-max-value="1.99" value="1.50-1.99">1.50-1.99ct</option>
+				<option data-min-value="2.00" data-max-value="2.99" value="2.00-2.99">2.00-2.99ct</option>
+				<option data-min-value="3.00" data-max-value="3.99" value="3.00-3.99">3.00-3.99ct</option>
+				<option data-min-value="4.00" data-max-value="4.99" value="4.00-4.99">4.00-4.99ct</option>
+				<option data-min-value="5.00" data-max-value="5.99" value="5.00-5.99">5.00-5.99ct</option>
+			</select>
+			<span class="border optioned-checkbox" data-min-value="0.30" data-max-value="0.39" value="0.30-0.40">0.30-0.39ct</span>
+			<span class="border optioned-checkbox" data-min-value="0.40" data-max-value="0.49" value="0.40-0.50">0.40-0.49ct</span>
+			<span class="border optioned-checkbox" data-min-value="0.50" data-max-value="0.59" value="0.50-0.60">0.50-0.59ct</span>
+			<span class="border optioned-checkbox" data-min-value="0.60" data-max-value="0.69" value="0.60-0.70">0.60-0.69ct</span>
+			<span class="border optioned-checkbox" data-min-value="0.70" data-max-value="0.79" value="0.70-0.80">0.70-0.79ct</span>
+		</div>
+	</div>
+
+	<div class="stm-diamond-box clearfloat">
+		<div class="stm-diamond-table">
+			<div class="overflow-table">
+				<table>
+					<thead>
+						<tr>
+							<th>比较</th>
+							<th>形状</th>
+							<th>
+								<span class="sort-box">
+									钻重 <img src="__IMG__/weight_sort_up.png" data-down="__IMG__/weight_sort_down.png" data-up="__IMG__/weight_sort_up.png" class="sorts" alt="">
+								</span>
+							</th>
+							<th>切工</th>
+							<th>颜色</th>
+							<th>净度</th>
+							<th>价格</th>
+						</tr>
+					</thead>
+					<tbody id="luozuan_list">
+						
+					</tbody>
+				</table>
+			</div>
+
+			<div id="pages" class="stm-page">
+				
+			</div>
+		</div>
+
+		<div class="stm-diamond-xianxi text-center">
+			
+		</div>
+	</div>
+</div>
+<script>
+$(function(){
+	compare_base = {
+		type		: 1,	//1：裸钻对比追加 2：裸钻对比取消
+		compare_ajax: function(gid,type){
+			$.ajax({
+				type: "post",
+				url : "{:U('Home/Goods/compare_add')}",
+				data:{'gid':gid,'type':type},
+				dataType:'json',
+				success: function(res){
+					layer.msg(res.msg,{
+						shift :6,
+					});
+					if(res.code == 100 ){
+						$('.compare_count').html(res.count);
+					}else{
+						layer.msg(res.msg,{
+							shift :6,
+						});
+						if(res.url){
+							setTimeout(function(){window.location.href = res.url},1500);
+						}
+					}
+					return false;
+				},
+			});
+		}
+	}
+
+	$('.duibi-btn').click(function(){
+		var count	= $(this).find('.compare_count').html();
+		if(count < 2){
+			layer.msg('对比裸钻数量不能小于2！',{ shift:6, });
+			return false;
+		}
+		window.location.href="/Home/Goods/compare";
+	})
+	
+	$(document).delegate('.compare','change',function(){
+		var gid	= $(this).val();
+		if($(this).is(':checked')){
+			compare_base.type = 1;
+		}else{
+			compare_base.type = 2;
+		}
+		if(!gid){
+			layer.msg('请选择裸钻！',{ shift:2, });
+			return false;
+		}
+		
+		compare_base.compare_ajax(gid,compare_base.type);
+	
+	})
+	
+	$(document).delegate('.compare2','click',function(){
+		var gid	= $(this).attr('data-gid');
+		if(!gid){
+			layer.msg('操作错误！',{ shift:2, });
+			return false;
+		}
+		
+		compare_base.compare_ajax(gid,1);
+	
+	})
+
+	//显示详情媒体资源
+	$(document).delegate('.top-banner li','mouseover', function(){
+		var classType = $(this).attr('class');
+		var srcUrl = $(this).attr('data-url');
+
+		$('.top-banner li').removeClass('active');
+		$(this).addClass('active');
+
+		switch(classType){
+
+			case "video-banner" :
+			$('.master-video').attr('src', srcUrl).show();
+			$('.master-img').hide();
+			break;
+
+			case "pci-banner" :
+			$('.master-video').hide();
+			$('.master-img').attr('src', srcUrl).show();
+			break;
+
+		}
+	});
+
+	//加入购物车或匹配
+	$(document).delegate('.join-type, .join-type-ul li','click', function(){
+		if($(this).hasClass('join-type')){
+			if($(this).next('.join-type-ul').css('display') == 'block'){
+				$(this).next('.join-type-ul').hide();
+				$(this).find('img').attr('src', '__IMG__/dowm_03.png');
+			}else{
+				$(this).next('.join-type-ul').show();
+				$(this).find('img').attr('src', '__IMG__/dowm_up_03.png');
+			}
+		}else{
+			if($(this).parents('.join-type-ul').css('display') == 'block'){
+				$(this).parents('.join-type-ul').hide();
+				$(this).parents('.join-type-ul').prev('.join-type').find('img').attr('src', '__IMG__/dowm_03.png');
+			}else{
+				$(this).parents('.join-type-ul').show();
+				$(this).parents('.join-type-ul').prev('.join-type').find('img').attr('src', '__IMG__/dowm_up_03.png');
+			}
+		}
+	});
+
+
+	//详细参数显示切换
+	$(document).delegate('.desc-list h1','click', function(){
+		$(this).next('ul').toggle();
+	});
+
+	//显示详情
+	$(document).delegate(".overflow-table tbody tr td","click",function(){
+		var index = $(this).parents('tr').find('td').index(this);
+		if( index != '0' ){
+			var id	= $(this).parents('tr').find('td:first input').val();
+
+			luozuan.get_info(id,func_display_luozuan_info_new);
+			
+			$('.stm-diamond-table').animate({width: '800px'},200);
+			$('.stm-diamond-xianxi').animate({width: '360px'},200);
+		}
+	});
+	//关闭详情
+	$(document).delegate('.stm-diamond-xianxi .cz-1','click', function(){
+		$('.stm-diamond-table').animate({width: '100%'},200);
+		$('.stm-diamond-xianxi').animate({width: '0px'},200);
+	});
+	
+	
+	
+	//特惠钻石
+	$('input[name="preferential"]').click(function(){
+		var check	= $(this).is(':checked');
+		if(check == true ){
+			luozuan.condition['preferential'] = [1];
+		}else{
+			luozuan.condition['preferential'] = '';
+		}
+		luozuan.set_page(1);
+		load_selected();
+	})
+	
+	//单选
+	$('.optioned-checkbox').bind('click', function(){
+		var min_weight	= parseFloat($(this).attr('data-min-value'));
+		var max_weight	= parseFloat($(this).attr('data-max-value'));
+		var weight	= min_weight+'-'+max_weight;
+		luozuan.condition['Weight'] = new Array();
+		luozuan.set_page(1);
+		luozuan.set_condition('Weight',weight);
+		load_selected();
+	
+		$('.optioned-checkbox').removeClass('active');
+		$(this).addClass('active');
+		$('.optioned-select').val('全部');
+	});
+	$('.optioned-select').change(function(event) {
+		var min_weight	= parseFloat($(this).find('option:selected').attr('data-min-value'));
+		var max_weight	= parseFloat($(this).find('option:selected').attr('data-max-value'));
+		var weight	= min_weight+'-'+max_weight;
+		luozuan.condition['Weight'] = new Array();
+		luozuan.set_page(1);
+		luozuan.set_condition('Weight',weight);
+		load_selected();
+		
+		$(this).find('option:selected').val();
+		$('.optioned-checkbox').removeClass('active');
+	});
+	
+	//排序
+	$(document).delegate('.sort-box', 'click', function(event) {
+		var sorts = $(this).find('.sorts');
+		var dataDown = sorts.attr('data-down');
+		var dataUp = sorts.attr('data-up');
+		if(sorts.attr('src') == dataDown){
+			luozuan.set_orderby('Weight','ASC');
+			sorts.attr('src', dataUp);
+		}else {
+			luozuan.set_orderby('Weight','DESC');
+			sorts.attr('src', dataDown);
+		}
+		luozuan.set_page(1);
+		load_selected();
+	});
+	
+		
+});
+</script>

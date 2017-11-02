@@ -1,0 +1,104 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>我的订单-售后详情</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-swiper.css" /> <!-- tab -->
+    <link rel="stylesheet" type="text/css" href="../css/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="../css/style-layer.css" /> <!-- 提示 -->
+
+    <script src="../js/jquery-1.12.3.js"></script>
+    <script src="../js/swiper.min.js"></script> <!-- tab -->
+    <script src="../js/mobileSelect.js"></script> <!-- ios下弹式菜单选择 -->
+    <script src="../js/layer.js"></script> <!-- 提示 -->
+</head>
+
+
+<body>
+    <section class="orders-status product-evaluation apply-after after-desc">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="../img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>售后详情</h2>
+                <div class="web-top-right">
+                    <a href="tel: 10010"><img src="../img/kefu.png" style="width: 1.2rem" alt=""></a>
+                </div>
+
+            </div>
+        </header>
+
+        <section class="wrapper">
+
+            <div class="item-box pad">
+                <div class="fl">
+                    <div class="bianhao">
+                        订单号：2017081015472088
+                    </div>
+                </div>
+                <div class="fr">
+                    <button type="button" class="confirm-btn">确认解决</button>
+                    <span class="rmb" style="display: none">受理中</span>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="no-evaluation">
+                <div class="item-box">
+                    <div class="desc">
+                        <h2 class="brn">问题描述</h2>
+                        <textarea name="" maxlength="500" disabled>主石大小不匹配，要求换货</textarea>
+                    </div>
+                </div>
+
+                <!-- 审核留言 -->
+                <div class="item-box">
+                    <div class="desc">
+                        <h2>审核留言</h2>
+                        <div class="pbox">
+                            <p>根据您的售后申请描述，我们给您更换了一个大一点的戒指，物流费用由您自己承担。</p>
+                            <div class="under-review" style="display: none">
+                                正在审核中...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 审核留言 end -->
+
+                <!-- 受理结果 -->
+                <div class="item-box">
+                    <div class="desc">
+                        <h2>受理结果</h2>
+                        <div class="pbox">
+                            <p>服务结果：不同意换货</p>
+                            <p>快递公司：顺丰快递</p>
+                            <p>快递单号：1221025478412</p>
+                            <p>快递运费：到付</p>
+                        </div>
+                        <div class="under-review" style="display: none">
+                            正在审核中...
+                        </div>
+                    </div>
+                </div>
+                <!-- 受理结果 end -->
+            </div>
+
+        </section>
+
+    </section>
+    <!-- Zdy Input UI -->
+<script src="../js/zdy-input-ui.js"></script>
+
+</body>
+</html>

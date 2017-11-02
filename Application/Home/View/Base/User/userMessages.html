@@ -1,0 +1,86 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#news_list #FL_Second ul li').each(function () {
+        if ($(this).attr('id') === 'userMessages') {
+            $(this).addClass('active');
+        } else {
+            $(this).removeClass('active');
+        }
+    });
+});
+function getNoShowMsgs() {
+    _ajax("{:U('Home/User/getIsShowMsg')}", '', 'get', function (data) {
+        var obj = jQuery.parseJSON(data);
+        if (obj.error !== 'yes') {
+            if (obj.total) {
+                $('#msgstotal').text(obj.total);
+            }
+        } else {
+            $('#msgstotal').text('');
+        }
+    });
+}
+function setIsShow(msg_id) {
+    _ajax("{:U('/Home/User/isShow')}", 'msg_id=' + msg_id, 'post', function (result) {
+        var obj = jQuery.parseJSON(result);
+        if (obj.error === 'yes') {
+            alert(obj.msg);
+        } else {
+            $('.uc_table tr td a[value=' + msg_id + ']').remove();
+            $('.uc_table tr td[index=' + msg_id + ']').text("{$Think.lang.L9089}");
+            getNoShowMsgs();
+        }
+    }, false);
+}
+</script>
+<div id="UserInfo">
+	<div class="navigation"><a href="{:U('/Home/Index/index')}">首页 </a>&gt;<a href="{:U('/Home/User/index')}"> 用户中心 </a>&gt; 用户中心首页</div>
+	<include file=".:Base:User:menu" />
+	<div id="user_right">
+    <table class="uc_table" border="1">
+      <tr class="title">
+        <th width="10%">{$Think.lang.L9053}</th>
+        <th>{$Think.lang.L9054}</th>
+        <th width="18%">{$Think.lang.L9055}</th>
+        <th width="10%">{$Think.lang.L392}</th>
+        <th width="10%">{$Think.lang.L9056}</th>
+      </tr>
+      <if condition="$messagesList">
+      <foreach name="messagesList" item="v" >
+        <tr>
+          <td>
+            <if condition="$v.uid neq ''">
+              {$Think.lang.L9059}
+            </if>
+          </td>
+          <td align="left" style="padding:0 10px;">{$v.content}</td>
+          <td>{$v.create_time|date="Y-m-d H:i:s",###}</td>
+          <td index="{$v.msg_id}">
+            <if condition="$v.is_show eq 0"><span style='color:red;'>{$Think.lang.L9088}</span>
+              <else/>{$Think.lang.L9089}
+            </if>
+          </td>
+          <td>
+            <if condition="$v.is_show eq 0">
+              <a href="javascript:void(0)" value="{$v.msg_id}" onClick="setIsShow({$v.msg_id})">{$Think.lang.L9090}</a>
+            </if>
+          </td>
+        </tr>
+      </foreach>
+      <else />
+      <tr><td colspan="5">暂无信息</td></tr>
+      </if>
+    </table>
+    <div class="order_pager">
+      <div id="page" class="page">{$page}</div>
+    </div>
+  </div>
+</div>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

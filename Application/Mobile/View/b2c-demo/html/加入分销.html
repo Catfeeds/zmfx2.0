@@ -1,0 +1,202 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>加入分销</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-swiper.css" /> <!-- tab -->
+    <link rel="stylesheet" type="text/css" href="../css/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="../css/style-layer.css" /> <!-- 提示 -->
+
+    <script src="../js/jquery-1.12.3.js"></script>
+    <script src="../js/swiper.min.js"></script> <!-- tab -->
+    <script src="../js/mobileSelect.js"></script> <!-- ios下弹式菜单选择 -->
+    <script src="../js/layer.js"></script> <!-- 提示 -->
+</head>
+
+
+<body class="white">
+    <section class="join-zmfxs">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="../img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>加入分销</h2>
+            </div>
+        </header>
+
+        <section class="wrapper">
+            <div class="join-zmfx-box">
+                <h1>温馨提示：以下资料均为保密资料，请放心填写。</h1>
+
+                <div class="zmfx-item">
+                    <ul>
+                        <li>
+                            <span class="fl">分销商</span>
+                            <span class="fr">
+                                <input type="text" class="border-none" name="" value="" placeholder="请输入分销商名称">
+                            </span>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <span class="fl">请输入公司名称</span>
+                            <span class="fr">
+                                <input type="text" class="border-none" name="" value="" placeholder="请输入公司名称">
+                            </span>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <span class="fl">站点域名</span>
+                            <span class="fr">
+                                <input type="text" class="border-none" name="" value="" placeholder="非必填">
+                            </span>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <span class="fl">联系人</span>
+                            <span class="fr">
+                                <input type="text" class="border-none" name="" value="" placeholder="联系电话">
+                            </span>
+                            <div class="clearfix"></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="zmfx-item">
+                    <ul>
+                        <li>
+                            <span class="fl">营业执照</span>
+                            <span class="fr">
+                                <input type="text" class="border-none" name="" value="" placeholder="请输入营业执照">
+                            </span>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <span class="fl zx-address">注册资金</span>
+                            <span class="fr">
+                                <div class="selects">
+                                    <span id="reg-rmb">请选择</span>
+                                    <span><img src="../img/down_icon.png" alt=""></span>
+                                </div>
+                            </span>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <span class="fl zx-address">分销地区</span>
+                            <span class="fr">
+                                <div class="selects">
+                                    <span id="chengshi">请选择</span>
+                                    <span><img src="../img/down_icon.png" alt=""></span>
+                                </div>
+
+                                <div class="selects">
+                                    <span id="diqu">请选择</span>
+                                    <span><img src="../img/down_icon.png" alt=""></span>
+                                </div>
+                            </span>
+                            <div class="clearfix"></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="zmfx-item-bottom">
+                    <ul>
+                        <li>
+                            <div class="flex">
+                                <textarea name="" class="join-textarea" placeholder="我要申请加入"></textarea>
+                            </div>
+                        </li>
+                        <li>
+                            <button type="button" class="confirm-btn">确认预约</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="index-bottom">
+    <div class="phone clearfix">
+        <a href="tel:10010" class="fl"><img src="../img/phone_icon.png" alt=""> 400-111-6826</a>
+        <a href="#" class="fr">查看官方网站(网页版）</a>
+    </div>
+    <div class="copyright">© 2010-2017 钻明珠宝交易平台 版权所有</div>
+</div>
+
+<!-- 返回顶部 start -->
+<a href="javascript:;" class="back-top" style="display: none;">
+    <img src="../img/back_top.png" alt="">
+</a>
+
+<script>
+    $(function(){
+        //返回顶部
+        $(window).scroll(function(){
+              if($(document).scrollTop() + $(window).height() >= $(document).height()){
+                 $('.back-top').fadeIn();
+              }else{
+                 $('.back-top').hide();
+              }
+        });
+        $('.back-top').bind('click', function(){
+            $('body,html').animate({scrollTop : 0},400);
+        });
+    });
+</script>
+<!-- 返回顶部 end -->
+
+
+        </section>
+    </section>
+
+    <script>
+
+        //注册资金
+        var arr1 = ['20-50万','50-100万','100-500万','500-1000万','1000万以上'];
+        var mobileSelect1 = new MobileSelect({
+            trigger: '#reg-rmb',
+            title: '请选择注册资金',
+            wheels: [
+                        {data: arr1}
+                    ],
+            position:[0], //初始化定位
+            callback: function(indexArr, data){
+                console.log(data);
+            }
+        });
+
+        //分销城市
+        var arr2 = ['北京','深圳','湛江','广州'];
+        var mobileSelect2 = new MobileSelect({
+            trigger: '#chengshi',
+            title: '请选择城市',
+            wheels: [
+                        {data: arr2}
+                    ],
+            position:[0], //初始化定位
+            callback: function(indexArr, data){ //回调函数
+                 mobileSelect3.updateWheel(0,['sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']);
+            }
+        });
+
+        //分销地区
+        var arr3 = ['罗湖','遂溪','徐闻','龙岗'];
+        var mobileSelect3 = new MobileSelect({
+        trigger: '#diqu',
+        title: '请选择地区',
+        wheels: [
+                    {data: arr3}
+                ],
+        position:[0] //初始化定位
+        });
+    </script>
+</body>
+</html>

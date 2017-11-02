@@ -1,0 +1,159 @@
+<include file=".:Base:layout_header" />
+        <div class="nav" style="display: none">
+            <div class="w1200">
+                <ul>
+                    <li class="active"><a href="#">首页</a></li>
+                    <li><a href="#">祼钻查询</a></li>
+                    <li><a href="#">珠宝成品</a></li>
+                    <li><a href="#">关于我们</a></li>
+                    <li><a href="#">门店预约</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- header end -->
+
+
+<div class="main user-address w1200 zlf-order">
+
+    <!-- 侧边导航 -->
+        <include file=".:Base:dingzhi:zhouliufu:orderList_public" />
+    <!-- 侧边导航 end -->
+
+    <div class="content">
+
+        <div class="fanhui">
+            <a href="{:U('/Home/User/orderList')}">返回我的订单</a> > 订单详情
+        </div>
+
+        <div class="databoxs">
+            <div class="pull-left">
+                <p>订单编号：{$order.order_sn_zlf}</p>
+                <p>下单时间：{$order.create_time|date='Y-m-d',###}</p>
+                <p>订单状态：{$order.order_status|getOrderStatus}</p>
+            </div>
+            <div class="pull-right text-right">
+                <p>预估金额：{$order.order_price}</p>
+                <!-- <p><a href="#" class="topay">去支付</a></p> -->
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <!-- <div class="databoxs">
+            <h2>收货地址</h2>
+            <p>收货人：小王        联系方式：18617163155</p>
+            <p>收货地址：中国广东深圳福田区上沙</p>
+        </div>
+
+        <div class="databoxs">
+            <h2>支付配送方式</h2>
+            <p>支付方式：线上转账</p>
+            <p>配送方式：门店自取</p>
+        </div>
+
+        <div class="databoxs brnone mb20">
+            <h2>其他</h2>
+            <p>网点名称：广东深圳福田</p>
+            <p>订单类型：日常补货</p>
+            <p>备注： 请快些发货，并且保质保量！</p>
+        </div> -->
+
+        <!-- 购物车商品列表 -->
+        <div class="cart-box">
+        <table class="cart-table" cellpadding="0" cellspacing="0">
+            <caption>您选购了以下商品：</caption>
+            <thead>
+                <tr>
+                    <!-- <th>序号</th> -->
+                    <th>商品名称</th>
+                    <th>数量</th>
+                    <th>总计</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <volist name="banfang_order_goods" id="info">
+            <tbody>
+
+                <tr>
+                    <!-- <td>1</td> -->
+                    <td>
+                        <img src="{$info['sub_info']['my_img']}" class="goods-img" alt="">
+                        <!--婚戒系列 花火 个性定制婚戒-->
+                    </td>
+                    <td>{$info['goods_number']|intval}</td>
+                    <td><span class="rmb">￥{$info['goods_price']}</span></td>
+                    <td>
+                        <span class="view-details">查看详情</span>
+                    </td>
+                </tr>
+
+                <tr class="child-details" style="display: none;">
+                    <td colspan="6" class="padnone">
+                        <!-- 情侣对戒 -->
+                        <table cellpadding="0" cellspacing="0" class="child-table ql-table">
+                            <thead>
+                                <tr>
+                                    <!-- <td>序号</td> -->
+                                    <td>款号</td>
+                                    <td><span class="red">*</span>材料</td>
+                                    <td>品类</td>
+                                    <td>手寸<if condition="$info['is_hand'] eq 1"><span class="red">*</span></if></td>
+                                    <td><span class="red">*</span>主石重</td>
+                                    <td>净度</td>
+                                    <td>颜色</td>
+                                    <td><span class="red">*</span>数量</td>
+                                    <td>预估金额</td>
+                                    <td>备注</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <!-- <td>1</td> -->
+                                <td>{$info['sub_info']['goods_sn']}</td>
+                                <td>{$info['sub_info']['factory_lists'][0]['material_info']['name']}</td>
+                                <td>
+                                    {$info['sub_info']['banfang_jewelry_info']['ca_name']}
+                                    <eq name="info['sub_info']['factory_lists'][0]['factory_info']['sex']" value="1">
+                                        (女戒)
+                                    </eq>
+                                    <eq name="info['sub_info']['factory_lists'][0]['factory_info']['sex']" value="2">
+                                        (男戒)
+                                    </eq>
+                                </td>
+                                <td>
+                                    <if condition="$info['is_hand'] eq 1">
+                                        {$info['sub_info']['factory_lists'][0]['hand_info']}
+                                    </if>
+                                </td>
+                                <td>{$info['sub_info']['factory_lists'][0]['diamond_info']['carat']}</td>
+                                <td>{$info['sub_info']['factory_lists'][0]['color_info']}</td>
+                                <td>{$info['sub_info']['factory_lists'][0]['clarity_info']}</td>
+                                <td>{$info['goods_number']|intval}</td>
+                                <td>{$info['sub_info']['goods_price']}</td>
+                                <td>{$info['sub_info']['factory_lists'][0]['note_info']}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- 情侣对戒 end -->
+                    </td>
+                </tr>
+
+            </tbody>
+            </volist>
+        </table>
+    </div>
+        <script>
+            $(function(){
+                //查看详情
+                $('.view-details').bind('click', function(){
+                    $(this).closest('tr').next('.child-details').toggle();
+                });
+            });
+        </script>
+        <!-- 购物车商品列表 end -->
+    </div>
+
+    <div class="clearfix"></div>
+
+</div>
+<include file=".:Base:layout_footer" />

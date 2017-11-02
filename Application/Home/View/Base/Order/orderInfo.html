@@ -1,0 +1,229 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<div id="UserInfo">
+	<div class="navigation"><a href="{:U('/Home/Index/index')}">首页 </a>&gt;<a href="{:U('/Home/User/index')}"> 用户中心 </a>&gt; 用户中心首页</div>
+	<include file="menu" />
+   	<div id="user_right">
+  <div class="orderInfo">
+  	<h3 class="order_sn"><span>订单号：{$order.order_sn}</span></h3>
+  	<if condition="$sanhuo neq null && $sanhuo neq ''">
+  	<h3><if condition="$order.order_status gt 0"><span onclick="showHistory({$order_id},3)">历史详情</span></if>散货列表</h3>
+  	<table border="1">
+  		<tr class="title"><th>去向</th><th>分类</th><th>货号</th><th>重量（CT）</th><th>颜色</th><th>净度</th><th>切工</th><th>每卡单价</th><th>小计</th></tr>
+  		<volist name="sanhuo" id="vo">
+  			<tr><td>{$vo.goods.location}</td>
+  				<td>{$vo.goods.goods_type}</td>
+  				<td>{$vo.goods.goods_sn}</td>
+  				<td>{$vo.sanhuo_number}</td>
+  				<td>{$vo.goods.color}</td>
+  				<td>{$vo.goods.clarity}</td>
+  				<td>{$vo.goods.cut}</td>
+  				<td>{$vo.goods.goods_price}</td>
+  				<td>{$vo.sanhuo_price}</td>
+  			</tr>
+  		</volist>
+  		<tr class="bottom"><td colspan="8" align="right" class="tdRight">合计</td><td>{$dataList.sanhuo_total_amount} 元</td></tr>
+  	</table>
+
+  	</if>
+  	<if condition="$sanhuo_periods neq null && $sanhuo_periods neq '' ">
+  		<div class="periods">
+  			<dl>
+  				<dt>做{$order.sanhuo_period_num}期：<if condition="$order['sanhuo_period_overdue']">逾期利率：{$order.sanhuo_period_overdue}‰ </if></dt>
+  				<volist name="sanhuo_periods" id="vo">
+  				<dd>{$key+1}期 {$vo.period_day}天:￥{$vo.receivables_price}元</dd>
+  				</volist>
+  			</dl>
+  		</div>
+  	</if>
+
+  	<if condition="$diamond neq null || $diamond neq ''">
+  	<h3 class="mt10"><if condition="$order.order_status gt 0"><span onclick="showHistory({$order_id},1)">历史详情</span></if>证书货列表</h3>
+  	<table border="1">
+  		<tr><th>去向</th><th>形状</th><th>编号</th><th>证书编号</th><th>钻重</th><th>颜色</th><th>净度</th><th>切工</th><th>国际报价</th><th>折扣</th><th>每粒单价</th><th>小计</th></tr>
+  		<volist name="diamond" id="vo">
+  		<if condition="$vo.goods_type eq 1">
+  		<tr><td>{$vo.goods.location}</td>
+  			<td><img src="__IMG__/{$vo.goods.shape}.gif" /></td>
+  			<td>{$vo.goods.goods_name}</td>
+  			<td>{$vo.goods.certificate_type}_{$vo.goods.certificate_number}</td>
+  			<td>{$vo.goods.weight}</td>
+  			<td>{$vo.goods.color}</td>
+  			<td>{$vo.goods.clarity}</td>
+  			<td>{$vo.goods.cut}</td>
+  			<td>{$vo.goods.dia_global_price}</td>
+  			<td>{$vo.goods.dia_discount}</td>
+  			<td>{$vo.goods.price}</td>
+  			<td>{$vo.diamond_price}</td>
+  		</tr>
+  		</if>
+  		</volist>
+  		<tr class="bottom"><td colspan="11" align="right" class="tdRight">合计</td><td>{$dataList.diamond_total_amount} 元</td></tr>
+  	</table>
+  	</if>
+
+  	<if condition="$diamond_periods">
+  		<div class="periods">
+  			<dl>
+  				<dt>做{$order.luozuan_period_num}期：<if condition="$order['luozuan_period_overdue']">逾期利率：{$vo.luozuan_period_overdue}‰</if> </dt>
+  				<volist name="diamond_periods" id="vo">
+  				<dd>{$key+1}期 {$vo.period_day}天:￥{$vo.receivables_price}元</dd>
+  				</volist>
+  			</dl>
+  		</div>
+  	</if>
+  	<if condition="$total_amount neq 0"><table  class="mt10 order_total_amount"><tr class="bottom"><td class="tdRight">总金额：{$total_amount} 元</td></tr></table></if>
+  	<h3 class="mt10">订单支付详情</h3>
+  	<table>
+  		<tr><th>订单编号</th><th>订单总金额</th><th>支付金额</th><th>未支付金额</th><th>支付时间</th><th>支付备注</th></tr>
+  		<if condition="$payList != null && $payList != ''">
+  			<volist name="payList" id="vo">
+  			<tr>
+  			<td>{$order.order_sn}</td>
+  			<td>{$order.order_price_up}</td>
+  			<td>{$vo.payment_price}</td>
+  			<td>{$vo.no_payment}</td>
+  			<td>{$vo.create_time|date="Y-m-d",###}</td>
+  			<td>{$vo.payment_note}</td>
+  			</tr>
+  			</volist>
+  		<else />
+  			<tr><td colspan="6">暂无支付信息</td></tr>
+  		</if>
+  	</table>
+  	<h3 class="payment mt10"><span>现金或汇款</span></h3>
+  	<p>{$payment_config}</span></p>
+  </div>
+</div>
+
+	<div id="orderHistory_3" class="orderHistory">
+		<div class="title">
+			<span onclick="closeHistory(3)"><img src="__IMG__/close.jpg" /></span>
+			<h3>原始订单</h3>
+		</div>
+		<table border="1">
+			<tr class="top"><th width="10%">去向</th><th width="10%">分类</th><th width="10%">货号</th><th width="15%">购买重量（CT）</th><th>颜色</th><th width="10%">净度</th><th width="10%">切工</th><th width="10%">每卡单价</th><th width="15%">小计</th></tr>
+			<tbody id="history_data_3">
+			</tbody>
+		</table>
+		<div class="title">
+			<h3>修改订单</h3>
+		</div>
+		<table class="updateOrder" border="1">
+			<tr class="top"><th width="10%">去向</th><th width="10%">分类</th><th width="10%">货号</th><th width="15%">购买重量（CT）</th><th>颜色</th><th width="10%">净度</th><th width="10%">切工</th><th width="10%">每卡单价</th><th width="15%">小计</th></tr>
+			<tbody id="history_data_update_3">
+			</tobdy>
+		</table>
+	</div>
+
+
+	<div id="orderHistory_1" class="orderHistory">
+		<div class="title">
+			<span onclick="closeHistory(1)"><img src="__IMG__/close.jpg" /></span>
+			<h3>原始订单</h3>
+		</div>
+		<table border="1">
+			<tr class="top"><th width="5%">去向</th><th width="5%">形状</th><th width="8%">编号</th><th width="15%">证书编号</th><th width="5%">钻重</th><th width="5%">颜色</th><th width="5%">净度</th><th width="5%">切工</th><th width="10%">国际报价</th><th width="8%">折扣</th><th width="10%">每粒单价</th></tr>
+			<tbody id="history_data_1">
+			</tbody>
+		</table>
+		<div class="title">
+			<h3>修改订单</h3>
+		</div>
+		<table class="updateOrder" border="1">
+			<tr class="top"><th width="5%">去向</th><th width="5%">形状</th><th width="8%">编号</th><th width="15%">证书编号</th><th width="5%">钻重</th><th width="5%">颜色</th><th width="5%">净度</th><th width="5%">切工</th><th width="10%">国际报价</th><th width="8%">折扣</th><th width="10%">每粒单价</th></tr>
+			<tbody id="history_data_update_1">
+			</tobdy>
+		</table>
+	</div>
+</div>
+
+<script>
+function showHistory(order_id,goods_type){
+
+	$.post("/Home/User/getOrdersByOrderId",{Action:"POST",order_id:order_id,goods_type:goods_type},function(data){
+		if(data.status == 1){
+			$("#orderHistory_"+goods_type).show();
+			html = "";
+			html_update = "";
+			if(goods_type == 3){ //裸钻
+				data.data.forEach(function(e){
+					html += "<tr>";
+					html += "<td>"+e.goods.location+"</td>";
+					html += "<td>"+e.type_name+"</td>";
+					html += "<td>"+e.goods.goods_sn+"</td>";
+					html += "<td>"+e.goods_number+"</td>";
+					html += "<td>"+e.goods.color+"</td>";
+					html += "<td>"+e.goods.clarity+"</td>";
+					html += "<td>"+e.goods.cut+"</td>";
+					html += "<td>"+e.goods_price_a+"</td>";
+					html += "<td>"+e.price+"</td>";
+					html += "</tr>";
+				});
+				data.data.forEach(function(e){
+					if(e.goods_number_up == 0){
+						html_update += "<tr class='gray'>";
+					}else{
+						html_update += "<tr>";
+					}
+					html_update += "<td>"+e.goods.location+"</td>";
+					html_update += "<td>"+e.type_name+"</td>";
+					html_update += "<td>"+e.goods.goods_sn+"</td>";
+					html_update += "<td class='fRed'>"+e.goods_number_up+"</td>";
+					html_update += "<td>"+e.goods.color+"</td>";
+					html_update += "<td>"+e.goods.clarity+"</td>";
+					html_update += "<td>"+e.goods.cut+"</td>";
+					html_update += "<td class='fRed'>"+e.goods.goods_price+"</td>";
+					html_update += "<td class='fRed'>"+e.price_update+"</td>";
+					html_update += "</tr>";
+				});
+				html += "<tr><td colspan='9' class='tdRight fRed'><strong>总计："+data.sanhuo.total_amount+" 元</td></tr>";
+				html_update += "<tr><td colspan='9' class='tdRight fRed'><strong>总计："+data.sanhuo.total_amount_update+" 元</td></tr>";
+			}else if(goods_type == 1){
+				data.data.forEach(function(e){
+				   html += "<tr>";
+				   html += "<td>"+e.goods.location;
+				   html += "<td><img src='__IMG__/"+e.goods.shape+".gif'</td>";
+				   html += "<td>"+e.goods.goods_name+"</td>";
+				   html += "<td>"+e.goods.certificate_number+"</td>";
+				   html += "<td>"+e.goods.weight+"</td>";
+				   html += "<td>"+e.goods.color+"</td>";
+				   html += "<td>"+e.goods.clarity+"</td>";
+				   html += "<td>"+e.goods.cut+"</td>";
+				   html += "<td>"+e.goods.dia_global_price+"</td>";
+				   html += "<td>"+e.goods.dia_discount+"</td>";
+				   html += "<td>"+e.goods.price+"</td>";
+				});
+				data.data.forEach(function(e){
+				   html_update += "<tr>";
+				   html_update += "<td>"+e.goods.location;
+				   html_update += "<td><img src='__IMG__/"+e.goods.shape+".gif'</td>";
+				   html_update += "<td>"+e.goods.goods_name+"</td>";
+				   html_update += "<td>"+e.goods.certificate_number+"</td>";
+				   html_update += "<td>"+e.goods.weight+"</td>";
+				   html_update += "<td>"+e.goods.color+"</td>";
+				   html_update += "<td>"+e.goods.clarity+"</td>";
+				   html_update += "<td>"+e.goods.cut+"</td>";
+				   html_update += "<td>"+e.goods.dia_global_price+"</td>";
+				   html_update += "<td>"+e.goods.dia_discount+"</td>";
+				   html_update += "<td>"+e.goods.price+"</td>";
+				});
+				html += "<tr><td colspan='11' class='tdRight fRed'><strong>总计："+data.diamond.total_amount+" 元</td></tr>";
+				html_update += "<tr><td colspan='11' class='tdRight fRed'><strong>总计："+data.diamond.total_amount_update+" 元</td></tr>";
+			}
+			$("#history_data_"+goods_type).html(html);
+			$("#history_data_update_"+goods_type).html(html_update);
+		}
+	});
+}
+
+function closeHistory(goods_type){
+	$("#orderHistory_"+goods_type).hide();
+}
+</script>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

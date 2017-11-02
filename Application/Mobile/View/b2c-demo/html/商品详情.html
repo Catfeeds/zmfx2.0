@@ -1,0 +1,575 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>商品详情</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-swiper.css" /> <!-- tab -->
+    <link rel="stylesheet" type="text/css" href="../css/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="../css/style-layer.css" /> <!-- 提示 -->
+
+    <script src="../js/jquery-1.12.3.js"></script>
+    <script src="../js/swiper.min.js"></script> <!-- tab -->
+    <script src="../js/mobileSelect.js"></script> <!-- ios下弹式菜单选择 -->
+    <script src="../js/layer.js"></script> <!-- 提示 -->
+</head>
+
+
+<body>
+    <section class="goods-details">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="../img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>商品详情 </h2>
+                <!-- new navbar menu -->
+<div class="web-top-right topbar-right">
+    <img src="../img/topbar_right_more_03.png" class="topbar-more" alt="">
+</div>
+<div class="topbar-menu" style="display: none;">
+    <div class="cont">
+        <ul>
+            <li>
+                <a href="购物车.html">
+                    <img src="../img/topbar_cart.png" alt=""> 购物车
+                </a>
+            </li>
+            <li>
+                <a href="#" class="search-icon">
+                    <img src="../img/topbar_search.png" alt=""> 搜索
+                </a>
+            </li>
+            <li>
+                <a href="index.html">
+                    <img src="../img/topbar_home.png" alt=""> 首页
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<script>
+    $(function(){
+        $('.topbar-more').bind('click', function(){
+            $('.topbar-menu').toggle();
+        });
+    });
+</script>
+<!-- new navbar menu end -->
+
+            </div>
+        </header>
+
+        <!-- content -->
+        <section class="wrapper">
+
+            <!-- 商品轮播 start -->
+            <div id="gooods-tab-box">
+                <div class="swiper-container" id="goods-tab" dir="rtl">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="../img/goods_tab_img_02.jpg" alt=""></div>
+                        <div class="swiper-slide"><img src="../img/goods_tab_img_02.jpg" alt=""></div>
+                        <div class="swiper-slide"><img src="../img/goods_tab_img_02.jpg" alt=""></div>
+                        <div class="swiper-slide"><img src="../img/goods_tab_img_02.jpg" alt=""></div>
+                    </div>
+                    <!-- Add Pagination -->
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+            <!-- 商品轮播 end -->
+
+            <!-- 商品标题 -->
+            <div class="goods-name">
+                <h1>匠心系列 镶嵌式18k纯手工 天然打造钻石戒指</h1>
+                <h2>商品编号: D5201314-8899</h2>
+                <b class="rmb">￥8999</b>
+            </div>
+            <!-- 商品标题 end -->
+
+            <!-- 商品参数 -->
+            <div class="goods-spec">
+                <ul>
+                    <li>
+                        <h2>材质：</h2>
+                        <div class="spec-box">
+                            <span class="checks">白18k金</span>
+                            <span class="checks">红18k金</span>
+                        </div>
+                    </li>
+                    <li>
+                        <h2>副石：</h2>
+                        <div class="spec-box">
+                            <span class="checks active">SADCG20颗0.06CT</span>
+                            <span class="checks">SADCG20颗0.06CT</span>
+                            <span class="checks">厂配</span>
+                        </div>
+                    </li>
+                    <li>
+                        <h2>主石：</h2>
+                        <div class="spec-box">
+                            <span class="checks">圆形0.06CT</span>
+                            <span class="checks">圆形0.06CT</span>
+                        </div>
+                    </li>
+                    <li>
+                        <h2>手寸：</h2>
+                        <div class="spec-box">
+                            <div class="select-box">
+                                <span id="shoucun" class="mr">请选择手寸</span>
+                                <img src="../img/down_icon.png" alt="">
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <h2>刻字：</h2>
+                        <div class="spec-box">
+                            <div class="mb"><input type="text" name="" value="" placeholder="最多可写十个字" class="kz-text"></div>
+                            <div class="mb">
+                                <div class="select-box">
+                                    <div class="show-tuan">
+                                        <span class="mr tuan-btn va">可选图案符号</span>
+                                        <img src="../img/down_icon.png" alt="">
+                                    </div>
+                                    <div class="tuan" style="display: none;">
+                                        <ul>
+                                            <li><img src="../img/pass_icon.png" alt=""></li>
+                                            <li><img src="../img/user.png" alt=""></li>
+                                            <li><img src="../img/pass_icon_active.png" alt=""></li>
+                                            <li><img src="../img/user.png" alt=""></li>
+                                            <li><img src="../img/pass_icon.png" alt=""></li>
+                                            <li><img src="../img/pass_icon_active.png" alt=""></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <h2>数量：</h2>
+                        <div class="spec-box">
+                            <div class="customize-box">
+                                <a href="javascript:;" class="add"><img src="../img/add_icon.png" alt=""></a>
+                                <input type="text" name="" value="1" class="number-cust">
+                                <a href="javascript:;" class="reduction"><img src="../img/reduction_icon.png" alt=""></a>
+                                <span class="kucun">库存：1</span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="mb0">
+                        <h2>交货日期：</h2>
+                        <div class="spec-box">
+                            <p class="lh">15个工作日内</p>
+                        </div>
+                    </li>
+                    <li class="mb0">
+                        <h2>特别说明：</h2>
+                        <div class="spec-box">
+                            <p class="lh">售价不含主钻价格,详细报价以出货单为准.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <script>
+                $(function(){
+                    //参数选择:单选
+                    $('.goods-spec .checks').bind('click', function(){
+                        $(this).parents('.spec-box').find('.checks').removeClass('active');
+                        $(this).addClass('active');
+                    });
+
+                    //可选图案符号
+                    $('.show-tuan').bind('click', function(){
+                        $('.tuan').toggle();
+                    });
+
+                    $('.tuan ul li').bind('click', function(){
+                        $('.tuan-btn').html($(this).html());
+                        $('.tuan').toggle();
+                    });
+
+                    //商品数量选择
+                    $('.customize-box').each(function(){
+                        var _this = $(this);
+                        var str = _this.find('.number-cust');
+                        //加
+                        $(this).find('.add').bind('click', function(){
+                            str.val( parseInt(str.val())+1 );
+                        });
+                        //减
+                        $(this).find('.reduction').bind('click', function(){
+                            if(str.val() > 1){
+                                str.val( parseInt(str.val())-1 );
+                            }
+                        });
+                    });
+                });
+            </script>
+            <!-- 商品参数 end -->
+
+            <!-- 加入购物车 -->
+            <style>
+                body { margin-bottom: 2.5rem;}
+            </style>
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <span class="toolbar-collection"><img src="../img/toolbar_collection.png" alt=""></span>
+                    <a href="购物车.html" class="toolbar-cart">
+                        <img src="../img/toolbar_cart.png" class="" alt="">
+                        <div class="number">9</div>
+                    </a>
+                </div>
+                <div class="toolbar-right">
+                    <span class="to-cart">加入购物车</span>
+                    <a href="javascript:;" class="to-match-up">去配祼钻</a>
+                </div>
+            </div>
+            <!-- 加入购物车 end -->
+
+
+            <!-- 商品详情 -->
+            <div class="goods-describe">
+                <div id="goods-describe-tab">
+            		<div class="swiper-wrapper">
+            			<div class="swiper-slide active">商品详情</div>
+            			<div class="swiper-slide">详情参数</div>
+            			<div class="swiper-slide">商品评价</div>
+            		</div>
+            	</div>
+                <div id="goods-describe-container" class="swiper-container">
+            		<div class="swiper-wrapper">
+                        <!-- 详细描述 -->
+            			<div class="swiper-slide">
+            				<div class="content-slide">
+                                <p><img src="../img/goods_describe_img_02.jpg" alt=""></p>
+            					<p><img src="../img/goods_describe_img_04.jpg" alt=""></p>
+                                <p><img src="../img/goods_describe_img_02.jpg" alt=""></p>
+            					<p><img src="../img/goods_describe_img_04.jpg" alt=""></p>
+            				</div>
+            			</div>
+                        <!-- 详细描述 end -->
+
+                        <!-- 详细参数 -->
+            			<div class="swiper-slide">
+            				<div class="content-slide">
+            					<table class="describe-table">
+            					    <tbody>
+            					        <tr>
+            					            <th>主石筛选</th>
+                                            <td>0.2CT</td>
+            					        </tr>
+                                        <tr>
+                                            <th>镶嵌类别</th>
+                                            <td>爪镶</td>
+                                       </tr>
+                                       <tr>
+                                            <th>镶口类型</th>
+                                            <td>三爪镶</td>
+                                        </tr>
+                                        <tr>
+                                            <th>产品系列</th>
+                                            <td>设计新款系列 </td>
+                                        </tr>
+                                        <tr>
+                                            <th>生产工艺</th>
+                                            <td>CNC</td>
+                                        </tr>
+                                        <tr>
+                                            <th>适用人群</th>
+                                            <td>女性</td>
+                                        </tr>
+                                        <tr>
+                                            <th>计价方式</th>
+                                            <td>按件</td>
+                                        </tr>
+                                        <tr>
+                                            <th>材质</th>
+                                            <td>黄金</td>
+                                        </tr>
+                                        <tr>
+                                            <th>材质成色</th>
+                                            <td>千足金</td>
+                                        </tr>
+                                        <tr>
+                                            <th>材质颜色</th>
+                                            <td>白色</td>
+                                        </tr>
+                                        <tr>
+                                            <th>证书类型</th>
+                                            <td>GIA</td>
+                                        </tr>
+                                        <tr>
+                                            <th>工艺等级</th>
+                                            <td>★</td>
+                                        </tr>
+                                        <tr>
+                                            <th>空托价格</th>
+                                            <td>1000</td>
+                                        </tr>
+                                        <tr>
+                                            <th>材质金重</th>
+                                            <td>10G</td>
+                                        </tr>
+                                        <tr>
+                                            <th>主石形状</th>
+                                            <td>0.2CT</td>
+                                        </tr>
+                                        <tr>
+                                            <th>主石颜色</th>
+                                            <td>I</td>
+                                        </tr>
+                                        <tr>
+                                            <th>主石净度</th>
+                                            <td>VS2</td>
+                                        </tr>
+                                        <tr>
+                                            <th>主石切工</th>
+                                            <td>EX</td>
+                                        </tr>
+                                        <tr>
+                                            <th>副石数量</th>
+                                            <td>EX</td>
+                                        </tr>
+                                        <tr>
+                                            <th>副石大小</th>
+                                            <td>0.03CT</td>
+                                        </tr>
+            					    </tbody>
+            					</table>
+            				</div>
+            			</div>
+                        <!-- 详细参数 end -->
+
+                        <!-- 评论 -->
+            			<div class="swiper-slide">
+            				<div class="content-slide">
+            				    <ul class="message-list">
+            				        <li>
+                                        <div class="head">
+                                            <div class="fl"><img src="../img/25151659.jpg" class="head-img" alt=""> 安吉鱼儿</div>
+                                            <div class="fr star">
+                                                <img src="../img/star.png" alt="">
+                                                <img src="../img/star.png" alt="">
+                                                <img src="../img/star.png" alt="">
+                                                <img src="../img/star.png" alt="">
+                                                <img src="../img/star.png" alt="">
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="cont">
+                                            货品好，造型漂亮，手工制造精细，戴起来很好看啊！很喜欢的系列，下次又好看的再来。
+                                        </div>
+                                        <small class="time">2016-11-08</small>
+            				        </li>
+                                    <li>
+                                        <div class="head">
+                                            <div class="fl"><img src="../img/25151659.jpg" class="head-img" alt=""> 安吉鱼儿</div>
+                                            <div class="fr star">
+                                                <img src="../img/star.png" alt="">
+                                                <img src="../img/star.png" alt="">
+                                                <img src="../img/star.png" alt="">
+                                                <img src="../img/star.png" alt="">
+                                                <img src="../img/star.png" alt="">
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="cont">
+                                            货品好，造型漂亮，手工制造精细，戴起来很好看啊！很喜欢的系列，下次又好看的再来。
+                                        </div>
+                                        <small class="time">2016-11-08</small>
+            				        </li>
+                                    <li>
+                                        <div class="head">
+                                            <div class="fl"><img src="../img/25151659.jpg" class="head-img" alt=""> 安吉鱼儿</div>
+                                            <div class="fr star">
+                                                <img src="../img/star.png" alt="">
+                                                <img src="../img/star.png" alt="">
+                                                <img src="../img/star.png" alt="">
+                                                <img src="../img/star.png" alt="">
+                                                <img src="../img/star.png" alt="">
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="cont">
+                                            货品好，造型漂亮，手工制造精细，戴起来很好看啊！很喜欢的系列，下次又好看的再来。
+                                        </div>
+                                        <small class="time">2016-11-08</small>
+            				        </li>
+            				    </ul>
+            				</div>
+            			</div>
+                        <!-- 评论 end -->
+            		</div>
+            	</div>
+            </div>
+            <script>
+                //详情导航跟随
+                var _top = $('.goods-describe').offset().top;
+                $(window).scroll(function(){
+                    if($(this).scrollTop() >= _top) {
+                        $('#goods-describe-tab').css({
+                            'position': 'fixed',
+                            'top': 0,
+                            'left': 0,
+                            'right': 0,
+                            'z-index': 999,
+                            'background': '#FFF',
+                            'border-top': 'none'
+                        });
+                    }else{
+                        $('#goods-describe-tab').attr('style', '');
+                    }
+                });
+
+                //新闻标题滑动
+                var mySwiper1 = new Swiper('#goods-describe-tab', {
+                    freeMode: true,
+                    slidesPerView: 'auto'
+                });
+
+                //新闻列表滑动
+                var tabsSwiper = new Swiper('#goods-describe-container', {
+                    speed: 500,
+                    autoHeight: true,
+                    onSlideChangeStart: function() {
+                        $("#goods-describe-tab .active").removeClass('active');
+                        $("#goods-describe-tab .swiper-slide").eq(tabsSwiper.activeIndex).addClass('active');
+                    }
+                });
+
+                $("#goods-describe-tab .swiper-slide").on('touchstart mousedown', function(e) {
+                    e.preventDefault()
+                    $("#goods-describe-tab .active").removeClass('active')
+                    $(this).addClass('active')
+                    tabsSwiper.slideTo($(this).index())
+                })
+                $("#goods-describe-tab .swiper-slide").click(function(e) {
+                    e.preventDefault()
+                });
+
+                //添加收藏
+                $(document).delegate('.toolbar-collection','click', function(){
+                    if($(this).attr('data-lock') != 'true'){
+                        $(this).find('img').attr('src', '../img/toolbar_collection_success.png');
+                        $(this).attr('data-lock', 'true');
+                        layer.open({
+                            content: '收藏成功'
+                            ,btn: '确定'
+                        });
+                    }else{
+                        $(this).find('img').attr('src', '../img/toolbar_collection.png');
+                        $(this).attr('data-lock', 'false');
+                        layer.open({
+                            content: '取消收藏成功'
+                            ,btn: '确定'
+                        });
+                    }
+                });
+
+                //加入购物车
+                $(document).delegate('.to-cart','click', function(){
+                    var number = $('.toolbar-cart .number');
+                    number.html( parseInt(number.html())+1 );
+                });
+            </script>
+            <!-- 商品详情 end -->
+
+        </section>
+        <!-- content end -->
+
+    </section>
+
+    <!-- 快捷搜索 start -->
+<div class="index-search-open quick-search" style="display: none">
+    <form action="" class="top-search">
+        <div class="top-bar">
+            <input type="text" class="s-input" name="" value="" placeholder="商品名称、证书号、系列名称">
+            <input type="button" class="search-btn" onclick="javasctipt:location.href='search.html'" name="" value=" ">
+        </div>
+        <div class="top-bar-btn">
+            取消
+        </div>
+    </form>
+    <div class="hot-search">
+        <h1>热门搜索</h1>
+        <div class="keywords-list">
+            <a href="#">钻石</a>
+            <a href="#">钻石</a>
+            <a href="#">笔记本</a>
+            <a href="#">笔记本</a>
+            <a href="#">钻石</a>
+            <a href="#">钻石</a>
+            <a href="#">钻石</a>
+        </div>
+    </div>
+    <div class="history-search">
+        <h1><span class="pl">历史搜索</span></h1>
+        <ul>
+            <li><a href="#">镶嵌式</a></li>
+            <li><a href="#">手工钻</a></li>
+            <li><a href="#">花蝶系</a></li>
+        </ul>
+    </div>
+
+    <div class="reset-search-box">
+        <button type="button" class="reset-history">清空历史搜索</button>
+    </div>
+</div>
+<!-- 快捷搜索 end -->
+
+<script>
+    /*
+     *  @obj: 触发元素
+     */
+    var quickSearch = {
+        //显示搜索
+        show : function (obj){
+            $(obj).bind('click', function(){
+                $('.quick-search').show();
+            });
+        },
+        //关闭搜索
+        hide : function (obj){
+            $(obj).bind('click', function(){
+                $('.quick-search').hide();
+            });
+        }
+    }
+
+    quickSearch.hide('.top-bar-btn'); //关闭搜索
+</script>
+
+    <script>
+        //快捷搜索
+        quickSearch.show('.search-icon');
+
+        //手寸
+        var arr1 = ['15','16','17','18','19'];
+        var mobileSelect1 = new MobileSelect({
+        trigger: '#shoucun',
+        title: '请选择手寸',
+        wheels: [
+                    {data: arr1}
+                ],
+        position:[0] //初始化定位
+        });
+
+        //商品轮播
+        var swiper1 = new Swiper('#goods-tab', {
+            pagination: '.swiper-pagination',
+            paginationClickable: true,
+            autoplay: 2500,
+            loop: true
+        });
+    </script>
+</body>
+</html>

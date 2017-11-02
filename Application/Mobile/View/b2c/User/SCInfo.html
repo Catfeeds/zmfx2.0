@@ -1,0 +1,120 @@
+<include file="Public:header" />
+
+<body>
+    <section class="orders-status product-evaluation apply-after after-desc">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>售后详情</h2>
+                <div class="web-top-right">
+                    <a href="tel: 10010"><img src="__IMG__/kefu.png" style="width: 1.2rem" alt=""></a>
+                </div>
+
+            </div>
+        </header>
+
+        <section class="wrapper">
+
+            <div class="item-box pad">
+                <div class="fl">
+                    <div class="bianhao">
+                        订单号：{$info.order_sn}
+                    </div>
+                </div>
+                <div class="fr">
+					<if condition = " $info.status eq '1' ">
+						<button type="button" id='imok' class="confirm-btn">确认解决</button>
+					<elseif condition = " $info.status eq '0' " />
+						进行中...
+					<elseif condition = " $info.status eq '2' " />
+						已完成
+					</if>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="no-evaluation">
+                <div class="item-box">
+                    <div class="desc">
+                        <h2 class="brn">问题描述</h2>
+                        <textarea name="" maxlength="500" disabled>{$info.description}</textarea>
+                    </div>
+                </div>
+
+                <!-- 审核留言 -->
+                <div class="item-box">
+                    <div class="desc">
+                        <h2>审核留言</h2>
+                        <div class="pbox">
+							<if condition = " $info.status ">
+								<p >{$info.admin_reply}</p>
+							<else />
+									<div class="under-review" style="display: none">
+										正在审核中...
+									</div>
+							</if>
+                        </div>
+                    </div>
+                </div>
+                <!-- 审核留言 end -->
+
+                <!-- 受理结果 -->
+                <div class="item-box">
+                    <div class="desc">
+                        <h2>受理结果</h2>
+						<if condition = " $info.status ">
+							<div class="pbox">
+								<p>服务结果：								
+									<if condition=" $info.result_type eq '1' ">
+										同意换货
+									<elseif condition=" $info.result_type eq '2' " />
+										不同意换货
+									<elseif condition=" $info.result_type eq '3' " />
+										同意退货退款
+									<elseif condition=" $info.result_type eq '4' " />
+										不同意退货退款
+									</if></p>
+								<p>快递公司：{$info.express_company}</p>
+								<p>快递单号：{$info.express_number}</p>
+								<p>快递运费：{$info.express_price}</p>
+							</div>
+	 
+						<else />
+							<div class="under-review" >
+								正在审核中...
+							</div>
+						</if>
+                    </div>
+                </div>
+                <!-- 受理结果 end -->
+            </div>
+
+        </section>
+
+    </section>
+	
+	<script>
+			$("#imok").click(function(){
+				layer.open({
+					content: '要结束售后服务嘛？',
+					btn: ['确定', '取消'],
+					yes: function(index){
+						layer.close(index);
+						BringAjax.IntendData.SwitchMain  = 1;
+						EasyTransition({id:'{$info.order_service_id}'},function(){ 
+							CommonFunction.Prompt.Tan(BringAjax.CacheData[BringAjax.IntendData.CacheHtmlKey].msg);
+							CommonFunction.Link.Href('/User/Schedule');
+						});
+					}
+				});
+			});
+	</script>
+	
+	
+	<include file="Public:foot" />	
+
+</body>
+</html>

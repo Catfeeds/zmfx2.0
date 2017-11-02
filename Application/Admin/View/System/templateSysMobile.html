@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>手机版模板颜色配置</title>
+</head>
+<style type="text/css">
+	 .contbox { width: 100%; height: 100%; min-height: 600px; overflow: hidden;}
+	 .preview { width: 10%; min-width: 360px; margin-right: 10px; float: left; background: #FFF; padding: 10px; margin-bottom: 5px;}
+ 	 .preview p { line-height: 25px;}
+	 .set { width: 100%; background: #FFF; min-width: 360px; float: left; padding: 10px; min-height: 628px;}
+	 .set h4 { border-left: 5px solid blue; padding-left: 5px;}
+	 .contbox .colorList { padding: 5px; text-align: center;}
+	 .contbox .colorList button { width: 55px; height: 55px; margin: 5px; border: none; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px;}
+	 .contbox .colorList button:hover { cursor: pointer;}
+	 .contbox .blue { background: #39ADEA;}
+	 .contbox .green { background: #2AB467;}
+	 .contbox .orange { background: #E2AA13;}
+	 .contbox .pink { background: #FD75C7;}
+	 .contbox .purple { background: #9171EE;}
+	 .contbox .red { background: #FD544F;}
+	 .contbox .save { border: 1px solid #ccc; padding: 5px 10px;height:30px;}	 
+</style>
+<script type="text/javascript">
+document.domain = "{$domain}";
+
+$(function(){
+    //栏目自适应大小
+    setwindow();
+
+    $(window).resize(function(){
+        setwindow();
+    });
+
+	$("#frameid").on("load",function(){
+		$("#frameid").contents().find("a").click(function(){  return false; });
+		$("#frameid").contents().find("input").click(function(){  return false; });
+		getcss();
+	});
+
+
+	
+});
+
+function setwindow (){
+    var W = $(window).width();
+    var L = $('.preview').width();
+    var S = ((W - 200) - 380 - 35);
+    $('.set').css('width', S);
+}
+</script>
+<body>
+	<div class="page-main edit">
+		<div class="subMenu">
+			<h3>当前操作：手机版模板颜色配置</h3>
+			<ul>
+				<li><a href="{:U('Admin/System/templateManage')}">返回模板管理</a></li>
+			</ul>
+		</div>
+		<div class="template">
+			<form name="cssForm" onSubmit="return createCss()"  action="{:U('Admin/System/templateSysMobile?template_id='.$templateInfo['template_id'])}" method="post">			
+				
+				<div class="info">
+					<div class="contbox">
+			            <div class="preview">
+			                <p>实时预览</p>
+			                 <iframe id="frameid" src="http://{$mobile_domain}" width="100%" height="100%" style="min-height: 600px;" frameBorder="no"></iframe>
+			            </div>
+			            <div class="set">
+			                <div class="settop">
+			                    <h4>使用系统默认颜色</h4>
+			                    <div class="colorList">
+			                        <button type="button" class="blue"></button>
+			                        <button type="button" class="green"></button>
+			                        <button type="button" class="orange"></button>
+			                        <button type="button" class="pink"></button>
+			                        <button type="button" class="purple"></button>
+			                        <button type="button" class="red"></button>
+			                    </div>
+			                </div>
+			                <div class="settop">
+			                    <h4>背景颜色</h4>
+			                    <div class="colorList">
+			                        <input id="bgcolor" type="text">
+			                        
+			                    </div>
+			                </div>
+			                <div class="settop">
+			                    <h4>字体颜色</h4>
+			                    <div class="colorList">
+			                        <input id="fontcolor" type="text">
+			                        
+			                    </div>
+			                </div>
+			                <div class="settop">
+			                    <h4>按钮颜色</h4>
+			                    <div class="colorList">
+			                        <input id="buttoncolor" type="text">
+			                        
+			                    </div>
+			                </div>
+			                <div class="settop">				
+								<h4>样式文件:</h4>
+								<div class="colorList">
+									<textarea id="cssFile" style="min-width: 70%; min-height: 100px; padding: 5px; "  name="css">{$cssContent}</textarea>
+								</div>					
+							</div>
+
+			                <div class="settop">
+			                	<div class="colorList">
+			                		<input type="submit" name="default" class="save" value="恢复默认" >
+			                		<input type="submit" name="save" class="save" value="保存并使用" ><br>
+			                		<span style="font-size:12px; color:red;">*如果保存后看不到效果，请用ctrl+F5强制浏览器刷新</span>
+			                		
+			                	</div>
+			                </div>			                
+			            </div>
+			            
+			            <div class="clear"></div>
+			        </div>	
+				</div>
+				
+			</form>
+		</div>
+	</div>
+</body>
+</html>
+
+<script type="text/javascript">
+
+
+
+
+
+/*
+*传入一个字符串
+*用css属性来风格
+*用分号来分割
+*/
+
+
+function searchCss(){
+	var str = arguments[0] ? arguments[0] : ":";
+    var fenge = arguments[1] ? arguments[1] : ";";
+	var str1 = str.split(fenge);
+	var str2 = str1[1].split(';');
+	return str2[0];
+}
+
+function getcss(){
+		//用户信息栏的设置
+		var fontcolor = $("#frameid").contents().find("footer p").css('color');  	//文字颜色	
+		$("#fontcolor").val(fontcolor);
+		$("#fontcolor").spectrum({color: fontcolor, preferredFormat: "rgb", showInput: true,});
+
+		var bgcolor   = $("#frameid").contents().find("body").css('background-color');//背景颜色
+		$("#bgcolor").val(bgcolor);
+		$("#bgcolor").spectrum({color: bgcolor, preferredFormat: "rgb", showInput: true,});
+		
+		var buttoncolor   = $("#frameid").contents().find(".search-but").css('background-color');//按钮颜色
+		$("#buttoncolor").val(buttoncolor);
+		$("#buttoncolor").spectrum({color: buttoncolor, preferredFormat: "rgb", showInput: true,});
+}
+
+
+
+
+
+
+$(window).load(function(){
+	
+	$("#fontcolor").change(function(){
+		$("#frameid").contents().find('footer p').css('color', $("#fontcolor").val());
+		$("#frameid").contents().find('.subnav .sub ul li b').css('color', $("#fontcolor").val());	
+		$("#frameid").contents().find('footer #foot_tel ').css('color', $("#fontcolor").val());	
+		$("#frameid").contents().find('.subnav .sub ul li').css('border-color', $("#fontcolor").val());				
+	});
+
+	//背景颜色
+ 	$("#bgcolor").change(function(){
+	 	$("#frameid").contents().find('body').css('background-color', $("#bgcolor").val());
+	 	$("#frameid").contents().find('footer').css('background-color',$("#bgcolor").val());
+	 	$("#frameid").contents().find('.screen').css('background-color',$("#bgcolor").val());
+	 	$("#frameid").contents().find('.am-header-default').css('background-color',$("#bgcolor").val());
+	 	$("#frameid").contents().find('.subnav .sub ul li').css('background-color',$("#bgcolor").val());		
+ 	});
+
+ 	$("#buttoncolor").change(function(){
+	 	$("#frameid").contents().find('.am-btn-blue, .search-but, .relogin .but button').css('background-color', $("#buttoncolor").val());	 	
+ 	});
+	
+});
+
+
+$('.blue, .green, .orange, .pink, .purple, .red').on('click',function(){
+	var color_value = $(this).css('background-color');
+	
+	$("#bgcolor").spectrum({color: color_value, preferredFormat: "rgb", showInput: true,});
+	$("#bgcolor").val(color_value)
+	
+	$("#frameid").contents().find('body').css('background-color', color_value);
+ 	$("#frameid").contents().find('footer').css('background-color',color_value);
+ 	$("#frameid").contents().find('.screen').css('background-color',color_value);
+ 	$("#frameid").contents().find('.am-header-default').css('background-color',color_value);
+ 	$("#frameid").contents().find('.subnav .sub ul li').css('background-color',color_value);	
+
+});
+
+
+function createCss(){
+
+	var css = '';
+	css = css + '@utf-8;' + "\r\n" ;
+	//文字颜色
+	css = css + 'footer p{color:' + $("#fontcolor").val() + '}' + "\r\n" ;
+	css = css + '.subnav .sub ul li b {color:' + $("#fontcolor").val() + ' ;}' + "\r\n" ;	
+	css = css + 'footer #foot_tel {color:' + $("#fontcolor").val() + ' ;}' + "\r\n" ;
+	css = css + '.subnav .sub ul li{border-color:' + $("#fontcolor").val() + ' ;}' + "\r\n" ;
+	//背景颜色
+	css = css + 'body{background-color:'   + $("#bgcolor").val() +'}' + "\r\n" ;
+	css = css + 'footer{background-color:' + $("#bgcolor").val() +'}' + "\r\n" ;
+	css = css + '.screen{background-color:'+ $("#bgcolor").val() +'}' + "\r\n" ;
+	css = css + '.am-header-default{background-color:' + $("#bgcolor").val() + '}' + "\r\n" ;
+	css = css + '.subnav .sub ul li{background-color:' + $("#bgcolor").val() + '}' + "\r\n" ;
+
+	//按钮颜色
+	css = css + '.am-btn-blue, .search-but, .relogin .but button{background-color:' + $("#buttoncolor").val() + '}' + "\r\n" ;
+	if($("#cssFile").val()!=''){
+		css = css + "\r\n /*@@@@*/ \r\n" ;
+		css = css +  $("#cssFile").val();
+	}
+		
+	$("#cssFile").val(css);
+	return true;
+}
+
+</script>
+<script src='__JS__/spectrum.js'></script>
+<link rel='stylesheet' href='__CSS__/spectrum.css' />

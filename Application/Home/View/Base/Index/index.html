@@ -1,0 +1,166 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<link rel="stylesheet" href="__CSS__/owl.carousel.css">
+<link rel="stylesheet" href="__CSS__/owl.theme.css">
+<style>
+  .banner img { width: 100%;}
+</style>
+<script type="text/javascript" src="__JS__/owl.carousel.js"></script>
+<!-- banner -->
+<div class="banner">
+  <div id="owl-btb" class="owl-carousel owl-theme">
+    <volist name="CarouselAdList" id="vo">
+      <div class="item">
+        <if condition="$vo['url'] neq '' ">
+        <a href="{$vo['url']}">
+        </if>
+          <img src="/Public{$vo.images_path}" alt="{$vo.title}">
+        <if condition="$vo['url'] neq '' ">
+        </a>
+        </if>
+      </div>
+    </volist>
+  </div>
+  <script>
+    $(document).ready(function() {
+      $("#owl-btb").owlCarousel({
+          autoPlay : 3000,
+          stopOnHover : true,
+          navigation:false,
+          paginationSpeed : 1000,
+          goToFirstSpeed : 2000,
+          singleItem : true,
+      });
+  });
+  </script>
+</div>
+<!-- banner end -->
+
+<div class="index">
+    <div class="indexLeft"><include file=".:Base:Public:cat" /></div>
+    <div class="indexRight">
+        <if condition="$products">
+        <div class="box gList">
+            <div class="title">钻饰<span>Exclusive Enjoyment</span></div>
+            <ul>
+                <volist name="products" id="vo">
+                <li class="cke">
+                    <a href="{:U('Home/Goods/goodsInfo/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}" title="{$vo.goods_name}"><img src="__PUBLIC__/{$vo.thumb}"></a>
+                    <p><a href="{:U('Home/Goods/goodsInfo?gid='.$vo['goods_id'])}" title="{$vo.goods_name}">{$vo.goods_name}</a></p>
+                    <p id="se">{$vo.goods_price}</p>
+                </li>
+                </volist>
+                <div class="clear"></div>
+            </ul>
+        </div>
+        </if>
+        <if condition="$zuantuo">
+        <div class="box gList">
+            <div class="title">钻托<span>Exclusive Enjoyment</span></div>
+            <ul>
+                <volist name="zuantuo" id="vo">
+                <li class="cke">
+                    <a href="{:U('Home/Goods/goodsInfo?gid='.$vo['goods_id'])}" title="{$vo.goods_name}"><img src="__PUBLIC__/{$vo.thumb}"></a>
+                    <p><a href="{:U('Home/Goods/goodsInfo?gid='.$vo['goods_id'])}" title="{$vo.goods_name}">{$vo.goods_name}</a></p>
+                    <p id="se">{$vo.goods_price}</p>
+                </li>
+                </volist>
+                <div class="clear"></div>
+            </ul>
+        </div>
+        </if>
+        <div class="box catBox">
+            <div class="title">裸钻<span>Diamond</span></div>
+            <ul>
+                <li class="fl">
+                    <if condition="$CustomAdList[0]['status'] eq '1' ">
+                        <if condition="$CustomAdList[0]['url'] && $CustomAdList[0]['url'] neq '#'">
+                            <a href="{$CustomAdList[0]['url']}">
+                        <else/>
+                            <a href="{:U('Home/Goods/goodsDiy')}">
+                        </if>
+                            <img src="/Public{$CustomAdList[0]['images_path']}" alt="{$CustomAdList[0]['title']}">
+                            <p>{$CustomAdList[0]['title']}</p>
+                            <p class="x_p">Diamond</p>
+                            <p>Inquiry</p>
+                        </a>
+                    <else />
+                        <a href="{:U('Home/Goods/goodsDiy')}">
+                            <img src="__IMG__/query02.jpg">
+                            <p>裸钻查询</p>
+                            <p class="x_p">Diamond</p>
+                            <p>Inquiry</p>
+                        </a>
+                    </if>
+                </li>
+                <li class="fr">
+                    <if condition="$CustomAdList[1]['status'] eq '1' ">
+                        <if condition="$CustomAdList[1]['url'] && $CustomAdList[1]['url'] neq '#'">
+                            <a href="{$CustomAdList[1]['url']}">
+                        <else/>
+                            <a href="http://www.gia.edu/report-check-landing" target="_blank">
+                        </if>
+                            <img src="/Public{$CustomAdList[1]['images_path']}" alt="{$CustomAdList[1]['title']}">
+                            <p>{$CustomAdList[1]['title']}</p>
+                            <p class="x_p">Certificate</p>
+                            <p>Search</p>
+                        </a>
+                    <else />
+                        <a href="http://www.gia.edu/report-check-landing" target="_blank">
+                            <img src="__IMG__/query01.jpg">
+                            <p>证书查询</p>
+                            <p class="x_p">Certificate</p>
+                            <p>Search</p>
+                        </a>
+                    </if>
+                </li>
+                <div class="clear"></div>
+            </ul>
+        </div>
+        <if condition="$baikeCates">
+        <div class="box zBaike">
+            <div class="title">
+                <span>{$articleCate.catname}</span>
+                <ul>
+                    <volist name="baikeCates" id="vo">
+                        <li><a href="{:U('Home/Article/articleList?cat_id='.$vo['cid'])}">{$vo.catname}</a></li>
+                    </volist>
+                </ul>
+            </div>
+            <ul class="tuNews">
+                <if condition="$thumb_articles">
+                <volist name="thumb_articles" id="vo">
+                <li <if condition="$key %2 ==0">class="fl"<else />class="fr"</if>>
+                    <a href="{:U('Home/Article/detail?aid='.$vo['aid'])}" title="{$article.title}">
+                    <img title="{$vo.title}" src="__PUBLIC__/Uploads/article/{$vo.thumb}">
+                    <div class="info">
+                        <a href="{:U('/Home/Article/detail?aid='.$vo['aid'])}" title="{$vo.title}">{$vo.title}</a>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$vo.description|msubstr=0,65,'utf-8'}</p>
+                    </div>
+                    </a>
+                </li>
+                </volist>
+                </if>
+                <div class="clear"></div>
+            </ul>
+            <ul class="aNews">
+                <if condition="$articles">
+                <volist name="articles" id="vo">
+                <li <if condition="$key %2 ==1">class="fl"<else />class="fr"</if> ><a title="{$vo.title}" href="{:U('Home/Article/detail?aid='.$vo['aid'])}"> <span>{$vo.title|msubstr=0,24,'utf-8'}</span> <font>{$vo.addtime|date="Y-m-d H:i",###}</font>
+                    <div class="clear"></div>
+                    </a></li>
+                </volist>
+                </if>
+                <div class="clear"></div>
+            </ul>
+        </div>
+         </if>
+    </div>
+    <div class="clear"></div>
+</div>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>售后列表</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.css" />
+<script type="text/javascript" src="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/datepicker-tw.js"></script>
+<script type="text/javascript">
+    $(function() {
+    	$( "#create_time" ).datepicker($.datepicker.regional[ "zh-TW" ] );
+    });
+</script>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" />
+    <style>
+        .theme-popover-mask{z-index: 9998;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;opacity:0.4;filter:alpha(opacity=40);display:none}
+        .theme-popover{z-index:9999;position:fixed;top:50%;left:50%;width:700px;min-height:600px;margin:-300px 0 0 -350px; border-radius:5px;border:solid 2px #666;background-color:#fff;display:none;box-shadow: 0 0 10px #666;}
+        .theme-poptit{border-bottom:1px solid #ddd;padding:12px;position: relative;}
+        .theme-poptit .close{float:right;color:#999;padding:5px;margin:-2px -5px -5px;font:bold 14px/14px simsun;text-shadow:0 1px 0 #ddd}
+        .theme-poptit .close:hover{color:#444;}
+        .btn.theme-reg{position: absolute;top: 8px;left: 43%;display: none}
+        .inp-gray,.feed-mail-inp{border:1px solid #ccc;background-color:#fdfdfd;width:220px;height:16px;padding:4px;color:#444;margin-right:6px}
+        .dform{padding:10px;text-align: center; height: 553px; overflow: auto;}
+        .dform .ipt_error{background-color:#FFFFCC;border-color:#FFCC66}
+        .dform li{padding-left: 10px;margin-bottom: 5px;float: left;width: 300px; height: 100%;}
+        .dform p{font-size: 12px;color: #999;}
+        #luozuan_info .col-md-6 span { padding-left: 50px;}
+
+        .opention{
+            width:100%;
+            height:25px;
+            margin-top:25px;
+            line-height:25px;
+            font-size:12px;
+        }
+        .opention .cut{
+            border: 1px solid;
+            cursor: pointer;
+            float: left;
+            margin: 0 20px;
+            text-align: center;
+            width: 8%;
+            background:#E1E1E1;
+            border:1px solid #ADADAD;
+        }
+        .opention .cut a{
+            color:#000;
+        }
+        .opention .cut:hover{
+            background:#E1FBFF;
+        }
+        .chongzhi{
+            height: 20px !important;
+            line-height: 20px !important;
+            width:35px;
+            text-align:center;
+        }
+    </style>
+</head>
+<div class="goods page-main">
+    <div class="subMenu">
+        <h3>当前操作：售后管理</h3>
+    </div>
+    <div class="filter">
+    <form id="from" action="{:U('Admin/OrderService/serviceList')}" method="get">
+		<select name="select_type" class="fl">
+            <option value="0"> 全部 </option>
+            <option <eq name="select_type" value="1"> selected </eq> value="1" >用户名</option>
+            <option <eq name="select_type" value="2"> selected </eq> value="2" >手机号</option>
+        </select>
+        <input class="input" type="text" name="select_keywords" value="{$select_keywords}"/>
+		<div class="fl">售后类型：</div>
+		<select name="service_type" class="fl">
+            <option value="-1">请选择</option>
+            <option <eq name="service_type" value="1"> selected </eq> value="1" >换货</option>
+            <option <eq name="service_type" value="2"> selected </eq> value="2" >退货退款</option>
+            <option <eq name="service_type" value="0"> selected </eq> value="0" >其它</option>
+        </select>
+        <div class="fl">审核状态：</div>
+        <select name="status" class="fl">
+            <option value="-1" >请选择</option>
+            <option <eq name="status" value="0"> selected </eq> value="0" >待审核</option>
+            <option <eq name="status" value="1"> selected </eq> value="1" >已经审核</option>
+            <option <eq name="status" value="2"> selected </eq> value="2" >完成</option>
+        </select>
+		<div class="fl">审核时间：</div>
+        <input type="text" name="create_time" class='datepicker' id="create_time" value="{$create_time}"/>
+        <div class="fl">&nbsp;</div>
+        <input class="button" type="submit" value="查询" />
+    </form>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+        <tr class="top">
+            <th>ID</th>
+        	<th>用户名</th>
+            <th>手机号</th>
+            <th>产品名称</th>
+            <th>产品图片</th>
+            <th>售后类型</th>
+            <th>申请时间</th>
+            <th>问题描述</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+ 
+        <if condition=" $data ">
+            <volist name="data" id="vo" mod="2">
+            <tr class="{$mod?'bg2':'bg1'}">
+                <td>{$vo.order_service_id}</td>
+                <td>{$vo.user_name}</td>
+                <td>{$vo.phone}</td>
+                <td>{$vo.goods_name}</td>
+                <td><img src="{$vo.thumb}" width="120" /></td>
+                <td>{$vo.service_type}</td>
+                <td>{$vo.create_time}</td>
+                <td>{$vo.description}</td>
+                <td>{$vo.status}</td>
+                <td>
+                    <!--if condition="in_array('admin/goods/goodsinfo',$AuthList) && $vo['agent_id'] eq $agent_id "-->
+                    <a  href="{:U('Admin/OrderService/serviceInfo?order_service_id='.$vo['order_service_id'])}">查看</a>
+                    &nbsp;
+                    <!--a  href="{:U('Admin/OrderService/serviceInfo?order_serivce_id='.$vo['order_serivce_id'])}">删除</a-->
+    	            <!--/if-->
+                </td>
+            </tr>
+            </volist>
+        <else />
+        <tr>
+            <td colspan='10'>
+            暂无数据                </td>
+                        </tr>
+        </if>
+    </table>
+    <div class="page">{$page}</div>
+</div>
+
+</body>
+</html>

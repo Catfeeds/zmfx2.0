@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/public.css">
+<link rel="stylesheet" href="css/user.css">
+<link href="js/iCheck/skins/minimal/blue.css" rel="stylesheet">
+<link href="js/iCheck/skins/square/blue.css" rel="stylesheet">
+<link href="js/iCheck/skins/flat/blue.css" rel="stylesheet">
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/user.js"></script>
+<link rel="stylesheet" href="css/cart.css">
+<script src="js/iCheck/jquery.icheck.js"></script>
+<script src="js/icheck-init.js"></script>
+<script type="text/javascript" src="js/fuelux/js/spinner.min.js"></script>
+<script src="js/spinner-init.js"></script>
+
+<!-- 商品滑动 -->
+<link rel="stylesheet" href="css/swiper.min.css">
+<style>
+.swiper-container {
+        width: 100%;
+        height: 300px;
+        margin: 20px auto;
+    }
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+</style>
+<title>提交订单</title>
+</head>
+
+<body class="wrap-bg">
+	<!-- Header -->
+    <header class=" header text-center">
+        <a href="#" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    	提交订单
+    </header>
+
+    <nav class="navbar navbar-default footer user-order-empty user-order-waitpay" role="navigation">
+          <ul class="nav">
+             <li><a href="#"><i class="glyphicon glyphicon-plus blue" style="display: inline-block"></i>添加收货人地址</a></li>
+          </ul>
+    </nav>
+    <!-- Header END //-->
+    
+    <!-- Main -->
+    <div class="container-fluid">
+        <div class="order-list">
+            <div class="col-xs-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h6>商品清单</h6>
+                    </div>
+                    <div class="panel-body borbot">
+                        <div id="gmap-street-view">
+                            <!-- Swiper -->
+                            <div class="swiper-container spimg">
+                                <ul class="swiper-wrapper">
+                                    <li><span class="swiper-slide"><img src="img/orderimg_03.png" alt=""></span></li>
+                                    <li><span class="swiper-slide"><img src="img/orderimg_05.png" alt=""></span></li>
+                                    <li><span class="swiper-slide"><img src="img/orderimg_03.png" alt=""></span></li>
+                                    <li><span class="swiper-slide"><img src="img/orderimg_05.png" alt=""></span></li>
+                                    <li><span class="swiper-slide"><img src="img/orderimg_03.png" alt=""></span></li>
+                                    <div class="clear"></div>
+                                </ul>     
+                            </div>
+                            <div class="spsum">
+                                共<span class="red">5</span>件 <i class="glyphicon glyphicon-chevron-right"></i>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                            <p class="borbot">支付方式 <span class="pull-right">线下银行转账汇款</span></p>
+                   
+                                
+                                <div class="rabox borbot">
+                                    <div class="ratext"> 物流配送 </div>
+                                    <div class="psfs">
+                                        <div class="square-blue single-row">
+                                            <div class="radio" style="float:left">
+                                                <input tabindex="3" type="radio"  name="demo-radio">
+                                            </div>
+                                            上门自取
+                                        </div>
+
+                                        <div class="square-blue single-row">
+                                            <div class="radio" style="float:left">
+                                                <input tabindex="3" type="radio"  name="demo-radio">
+                                            </div>
+                                            物流配送
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                           
+                            <p class="submit-order"><button type="button" class="btn btn-primary exit-button">提交订单</button></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Main END //-->
+
+    <!-- Swiper JS -->
+    <script src="js/swiper.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script>
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        slidesPerView: 3,
+        paginationClickable: true,
+        spaceBetween: 30,
+        freeMode: true
+    });
+    </script>
+
+
+</body>
+</html>

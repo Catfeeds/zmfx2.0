@@ -1,0 +1,169 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>我的订单-商品评价</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-swiper.css" /> <!-- tab -->
+    <link rel="stylesheet" type="text/css" href="../css/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="../css/style-layer.css" /> <!-- 提示 -->
+
+    <script src="../js/jquery-1.12.3.js"></script>
+    <script src="../js/swiper.min.js"></script> <!-- tab -->
+    <script src="../js/mobileSelect.js"></script> <!-- ios下弹式菜单选择 -->
+    <script src="../js/layer.js"></script> <!-- 提示 -->
+</head>
+
+
+<body>
+    <section class="orders-status product-evaluation">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="../img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>商品评价</h2>
+            </div>
+        </header>
+
+        <section class="wrapper">
+
+            <!-- 商品类型一 -->
+            <!-- <div class="item-box">
+                <p>证书号:GIA7256506195</p>
+                <p>4G属性:(0.17/D/VVS1/EX)无奶--无咖</p>
+                <p class="clearfix">
+                    <span class="fl rmb">￥ 2673.22</span>
+                    <span class="fr">X1</span>
+                </p>
+            </div> -->
+            <!-- 商品类型一 end -->
+
+            <!-- 商品类型二 -->
+            <div class="goods-item">
+                <div class="goods-layout clearfix">
+                    <div class="goods-img">
+                        <a href="商品详情.html"><img src="../img/goods_layou_img_03.jpg" alt=""></a>
+                    </div>
+                    <div class="goods-right">
+                        <h2><a href="商品详情.html">玫瑰系列钻石戒指 经典</a></h2>
+                        <p class="goods-title">颜色:18k白金+GIA+纯度99%</p>
+                        <div class="goods-fangshi clearfix">
+                            <span class="fl c9 rmb">￥<span class="price">808.00</span></span>
+                            <span class="fr">
+                                <small>x1</small>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 商品类型二 end -->
+
+            <!-- 未评价 -->
+            <div class="no-evaluation">
+                <div class="item-box">
+                    <div class="desc">
+                        <h2>评价描述</h2>
+                        <textarea name="" maxlength="200" placeholder="写下对商品的评价（最多200字内）"></textarea>
+                    </div>
+                </div>
+
+                <!-- 评分 -->
+                <script src="../js/starScore.js"></script>
+                <div class="item-box">
+                    <div class="desc">
+                        <h2>服务评价</h2>
+                        <div class="star">
+                            <div id="starttwo" class="clearfix">
+                                <div class="star-box">
+                                    <h3 class="fl">评分情况：</h3>
+                                    <div class="star_score fl"></div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="star-box">
+                                    <h3 class="fl">评分等级：</h3>
+                                    <div class="attitude fl"></div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <!-- <p><span class="fenshu"></span> 分</p> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    scoreFun($("#starttwo"),{
+                        fen_d:22,//每一个a的宽度
+                        ScoreGrade:5//a的个数5
+                    });
+                    //显示分数
+                    $(".show_number li p").each(function(index, element) {
+                        var num=$(this).attr("tip");
+                        var www=num*2*16;//
+                        $(this).css("width",www);
+                        $(this).parent(".atar_Show").siblings("span").text(num+"分");
+                    });
+                </script>
+                <!-- 评分 end -->
+            </div>
+            <!-- 未评价 end -->
+
+            <!-- 己评价 -->
+            <div class="yes-evaluation" style="display: none">
+                <div class="item-box">
+                    <div class="desc">
+                        <h2>服务评价</h2>
+                        <div class="star">
+                            <div id="" class="clearfix">
+                                <div class="star-box">
+                                    <h3 class="fl">评分情况：</h3>
+                                    <div class="star_score fl">
+                                        <img src="../img/star_true.png" alt="">
+                                        <img src="../img/star_true.png" alt="">
+                                        <img src="../img/star_true.png" alt="">
+                                        <img src="../img/star_true.png" alt="">
+                                        <img src="../img/star_true.png" alt="">
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="star-box">
+                                    <h3 class="fl">评分等级：</h3>
+                                    <div class="attitude fl">好评</div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="star-box">
+                                    <h3 class="fl">评价描述：</h3>
+                                    <div class="attitude fl">还不错哦！</div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <p>2017年8月10日</p>
+                                <!-- <p><span class="fenshu"></span> 分</p> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 己评价 end -->
+
+            <!-- 提交评价 -->
+            <div class="operation">
+                <p><button type="button" class="operation-btn">提交评价</button></p>
+            </div>
+            <!-- 提交评价 end -->
+
+        </section>
+
+    </section>
+    <!-- Zdy Input UI -->
+<script src="../js/zdy-input-ui.js"></script>
+
+</body>
+</html>

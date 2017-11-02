@@ -1,0 +1,359 @@
+<extend name="Manage:Default:base" />
+<block name="title">{$L['login_title']}</block>
+<block name="desc">{$L['login_description']}</block>
+
+<block name="body">
+	<div class="wrapper wrap">
+		<div class="row">
+			<div class="sign">
+				<span><img src="/Application/Supply/View/Public/images/left-top.jpg"></span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 wrap">
+				<!--统计图-->
+				<div class="panel deep-purple-box">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<h4>{$L['index_product_title']}</h4>
+								<div id="container_product" style="min-width:526px;height:342px"></div>
+							</div>
+							<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+								<ul class="bar-legend">									
+									<a href="/Manage/route/mo/Product/vi/index?goods_type=luozuan"><li class="col-md-3">{$product_num.luozuan}<br><span style="background-color:#7cb5ec">{$L['heading_product_GIA']}</span></li></a>
+									<a href="/Manage/route/mo/Product/vi/index?goods_type=sanhuo"><li class="col-md-3">{$product_num.sanhuo}<br><span style="background-color:#434348; color: #fff;">{$L['heading_product_sanhuo']}</span></li></a>
+									<a href="/Manage/route/mo/Product/vi/index?goods_type=chengpin"><li class="col-md-3">{$product_num.chengpin}<br><span style="background-color:#4BBD33">{$L['index_product_xianhuo']}</span></li></a>
+                                    <a href="/Manage/route/mo/Product/vi/index?goods_type=dingzhi"><li class="col-md-3">{$product_num.dingzhi}<br><span style="background-color:#f7a35c">{$L['index_product_dingzhi']}</span></li></a>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--统计图结束-->
+			</div>
+			<div class="col-md-6">
+				<!--统计图-->
+				<div class="panel deep-purple-box">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<h4>{$L['index_order_title']}</h4> 
+								<div id="container_order" style="min-width:526px;height:342px"></div>
+							</div>
+							<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                                <ul class="bar-legend row" style="width:100%">
+                                    <a href="/Manage/route/mo/Order/vi/index?lanmu_status=completed"><li class="col-md-2">{$order_num.wancheng}<br><span style="background-color:#7cb5ec">{$L['index_order_wancheng']}</span></li></a>
+                                    <a href="/Manage/route/mo/Order/vi/index?lanmu_status=canceled"><li class="col-md-2">{$order_num.quxiao}<br><span style="background-color:#434348; color: #fff;">{$L['index_order_quxiao']}</span></li></a>
+                                    <a href="/Manage/route/mo/Order/vi/index?lanmu_status=treatment"><li class="col-md-2">{$order_num.daichuli}<br><span style="background-color:#4BBD33">{$L['index_order_daichuli']}</span></li></a>
+                                    <a href="/Manage/route/mo/Order/vi/index?lanmu_status=carried"><li class="col-md-2">{$order_num.jingxingzhong}<br><span style="background-color:#f7a35c">{$L['index_order_jingxingzhong']}</span></li></a>
+                                    <a href="/Manage/route/mo/Order/vi/index?lanmu_status=pay"><li class="col-md-2">{$order_num.pay}<br><span style="background-color:#8085e9">{$L['index_order_pay']}</span></li></a>
+                                </ul>
+                            </div>
+						</div>
+					</div>
+				</div>
+				<!--统计图结束-->
+			</div>
+		</div>
+		<div class="row">
+            <div class="col-md-6">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="row revenue-states">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <h4>{$L['index_order_qitian']}</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">                                
+                                <div id="main-chart">
+                                    <div id="container_order_price" style="min-width:526px;height:342px"></div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="row revenue-states">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <h4>{$L['index_order_qitian_pay']}</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">                               
+                                <div id="main-chart">
+                                    <div id="container_order_pay" style="min-width:526px;height:342px"></div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+	</div>
+</block>
+<block name="my_js">
+    <!--数据图-->
+    <script src="__JS__/morris-chart/morris.js"></script>
+    <script src="__JS__/morris-chart/raphael-min.js"></script>
+    <!--统计图-->
+    <script src="__JS__/dashboard-chart-init.js"></script>
+    <script src="__JS__/dashboard-chart.js"></script>
+    <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/exporting.js"></script>
+    <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts-3d.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //////////////////////订单数量
+            // <if condition="$order_num_count eq 1">
+            //     Highcharts.setOptions({  
+            //            colors: ['#ff0000']  
+            //     });  
+            // </if>
+
+
+            $('#container_order').highcharts({
+                chart: {
+                    backgroundColor: 'transparent',                    
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 45,
+                        beta: 0
+                    }
+                },
+                
+                credits: {
+                    enabled:false
+                },
+                exporting: {
+                    enabled:false
+                },
+                title: {
+                    text: ''//图片标题为空
+                },
+                tooltip: {
+                //    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    pointFormat: '<b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        depth: 35,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.name}'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                //    name: 'Browser share',
+
+
+                    data: [
+                    <if condition="$order_num_count eq 1" >
+                        {
+                            name: '{$L['index_order_no_num']}',
+                            y:  1,
+                            sliced: true,
+                            selected: true,                           
+                        }
+                    <else />                        
+                        ['{$L['index_order_wancheng']}',   {$order_num.wancheng}],
+                        ['{$L['index_order_quxiao']}',     {$order_num.quxiao}],
+                        {
+                            name: '{$L['index_order_daichuli']}',
+                            y:  {$order_num.daichuli},
+                            sliced: true,
+                            selected: true
+                           
+                        },
+                        ['{$L['index_order_jingxingzhong']}',   {$order_num.jingxingzhong}],
+                        ['{$L['index_order_pay']}',   {$order_num.pay}] 
+                    </if>                      
+                    ]
+                }]
+            });
+
+            //////////////商品数量
+             $('#container_product').highcharts({
+                chart: {
+                    backgroundColor: 'transparent',                    
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 45,
+                        beta: 0
+                    }
+                },
+                credits: {
+                    enabled:false
+                },
+                exporting: {
+                    enabled:false
+                },
+                title: {
+                    text: ''//图片标题为空
+                },
+                tooltip: {
+                //    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    pointFormat: '<b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        depth: 35,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.name}'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                //    name: 'Browser share',
+                    data: [
+                        <if condition="$product_num_count eq 1" >
+                            {
+                            name: '{$L['index_product_no_num']}',
+                            y:  1,
+                            sliced: true,
+                            selected: true
+                            }
+                        <else />
+                        {
+                            name: '{$L['heading_product_GIA']}',
+                            y:  {$product_num.luozuan},
+                            sliced: true,
+                            selected: true
+                        },
+                        ['{$L['heading_product_sanhuo']}',  {$product_num.sanhuo}],
+                        ['{$L['index_product_xianhuo']}',   {$product_num.chengpin}],
+                        ['{$L['index_product_dingzhi']}',   {$product_num.dingzhi}]
+                        </if>                           
+                    ]
+                }]
+            });
+
+
+            //最近七天的订单情况
+
+            $('#container_order_price').highcharts({
+
+                credits: {
+                    enabled:false
+                },
+                exporting: {
+                    enabled:false
+                },
+                chart: {
+                    type: 'line', 
+                    backgroundColor: 'transparent', 
+                },
+                title: {
+                    text: ' '
+                },
+                subtitle: {
+                    text: ' '
+                },
+                xAxis: {
+                    categories: ['1', '2', '3', '4', '5', '6', '7']
+                },
+                yAxis: {
+                    title: {
+                        text: ' '
+                    }
+                },
+                tooltip: {
+                    enabled: false,
+                    formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+this.x +': '+ this.y +'°C';
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                        enableMouseTracking: false
+                    }
+                },
+                series: [
+                    {
+                        name: '{$L['index_order_price']}',
+                        data: [{$order_qitian_price[6]}, {$order_qitian_price[5]}, {$order_qitian_price[4]}, {$order_qitian_price[3]}, {$order_qitian_price[2]}, {$order_qitian_price[1]}, {$order_qitian_price[0]}]
+                    },{
+                        name: '{$L['index_order_pay_price']}',
+                        data: [{$order_qitian_pay_price[6]}, {$order_qitian_pay_price[5]}, {$order_qitian_pay_price[4]}, {$order_qitian_pay_price[3]}, {$order_qitian_pay_price[2]}, {$order_qitian_pay_price[1]}, {$order_qitian_pay_price[0]}]
+                    }
+                ]
+            });
+
+
+
+            //最近七天的订单支付情况
+
+            $('#container_order_pay').highcharts({
+
+                credits: {
+                    enabled:false
+                },
+                exporting: {
+                    enabled:false
+                },
+                chart: {
+                    type: 'line', 
+                    backgroundColor: 'transparent', 
+                },
+                title: {
+                    text: ' '
+                },
+                subtitle: {
+                    text: ' '
+                },
+                xAxis: {
+                    categories: ['1', '2', '3', '4', '5', '6', '7']
+                },
+                yAxis: {
+                    title: {
+                        text: ' '
+                    }
+                },
+                tooltip: {
+                    enabled: false,
+                    formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+this.x +': '+ this.y +'°C';
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                        enableMouseTracking: false
+                    }
+                },
+                series: [
+                {
+                    name: '{$L['index_order_num']}',
+                    data: [{$order_qitian_num[6]}, {$order_qitian_num[5]}, {$order_qitian_num[4]}, {$order_qitian_num[3]}, {$order_qitian_num[2]}, {$order_qitian_num[1]}, {$order_qitian_num[0]}]
+                }, {
+                    name: '{$L['index_order_pay_num']}',
+                    data: [{$order_qitian_pay_num[6]}, {$order_qitian_pay_num[5]}, {$order_qitian_pay_num[4]}, {$order_qitian_pay_num[3]}, {$order_qitian_pay_num[2]}, {$order_qitian_pay_num[1]}, {$order_qitian_pay_num[0]}]
+                }
+
+                ]
+            });
+
+        });             
+    </script>
+</block>

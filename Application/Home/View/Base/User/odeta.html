@@ -1,0 +1,212 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+	<!-- user -->
+	<div class="user">
+		<div class="container">
+			<div class="path">
+				<ol class="breadcrumb">
+					当前位置：
+				  <li><a href="{:U('User/')}">首页</a></li>
+				  <li><a href="{:U('User/olist')}">我的订单</a></li>
+				  <li class="active">订单详情</li>
+				</ol>
+			</div>
+
+
+			<div class="userdata">
+				<div class="row">
+					<include file=".:Base:User:menu" />
+					<div class="col-md-9">
+						<div class="user-order-details">
+							<h4><a href="{:U('User/olist')}">返回我的订单</a> > 订单详情</h4>
+							<p>订单编号：{$order.order_sn}</p>
+							<div class="orda">
+								<p>订单状态：
+									<span class="ls">{$dataList[0].status_txt}</span> &nbsp; &nbsp; <!--<a href="#">取消</a>-->
+									<span class="pull-right">下单时间: {$order.create_time|date="Y-m-d",###}</span></p>
+								<p>订单金额：
+									<span class="red">￥{$total_amount}</span>
+									<if condition="$dataList[0]['order_status'] eq '4' ">
+									<span class="pull-right" style="cursor:pointer;">
+									<button class="btn btn-default btn-sm btn-warning pull-right" onclick="confirmReceiptGoods({$orderDeliverys[0]['delivery_id']},{$orderDeliverys[0]['order_id']})">确认收货</button>
+									</span>
+									</if>
+									</p>
+							</div>
+
+							<div class="ddxx">
+								<h4>订单信息</h4>
+								<strong>收货地址</strong>
+								<p>收货人：{$user_address.name}  &nbsp; &nbsp; 联系方式： {$user_address.phone}</p>
+								<p>收货地址：{$user_address.country}{$user_address.province}{$user_address.city}{$user_address.district}{$user_address.address}</p>
+								<h4></h4>
+								<strong>支付配送方式</strong>
+								<p>支付方式：线下转账</p>
+								<p>配送方式：送货上门</p>
+							</div>
+						</div>
+
+						<div class="cart user-order-details">
+							<div class="table-box">
+								<div class="cart-list table-responsive">
+									<table class="table">
+									    <thead>
+									        <tr>
+									          <th>商品名称</th>
+									          <th>类型</th>
+									          <th>货品编号</th>
+									          <th>单价</th>
+									          <th>数量</th>
+									          <th>小计</th>
+									        </tr>
+									    </thead>
+									    <tbody>
+		<if condition="$product">
+			<volist name="product" id="vo">
+				<tr>
+					<td>
+
+						<if condition="$vo['goods']['thumb']">
+						<a href="{:U('/Home/Goods/goodsDetails/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}" target="_blank">
+							<img src="{$vo.goods.thumb}"  width='79' height='78'/>
+						<else />
+							<img src="/Public/Uploads/product/nopic.png" />
+						</if>
+						<if condition="$vo['goods']['goods_name']">
+								{$vo.goods.goods_name}
+							</a>
+						</if>
+						<if condition="$vo['goods']['associateInfo']">
+							<br/>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;{$vo.goods.associateInfo.material_name} 金重：{$vo.goods.associateInfo.weights_name}g 主石：{$vo.goods.luozuanInfo.weights_name}CT
+							{$vo.goods.luozuanInfo.shape_name} 副石： {$vo.goods.deputystone.deputystone_name}  <if condition="$vo['goods']['is_show_hand'] eq 1">手寸：{$vo.goods.hand}</if> 刻字：{$vo.goods.word}
+						<else />
+							{$vo.goods.attrs}
+						</if>
+					</td>
+					<if condition="$vo['goods']['goods_type'] eq 3">
+						  <td>珠宝产品</td>
+					<else />
+						  <td>定制戒托</td>
+					</if>
+						  <td>{$vo.goods.goods_sn}</td>
+						  <td>¥{$vo['product_price']/$vo['product_number']}</td>
+						  <td>{$vo.product_number}</td>
+						  <td><span class="red">¥{$vo.product_price}</span></td>
+				</tr>
+			</volist>
+		</if>
+
+
+		<if condition="$zmProduct neq null && $zmProduct neq ''">
+			<volist name="zmProduct" id="vo">
+					<tr>
+						<td>
+								<if condition="$vo['goods']['thumb']">
+									<a href="{:U('/Home/Goods/goodsDetails/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}" target="_blank">
+									 <img src="{$vo.goods.thumb}" width='79' height='78' />
+								<else />
+									 <img src="__PUBLIC__/Uploads/product/nopic.png" />
+								</if>
+								<if condition="$vo['goods']['goods_name']">
+										{$vo.goods.goods_name}
+									</a>
+								</if>
+								<if condition="$vo['goods']['associateInfo']">
+									<br/>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;{$vo.goods.associateInfo.material_name}
+									主石：{$vo.goods.luozuanInfo.weights_name} CT {$vo.goods.luozuanInfo.shape_name} {$vo.goods.deputystone.deputystone_name}<br>
+									<if condition="$vo['goods']['is_show_hand'] eq 1">
+									手寸：{$vo.goods.hand}
+									</if>
+									刻字：{$vo.goods.word}
+								<elseif condition="$vo['specification']" />
+									{$vo.specification}
+								</if>
+
+						</td>
+					<if condition="$vo['goods']['goods_type'] eq 3">
+						  <td>珠宝产品</td>
+					<else />
+						  <td>定制戒托</td>
+					</if>
+					    <td>{$vo.goods.goods_sn}</td>
+					    <td>¥{$vo.goods.goods_price*2}</td>
+					    <td>{$vo.product_number}</td>
+					    <td><span class="red">¥{$vo.product_price}</span></td>
+					</tr>
+			</volist>
+		</if>
+
+		<if condition="$sanhuo neq null && $sanhuo neq ''">
+			<volist name="sanhuo" id="vo">
+		  		<tr>
+					<td>{$vo.goods.goods_sn}  <br/>&nbsp; &nbsp;&nbsp;颜色：{$vo.goods.color} 钻石分数： {$vo.goods.type_name}  净度：{$vo.goods.clarity}  切工： {$vo.goods.cut} </td>
+					<td>散货</td>
+					<td></td>
+					<td>¥{$vo.goods.goods_price}</td>
+					<td>{$vo.sanhuo_number}</td>
+					<td><span class="red">¥{$vo.sanhuo_price}</span></td>
+				</tr>
+			</volist>
+		</if>
+
+		<if condition="$diamond neq null || $diamond neq ''">
+			<volist name="diamond" id="vo">
+				<if condition="$vo.goods_type eq 1">
+					<tr>
+						<td><img src="__PUBLIC__/images/diamondShape/{$vo.goods.shape}.gif" /> {$vo.goods.certificate_type}_{$vo.goods.certificate_number} <br/> &nbsp;&nbsp; 颜色：{$vo.goods.color} 钻重： {$vo.goods.weight}  净度：{$vo.goods.clarity}  切工： {$vo.goods.cut} </td>
+						<td>证书货</td>
+						<td>
+							<eq name="vo['goods']['luozuan_type']" value="1">
+								彩钻&nbsp;
+							</eq>
+							{$vo.goods.goods_name}
+						</td>
+						<td>{$vo.diamond_price}</td>
+						<td>{$vo.goods.weight}</td>
+						<td><span class="red">¥{$vo.diamond_price}</span></td>
+					</tr>
+				</if>
+			</volist>
+		</if>
+								      </tbody>
+								    </table>
+								</div>
+
+								<div class="other text-right">
+							    	<p>共 {$total_num}件商品</p>
+									<p>订单总金额：<strong class="red font-big">¥<if condition="$total_amount neq 0">{$total_amount}<else /> 0.00</if>	</strong></p>
+							    </div>
+
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- user end //-->
+
+
+<script>
+	function confirmReceiptGoods(deliveryId,order_id){
+		layer.confirm('确认已收货吗？', {
+			  btn: ['确定','再想想'] //按钮
+			}, function(){
+				$.post("/Home/User/confirmReceiptGoods",{Action:"POST",order_id:order_id,deliveryId:deliveryId},function(data){
+					layer.msg(data.msg,{	shift :6,	});
+					setTimeout(function(){	window.location.href="/Home/User/odeta/orderid/"+order_id; 	},1500)
+				});
+			}
+		);
+	}
+
+
+</script>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/main.css">
+	<link rel="stylesheet" href="__CSS__/user.css">
+	<link rel="stylesheet" href="__CSS__/aftersales.css">
+	<link href="__JS__/iCheck/skins/minimal/blue.css" rel="stylesheet">
+	<link href="__JS__/iCheck/skins/square/blue.css" rel="stylesheet">
+	<link href="__JS__/iCheck/skins/flat/blue.css" rel="stylesheet">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script src="__JS__/user.js"></script>
+	<link rel="stylesheet" href="__CSS__/cart.css">
+	<script src="__JS__/iCheck/jquery.icheck.js"></script>
+	<script src="__JS__/icheck-init.js"></script>
+	<script type="text/javascript" src="__JS__/fuelux/js/spinner.min.js"></script>
+	<script src="__JS__/spinner-init.js"></script>
+	<script src="__JS__/layer-mobile/layer.js"></script> 
+
+	<script type="text/javascript" src="__JS__/common.js" ></script>
+	<script type="text/javascript" src="__JS__/iscroll.js" ></script>	
+	<script type="text/javascript" src="__JS__/public.js" ></script>
+
+	<!-- 商品滑动 -->
+	<link rel="stylesheet" href="__CSS__/swiper.min.css">
+	<title>上传凭证</title>
+</head>
+
+<body class="wrap-bg">
+
+  <div class="upolad-prove">
+    <section>
+      <div class="order-bh upolad-prove-box">
+        <div class="pull-left">订单编号：{$order_info['order_sn']}</div>
+        <div class="pull-right red">总金额：{$order_info['order_price']}</div>
+        <div class="clearfix"></div>
+      </div>
+    </section>
+	<form action="/Userorder/paymentUploadSave.html" onsubmit="return submit_data()" method="post" enctype="multipart/form-data">
+    <section>
+      <div class="prove-data upolad-prove-box">
+        <ul>
+        	<li>
+            <h5>付款方式：</h5> 
+            <div class="form-box"> 
+              <select name="payment_mode" id="payment_mode" class="form-text">
+              	<option value="0" selected="selected">请选择付款方式</option>
+              	<volist name="payment_mode" id="vo">
+					<option value="{$vo.mode_id}">{$vo.mode_name}</option>
+              	</volist>               
+              </select>
+            </div>
+          </li>
+          <li>
+            <h5>转账账号：</h5> 
+            <div class="form-box"> <input type="text" name="payment_user" id="payment_user" class="form-text" placeholder="输入您的账号"> </div>
+          </li>
+          
+          <li>
+            <h5>转账金额：</h5> 
+            <div class="form-box"> <input type="text" name="payment_price" id="payment_price" class="form-text" placeholder="输入您的金额"> </div>
+          </li>
+          <li>
+            <h5>转账时间：</h5> 
+            <div class="form-box"> <input type="date" name="create_time"  id="create_time" class="form-text" placeholder="输入您的日期"> </div>
+          </li>
+          <li>
+            <h5>上传凭证：</h5> 
+            <div class="form-box">
+              <input type="file" style="width: 85%;" name="payment_voucher" id="payment_voucher">
+              <!-- <img src="__IMG__/upload_img.png" width="86" class="min-img" data-toggle="modal" data-target=".bs-example-modal-sm" alt=""> -->
+              <!--<span class="upload-img">
+                 <img src="__IMG__/upload_img.png" width="86" height="86" alt="">  
+              </span>-->
+            </div>
+          </li>
+          <li>
+            <h5 style="margin-top: 0;">备注：</h5> 
+            <div class="form-box"> <textarea name="payment_note" id="payment_note" class="form-text form-textarea" placeholder=""></textarea> </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <section class="shouhouxq-sub">
+      <div class="payment-submit">
+        <p class="text-center">
+          <button type="sumbit" id="my_submit" class="btn btn-danger btn-block">提交</button>
+          <input type="hidden" id="order_id" name="order_id" value="{$order_info['order_id']}">
+        </p>
+      </div>
+    </section>
+    </form>
+    <!-- Small modal -->
+    <section>
+      <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <img src="" class="max-img" alt="" data-dismiss="modal">
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>
+    	
+    	
+    
+	    $(function(){
+	        //预览大图
+	      	$('.min-img').bind('click', function(){
+	        	$('.max-img').attr('src', $(this).attr('src'));
+	      	});
+
+	      	$('#payment_voucher').bind('change', function(){
+	      		$('.min-img').show();
+	      		$('.min-img').attr('src', $(this).val());
+	      	});
+	      	
+            //订单是有效
+	      	var order_id 	 = "{$order_info['order_id']}";
+	      	var order_status = "{$order_info['order_status']}";
+	      	if(order_id == ''){
+	      		tan('您没有该订单!');
+				setTimeout("ai_mutual('52')",2000);
+	      	}
+
+	      	/*
+	      	if(order_status != 1){
+	      		tan('订单不是待付款状态!');
+				setTimeout("ai_mutual('521,"+order_id+"')",2000);
+	      	}
+	      	*/
+
+			var voucher_count = '{$voucher_count}';
+			if(voucher_count>0){
+				tan('该订单共上传'+voucher_count+'次付款凭证!');
+			}
+	    });
+
+	    
+
+	    function submit_data(){
+	    	var payment_mode 	 = $('#payment_mode').find("option:selected").val();
+	    	var payment_user 	 = $('#payment_user').val();
+	    	var payment_price	 = parseFloat($('#payment_price').val());
+	    	var create_time 	 = $('#create_time').val();
+	    	var payment_voucher  = $('#payment_voucher').val();
+	    	var order_id         = $('#order_id').val();
+	    	var str = "";
+
+	    	if(payment_mode < 1){
+	    	 	layer.open({content: '请选择付款方式', time: 2});
+				$('#payment_user').focus();
+				return false;
+	    	}
+
+	     	if(payment_user == ''){
+	  			layer.open({content: '请输入转账账号',time: 2});
+				$('#payment_user').focus();
+				return false;
+	     	}else{
+	     		if(payment_user.length < 8 || payment_user.length > 20){
+		     		str = "转账账号在8-20之间"; 
+		     		layer.open({content: str,time: 2});
+					$('#payment_user').focus();
+					return false;
+		     	}
+	  		}
+	    	if(payment_price <= 0 || isNaN(payment_price)){
+	    		str = "转账金额不能为负数或零!"; 
+	    		layer.open({content: str,time: 2});
+				$('#payment_price').focus();
+				return false;
+	    	}
+	    	if( isNaN(payment_price)){
+	    		str = "转账金额必须是数字!"; 
+	    		layer.open({content: str,time: 2});
+				$('#payment_price').focus();
+				return false;
+	    	}
+	    	if(create_time <= 0){
+	    		str = "请选择转账时间!";
+	    		layer.open({content: str,time: 2});
+				$('#create_time').focus();
+				return false; 
+	    	}
+	    	if(payment_voucher == ''){
+	    		str = "请上传凭证!";
+	    		layer.open({content: str,time: 2});
+				$('#payment_voucher').focus();
+				return false; 
+	    	}
+	    	return true;				                                            
+		}
+    </script>
+  </div>
+</body>
+</html>

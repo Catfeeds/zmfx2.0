@@ -1,0 +1,50 @@
+<volist name="list" id="vo">
+    <div class="ainfo">
+        <div class="atitle">{$vo.attr_name}:</div>
+        <div class="acontent">
+            <eq name="vo.input_type" value="1">
+                <select name="attribute[{$vo.attr_id}]">
+                    <volist name="vo.sub" id="io">
+                        <option value="{$io.attr_value_id}"<eq name="io.active" value="1">selected</eq>>{$io.attr_value_name}</option>
+                    </volist>
+                </select>
+            </eq>
+            <eq name="vo.input_type" value="2">
+                <volist name="vo.sub" id="io">
+                    <label>
+                        <input type="checkbox" value="{$io.attr_value_id}"<eq name="io.active" value="1">checked</eq> name="attribute[{$vo.attr_id}][]" />
+                        <span>{$io.attr_value_name}</span>
+                    </label>
+                </volist>
+            </eq>
+            <eq name="vo.input_type" value="3">
+                <if condition="is_array($vo['sub'])">
+                    <volist name="vo.sub" id="io">
+                        <div class="atiao">
+                            <input type="text" name="attribute[{$vo.attr_id}][]" value="{$io.attr_value_name}" class="fl" />
+                            <a href="#" id="addTiao" class="btn_common ml10 fl" data-id="{$vo.attr_id}" style="margin-left:10px;" >{$L['add']}</a>
+                            <a href="#" id="delTiao" class="btn_common ml10" data-id="{$vo.attr_id}">{$L['delete']}</a>
+                            <div class="clear"></div>
+                        </div>
+                    </volist>
+                    <else />
+                    <div class="atiao">
+                        <!-- 添加珠宝成品时，增加输入框的单位提示信息 -->
+                        <input type="text" name="attribute[{$vo.attr_id}][]" value="" class="fl"
+                        <switch name="vo.attr_id">
+                            <case value="18">placeholder="({$L['unit']}：G)"</case>
+                            <case value="22">placeholder="({$L['unit']}：CT)"</case>
+                            <case value="28">placeholder="({$L['unit']}：CT)"</case>
+                            <case value="27">placeholder="({$L['unit']}：{$L['text_grain']})"</case>
+                            <default/>
+                        </switch>
+                        />
+                        <a class="btn_common ml10" data-id = "{$vo.attr_id}" id="addTiao">{$L['add']}</a>
+                        <div class="clear"></div>
+                    </div>
+                </if>
+            </eq>
+        </div>
+        <div class="clear"></div>
+    </div>
+</volist>

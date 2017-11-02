@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>短信明细</title>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：短息编辑</h3>
+        <ul>
+            <li class=""><a href="javascript:history.go(-1);">返回上一页</a></li>
+        </ul>
+    </div>
+    <form action="{:U('Admin/SmsManage/smsInfo')}" method="post" onsubmit="return toVaild();">
+    	<div style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">短信编辑:</div>
+                <div class="attrDivContent" id="attrDivContent">
+                    <div class="ainfo">
+                        <div class="atitle">key:</div>
+                        <div class="acontent">
+                            <span>{$info.sms_type_key}</span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="ainfo">
+                        <div class="atitle">发给谁:</div>
+                        <div class="acontent">
+                            <span>{$info.push_who_text}</span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="ainfo">
+                        <div class="atitle">什么时候发:</div>
+                        <div class="acontent">
+                            <span>
+                                {$info.push_where_text}
+                            </span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="ainfo">
+                        <div class="atitle">是否开启:</div>
+                        <div class="acontent">
+                            <span>
+                               <select name="status" id='status' >
+                                   <option value="1" >开启</option>
+                                   <option value="0" >关闭</option>
+                               </select>
+                            </span>
+                            <script>
+                                $('#status').val('{$info.status}');
+                            </script>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="ainfo">
+                        <div class="atitle">短信内容:</div>
+                        <div class="acontent">
+                            <textarea name="sms_info" type="text" style="width:100%;heigth:150px;">{$info.sms_info}</textarea>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="ainfo">
+                        <div class="atitle">&nbsp;</div>
+                        <div class="acontent">
+                            <input type="submit" class="button fl" value="保 存">
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="sms_type_key" value="{$info.sms_type_key}" />
+    </form>
+</div>
+<script language="javascript">
+     function toVaild(){
+         if(confirm('确认保存吗？')){
+            return true;
+         }else{
+            return false;
+         }
+     }
+ </script>
+
+
+</body>
+</html>

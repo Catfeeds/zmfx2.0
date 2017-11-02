@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>分销商产品</title>
+</head>
+<body>
+<div class="goods">
+    <div class="subMenu">
+        <h3>当前操作：分销商产品</h3>
+        <ul>
+            <volist name="menuList[2]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+        <form action="{:U('Admin/Goods/goodsList')}">
+            <input class="input" type="text" name="certificate" />
+            <input class="button" type="submit" value="查询" />
+        </form>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+        <tr class="top">
+            <th>形状</th>
+            <th>去向</th>
+            <th>名称</th>
+            <th>证书</th>
+            <th>证书编号</th>
+            <th>重量</th>
+            <th>颜色</th>
+            <th>净度</th>
+            <th>切工</th>
+            <th>抛光</th>
+            <th>对称</th>
+            <th>荧光</th>
+            <th>国际报价</th>
+            <th>折扣</th>
+            <th>每粒单价</th>
+            <th>产地</th>
+            <th>操作</th>
+        </tr>
+<!--         <volist name="data" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+            <td>{$vo.shape}</td>
+            <td>{$vo.quxiang}</td>
+            <td>{$vo.goods_name}</td>
+            <td>{$vo.certificate_type}</td>
+            <td>{$vo.certificate_number}</td>
+            <td>{$vo.weight}</td>
+            <td>{$vo.color}</td>
+            <td>{$vo.clarity}</td>
+            <td>{$vo.cut}</td>
+            <td>{$vo.polish}</td>
+            <td>{$vo.symmetry}</td>
+            <td>{$vo.fluor}</td>
+            <td>{$vo.dia_global_price}</td>
+            <td>{$vo.dia_discount}</td>
+            <td>{$vo.price}</td>
+            <td>{$vo.location}</td>
+            <td>
+                <a  href="{:U('Admin/Goods/goodsInfo?id='.$vo['gid'])}">修改</a>
+                <a  href="{:U('Admin/Goods/goodsDelete?id='.$vo['gid'])}" id="isDel">删除</a>
+            </td>
+        </tr>
+        </volist> -->
+    </table>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>

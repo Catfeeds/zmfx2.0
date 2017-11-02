@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>新增权限</title>
+    <style>
+        .huise{
+            color:#ccc;
+        }
+    </style>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：订单列表</h3>
+        <ul>
+            <volist name="menuList[104]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+    </div>
+    <form action="{$my_all_param['submit_url']}" method="post" enctype="multipart/form-data">
+        <div style="padding:10px;">
+            <div class="info">
+                <div class="title">菜单名称:</div>
+                <input type="text" name="na_name"  value="{$info['na_name']}">
+                <label>如：首页,爆款</label>
+            </div>
+            <div class="info">
+                <div class="title">菜单级别:</div>
+                <input id="my_id_1" type="hidden" name="na_parent_id" value="0">
+                <volist name="data.select_lists" id="na">
+                    <select name="type" rank="{$na['rank']}" onChange="ajax_get_my_child(1,this)">
+                        <volist name="na.lists" id="vo">
+                        <option value="{$vo['id']}" <if condition="$vo['id'] eq $na['checked']['id']">selected</if>>{$vo['name']}</option>
+                        </volist>
+                    </select>
+                </volist>
+            </div>
+            <div class="info">
+                <div class="title">搜索类型:</div>
+                <select name="condition_type">
+                    <option value="0">普通条件</option>
+                    <option value="1">TOP100</option>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">菜单条件:</div>
+                <select name="ca_id">
+                    <option value="0">请选择</option>
+                    <volist name="data.select_ca" id="vo">
+                        <option value="{$vo['id']}" <if condition="$vo['id'] eq $info['ca_id']">selected</if>>{$vo['name']}</option>
+                    </volist>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">菜单地址:</div>
+                <select name="na_url">
+                    <option value="0">请选择</option>
+                    <volist name="data.url_type" id="vo">
+                    <option value="{$vo['id']}" <if condition="$vo['id'] eq $info['na_url']">selected</if>>{$vo['name']}</option>
+                    </volist>
+                </select>
+            </div>
+			<if condition="$info['na_rank'] neq 3">
+            <div class="info">
+                <div class="title">菜单APP图片:</div>
+				
+					<div class="thumbImg">	                	                
+						<if condition="$info.appimg neq ''"><img src="/Public/{$info.appimg}" style="max-width:300px; height:auto; " /></if>
+					</div>
+	                <div style="margin-left:170px;">	 <input type="file" name="appimg"></div>
+	                <!--<span class="red">注释：参考尺寸800*800px，等比例放大缩小，大小不得超过3M，支持jpg/png</span>-->
+					
+            </div>
+			</if>
+            <div class="info">
+                <div class="title">排序:</div>
+                <input type="number" min="0" max="255" name="na_sort"  value="{$info['na_sort']}">
+                <label>从小到大排序</label>
+            </div>
+            <div class="info">
+                <div class="title">状态:</div>
+                <select name="na_status">
+                    <option value="0">关闭</option>
+                    <option value="1" <if condition="$info['na_status'] eq 1">selected</if>>开启</option>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="hidden" name="id" value="{$info['id']}">
+                <input type="submit" class="button fl" value="保存">
+
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    function ajax_get_my_child(num,obj){
+        //num用于一个页面存在多个多级分类的情况使用的
+        if(!num){
+            num = 1;
+        }
+        var _this = $(obj);
+        var ajax_url = '{:U("Admin/Zgoods/ajaxGetParents")}';
+        var select_id;
+        var obj_data = {
+            pid:_this.val(),
+            id:"{$info['id']}"
+        };
+        $.get(ajax_url,obj_data,function(res){
+            var html_string = '<select name="type" onchange="ajax_get_my_child(1,this)">';
+            html_string +='<option value="">请选择</option>';
+            if(res.status==100){
+                for(var i=0;i<res.count;i++){
+                    html_string += '<option value="'+res.lists[i].pid+'">'+res.lists[i].name+'</option>';
+                }
+            }
+            html_string +='</select>';
+            _this.nextAll().remove();
+            if(res.count>0){
+                _this.after(html_string);
+            }
+            if(obj_data.pid>0){
+                select_id = obj_data.pid;
+            }else{
+                if(_this.attr('rank')==1){
+                    select_id = 0;
+                }else{
+                    select_id = _this.prev().val();
+                }
+            }
+            $('#my_id_'+num).val(select_id);
+        });
+    }
+</script>
+</body>
+</html>

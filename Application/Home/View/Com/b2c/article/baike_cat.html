@@ -1,0 +1,9 @@
+<div class="title">百科分类</div>
+<ul>
+    <if condition="$categorys">
+    <volist name="categorys" id="vo">
+    <li><a href="{:U('Home/Article/articleList?cat_id='.$vo['cid'])}">{$vo.catname}</a></li>
+    </volist>
+    </if> 
+    <div class="clear"></div>
+</ul>

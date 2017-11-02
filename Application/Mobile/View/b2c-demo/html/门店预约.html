@@ -1,0 +1,130 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>门店预约</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-swiper.css" /> <!-- tab -->
+    <link rel="stylesheet" type="text/css" href="../css/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="../css/style-layer.css" /> <!-- 提示 -->
+
+    <script src="../js/jquery-1.12.3.js"></script>
+    <script src="../js/swiper.min.js"></script> <!-- tab -->
+    <script src="../js/mobileSelect.js"></script> <!-- ios下弹式菜单选择 -->
+    <script src="../js/layer.js"></script> <!-- 提示 -->
+</head>
+
+
+<body>
+    <section class="yuyue">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="../img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>门店预约</h2>
+                <div class="web-top-right"><a href="门店预约-在线预约.html">在线预约</a></div>
+            </div>
+        </header>
+
+        <section class="yuyue-list wrapper">
+
+            <!-- content -->
+            <div class="goods-layout clearfix">
+                <div class="goods-img">
+                    <img src="../img/yuyue_img_03.png" alt="">
+                </div>
+                <div class="goods-right">
+                    <h2>深圳钻明网络设计</h2>
+                    <p class="goods-title">罗湖区金稻田路福安中心购物广场5楼1001号</p>
+                    <div class="goods-fangshi clearfix">
+                        <span class="fl c9"><img src="../img/address_icon_03.png" alt=""> 574m</span>
+                        <span class="fr"><a href="tel:10010" class="phone-btn ripple">电话预约 <img src="../img/phone_img.png" alt=""></a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-layout clearfix">
+                <div class="goods-img">
+                    <img src="../img/yuyue_img_03.png" alt="">
+                </div>
+                <div class="goods-right">
+                    <h2>深圳钻明网络设计</h2>
+                    <p class="goods-title">罗湖区金稻田路福安中心购物广场5楼1001号</p>
+                    <div class="goods-fangshi clearfix">
+                        <span class="fl c9"><img src="../img/address_icon_03.png" alt=""> 574m</span>
+                        <span class="fr"><a href="tel:10010" class="phone-btn ripple">电话预约 <img src="../img/phone_img.png" alt=""></a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-layout clearfix">
+                <div class="goods-img">
+                    <img src="../img/yuyue_img_03.png" alt="">
+                </div>
+                <div class="goods-right">
+                    <h2>深圳钻明网络设计</h2>
+                    <p class="goods-title">罗湖区金稻田路福安中心购物广场5楼1001号</p>
+                    <div class="goods-fangshi clearfix">
+                        <span class="fl c9"><img src="../img/address_icon_03.png" alt=""> 574m</span>
+                        <span class="fr"><a href="tel:10010" class="phone-btn ripple">电话预约 <img src="../img/phone_img.png" alt=""></a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-layout clearfix">
+                <div class="goods-img">
+                    <img src="../img/yuyue_img_03.png" alt="">
+                </div>
+                <div class="goods-right">
+                    <h2>深圳钻明网络设计</h2>
+                    <p class="goods-title">罗湖区金稻田路福安中心购物广场5楼1001号</p>
+                    <div class="goods-fangshi clearfix">
+                        <span class="fl c9"><img src="../img/address_icon_03.png" alt=""> 574m</span>
+                        <span class="fr"><a href="tel:10010" class="phone-btn ripple">电话预约 <img src="../img/phone_img.png" alt=""></a></span>
+                    </div>
+                </div>
+            </div>
+            <!-- content end -->
+
+            <div class="index-bottom">
+    <div class="phone clearfix">
+        <a href="tel:10010" class="fl"><img src="../img/phone_icon.png" alt=""> 400-111-6826</a>
+        <a href="#" class="fr">查看官方网站(网页版）</a>
+    </div>
+    <div class="copyright">© 2010-2017 钻明珠宝交易平台 版权所有</div>
+</div>
+
+<!-- 返回顶部 start -->
+<a href="javascript:;" class="back-top" style="display: none;">
+    <img src="../img/back_top.png" alt="">
+</a>
+
+<script>
+    $(function(){
+        //返回顶部
+        $(window).scroll(function(){
+              if($(document).scrollTop() + $(window).height() >= $(document).height()){
+                 $('.back-top').fadeIn();
+              }else{
+                 $('.back-top').hide();
+              }
+        });
+        $('.back-top').bind('click', function(){
+            $('body,html').animate({scrollTop : 0},400);
+        });
+    });
+</script>
+<!-- 返回顶部 end -->
+
+
+        </section>
+    </section>
+</body>
+</html>

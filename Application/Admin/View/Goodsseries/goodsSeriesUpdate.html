@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>编辑产品系列</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/html5sortable.css" /> 
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：编辑产品系列</h3>
+    </div>
+    <form action="{:U('Admin/Goodsseries/goodsSeriesUpdate')}" method="post" enctype="multipart/form-data">
+        <div style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">产品系列名称:</div> <input name="series_name" type="text" value="{$info.series_name}">
+            </div>
+			<div class="info">
+				<div class="title">图片：</div>
+				<input type="file" name="images_path" />
+			</div>
+			<if condition="$info.images_path neq ''">
+			<div class="info">
+				<div class="title">图片：</div>
+				<img src="/Public/{$info.images_path}" style="width: 400px; height:200px; padding: 3px; background: #FFFFFF; border: solid 1px #000000;">
+				<div class="clear"></div>
+			</div>
+			</if>
+			<div class="info red">
+                <div class="title">温馨提示：</div>
+                1，最佳图片尺寸宽高比例为2:1，图片大小不超过2M<br />
+				2，图片格式为：JPG、PNG、gif、jpeg
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="hidden" value="{$info.goods_series_id}" name="id" />
+                <input type="submit" class="button fl" value="保存">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

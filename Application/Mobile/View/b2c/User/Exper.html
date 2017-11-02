@@ -1,0 +1,60 @@
+<include file="Public:header" />
+<body>
+    <section class="order-tracking">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>订单跟踪</h2>
+            </div>
+        </header>
+
+        <section class="wrapper">
+            <div class="item-box">订单编号：<?php  echo(isset($order_express['order_sn']) ?  ($order_express['order_sn']) :  '暂无'); ?></div>
+            <div class="order-process">
+                <ul>
+					<?php if ($order_express == true): ?>
+						<?php if ($order_express['type'] == '0'): ?>
+							<?php if ($order_express['data'] ==true): ?>
+								<?php foreach ((array)$order_express['data'] as $k=>$v):?>
+								  <li>
+									<span class="tag <?php	if($k=='0'){ echo 'active';	}?>	"></span>
+									<p>&nbsp;<?php 	 echo  $v['context'];?></p>
+									<small>  <?php   echo  $v['time'];   ?></small>
+								  </li>			
+								<?php endforeach;?>
+							<?php else: ?>
+								<li>
+									<span class="tag active"></span>
+									<p>&nbsp;暂无物流信息、</p>
+									<small></small>
+								</li>
+							<?php endif; ?>
+								<li>
+									<span class="tag"></span>
+									<p>&nbsp;您的订单已经配货完毕，并已出库交付<?php echo $order_express['company'];?>，运单号为<?php echo $order_express['number'];?></p>
+									<small>  <?php echo (date("Y-m-d H:i:s", $order_express['ctime']));?></small>
+								</li>
+						<?php else: ?>
+								<li>
+									<span class="tag active"></span>
+									<p>&nbsp;您的订单已经配货完毕并已出库，将由<?php echo  $order_express['name'];?>为您送货上门，联系电话：<?php 	echo  $order_express['phone'];?></p>
+									<small>  <?php echo (date("Y-m-d H:i:s", $order_express['ctime']));?></small>
+								</li>
+						<?php endif; ?>
+					<?php else: ?>
+							<li>
+								<span class="tag active"></span>
+								<p>&nbsp;暂无物流信息、</p>
+								<small></small>
+							</li>
+					<?php endif; ?>
+                </ul>
+            </div>
+        </section>
+    </section>
+
+	<include file="Public:foot" />
+</body>

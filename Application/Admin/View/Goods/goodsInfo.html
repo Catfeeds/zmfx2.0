@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" /> 
+<title>添加编辑证书货</title>
+</head>
+<style>
+.caizuan{
+	display:none;
+}
+</style>
+<body>
+<div class="goods page-main">
+    <div class="subMenu">
+        <h3>当前操作：添加编辑证书货</h3>
+    </div>
+    <div class="goodsInfo">
+    	<form action="{:U('Admin/Goods/goodsInfo')}" method="post" onsubmit=" return checkInfo(this)" enctype="multipart/form-data" method="post">
+    	<table class="addTbl">
+    		<tr class="top"><th colspan="4">证书货详细参数</th></tr>
+			<tr>
+				<th>钻石类型:</th>
+				<td>
+					<input id="luozuantype0" <neq name="goodsInfo['luozuan_type']" value="1" > checked </neq> type="radio" value="0" name="luozuan_type">
+					<label for="luozuantype0">白钻</label>
+					<input id="luozuantype1" <eq name="goodsInfo['luozuan_type']" value="1" > checked </eq> type="radio" value="1" name="luozuan_type">
+					<label for="luozuantype1">彩钻</label>
+				</td>
+				<th>库存:</th>
+				<td>
+					<input type="text" name="goods_number" value="{$goodsInfo.goods_number}" />
+				</td>
+			</tr>
+    		<tr>
+	    		<th>钻石形状:</th>
+	    		<td><select name="shape"><volist name="shapes" id="vo"><option <if condition="$vo['name'] eq trim($goodsInfo['shape'])" >selected</if> value="{$vo['name']}">{$vo.title}</option></volist></select></td>
+	    		<th>钻石名称:</th>
+	    		<td><input type="text" name="goods_name" value="{$goodsInfo.goods_name}" /></td>
+	    	</tr>
+    		
+    		<tr>
+	    		<th>证书类型:</th>
+	    		<td><select name="certificate_type"><volist name="certificate_types" id="vo"><option <if condition="$vo['name'] eq trim($goodsInfo['certificate_type'])" >selected</if> value="{$vo.name}">{$vo.title}</option></volist></select></td>
+	    		<th>证书编号:</th>
+	    		<td><input type="text" name="certificate_number" value="{$goodsInfo.certificate_number}" /></td>
+    		</tr>
+    		
+    		<tr>
+	    		<th>所在地:</th>
+	    		<td><input type="text" name="location" value="{$goodsInfo.location}" /></td>
+	    		<th>去向:</th>
+	    		<td><input type="text" name="quxiang" value="{$goodsInfo.quxiang}" /></td>
+    		</tr>
+
+    		<tr>
+    			<th>重量:</th>
+    			<td><input type="text" name="weight" value="{$goodsInfo.weight}" /></td>
+    			<th>颜色:</th>
+    			<td><input type="text" name="color" value="{$goodsInfo.color}"/></td>
+    		</tr>
+    		<tr>
+	    		<th>净度:</th>
+	    		<td><input type="text" name="clarity" value="{$goodsInfo.clarity}" /></td>
+	    		<th class="baizuan">切工:</th>
+	    		<td class="baizuan"><select name="cut"><volist name="cut" id="vo"><option <if condition="trim(strtoupper($vo['name'])) eq $goodsInfo['cut']" >selected</if> value="{$vo.name}">{$vo.title}</option></volist></select></td>
+				<th class="caizuan">色度:</th>
+	    		<td class="caizuan"><input type="text" name="intensity" value="{$goodsInfo.intensity}" /></td>
+    		</tr>
+    		<tr>
+	    		<th>抛光:</th>
+	    		<td><select name="polish"><volist name="cut" id="vo"><option <if condition="($vo['name'] eq $goodsInfo['polish'])" >selected</if> value="{$vo.name}">{$vo.title}</option></volist></select></td>
+	    		<th>对称:</th>
+	    		<td><select name="symmetry"><volist name="cut" id="vo"><option <option <if condition="($vo['name'] eq $goodsInfo['symmetry'])" >selected</if> value="{$vo.name}">{$vo.title}</option></volist></select></td>
+    		</tr>
+    		<tr>
+    			<th>荧光:</th>
+    			<td><input type="text" name="fluor" value="{$goodsInfo.fluor}" /></td>
+    			<th>奶色:</th>
+    			<td><input type="text" name="milk" value="{$goodsInfo.milk}" /></td>
+    		</tr>
+    		<tr>
+    			<th>咖色:</th>
+    			<td><input type="text" name="coffee" value="{$goodsInfo.coffee}" /></td>
+    			<th>台面比:</th>
+    			<td><input type="text" name="dia_table" value="{$goodsInfo.dia_table}"/></td>
+    		</tr>
+    		<tr>
+    			<th>全深比:</th>
+    			<td><input type="text" name="dia_depth" value="{$goodsInfo.dia_depth}" /></td>
+    			<th>大小:</th>
+    			<td><input type="text" name="dia_size" value="{$goodsInfo.dia_size}" /></td>
+    		</tr>
+    		<tr>
+    			<th>国际报价:</th>
+    			<td><input type="text" name="dia_global_price" value="{$goodsInfo.dia_global_price}" /></td>
+    			<th>折扣:</th>
+    			<td><input type="text" name="dia_discount" value="{$goodsInfo.dia_discount}" /></td>
+    		</tr>
+    		<tr>
+    			<th>添加图片:</th>
+    			<td colspan="3">
+
+
+					<if condition="($goodsInfo['imageurl'] neq '') && ($goodsInfo['imageurl'] neq '-') ">
+						<div class="thumbImg">	                	                
+			                <img src="{$goodsInfo.imageurl}" style="max-width:300px; height:auto; " />
+			            </div>
+		            </if>
+	                <input type="file" name="imageURL">
+	                <br>
+	                <div class="red">注释：参考尺寸800*800px，等比例放大缩小，大小不得超过3M，支持jpg/png</div>
+    			</td>
+    			
+    		</tr>
+    		<tr>
+    			<th>上传视频:</th>
+    			<td colspan="3">
+					<if condition="($goodsInfo['videourl'] neq '') && ($goodsInfo['videourl'] neq '-') ">
+						<div class="thumbImg">
+							<!--
+			                <iframe src="{$goodsInfo.videourl}"  style="max-width:300px;height:auto;"></iframe>
+			                -->
+							<?php if(strpos($goodsInfo['videourl'],'http')===false){?>
+							<video controls="" class="maxvideo big_overflow" style="max-width:300px;height:auto;">
+								<source src="<?php echo C('agent_domain_once').$goodsInfo['videourl']?>" type="video/mp4" class="video_url">
+								<!-- <source src="movie.ogg" type="video/ogg"> -->
+								您的浏览器不支持最新的视频播放,请升级
+							</video>
+							<?php }else{?>
+							<iframe src="<?php echo $goodsInfo['videourl']?>"  style="max-width:300px;height:auto;"></iframe>
+							<?php }?>
+
+			            </div>
+		            </if>
+
+    				<input type="file" name="videoURL" />
+					<br>
+                	<div class="red">注释：大小不得超过3M，支持mp4</div>
+
+    			</td>
+    			
+    		</tr>
+
+    		<tr>    		
+	    		<th colspan="4" class="tdCenter"><input type="hidden" name="gid" value="{$goodsInfo.gid}" />
+					<input class="button fl" type="submit" name="submit" value="提交" />&nbsp;
+					<input class="button fl ml10" type="button" name="button" value="返回" onclick="window.history.back();" />
+				</th>
+			</tr>
+    	</table>
+    	</form>
+    </div>
+</div>
+<script>
+function checkInfo(obj){
+	if(obj.goods_name.value == ''){
+		alert('请输入钻石名称');
+		return false;
+	}
+	if(obj.certificate_number.value == ''){
+		alert('请输入证书编号');
+		return false;
+	}
+	if(obj.weight.value == ''){
+		alert('请输入钻石重量');
+		return false;
+	}
+	if(obj.color.value == ''){
+		alert('请输入钻石颜色');
+		return false;
+	}
+	if(obj.clarity.value == ''){
+		alert('请输入钻石净度');
+		return false;
+	}
+	if(obj.dia_global_price.value == ''){
+		alert('请输入国际报价');
+		return false;
+	}
+	if(obj.dia_discount.value == ''){
+		alert('请输入折扣');
+		return false;
+	}
+	
+	
+	return true;
+}
+//白钻切工和彩钻色度，隐藏显示
+function toggle(){
+	var luozuan_type = $('input:radio[name="luozuan_type"]:checked').val();
+	if(luozuan_type == '1'){
+		$('.caizuan').show();
+		$('.baizuan').hide();
+	}else{
+		$('.caizuan').hide();
+		$('.baizuan').show();
+	}
+}
+$(document).ready(function(){
+	toggle();
+	$('input[name="luozuan_type"]').change(function(){
+		toggle();
+	})
+	
+})
+
+</script>
+</body>
+</html> 

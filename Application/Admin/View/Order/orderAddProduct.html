@@ -1,0 +1,20 @@
+<if condition="!$page">
+<tr data-id="{$SJID}" class="list" goods-id="">
+    <td><input type="text" value="" name="product[{$SJID}][goods_sn]"  class="goods_sn2"></td>
+    <td><input type="text" value="" name="product[{$SJID}][goods_price]" class="goods_price"></td>
+    <td class="sxgg"></td>
+    <td><input type="text" value="1" name="product[{$SJID}][goods_num]" class="goods_num" style="width:70px;"></td>
+    <td class="goods_number"></td>
+    <td class="goods_price"></td>
+    <td><a href="#" class="orderDelProduct" data-id="{$SJID}">删除</a></td>
+</tr>
+<else />
+<volist name="specificationList" id="vo">
+<select name="product[{$SJID}][specification][{$key}]">
+	<option value="0">选择{$vo.name}</option>
+    <volist name="vo.sub" id="io">
+    	<option value="{$io.specification_id}">{$io.name}</option>
+    </volist>
+</select>
+</volist>
+</if>

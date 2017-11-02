@@ -1,0 +1,693 @@
+<include file=".:Base:layout_header" />
+<!-- content -->
+<div class="main w1200">
+
+    <div class="details-left">
+        <include file=".:Base:dingzhi:zhouliufu:sidebar" />
+        <div class="clearfix"></div>
+
+        <!-- 浏览记录 -->
+        <!--<div class="browsing-history">
+            <h2>浏览记录 <a href="{:U('/Home/Goods/getHistoryLists')}" class="more">更多</a></h2>
+            <ul class="diamond-list">
+                <volist name="goodsHistorys" id="vo">
+                    <li>
+                        <a href="#">
+                            <p><img src="__IMG_DZ__/details_10.png" alt=""></p>
+                            <p class="diamond-name">钻石(女戒)</p>
+                            <p class="rmb">¥ 1106.02 </p>
+                        </a>
+                    </li>
+                </volist>
+            </ul>
+        </div>-->
+        <!-- 浏览记录 end -->
+
+    </div>
+
+    <div class="content">
+        <!-- 面包屑 -->
+        <div class="bread-crumbs">
+            您当前位置为：商品详情
+        </div>
+        <!-- 面包屑 end -->
+
+        <!-- 商品数据 -->
+        <div class="goods-desc">
+
+            <!-- 图片预览 -->
+            <style>
+                /*放大镜*/
+                .ZoomMain { float:left;position:relative;}
+                .ZoomMain .zoom {height:393px;width:393px;position:relative;}
+                .ZoomMain .zoom .move{position:absolute;left:0; top:0;display:none;width:195px; height:195px;background:#000;opacity:0.2;filter:Alpha(Opacity=20);}
+                .ZoomMain .zoomDetail{display:none;border:1px solid #DCDDDD;width:393px; height:393px; position:absolute;right:-405px;top:0px; overflow:hidden;}
+                .littleImg {margin-top:10px;height:54px;overflow:hidden;position:relative;}
+                .littleImg span {position: absolute;display:block;width:10px;height:55px;background:#999;cursor:pointer;}
+                .littleImg span em {display: none;width:10px;height:55px;}
+                .littleImg span.btnL {left:0;background: url(oohdear/images/cssPos/UltimatePageCssPos.gif) no-repeat left top;}
+                .littleImg span.btnL em {background: url(oohdear/images/cssPos/UltimatePageCssPos.gif) no-repeat left -57px;}
+                .littleImg span.btnR em {background: url(oohdear/images/cssPos/UltimatePageCssPos.gif) no-repeat -10px -57px;}
+                .littleImg span.btnR {right:0;background: url(oohdear/images/cssPos/UltimatePageCssPos.gif) no-repeat -10px top;}
+                .littleImg span.hover em {display:block;}
+                .littleImg .slideMain {width:343px;height:55px;margin-left:26px;overflow:hidden;position:relative;}
+                .littleImg .slideMain ul {position:absolute;left:0;width:355px;padding-top:1px;}
+                .littleImg .slideMain ul li {float:left;margin-right:6px;cursor:pointer;width:50px;height:50px;border:1px solid #dbdbdb;}
+                .littleImg .slideMain ul li.selected {border-color:#999;}
+                .littleImg .slideMain ul li img {float:left;width:50px;height:50px;}
+                .goods-desc .goods-desc-left img { max-width: unset;}
+                .big-box img { width: 100%;}
+                .goods-desc .parameter-list .check_box_set{
+                    width: 100%;
+                    background: #eee;
+                    padding: 0 11px;
+                    line-height: 34px;
+                }
+                /*放大镜end*/
+            </style>
+            <div class="goods-desc-left">
+
+                <div class=" ZoomMain picbox">
+                    <div class="zoom big-box">
+                        <span class="move"></span>
+                        <img src="{$data['imgs_list'][0]['small_path']}" class="big-img" alt="">
+                    </div>
+                    <div class="tabbox">
+                        <ul>
+                            <volist name="data.imgs_list" id="img_info">
+                                <li class="active"><img src="{$img_info['small_path']}" data-big="{$img_info['small_path']}" alt=""></li>
+                            </volist>
+                            <div class="clearfix"></div>
+                        </ul>
+                        <img src="__IMG_DZ__/tab_icon_03.png" class="tab-left" alt="">
+                        <img src="__IMG_DZ__/tab_icon_05.png" class="tab-right" alt="">
+                    </div>
+                    <div class="zoomDetail">
+                        <img src="{$data['imgs_list'][0]['small_path']}" />
+                    </div>
+                    <script>
+                        $(function(){
+                            //图片切换
+                            var index = 0;
+                            var len = $('.tabbox ul li').length-1;
+                            //处理切换操作
+                            var tabimg = {
+                                tab: function(_index){
+                                    var src = $('.tabbox ul li').eq(_index).find('img').attr('data-big');
+                                    $('.big-img, .zoomDetail img').attr('src', src);
+                                    $('.tabbox ul li').removeClass('active').eq(_index).addClass('active');
+                                }
+                            }
+                            //鼠标经过
+                            $('.tabbox ul li').mouseover(function(){
+                                index = $(this).index();
+                                tabimg.tab(index);
+                            });
+                            //左切换
+                            $('.tab-left').bind('click', function(){
+                                index != 0 ? index-- : index = len;
+                                tabimg.tab(index);
+                            });
+                            //右切换
+                            $('.tab-right').bind('click', function(){
+                                index < len ? index++ : index = 0;
+                                tabimg.tab(index);
+                            });
+                        });
+
+                        //放大镜
+                        (function() {
+                            function Zoom(object) {
+                                this.zoomArea = $(".zoom", object); //保存促发放大效果的区域
+                                this.moveArea = $(".move", object); //保存移动区域
+                                this.zoomDetail = $(".zoomDetail", object); //保存放大镜区域
+                                this.zoomDetailImg = $("img", this.zoomDetail); //保存放大镜里面的图
+                                this.zoomAreaWidth = this.zoomArea.width();
+                                this.moveAreaWidth = this.moveArea.width();
+                                this.zoomAreaHeight = this.zoomArea.height();
+                                this.moveAreaHeight = this.moveArea.height();
+                                this.zoomDetailWidth = this.zoomDetail.width();
+                                this.zoomDetailHeight = this.zoomDetail.height();
+                                this.zoomAreaOffset = this.zoomArea.offset(); //初始化放大区域在视口中的相对偏移;
+                                this.XY = null; //初始化鼠标相对于放大区域的偏移偏移值
+                                this.moveBili = null; //
+                                var _this_ = this;
+                                this.zoomArea.mousemove(function(e) { //当鼠标在放大区域移动的时候执行
+                                    _this_.move(e.pageX, e.pageY);
+                                }).mouseover(function() {
+                                    _this_.moveArea.show();
+                                    _this_.zoomDetail.show();
+                                }).mouseout(function() {
+                                    _this_.moveArea.hide();
+                                    _this_.zoomDetail.hide();
+                                });
+                                this.calculate(); //初始化并计算出需要的比例值
+                                //以下是小图部分的功能实现
+                                this.l = 0;
+                                this.scrollObj = $(".slideMain ul", object); //保存ul滚动对象
+                                this.lis = this.scrollObj.children(); //保存小图片列表
+                                this.btnR = $(".btnR", object); //保存右边按钮
+                                this.btnL = $(".btnL", object); //保存左边边按钮
+                                this.lis.click(function() {
+                                    _this_.changeImgSrc(this);
+                                });
+                                if (this.lis.length > 6) { //判断图片数是否超出显示区域，是的话就注册滚动事件
+                                    this.s = this.lis.length - 6; //获取多余出来的图片数
+                                    this.scrollObj.width(60 * this.lis.length + "px"); //当图片数超出默认值时，设置ul的宽度
+                                    this.btnL.click(function() {
+                                        _this_.scrollRight();
+                                    }).mouseover(function() {
+                                        $(this).addClass("hover")
+                                    }).mouseout(function() {
+                                        $(this).removeClass("hover");
+                                    });
+                                    this.btnR.click(function() {
+                                        _this_.scrollLeft();
+                                    }).mouseover(function() {
+                                        $(this).addClass("hover")
+                                    }).mouseout(function() {
+                                        $(this).removeClass("hover");
+                                    });;
+                                }
+                            };
+                            Zoom.prototype = {
+                                scrollLeft: function() {
+                                    if (Math.abs(this.l) == this.s) {
+                                        return
+                                    };
+                                    this.l--;
+                                    this.scrollObj.animate({
+                                        left: this.l * 58 + "px"
+                                    }, "fast");
+                                },
+                                scrollRight: function() {
+                                    if (this.l == 0) {
+                                        return
+                                    };
+                                    this.l++;
+                                    this.scrollObj.animate({
+                                        left: this.l * 58 + "px"
+                                    }, "fast");
+                                },
+                                changeImgSrc: function(o) {
+                                    //改变标识样式
+                                    $(o).addClass("selected").siblings().removeClass("selected");
+                                    this.zoomArea.find("img").attr("src", $(o).find("img").attr("medium-img"));
+                                    this.zoomDetailImg.attr("src", $(o).find("img").attr("medium-img"));
+
+                                },
+                                move: function(x, y) { //鼠标在放大区域移动的时候执行的函数
+                                    this.XY = this.mousePosAndSetPos(x, y); //计算出鼠标相对于放大区域的x,y值
+                                    //设置滑块的位置
+                                    this.moveArea.css({
+                                        left: this.XY.offsetX + "px",
+                                        top: this.XY.offsetY + "px"
+                                    });
+                                    //设置大图在细节位置
+                                    this.zoomDetailImg.css({
+                                        marginLeft: -this.XY.offsetX * this.moveBili + "px",
+                                        marginTop: -this.XY.offsetY * this.moveBili + "px"
+                                    });
+                                },
+                                mousePosAndSetPos: function(x, y) { //实时计算并设置滑块的位置
+                                    x = x - this.zoomAreaOffset.left - this.moveArea.width() / 2;
+                                    y = y - this.zoomAreaOffset.top - this.moveArea.height() / 2;
+                                    x = x < 0 ? 0 : x;
+                                    y = y < 0 ? 0 : y;
+                                    x = x > (this.zoomAreaWidth - this.moveAreaWidth) ? this.zoomAreaWidth - this.moveAreaWidth : x;
+                                    y = y > (this.zoomAreaHeight - this.moveAreaHeight) ? this.zoomAreaHeight - this.moveAreaHeight : y;
+                                    return {
+                                        offsetX: x,
+                                        offsetY: y
+                                    };
+                                },
+                                calculate: function() { //计算函数
+                                    var widthBili, heightBili;
+                                    //计算移动的滑块与放大镜铺面显示的比例宽高
+                                    widthBili = (this.zoomAreaWidth * this.zoomDetailWidth) / this.moveAreaWidth;
+                                    heightBili = (this.zoomAreaHeight * this.zoomDetailHeight) / this.moveAreaHeight;
+                                    //把比出来的宽高
+                                    this.zoomDetailImg.css({
+                                        width: widthBili + "px",
+                                        height: heightBili + "px"
+                                    });
+                                    //返回移动的比例
+                                    this.moveBili = (widthBili - this.zoomDetailWidth) / (this.zoomAreaWidth - this.moveAreaWidth);
+                                }
+                            };
+                            var zoom = new Zoom($(".ZoomMain").eq(0));
+                        })();
+                    </script>
+                </div>
+
+                <!-- 添加收藏 -->
+                <div class="collect">
+                    <!-- <img src="__IMG_DZ__/shoucang.png" data-src="__IMG_DZ__/quxiaosc.png" class="collect-btn" alt=""> -->
+                </div>
+                <script>
+                    $(function(){
+                        $('.collect-btn').bind('click', function(){
+                            alert('收藏成功');
+                            $(this).attr('src', $(this).attr('data-src'));
+                        });
+                    })
+                </script>
+                <!-- 添加收藏 end -->
+            </div>
+            <!-- 图片预览 end -->
+
+            <form id="ajax_submit_cart">
+            <!-- 参数选项 -->
+            <div class="goods-desc-right">
+                <!-- 公用参数 1 -->
+                <div class="head">
+                    <h1 class="goods-name">{$data['goods_name']}</h1>
+                    <p style="display: none;">预估成本价:  <span class="rmb">￥<span class="js_my_price">{$data['goods_price']}</span></span></p>
+                    <p>款号：{$data['goods_sn']}</p>
+                </div>
+                <!-- 公用参数 1 end -->
+
+                <div class="parameter-list">
+                    <!-- 公用参数 2 -->
+                    <ul>
+                        <li>
+                            <h2>可选材质：</h2>
+                            <div class="data-box js_value_material">
+                                <volist name="data['factory_lists'][0]['material_lists_arr']" id="ma_info" key="ma_key">
+                                    <span ma_id="{$ma_info.id}" class="checks <if condition="$ma_key eq 1">active</if> ">{$ma_info.name}</span>
+                                </volist>
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                    </ul>
+                    <!-- 公用参数 2 end -->
+
+                    <!-- 参数 -->
+                    <ul >
+
+                        <li>
+                            <h2>预估金重：</h2>
+                            <div class="data-box">
+                                <p class="test js_jinzhong">
+                                    <volist name="data['factory_lists'][0]['material_lists_arr']" key="m_kx" id="m_info">
+                                        <if condition="$m_kx eq 1">
+                                            <span>
+                                            <volist name="data['factory_lists']" id="m_n_info">
+                                                {$m_n_info['material_info']['sex_name']}{$m_n_info['material_info']['weight']}
+                                                &nbsp;
+                                            </volist>
+                                        </span>
+                                        </if>
+                                    </volist>
+                                </p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <input type="hidden" name="gid" value="{$data['goods_id']}">
+                        <volist name="data.factory_lists" key="g_key" id="g_data">
+                            <if condition="$g_data['factory_info']['sex']">
+
+                                <li>
+                                    <h2 class="red check_box_set">
+                                        <input type="checkbox" class="js_checked_sex" name="g_data[{$g_key}][fac_is_checked]" checked value="1">
+                                        &nbsp;&nbsp;{$g_data['factory_info']['sex_name']}
+                                    </h2>
+                                    <div class="clearfix"></div>
+                                </li>
+
+                            <else/>
+                                <input type="hidden" name="g_data[{$g_key}][fac_is_checked]" value="1">
+                            </if>
+                            <li>
+                                <h2>可选主石：</h2>
+                                <div class="data-box">
+                                    <div>
+                                        <select name="g_data[{$g_key}][factory_id]" id="" class="select mainstone-select pull-left js_mainstone">
+                                            <volist name="g_data['factory_lists_arr']" id="f_info">
+                                                <option value="{$f_info['f_id']}">{$f_info.zhushi_name}</option>
+                                            </volist>
+                                        </select>
+                                        <div class="zdyzs">
+
+                                            <div class="zs-weight">
+                                                <input type="text" class="js_weight_zhushi" name="g_data[{$g_key}][diamond]" value="" placeholder="主石重量">
+                                                <button type="button" class="button">CT</button>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <p class="remark">（备注：自定义主石大小的范围在可选主石范围之内）</p>
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>主石颜色：</h2>
+                                <div class="data-box">
+                                    <div>
+                                        <select name="g_data[{$g_key}][color]" id="" class="select js_price_do">
+                                            <volist name="g_data['color_lists']" id="co_info">
+                                                <option value="{$co_info}">{$co_info}</option>
+                                            </volist>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>主石净度：</h2>
+                                <div class="data-box">
+                                    <div>
+                                        <select name="g_data[{$g_key}][clarity]" id="" class="select js_price_do">
+                                            <volist name="g_data['clarity_lists']" id="cl_info">
+                                                <option value="{$cl_info}">{$cl_info}</option>
+                                            </volist>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>可选副石：</h2>
+                                <div class="data-box">
+                                    <div>
+                                        <select name="g_data[{$g_key}][deputystone_opened]" id="" class="select fushi-select">
+                                            <option value="1">封</option>
+                                            <option value="0">不封</option>
+                                        </select>
+                                        <p class="fushi-data" >
+                                            <volist name="g_data['factory_lists_arr']" id="f_info" key="fxa_n">
+                                            <span class="js_fushi_zhong js_fushi_zhong_{$f_info['f_id']}" <if condition="$fxa_n eq 1" style="display:block;"><else/>style="display:none;"</if>>
+                                                {$f_info['fushi_name']}
+                                            </span>
+                                            </volist>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <if condition="$data['banfang_jewelry_info']['is_hand'] eq 1">
+                            <li>
+                                <h2>可选手寸：</h2>
+                                <div class="data-box">
+                                    <div>
+                                        <select name="g_data[{$g_key}][hand]" id="" class="select">
+                                            <option value="">请选择手寸</option>
+                                            <volist name="g_data['hands_lists']" id="h_info">
+                                                <option value="{$h_info}">{$h_info}</option>
+                                            </volist>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            </if>
+
+                        </volist>
+
+                    </ul>
+                    <!-- 公用参数  end -->
+
+                    <!-- 公用参数 3 -->
+                    <ul>
+                        <li>
+                            <p>预计交货时间：{:C('expected_delivery_time')}个工作日</p>
+                        </li>
+                        <li>
+                            <h2>备注：</h2>
+                            <div class="data-box">
+                                <textarea name="note" rows="5" cols="50" placeholder="字印/分色/喷拉沙/是否封底等"></textarea>
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <h2>定制数量：</h2>
+                            <div class="data-box">
+                                <div class="customize-box">
+                                    <a href="javascript:;" class="reduction"><img src="__IMG_DZ__/reduction_icon.png" alt=""></a>
+                                    <input type="text" name="goods_number" value="1" class="number-cust">
+                                    <a href="javascript:;" class="add"><img src="__IMG_DZ__/add_icon.png" alt=""></a>
+                                    <!-- <span class="kucun">库存：1</span> -->
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <p><strong class="red">温馨提示：售价为预估成本价，实际报价以出货为准</strong></p>
+                            <p><strong class="red" style="padding-left: 70px;">30分以上需GIA证书，请在备注中注明</strong></p>
+                        </li>
+                        <li>
+                            <button type="button" class="add-cart" onclick="ajaxSubmitCart();">加入购物车</button>
+                        </li>
+                    </ul>
+                    <!-- 公用参数 3 end -->
+
+                    <script>
+                        $(function(){
+                            //参数单选
+                            $('.data-box .checks').bind('click', function(){
+                                $(this).parents('.data-box').find('.checks').removeClass('active');
+                                $(this).addClass('active');
+                                ajaxGetParam(2);
+
+                            });
+
+
+                            //自定义主石
+                            $('.zdyzs-btn').bind('click', function(){
+                                $(this).hide();
+                                $(this).parents('.data-box').find('.zs-weight').show();
+                            });
+                            $('.mainstone-select').change(function(){
+                                //$(this).parents('.data-box').find('.zdyzs-btn').show();
+                                $(this).parents('.data-box').find('.js_weight_zhushi').val('');
+                                //$(this).parents('.data-box').find('.zs-weight').hide();
+
+                                ajaxGetParam(2);
+                            });
+                            $('.js_weight_zhushi').bind('blur',function(){
+                                ajaxGetPrice();
+                            });
+
+                            //副石选择
+                            $('.fushi-select').change(function(){
+                                if($(this).find('option:selected').val() == 0){
+                                    $('.fushi-data').show();
+                                }else{
+                                    $('.fushi-data').hide();
+                                }
+                            });
+
+                            //商品数量选择
+                            $('.customize-box').each(function(){
+                                var _this = $(this);
+                                var str = _this.find('.number-cust');
+                                //加
+                                $(this).find('.add').bind('click', function(){
+                                    str.val( parseInt(str.val())+1 );
+                                });
+                                //减
+                                $(this).find('.reduction').bind('click', function(){
+                                    if(str.val() > 1){
+                                        str.val( parseInt(str.val())-1 );
+                                    }
+                                });
+                            });
+
+                            $('.js_price_do').change(function(){
+                                ajaxGetPrice();
+                            });
+
+                            $('.js_checked_sex').change(function(){
+                                ajaxGetPrice();
+                            });
+
+                        });
+                    </script>
+                </div>
+            </div>
+            <!-- 参数选项 end -->
+            </form>
+
+            <div class="clearfix"></div>
+        </div>
+        <!-- 商品数据 end -->
+
+        <!-- 详细数据 -->
+        <!--<div class="goods-particulars">
+            <div class="particulars-tab">
+                <ul>
+                    <li class="active">商品详情</li>
+                    <li>商品参数</li>
+                    <li>客户评论</li>
+                    <div class="clearfix"></div>
+                </ul>
+            </div>
+            <div class="particulars-main">
+                <div class="particulars-list" style="display: block">
+                    <img src="__IMG_DZ__/details_15.png" alt="">
+                </div>
+                <div class="particulars-list">
+                    <div class="particulars-data">
+                        <ul>
+                            <li>适用人群：女性</li>
+                            <li>可选材质： PT、K金</li>
+                            <li>产品系列：畅销爆款</li>
+                            <li>款式类型： 夹镶</li>
+                            <li>可选主石：0.06-0.40</li>
+                            <li>选副石： 0.03 -0.03  0.06-0.06 0.08-0.08 1.00-1.00</li>
+                            <div class="clearfix"></div>
+                        </ul>
+                    </div>
+                </div>
+                <div class="particulars-list">
+                    <div class="commentaries">
+                        <h2>客户评论</h2>
+                        <ul>
+                            <li>全部评论（1）</li>
+                            <li>
+                                <p>
+                                    <span class="pull-left">ceshi  2017/9/1  下午1:47:21</span>
+                                    <span class="pull-right">
+                                        <img src="__IMG_DZ__/star_01.png" alt="">
+                                        <img src="__IMG_DZ__/star_01.png" alt="">
+                                        <img src="__IMG_DZ__/star_01.png" alt="">
+                                        <img src="__IMG_DZ__/star_02.png" alt="">
+                                        <img src="__IMG_DZ__/star_02.png" alt="">
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </p>
+                                <p>非常好！</p>
+                            </li>
+                            <li>
+                                <p>
+                                    <span class="pull-left">ceshi  2017/9/1  下午1:47:21</span>
+                                    <span class="pull-right">
+                                        <img src="__IMG_DZ__/star_01.png" alt="">
+                                        <img src="__IMG_DZ__/star_01.png" alt="">
+                                        <img src="__IMG_DZ__/star_01.png" alt="">
+                                        <img src="__IMG_DZ__/star_02.png" alt="">
+                                        <img src="__IMG_DZ__/star_02.png" alt="">
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </p>
+                                <p>非常好！</p>
+                            </li>
+                            <li>
+                                <p>
+                                    <span class="pull-left">ceshi  2017/9/1  下午1:47:21</span>
+                                    <span class="pull-right">
+                                        <img src="__IMG_DZ__/star_01.png" alt="">
+                                        <img src="__IMG_DZ__/star_01.png" alt="">
+                                        <img src="__IMG_DZ__/star_01.png" alt="">
+                                        <img src="__IMG_DZ__/star_02.png" alt="">
+                                        <img src="__IMG_DZ__/star_02.png" alt="">
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </p>
+                                <p>非常好！</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+        <script>
+            $(function(){
+                //详细数据切换
+                var tabs = $('.particulars-tab ul li');
+                tabs.bind('click', function(){
+                    tabs.removeClass('active');
+                    $(this).addClass('active');
+                    $('.particulars-list').hide().eq($(this).index()).fadeIn();
+                });
+            });
+        </script>
+        <!-- 详细数据 -->
+    </div>
+    <div class="clearfix"></div>
+</div>
+<!-- content end -->
+<script>
+
+    function ajaxSubmitCart(){
+        var ma_id = $('.js_value_material').find('.active').attr('ma_id');
+        var data_string = $('#ajax_submit_cart').serialize();
+        data_string +='&ma_id='+ma_id;
+        $.ajax({
+            url: '{:U("Home/Goods/ajaxSubmitCart")}',
+            type: 'POST',
+            data: data_string,
+            success: function(data){
+                alert(data.msg);
+                if(data.status==100){
+                    window.location.href='/Home/Order/orderCart';
+            }
+            }
+        });
+    }
+
+    function ajaxGetPrice(){
+        var ma_id = $('.js_value_material').find('.active').attr('ma_id');
+        var data_string = $('#ajax_submit_cart').serialize();
+        data_string +='&ma_id='+ma_id;
+        $.ajax({
+            url: '{:U("Home/Goods/ajaxGetPrice")}',
+            type: 'POST',
+            data: data_string,
+            success: function(d){
+                if(d.status==100){
+                    $('.js_my_price').html(d.data.goods_price);
+                }else{
+                    alert(d.msg);
+                }
+                //window.location.href='/Home/Order/orderConfirm';
+            }
+        });
+    }
+    function ajaxGetParam(type,obj){
+
+        if(!type){
+            type = 0;
+        }
+        var ma_id = $('.js_value_material').find('.active').attr('ma_id');
+
+        var data_string = $('#ajax_submit_cart').serialize();
+        data_string +='&ma_id='+ma_id+'&param_ajax_type='+type;
+        $.ajax({
+            url: '{:U("Home/Goods/ajaxGetPrice")}',
+            type: 'POST',
+            data: data_string,
+            success: function(d){
+                if(d.status==100){
+                    if(type==2){
+                        var js_jinzhong = '<span>';
+                        for(var i in d.data.factory_lists){
+                            js_jinzhong += d.data.factory_lists[i].material_info.sex_name;
+                            js_jinzhong += d.data.factory_lists[i].material_info.weight;
+
+                        }
+                        js_jinzhong += '</span>';
+                        $('.js_jinzhong').html(js_jinzhong);
+
+                    }
+                    if(type==1){
+                        $('.js_fushi_zhong').css('display','none');
+                        for(var i in d.data.factory_lists){
+                            $('.js_fushi_zhong_'+d.data.factory_lists[i].factory_info.f_id).css('display','block');
+                        }
+                    }
+                    $(obj).html(d.data.goods_price);
+                }else{
+                    alert(data.msg);
+                }
+                //window.location.href='/Home/Order/orderConfirm';
+            }
+        });
+
+    }
+</script>
+<include file=".:Base:layout_footer" />

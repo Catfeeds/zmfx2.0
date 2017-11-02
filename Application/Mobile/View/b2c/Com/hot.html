@@ -1,0 +1,34 @@
+<if condition="$positionList[0]['is_show'] eq 1">
+    <if condition="$hotGoodsList">
+    <div class="item-box hot">
+        <div class="upstairs">
+            <h3 class="title">{$positionList[0]['title']}</h3>
+            <h4 class="subtitle">{$positionList[0]['english_title']}</h4>
+        </div>
+
+        <!-- 活动热卖 tab -->
+        <div class="hot-tab-box">
+            <div class="swiper-container" id="hot-tab">
+                <div class="swiper-wrapper">
+                    <volist name="hotGoodsList" id="vo">
+                        <div class="swiper-slide">
+                            <a href="{:U('/Goods/detail',array('goods_type'=>$vo['goods_type'],'gid'=>$vo['goods_id']))}">
+                                <p><img src="{$vo['thumb']}" alt="{$vo['goods_name']}"></p>
+                                <p class="zs-name">{$vo['goods_name']}</p>
+                                <p class="rmb">￥{$vo['activity_price']}</p>
+                            </a>
+                        </div>
+                    </volist>
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+                <!-- Add Arrows -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+
+        </div>
+        <!-- hot tab end -->
+    </div>
+    </if>
+</if>

@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/user.css">
+<link href="__JS__/iCheck/skins/minimal/blue.css" rel="stylesheet">
+<link href="__JS__/iCheck/skins/square/blue.css" rel="stylesheet">
+<link href="__JS__/iCheck/skins/flat/blue.css" rel="stylesheet">
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/user.js"></script>
+<link rel="stylesheet" href="__CSS__/cart.css">
+<script src="__JS__/iCheck/jquery.icheck.js"></script>
+<script src="__JS__/icheck-init.js"></script>
+<script type="text/javascript" src="__JS__/fuelux/js/spinner.min.js"></script>
+<script src="__JS__/spinner-init.js"></script>
+<script src="__JS__/layer-mobile/layer.js"></script> 
+<!-- 商品滑动 -->
+<link rel="stylesheet" href="__CSS__/swiper.min.css">
+<style>
+.swiper-container {
+				width: 100%;
+				height: 300px;
+				margin: 20px auto;
+		}
+		.swiper-slide {
+				text-align: center;
+				font-size: 18px;
+				background: #fff;
+				
+				/* Center slide text vertically */
+				display: -webkit-box;
+				display: -ms-flexbox;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: center;
+				-ms-flex-pack: center;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-ms-flex-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+		}
+	
+	.footer li {
+		float: none;
+		width: auto;
+	}
+	.confirm-header { margin-top: 22px;}
+	.confirm-header ul li p { white-space:normal}
+	.confirm-header ul { box-shadow: none; padding: 5px;}
+
+</style>
+<title>提交订单</title>
+</head>
+
+<body class="wrap-bg">
+	<!-- Header -->
+		<header class=" header text-center">
+				<a href="/Cart" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+			提交订单
+		</header>
+
+		<nav class="navbar navbar-default footer user-order-empty user-order-waitpay confirm-header" role="navigation">
+		 <ul class="nav">
+			<li>
+					<?php if (I('get.cart_id') == true): ?>
+						<a href="/user/address/cartid/<?php echo I('get.cart_id')?>">
+					<?php else: ?>
+						<a href="/user/address/">
+					<?php endif; ?> 
+					 <if condition="$user_address">
+						<p></p>
+						<p>&nbsp;&nbsp;&nbsp;{$user_address['title']} {$user_address[0]} {$user_address[1]} {$user_address[2]} {$user_address[3]}&nbsp;&nbsp;{$user_address[address]}<p> 
+						<p>&nbsp;&nbsp;&nbsp;收货人姓名：{$user_address[name]}<p>
+						<p>&nbsp;&nbsp;&nbsp;收货人电话: {$user_address[phone]}<p>
+						<input type="hidden" class="user_address_id" data_num="{$user_address[address_id]}" />
+					<else />
+						<i class="glyphicon glyphicon-plus blue" style="display: inline-block"></i>请选择默认/添加收货人地址
+					</if>
+					
+				</a>
+			</li>
+					</ul>
+		</nav>
+		<!-- Header END //-->
+		
+		<!-- Main -->
+		<div class="container-fluid">
+			<div class="row">
+				<div class="order-list">
+						<div class="col-xs-12">
+
+								<div class="panel panel-default">
+										<div class="panel-heading">
+												<h6>商品清单</h6>
+										</div>
+										<div class="panel-body borbot">
+												<div id="gmap-street-view">
+														<!-- Swiper -->
+														<div class="swiper-container spimg">
+							<a href="{:U('/Cart/Cart_List',array('cart_id'=>$id))}">
+																<ul class="swiper-wrapper">
+									<if condition="$product">
+										<volist name="product['data']" id="vo">
+												<li><span class="swiper-slide"><img src="{$vo.goods_attrs.thumb}" alt=""></span></li>
+												<input type="hidden" class="user_goods_id" data_num="{$vo.id}" />
+										</volist>
+									</if>
+									<if condition="$luozuan">
+										<volist name="luozuan['data']" id="vo">
+												<li><span class="swiper-slide"><img src="/Public/images/default/luozuan.jpg" alt=""></span></li>
+												<input type="hidden" class="user_goods_id" data_num="{$vo.id}" />
+										</volist>
+									</if>
+									<if condition="$sanhuo">
+										<volist name="sanhuo['data']" id="vo">
+												<li><span class="swiper-slide"><img src="/Public/images/default/sanhuo.jpg" alt=""></span></li>
+												<input type="hidden" class="user_goods_id" data_num="{$vo.id}" />
+										</volist>
+									</if>
+									<if condition="$jietuo">
+										<volist name="jietuo['data']" id="vo">
+												<li><span class="swiper-slide"><img src="{$vo.goods_attrs.thumb}" alt=""></span></li>
+												<input type="hidden" class="user_goods_id" data_num="{$vo.id}" />
+										</volist>
+									</if>
+									
+																		<div class="clear"></div>
+																</ul> </a>    
+														</div>
+														<div class="spsum" onclick="javascript: location.href='{:U('/Cart/Cart_List',array('cart_id'=>$id))}'">
+																共<span class="red">{$count_tip}</span>件 <i class="glyphicon glyphicon-chevron-right"></i>
+														</div>
+														<div class="clear"></div>
+												</div>
+								<if condition="$user_pay_mode">
+										<p class="borbot"></p>
+										<div class="borbot payment">
+											<p class="">支付方式</p>
+											<button type="button" class="btn btn-default xxzz btn-primary">线下转账</button>
+											<button type="button" class="btn btn-default">在线支付</button>
+										</div>
+										<div class="borbot alert alert-info xxzz-data" style="display: block">
+										<if condition="$LinePayMode">
+											<p>账户名称：{$LinePayMode.aname}</p>
+											<p>账号：{$LinePayMode.abank}</p>
+											<p>开户行： {$LinePayMode.tback}</p>
+										</if>	
+										</div>
+								</if>
+																<div class="rabox borbot">
+																		<div class="ratext"> 物流配送 </div>
+																		<div class="psfs">
+ 
+									<if condition="$user_delivery_mode">
+										<volist name="user_delivery_mode" id="vo">
+																				<div class="square-blue single-row">
+																						<div class="radio" style="float:left">
+																								<input tabindex="3" type="radio"  name="demo-radio" ref={$vo.mode_id}>
+																						</div>
+																						{$vo.mode_name}
+																				</div>
+										</volist>
+									</if>
+																		</div>
+																		<div class="clear"></div>
+																</div>
+							<input name="id" value="{$id}" type="hidden" />
+														<p class="submit-order"><button type="button" class="btn btn-primary exit-button" onclick="submit_data()">提交订单</button></p>
+												</div>
+										</div>
+								</div>
+						</div>
+				</div>
+			</div>
+		</div>
+		<!-- Main END //-->
+
+	<!-- Swiper JS -->
+	<script src="__JS__/swiper.min.js"></script>
+	<script src="__JS__/public.js"></script>
+	<script src="__JS__/layer-mobile/layer.js"></script>
+
+		<!-- Initialize Swiper -->
+	<script>
+
+		
+		$(function(){
+      //支付方式 (支持在线支付后请开启)
+			/*$('.payment button').bind('click', function(){
+				$('.payment').find('button').removeClass('btn-primary');
+				$(this).addClass('btn-primary');
+				if( $(this).hasClass('btn-primary') && $(this).hasClass('xxzz') ){
+					$('.xxzz-data').slideDown();
+				}else{
+					$('.xxzz-data').slideUp();
+				}
+			});*/
+
+		});
+
+
+		var radio_tips='';
+
+		var swiper = new Swiper('.swiper-container', {
+				pagination: '.swiper-pagination',
+				slidesPerView: 3,
+				paginationClickable: true,
+				spaceBetween: 30,
+				freeMode: true
+		});
+	
+
+	$('input[name="demo-radio"]:eq(0)').iCheck('check');   
+	radio_tips = $('input[name="demo-radio"]:eq(0)').attr('ref') ? $('input[name="demo-radio"]:eq(0)').attr('ref') : null;
+	$('input').on('ifChecked', function(event){		  radio_tips = ($(this).attr('ref'));  });
+	
+	function submit_data(){
+		var attr_code = [];
+		$(".spimg input").each(function(i){			 
+			attr_code[i] = $(this).attr('data_num');
+		});
+		if(radio_tips=='' || radio_tips==null || radio_tips==undefined ){
+			layer.open({content: '请选择物流配送方式！', time: 2});	return false;
+		}	
+ 
+		address_id=$(".user_address_id").attr('data_num');
+			$.post('/Cart/Submit_Corder',{address_id:address_id,id:attr_code,radio_tips:radio_tips},function(data){
+					if(data.status == 1){
+						tan(data.msg);
+						setTimeout("window.location.href='/Cart/Corder_succeed'",3000);  
+					 }else{
+						tan(data.msg);
+					 }
+			});                                               
+	}
+		</script>
+
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+<nav>
+    <div class="nav-box">
+        <volist name="customModuleList" id="vo">
+            <a href="{:U($vo['url'])}" class="ripple">
+                <p><img src="/Public{$vo['ico_img_path']}" alt="{$vo['name_notes']}"></p>
+                <h3>{$vo['name_notes']}</h3>
+            </a>&nbsp;
+        </volist>
+    </div>
+</nav>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>消息中心</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/user.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script src="__JS__/user.js"></script>
+	<script src="__JS__/layer-mobile/layer.js"></script> 
+	<style>		#page{	clear:both;text-align: center;	font-size: 1.4rem;	padding: 10px 0;		}</style>
+</head>
+<body>
+	<!-- Header -->
+	<header class="header text-center user-message-header">
+        <a href="/user" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+       		消息
+       	<!--<a href="#" class="pull-right">清空</a>-->
+    </header>
+    <!-- Header END //-->
+
+    <!-- Main -->
+    <div class="container-fluid message-main">
+ 
+	<!--
+    	<div class="panel panel-default border-radius-none">
+		  <div class="padding-10 message-list">
+		    <h5>恭喜您资料审核通过！<small>3-12  12:28</small></h5>
+		    <span class="message-delete text-center">删除</span>
+		    <div class="clear"></div>
+		  </div>
+		</div>
+		<div class="panel panel-default border-radius-none">
+		  <div class="padding-10 message-list">
+		    <h5>恭喜您资料审核通过！<small>3-12  12:28</small></h5>
+		    <span class="message-delete text-center">删除</span>
+		    <div class="clear"></div>
+		  </div>
+		</div>
+		<div class="panel panel-default border-radius-none">
+		  <div class="padding-10 message-list">
+		    <h5>恭喜您资料审核通过！<small>3-12  12:28</small></h5>
+		    <span class="message-delete text-center">删除</span>
+		    <div class="clear"></div>
+		  </div>
+		</div>
+		<div class="panel panel-default border-radius-none">
+		  <div class="padding-10 message-list">
+		    <h5>恭喜您资料审核通过！<small>3-12  12:28</small></h5>
+		    <span class="message-delete text-center">删除</span>
+		    <div class="clear"></div>
+		  </div>
+		</div>
+		<div class="panel panel-default border-radius-none">
+		  <div class="padding-10 message-list">
+		    <h5>恭喜您资料审核通过！<small>3-12  12:28</small></h5>
+		    <span class="message-delete text-center">删除</span>
+		    <div class="clear"></div>
+		  </div>
+		</div>
+		-->
+		
+    </div>
+	<div id='page'></div>
+    <!-- Main END //-->
+</body>
+<script>
+
+		msg_data(1);
+		
+		function msg_data(page){
+			var html='';
+			$.post("/user/umsg",{Action:"POST",tips:1,page:page},function(data){		
+				if(data){
+					if(data.data!=''){
+						$.each(data.data ,function(k ,v) {
+							html+="<div class='panel panel-default border-radius-none'>";
+							html+="<div class='padding-10 message-list'>";
+							html+="<h5 style='cursor: pointer;'>"+v.content+"<small>"+trans_time(v.create_time)+"</small></h5>";
+							html+="<span class='message-delete text-center' onclick='deteal_msg(this,"+v.msg_id+")'>删除</span>";
+							html+="<div class='clear'></div>";
+							html+="</div></div>";	
+						})
+						$("#page").html(data.page);
+					}else{
+						html="<p>暂无。。。</p>";
+					}
+						$(".message-main").html(html); 
+				}else{
+					tan('网络错误！');	
+				}
+				
+			});
+		}
+
+
+		function deteal_msg(obj,msg_id){
+			if(msg_id=='' || isNaN(msg_id)){layer.open({content: '为空的删除项！', time: 3});  return false;}
+			layer.open({
+				content: '确定要删除吗？',
+				btn: ['确认', '取消'],
+				shadeClose: false,
+				yes: function(){
+					$.post("/user/umsg",{Action:"POST",tips:2,msg_id:msg_id},function(data){		
+						if(data){
+							layer.open({content: data.data, time: 2}); 
+							$(obj).parents(".panel").remove();
+						}else{
+							layer.open({content: '删除失败！', time: 3}); 
+						}
+					});
+				}, no: function(){
+					//layer.open({content: '你选择了取消', time: 1});
+				}
+			});
+		}
+
+
+
+		function trans_time(tip_time){															
+			var dates = new Date(tip_time * 1000);
+			M = (dates.getMonth()+1 < 10 ? 		'0'+(dates.getMonth()+1)   : dates.getMonth()+1) + '-';
+			H = (dates.getHours()+1 < 10 ? 		'0'+(dates.getHours())   : dates.getHours()) + ':';
+			S = (dates.getMinutes()+1 < 10 ? 	'0'+(dates.getMinutes()) : dates.getMinutes());
+			if(dates.getDate()<10){
+				D = '0'+dates.getDate();
+			}else{
+				D =dates.getDate()+'';
+			}
+			return (M+D+' '+H+S);   
+		}
+ 
+
+</script>
+</html>

@@ -1,0 +1,127 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+ 
+<div id="main">
+    <div id="catMenu">
+        <div class="m">
+            <div class="mt"><h2>精品系列</h2></div>
+            <div class="mc">
+                <div class="item hover">
+                    <ul style="padding: 4px 0 4px 24px;" id="goodsType_data">
+ 
+                                
+ 
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="goodsCat">
+        <div class="here"><span>您当前的位置:</span><span id="nav_cate_here"></span></div>
+        <div class="filter">
+            <ul class="filterTo">
+                <li ref="create_time" txt="上架时间">上架时间</li>
+                <li ref="goods_price" txt="价格">价格</li>
+                <li ref="update_time" txt="更新时间">更新时间</li>
+            </ul>
+            <ul class="pageNum">
+                <span>共<label id="count"> </label>款&nbsp; 每页显示:</span>
+                <li>20</li>
+            </ul>
+        </div>
+        <div class="goodsList">
+            <ul id="dataList">
+ 
+
+     
+                <div class="clear"></div>
+            </ul>
+        </div>
+        <div id="page" class="page">{$data.page}</div>
+        <INPUT type="hidden" name="gsId" value="{$gsId}" />
+    </div>
+</div>
+<script>
+$(document).ready(function(){   
+	$(".pageNum li").click(function(){
+	  $(".pageNum").find("li").each(function(){
+	     $(this).removeClass("active");
+	  });
+	  //setCookie('n',$(this).html());
+	  $(this).addClass("active"); 
+	  //submitData();
+	  new_submitData_just_for_goodsSeries();
+	});
+	
+	$(".filterTo li").click(function(){
+		var type = $(this).attr('ref');
+	   	setCookie('type',type);
+	   	if(getCookie(type)=="DESC"){
+	   		setCookie(type,"ASC");
+	   		$(this).html($(this).attr('txt')+"&uarr;");  
+	   	}else{
+	   		setCookie(type,"DESC");                      
+	   		$(this).html($(this).attr('txt')+"&darr;");         
+	   	}
+		new_submitData_just_for_goodsSeries();
+	   	//setCookie('page',1); 
+ 
+	});   
+	
+	$(".pageNum").find("li").each(function(index,e){
+		if($(this).html() == getCookie('n')){
+			$(this).addClass("active");
+		}
+	});
+ 
+	  new_submitData_just_for_goodsSeries();
+ 
+});
+ 
+ var goodsType_data_html='';
+
+ 
+
+function new_submitData_just_for_goodsSeries(page){
+	var  data_html='';
+	var  cc_page='';
+			gsid=$('input[name="gsId"]').val();	
+			if(page)	cc_page=page; 
+			else		cc_page=getCookie('page'); 
+			$.post('/Home/Goods/goodsSeries',{gsid:gsid,sortType:getCookie('type'),sortValue:getCookie(getCookie('type')),page:cc_page},function(data){
+				  if(data.data || data.goodsType_data){
+						if(goodsType_data_html==''){
+							$.each(data.goodsType_data ,function(k ,v) {
+								goodsType_data_html += "<li><a href='/Home/Goods/goodsSeries/gsid/"+v.goods_series_id+".html'>"+v.series_name+"</a></li>";
+							});
+						}
+						$.each(data.data ,function(k ,v) {
+								data_html += "<li><div class='data_img'><a href='/Home/Goods/goodsInfo/goods_type/"+v.goods_type+"/gid/"+v.goods_id+"'><img src="+v.thumb+"></a></div>";
+								data_html += "<div class='data_text'><p><a href='/Home/Goods/goodsInfo/goods_type/"+v.goods_type+"/gid/"+v.goods_id+"'>"+v.goods_name+"</a></p><b>&yen;";	
+							if(v.activity_status==0 || v.activity_status==1){
+								data_html += v.activity_price;
+							}else{
+								data_html += v.goods_price;
+							}
+								data_html += "</b> </div></li>";
+						}); 
+					    $("#goodsType_data").html(goodsType_data_html); 
+					    $("#dataList").html(data_html); 
+					    $("#nav_cate_here").html(data.nav_cate); 
+					    $("#count").html(data.count); 
+					    $("#page").html(data.page); 
+				   }else{
+						 alert('网络错误！');
+				   }
+			});   
+}
+
+
+
+</script>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>订单发货单信息</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" /> 
+<script type="text/javascript" src="__JS__/deliveryInfo.js"></script>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：订单发货单信息</h3>
+        <ul>
+            <volist name="menuList[3]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>  
+        </ul>
+    </div>
+    <div class="order">
+    <form action="{:U('Admin/Order/OrderReturnAction?return_id='.$info['return_id'])}" method="post">
+    	<div class="order-top">
+            <div class="info fl">
+                <span class="title">订单编号:</span>
+                <span class="red">{$info.order_sn}</span>
+            </div>
+            <div class="info fr">
+                <span class="title">状态:</span>
+                <span class="red">
+                	<eq name="info.status" value="0">已取消</eq>
+		        	<eq name="info.status" value="1">退货中，等待货品确认</eq>
+		        	<eq name="info.status" value="2">已退货</eq>
+		        	<eq name="info.status" value="3">货品已确认，等待审核</eq>
+                </span>
+            </div>
+            <div class="clear"></div>
+            <div class="info fl">
+                <span class="title">退货时间:</span>
+                <span class="red">{$info.create_time|date="Y-m-d H:i:s",###}</span>
+            </div>
+			<div class="info fr">
+                <span class="title">退货总金额:</span>
+                <span class="red">{$info.goods_price}</span>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="order-content">
+        	<!------------------裸钻列表------------------->
+			<notempty name="goodsList['luozuan']">
+        	<div class="info">
+            	<div class="title">证书货产品:</div>
+            	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+                    <tr class="top">
+                        <th>证书号</th>
+                        <th>4C属性(重量/颜色/净度/切工)</th>
+                        <th>退货数量(颗)</th>
+                        <th>退货金额</th>
+                    </tr>
+                    <volist name="goodsList['luozuan']" id="vo" mod="2">
+                    <tr class="{$mod?'bg2':'bg1'}">
+                        <td>{$vo['goodsInfo']['certificate_type']}{$vo['goodsInfo']['certificate_number']}</td>
+                        <td>{$vo.4c}</td>
+                        <td>{$vo.goods_number}</td>
+                       	<td>{$vo.goods_price}</td>
+                    </tr>
+                    </volist>
+            	</table>
+                <div class="clear"></div>
+            </div>
+			</notempty>
+            <!------------------裸钻列表结束------------------->
+            <!------------------散货列表------------------->
+            <notempty name="goodsList['sanhuo']">
+            <div class="info">
+            	<div class="title">散货产品:</div>
+            	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+                    <tr class="top goodsSanhuoList">
+                        <th>产品编号</th>
+                        <th>4C属性(颜色/净度/切工)</th>
+                        <th>退货重量(Cut)</th>
+                        <th>货品价格</th>
+                    </tr>
+                    <volist name="goodsList['sanhuo']" id="vo" mod="2">
+                    <tr class="{$mod?'bg2':'bg1'}">
+                        <td>{$vo['goodsInfo']['goods_sn']}</td>
+                        <td>{$vo.4c}</td>
+                        <td>{$vo.goods_number}</td>
+                        <td>{$vo.goods_price}</td>
+                    </tr>
+                    </volist>
+            	</table>
+                <div class="clear"></div>
+            </div>
+            </notempty>
+            <!------------------散货列表结束------------------->
+            <!------------------成品货列表------------------->
+            <notempty name="goodsList['goods']">
+            <div class="info">
+            	<div class="title">珠宝产品:</div>
+            	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+                    <tr class="top">
+                        <th width="10%">产品编号</th>
+                        <th width="20%">产品名称</th>
+                        <th width="50%">规格/金工石</th>
+                        <th width="10%">退货数量</th>
+                        <th width="10%">退货价格</th>
+                    </tr>
+                    <volist name="goodsList['goods']" id="vo" mod="2">
+                    <tr class="{$mod?'bg2':'bg1'}">
+                        <td>{$vo['goodsInfo']['goods_sn']}</td>
+                        <td>{$vo['goodsInfo']['goods_name']}</td>
+                        <td>{$vo.4c}</td>
+                        <td>{$vo.goods_number}</td>
+                        <td>{$vo.goods_price}</td>
+                    </tr>
+                    </volist>
+            	</table>
+                <div class="clear"></div>
+            </div>
+            </notempty>
+            <!------------------成品货列表结束------------------->
+            <!------------------代销货列表------------------->
+            <notempty name="goodsList['consignment']">
+            <div class="info">
+            	<div class="title">代销货产品:</div>
+            	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+                    <tr class="top">
+                        <th width="10%">产品编号</th>
+                        <th width="20%">产品名称</th>
+                        <th width="40%">规格/金工石</th>
+                        <th width="10%">退货数量</th>
+                        <th width="8%">退货金额</th>
+                    </tr>
+                    <volist name="goodsList['consignment']" id="vo" mod="2">
+                    <tr class="{$mod?'bg2':'bg1'}">
+                        <td>{$vo['goodsInfo']['goods_sn']}</td>
+                        <td>{$vo['goodsInfo']['goods_name']}</td>
+                        <td>{$vo.4c}</td>
+                        <td>{$vo.goods_number}</td>
+                        <td>{$vo.goods_price}</td>
+                    </tr>
+                    </volist>
+            	</table>
+                <div class="clear"></div>
+            </div>
+            </notempty>
+			<!------------------代销货列表结束------------------->
+			<notempty name="compensateList">
+			<div class="info">
+				<div class="title">退款记录:</div>
+				<ul class="periodList">
+					<volist name="compensateList" id="vo">
+						<li>
+							<span>应退款金额：{$vo.compensate_price}</span>
+							<span>已核销:&yen;{$vo.payment_price}</span>
+							<eq name="vo.compensate_status" value="1"><span>&nbsp;&nbsp;&nbsp;未核销</span></eq>
+							<eq name="vo.compensate_status" value="2"><span>&nbsp;&nbsp;&nbsp;核销部分</span></eq>
+							<eq name="vo.compensate_status" value="3"><span>&nbsp;&nbsp;&nbsp;已核销</span></eq>
+							<a href="{:U('Admin/Business/compensateList?order_sn='.$info['order_sn'])}">去核销</a>
+						</li>
+					</volist>
+				</ul>
+			</div>
+			</notempty>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                	<eq name="info.status" value="1">
+                		<input type="submit" class="button fl" value="货品确认" name="orderReturnConfirm">
+                	</eq>
+                	<eq name="info.status" value="3">
+                		<input type="submit" class="button fl" value="审核退货" name="checkOrderReturn">
+                	</eq>
+                	<in name="info.status" value="1,3">
+                		<input type="submit" class="button fl" value="取消退货" name="quxiaoOrderReturn">
+                	</in>
+                <div class="clear"></div>
+            </div>
+            </eq>
+        </div>
+    </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<include file="Public:header" />
+
+<body>
+    <section class="order-submit-success invoice">
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>发票信息</h2>
+            </div>
+        </header>
+
+        <div class="wrapper">
+            <div class="pay-details">
+                <h1>发票收据</h1>
+                <p><span class="h2"><input type="radio" class="zdy-radio" name="invoice" value=""	<?php if($_GET['invoic']=='1') echo 'checked';?>></span>暂不开具发票</p>
+                <p><span class="h2"><input type="radio" class="zdy-radio" name="invoice" value=""   <?php if($_GET['invoic']=='2') echo 'checked';?>></span>开具个人发票</p>
+                <p><span class="h2"><input type="radio" class="zdy-radio" name="invoice" value=""	<?php if($_GET['invoic']=='3') echo 'checked';?>></span>开具公司发票</p>
+            </div>
+
+ 
+        </div>
+    </section>
+	
+	
+	<script>
+
+		$('.zdy-radio').bind('click', function(){
+			var url = '';
+			if(!isNaN(StringManage.LPosition(window.location.search))){
+				url = StringManage.LReplace(window.location.search,$(this).parent().parent().index());
+			}else{
+				url = window.location.search+$(this).parent().parent().index();
+			}
+			window.location.href='/Order/orderConfirm'+url;
+		});		
+	
+ 
+	</script>
+	
+<include file="Public:foot" />
+
+</body>
+</html>

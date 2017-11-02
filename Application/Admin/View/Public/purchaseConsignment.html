@@ -1,0 +1,127 @@
+<!--代销货列表开始-->
+<notempty name="goodsList['consignment']">
+<div class="info consignment">
+	<div class="title">代销货产品:</div>
+	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+            <th width="8%">产品名称</th>
+            <th width="17%">产品编号</th>
+            <th width="10%">采购单价(&yen;)</th>
+            <th width="10%">采购小计(&yen;)</th>
+            <th width="33%">金工石/规格</th>
+            <th width="8%">订购数量(颗)</th>
+            <if condition="!$order_id"><th width="8%">操作</th></if>
+        </tr>
+        <volist name="goodsList['consignment']" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'} list">
+            <td>
+                {$vo.goods_name}
+                <if condition="!$order_id and $vo.have_goods lt 1">(<span style="color:red">无货</span>)</if>
+            </td>
+            <td>{$vo.goods_sn}</td>
+            <td>
+                <if condition="!$order_id and $vo.have_goods lt 1">
+                    -
+                <else />
+
+    	            <if condition="!$order_id">
+    	            	{$vo.goods_price2}
+    	            <elseif condition="$orderInfo['order_status'] == 0" />
+    	            	{$vo['goods_price']/$vo['goods_number']|formatPrice}
+    	            <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+    	            	{$vo['goods_price']/$vo['goods_number']|formatPrice}
+    	            <else />
+    	            	{$vo['goods_price_up']/$vo['goods_number_up']|formatPrice}
+    	            </if>
+                </if>
+            </td>
+            <td>
+                <if condition="!$order_id and $vo.have_goods lt 1">
+                    -
+                <else />
+    	            <if condition="!$order_id">
+    	            	{$vo.goods_price3}
+    	            <elseif condition="$orderInfo['order_status'] == 0" />
+    	            	{$vo.goods_price}
+    	            <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+    	            	{$vo.goods_price}
+    	            <else />
+    	            	{$vo.goods_price_up}
+    	            </if>
+                </if>
+            </td>
+            <td>{$vo.4c}</td>
+            <td>
+            	<if condition="!$order_id">
+	            	<input type="text" style="width: 50px; text-align: center;" name="consignment[{$vo.id}][goods_num]" value="{$vo.goods_number}" />
+	            <elseif condition="$orderInfo['order_status'] == 0" />
+	            	{$vo.goods_number}
+	            <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+	            	{$vo.goods_number}
+	            <else />
+	            	{$vo.goods_number_up}
+	            </if>
+            </td>
+            <if condition="!$order_id"><td><a href="{:U('Admin/Order/purchaseOrderdel?id='.$vo['id'])}" id="isDel">删除</a></td></if>
+        </tr>
+        </volist>
+        <tr class="count">
+        	<td colspan="19" class="tr2">
+        		<span>采购价合计:</span>
+        		<span>&yen;</span>
+        		<span id="consignmentTotal">{$consignmentPrice}</span>
+        	</td>
+        </tr>
+	</table>
+    <div class="clear"></div>
+</div>
+<if condition="$order_id">
+<range name="orderInfo.order_status" value="-1,-2,0" type="notin">
+<div class="info">
+	<div class="title">代销货结算:</div>
+	<ul class="periodList">
+    <eq name="periodList.consignment.order_id" value="$orderInfo.order_id">
+	    <li class="bg">
+	        <span>做{$periodList.consignment.period_num}期支付&nbsp;&nbsp;&nbsp;</span>
+	        <span>应支付总金额:&yen;{$consignmentPrice}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+	        <span>逾期利率:0.0{$periodList.consignment.period_overdue}%</span>
+	    </li>
+    <else />
+    	<li><span>全款支付，应支付金额：{$consignmentPrice}</span>
+    </eq>
+    <volist name="receivablesList.consignment" id="vo">
+    	<li class="<eq name="vo.period_type" value="12">difference</eq>">
+    	<if condition="$vo['receivables_id'] and $vo['period_type'] == 12">
+    		<span>补差价</span>
+    		<span>应补差价:&yen;{$vo.receivables_price}</span>
+        	<span>已支付:&yen;{$vo.payment_price}</span>
+        	<eq name="vo.receivables_status" value="1"><span>&nbsp;&nbsp;&nbsp;未核销</span></eq>
+            <eq name="vo.receivables_status" value="2"><span>&nbsp;&nbsp;&nbsp;核销部分</span></eq>
+            <eq name="vo.receivables_status" value="3"><span>&nbsp;&nbsp;&nbsp;已核销</span></eq>
+    	</if>
+    	<if condition="$vo['compensate_id'] and $vo['period_type'] == 12">
+    		<span>退差价</span>
+    		<span>应退款:&yen;{$vo.compensate_price}</span>
+        	<span>已退款:&yen;{$vo.payment_price}</span>
+    		<eq name="vo.compensate_status" value="1"><span>&nbsp;&nbsp;&nbsp;未核销</span></eq>
+            <eq name="vo.compensate_status" value="2"><span>&nbsp;&nbsp;&nbsp;核销部分</span></eq>
+            <eq name="vo.compensate_status" value="3"><span>&nbsp;&nbsp;&nbsp;已核销</span></eq>
+    	</if>
+    	<neq name="vo.period_type" value="12">
+        	<span>第{$vo.period_current}期</span>
+        	<span>{$vo.period_day}天内</span>
+        	<span>应支付:&yen;{$vo.receivables_price}</span>
+        	<span>已支付:&yen;{$vo.payment_price}</span>
+        	<eq name="vo.receivables_status" value="1"><span>&nbsp;&nbsp;&nbsp;未核销</span></eq>
+            <eq name="vo.receivables_status" value="2"><span>&nbsp;&nbsp;&nbsp;核销部分</span></eq>
+            <eq name="vo.receivables_status" value="3"><span>&nbsp;&nbsp;&nbsp;已核销</span></eq>
+        </neq>
+        </li>
+    </volist>
+    </ul>
+</div>
+</range>
+</if>
+<div class="info period_list" id="consignment_period_list"></div>
+</notempty>
+<!------------------代销货列表结束------------------->

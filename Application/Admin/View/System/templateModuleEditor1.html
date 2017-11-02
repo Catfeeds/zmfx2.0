@@ -1,0 +1,30 @@
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：模板颜色配置</h3>
+        <ul>
+            <li><a href="{:U('Admin/System/templateManage')}">返回模板管理</a></li>
+        </ul>
+    </div>
+    <div class="template">
+        <form action="{:U('Admin/System/templateSys?template_id='.$templateInfo['template_id'])}" method="post">
+            <div class="info">
+                <div class="title">选择颜色组:</div>
+                <select name="color">
+                    <volist name="template_color" id="vo">
+                        <option value="{$vo.key}" <eq name="templateInfo['color']" value="$vo['key']">selected=""</eq>>{$vo.val}颜色组</option>
+                    </volist>
+                </select>
+                <span class="hfmr">恢复默认样式</span>
+                <input type="hidden" name="template_path" value="{$templateInfo.template_path}" />
+            </div>
+            <div class="info">
+                <div class="title">样式文件:</div>
+                <textarea id="cssFile" style="min-width: 80%; min-height: 600px; padding: 5px;" name="css">{$cssContent}</textarea>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" value="保存样式" class="button fl" />
+            </div>
+        </form>
+    </div>
+</div>

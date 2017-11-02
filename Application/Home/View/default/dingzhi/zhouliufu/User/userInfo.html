@@ -1,0 +1,463 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+    <script type="text/javascript" src="__PUBLIC__/Js/jquery.validator.js"></script>
+    <div class="main user-address w1200 zlf-order" id="UserInfo">
+        <!-- 	<div class="navigation"><a href="{:U('/Home/Index/index')}">首页 </a>&gt;<a href="{:U('/Home/User/index')}"> 用户中心 </a>&gt; 用户中心首页</div> -->
+        <!-- 侧边导航 -->
+        <include file=".:Base:dingzhi:zhouliufu:orderList_public" />
+        <!-- 侧边导航 end -->
+
+        <!-- 右侧内容 -->
+        <div class="content">
+            <eq name="act" value="userinfo">
+                <form id="userInfo" name="formMsg" action="{:U('Home/User/updateUserInfo')}" method="post">
+                    <div class="user-info">
+                        <ul>
+                            <li>
+                                <h2>{$Think.lang.L801}：</h2>
+                                <div class="right-cont">{$userInfo.username}</div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>{$Think.lang.L160}：</h2>
+                                <div class="right-cont">
+                                    <select name="birthdayYear">
+                                        <volist name="rangDate['year']" id= 'year'>
+                                        <option value="{$year}" <if condition="$year eq $birthdayYear ">selected</if> >{$year}</option>
+                                        </volist>
+                                    </select>
+                                    <select name="birthdayMonth">
+                                        <volist name="rangDate['mothod']" id= 'mothod'>
+                                        <option value="{$mothod}" <if condition="$mothod eq $birthdayMonth ">selected</if> >{$mothod}</option>
+                                        </volist>
+                                    </select>
+                                    <select name="birthdayDay">
+                                        <volist name="rangDate['day']" id= 'day'>
+                                        <option value="{$day}" <if condition="$day eq $birthdayDay ">selected</if> >{$day}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>{$Think.lang.L161}：</h2>
+                                <div class="right-cont">
+                                    <input type="radio" name="sex" value="0" <if condition="$userInfo['sex'] eq 0 ">checked="checked"</if> />{$Think.lang.L9025}&nbsp;&nbsp;
+                                    <input type="radio" name="sex" value="1" <if condition="$userInfo['sex'] eq 1 ">checked="checked"</if> />{$Think.lang.L9026}&nbsp;&nbsp;
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>{$Think.lang.L803}：</h2>
+                                <div class="right-cont">
+                                    <input id="email" autocomplete="off" type="text" name="email" value="{$userInfo.email}" class="input" />
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>{$Think.lang.L804}：</h2>
+                                <div class="right-cont">
+                                    <input id="phone" type="text" name="phone" value="{$userInfo.phone}" class="input" />
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>{$Think.lang.L9027}：</h2>
+                                <div class="right-cont">
+                                    <input id="qq" onkeyup="value=value.replace(/[^\\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\\d]/g,''))" ID="Text2" type="text" name="qq" value="{$userInfo.qq}" class="input" />
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>{$Think.lang.L9028}：</h2>
+                                <div class="right-cont">
+                                    <input name="realname" id="realname" type="text" class="input" value="{$userInfo.realname}" />
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>{$Think.lang.L9029}：</h2>
+                                <div class="right-cont">
+                                    <input name="job" id="job" type="text" class="input" value="{$userInfo.job}" /></td>
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>{$Think.lang.L9030}：</h2>
+                                <div class="right-cont">
+                                    <input name="company_name" id="company_name" type="text" class="input" value="{$userInfo.company_name}" />
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>{$Think.lang.L9031}：</h2>
+                                <div class="right-cont">
+                                    <input name="legal" type="text" id="legal" class="input" value="{$userInfo.legal}" />
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>{$Think.lang.L9032}：</h2>
+                                <div class="right-cont">
+                                    <input name="company_address" id="company_address" type="text" class="input" value="{$userInfo.company_address}" />
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>&nbsp;</h2>
+                                <div class="right-cont">
+                                    <input type="hidden" name="act" value="act_edit_profile">
+                                    <input id="infoSubmit" type="submit" value="{$Think.lang.L9034}" class="bnt_bonus" />
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </form>
+
+                <!-- <form id="userInfo" name="formMsg" action="{:U('Home/User/updateUserInfo')}" method="post">
+                    <table>
+                        <tr>
+                            <th align="right" width="40%">{$Think.lang.L801}:</th>
+                            <td>{$userInfo.username}</td>
+                        </tr>
+                        <tr>
+                            <th align="right">{$Think.lang.L160}:</th>
+                            <td>
+                                <select name="birthdayYear">
+                                    <volist name="rangDate['year']" id= 'year'>
+                                    <option value="{$year}" <if condition="$year eq $birthdayYear ">selected</if> >{$year}</option>
+                                    </volist>
+                                </select>
+                                <select name="birthdayMonth">
+                                    <volist name="rangDate['mothod']" id= 'mothod'>
+                                    <option value="{$mothod}" <if condition="$mothod eq $birthdayMonth ">selected</if> >{$mothod}</option>
+                                    </volist>
+                                </select>
+                                <select name="birthdayDay">
+                                    <volist name="rangDate['day']" id= 'day'>
+                                    <option value="{$day}" <if condition="$day eq $birthdayDay ">selected</if> >{$day}</option>
+                                    </volist>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="right">{$Think.lang.L161}</th>
+                            <td>
+                                <input type="radio" name="sex" value="0" <if condition="$userInfo['sex'] eq 0 ">checked="checked"</if> />{$Think.lang.L9025}&nbsp;&nbsp;
+                                <input type="radio" name="sex" value="1" <if condition="$userInfo['sex'] eq 1 ">checked="checked"</if> />{$Think.lang.L9026}&nbsp;&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="right">{$Think.lang.L803}:</th>
+                            <td>
+                                <input id="email" autocomplete="off" type="text" name="email" value="{$userInfo.email}" class="input" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="right">{$Think.lang.L804}:</th>
+                            <td>
+                                <input id="phone" type="text" name="phone" value="{$userInfo.phone}" class="input" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="right">{$Think.lang.L9027}:</th>
+                            <td>
+                                <input id="qq" onkeyup="value=value.replace(/[^\\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\\d]/g,''))" ID="Text2" type="text" name="qq" value="{$userInfo.qq}" class="input" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="right" id="">{$Think.lang.L9028}：</th>
+                            <td align="left">
+                                <input name="realname" id="realname" type="text" class="input" value="{$userInfo.realname}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="right" id="">{$Think.lang.L9029}：</th>
+                            <td align="left">
+                                <input name="job" id="job" type="text" class="input" value="{$userInfo.job}" /></td>
+                        </tr>
+                        <tr>
+                            <th align="right" id="">{$Think.lang.L9030}：</th>
+                            <td align="left">
+                                <input name="company_name" id="company_name" type="text" class="input" value="{$userInfo.company_name}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="right" id="">{$Think.lang.L9031}：</th>
+                            <td align="left">
+                                <input name="legal" type="text" id="legal" class="input" value="{$userInfo.legal}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="right" id="">{$Think.lang.L9032}：</th>
+                            <td align="left">
+                                <input name="company_address" id="company_address" type="text" class="input" value="{$userInfo.company_address}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <label class="validateTips1"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                <input type="hidden" name="act" value="act_edit_profile">
+                                <input id="infoSubmit" type="submit" value="{$Think.lang.L9034}" class="bnt_bonus" />
+                            </td>
+                        </tr>
+                    </table>
+                </form> -->
+            </eq>
+            <eq name="act" value="updatePwd">
+                <!-- 修改密码的form -->
+                <form id="pwdForm" name="pwdForm" action="{:U('Home/User/updatePwd')}" method="post" onSubmit="return false;">
+                    <div class="user-info">
+                        <ul>
+                            <li>
+                                <h2>{$Think.lang.L813}：</h2>
+                                <div class="right-cont"><input id="old_password" name="old_password" type="password" size="25" class="input" /></div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>{$Think.lang.L814}：</h2>
+                                <div class="right-cont">
+                                    <input id="new_password" name="new_password" type="password" size="25" class="input" />
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>{$Think.lang.L815}：</h2>
+                                <div class="right-cont">
+                                    <input id="confirm_password" name="confirm_password" type="password" size="25" class="input" />
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                <h2>&nbsp;</h2>
+                                <div class="right-cont">
+                                    <input name="act" type="hidden" value="act_edit_password" />
+                                    <input name="pwdSubmit" id="pwdSubmit" type="submit" class="bnt_bonus" style="border:none;" value="{$Think.lang.L816}" />
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- <table border="0" cellpadding="5" cellspacing="1">
+                        <tr>
+                            <th width="40%" align="right" bgcolor="#FFFFFF">{$Think.lang.L813}：</th>
+                            <td align="left" bgcolor="#FFFFFF">
+                                <input id="old_password" name="old_password" type="password" size="25" class="input" /></td>
+                        </tr>
+                        <tr>
+                            <th align="right" bgcolor="#FFFFFF">{$Think.lang.L814}：</th>
+                            <td align="left" bgcolor="#FFFFFF">
+                                <input id="new_password" name="new_password" type="password" size="25" class="input" /></td>
+                        </tr>
+                        <tr>
+                            <th align="right" bgcolor="#FFFFFF">{$Think.lang.L815}：</th>
+                            <td align="left" bgcolor="#FFFFFF">
+                                <input id="confirm_password" name="confirm_password" type="password" size="25" class="input" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td bgcolor="#FFFFFF">
+                                <input name="act" type="hidden" value="act_edit_password" />
+                                <input name="pwdSubmit" id="pwdSubmit" type="submit" class="bnt_bonus" style="border:none;" value="{$Think.lang.L816}" />
+                            </td>
+                        </tr>
+                    </table> -->
+                </form>
+            </eq>
+            <eq name="act" value="logininfo">
+                <div class="user-info">
+                    <table class="uc_table" cellpadding="0" cellspacing="0">
+                        <tr class="title">
+                            <th>ID</th>
+                            <th>IP</th>
+                            <th>{$Think.lang.L9036}</th>
+                            <th>{$Think.lang.L9037}</th>
+                            <th>{$Think.lang.L9038}</th>
+                        </tr>
+                        <foreach name="loginInfoArr" item="vo">
+                            <tr>
+                                <td>{$vo.log_id}</td>
+                                <td><a href="http://www.baidu.com/s?wd={$vo.login_ip}" target="_blank">{$vo.login_ip}</a></td>
+                                <td>{$vo.client_type}</td>
+                                <td>{$vo.browser}</td>
+                                <td>{$vo.login_time|date="Y-m-d H:i:s",###}</td>
+                            </tr>
+                        </foreach>
+                    </table>
+                    <div class="order_pager page">
+                        <div id="page">{$page}</div>
+                    </div>
+                </div>
+            </eq>
+        </div>
+        <!-- 右侧内容 end -->
+
+        <div class="clearfix"></div>
+
+        <!-- <div id="user_right">
+   	 	<div class="user_info tab">
+        <h3>
+	      <a href="{:U('Home/User/userInfo')}" class="<eq name='act' value='userinfo'>active</eq>">{$Think.lang.L159}</a>
+	      <a href="{:U('Home/User/updatePwd')}" class="<eq name='act' value='updatePwd'>active</eq>">{$Think.lang.L812}</a>
+	      <a href="{:U('Home/User/logininfo')}" class="<eq name='act' value='logininfo'>active</eq>">{$Think.lang.L9035}</a>
+	    </h3>
+   		</div>
+   	</div> -->
+    </div>
+
+    <script>
+        //验证初始化
+        $('#userInfo').validator({
+            theme: 'simple_right',
+            focusCleanup: true,
+            stopOnError: false,
+            //debug: true,
+            timely: 2,
+            //自定义规则（PS：建议尽量在全局配置中定义规则，统一管理）
+            rules: {
+                username: [/^[a-zA-Z0-9]+$/, '用户名无效! 仅支持字母与数字。'],
+                phone: [/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\\d{8})$/, '手机号码不正确'],
+                email: [/^([a-zA-Z0-9_\.\-])+\\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})$/, '邮箱格式不正确'],
+                remote: function(element) {
+                    return $.ajax({
+                        url: '/Home/Public/checkusername',
+                        type: 'post',
+                        data: element.name + '=' + element.value,
+                        dataType: 'json',
+                        success: function(d) {
+                            window.console && console.log(d);
+                        }
+                    });
+                },
+                qq: [/^[0-9]+(.[0-9]{3,15})?$/, 'QQ号不正确']
+            },
+
+            fields: {
+                "email": {
+                    rule: "required;remote;",
+                    tip: "输入你的用户名",
+                    ok: "",
+                    msg: {
+                        required: "请输入用户名",
+                        remote: "用户名已存在"
+                    }
+                },
+                "email": {
+                    rule: "required;email",
+                    tip: "输入你的邮箱",
+                    ok: "",
+                    msg: {
+                        required: "请输入邮箱地址!"
+                    }
+                },
+                "phone": {
+                    rule: "required;phone",
+                    tip: "输入你的手机号码。",
+                    ok: "",
+                    msg: {
+                        required: "请输入手机号!"
+                    }
+                }
+            },
+            //验证成功
+            valid: function(form) {
+                $.ajax({
+                    url: '/Home/User/updateUserInfo',
+                    type: 'POST',
+                    data: $(form).serialize(),
+                    success: function(d) {
+                        alert(d.msg);
+                        window.location.href = d.url;
+                    }
+                });
+            }
+        });
+        $('#pwdForm').validator({
+            theme: 'simple_right',
+            focusCleanup: true,
+            stopOnError: false,
+            debug: true,
+            timely: 2,
+            //自定义规则（PS：建议尽量在全局配置中定义规则，统一管理）
+            rules: {
+                old_password: function(element) {
+                    return $.ajax({
+                        url: '/Home/User/checkPwd',
+                        data: element.name + '=' + element.value,
+                        dataType: 'json',
+                        success: function(d) {
+                            window.console && console.log(d);
+                        }
+                    });
+                },
+                limitPwd: function(element) {
+                    if (element.value.length < 6) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+            },
+            // fields: {
+            //     "old_password": {
+            //         rule: "required;old_password;",
+            //         tip: "输入你的原密码",
+            //         ok: "",
+            //         msg: {
+            //             required: "请输入原密码",
+            //             old_password: "原密码不对"
+            //         }
+            //     },
+            //     "new_password": {
+            //         rule: "required;limitPwd;",
+            //         tip: "输入你的新密码",
+            //         ok: "",
+            //         msg: {
+            //             required: "请输入新密码",
+            //             limitPwd: "请输入至少6位的字符"
+            //         }
+            //     },
+            //     "confirm_password": {
+            //         rule: "required;",
+            //         tip: "输入你的确认密码",
+            //         ok: "",
+            //         msg: {
+            //             required: "请输入确认密码!"
+            //         }
+            //     }
+            // },
+            //验证成功
+            valid: function(form) {
+                $.ajax({
+                    url: '/Home/User/updatePwd',
+                    type: 'POST',
+                    data: $(form).serialize(),
+                    success: function(d) {
+                        if (d.error == 'no') {
+                            alert(d.msg);
+                            window.location.href = d.url;
+                        } else {
+                            alert(d.msg);
+                            return false;
+                        }
+
+                    }
+                });
+            }
+        });
+    </script>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

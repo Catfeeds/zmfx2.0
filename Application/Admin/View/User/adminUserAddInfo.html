@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>编辑用户地址</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" />
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：编辑用户地址</h3>
+        <ul>
+            <volist name="menuList[1]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+    </div>
+    <form id='edit_Form' action="{:U('Admin/User/adminUserAddInfo?address_id='.$addOnce['address_id'])}" method="post"  onSubmit="if(checkConsignee(this)){ajaxForm('#edit_Form');};return false;">
+        <div style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">地址ID:</div>
+                <if condition="$addOnce.address_id neq ''">
+                    <span>{$addOnce.address_id}</span>
+                <else />
+                    <label>
+                        <font color="red">数据加载异常！</font>
+                    </label>
+                </if>
+            </div>
+            <div class="info">
+                <div class="title">标注:</div>
+                <input type="text" name="title" value="{$addOnce.title}">
+            </div>
+            <div class="info">
+                <div class="title">区域:</div>
+                <select name="country_id" id="selCountries">
+                  <if condition="$country neq ''">
+                    <volist name="country" id="vo">
+                        <option value="{$vo.region_id}">{$vo.region_name}</option>
+                    </volist>
+                  <else />
+                    <option value="0">请选择</option>
+                    <option value="1">{$Think.lang.L9078}</option>
+                  </if>
+                </select>
+                <select name="province_id" id="selProvinces">
+                  <if condition="$province neq ''">
+                    <volist name="province" id="vo">
+                        <option value="{$vo.region_id}">{$vo.region_name}</option>
+                    </volist>
+                  <else />
+                    <option value="0">请选择</option>
+                  </if>
+                </select>
+                <select name="city_id" id="selCities">
+                  <if condition="$city neq ''">
+                    <volist name="city" id="vo">
+                        <option value="{$vo.region_id}">{$vo.region_name}</option>
+                    </volist>
+                  <else />
+                    <option value="0">请选择</option>
+                  </if>
+                </select>
+                <select name="district_id" id="selDistricts">
+                  <if condition="$district neq ''">
+                    <volist name="district" id="vo">
+                        <option value="{$vo.region_id}">{$vo.region_name}</option>
+                    </volist>
+                  <else />
+                    <option value="0">请选择</option>
+                  </if>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">详细地址:</div>
+                <input type="text" value="{$addOnce.address}" name="address" >
+            </div>
+            <div class="info">
+                <div class="title">邮政编码:</div>
+                <input type="text" value="{$addOnce.code}" name="code" >
+            </div>
+            <div class="info">
+                <div class="title">收货人姓名:</div>
+                <input type="text" value="{$addOnce.name}" name="name" >
+            </div>
+            <div class="info">
+                <div class="title">联系电话:</div>
+                <input type="text" value="{$addOnce.phone}" name="phone" >
+            </div>
+            <div class="info">
+                <div class="title">设为默认</div>
+                <select name="is_default">
+                    <option value="1"<if condition="$addOnce.is_default eq 1">selected</if>>是</option>
+                    <option value="2"<if condition="$addOnce.is_default eq 2">selected</if>>否</option>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="保存">
+                <input type="reset" class="button fl ml10" value="重置">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+$(document).ready(function () {
+    function address(sel, hl) {
+        var parent_id = $(sel).children('option:selected').val(), html, i;
+        if (parent_id !== 0) {
+            $.get("{:U('Admin/Public/getRegion')}", {'parent_id': parent_id}, function (data) {
+                html = '<option value="0">{$Think.lang.L9063}</option>';
+                for (i = 0; i < data.length; i++) {
+                    html += '<option value="' + data[i].region_id + '">' + data[i].region_name + '</option>';
+                }
+                $(hl).html(html);
+            });
+        }
+    }
+    $('#selCountries').change(function () { address('#selCountries', '#selProvinces'); });
+    $('#selProvinces').change(function () { address('#selProvinces', '#selCities'); });
+    $('#selCities').change(function () { address('#selCities', '#selDistricts'); });
+    // 编辑的时候回显
+    $('#selCountries').attr('value', "{$addOnce.country_id}");
+    $('#selProvinces').attr('value', "{$addOnce.province_id}");
+    $('#selCities').attr('value', "{$addOnce.city_id}");
+    $('#selDistricts').attr('value', "{$addOnce.district_id}");
+});
+
+function trim(text) {
+    if (typeof text === "string") {
+        return text.replace(/^\s*|\s*$/g, "");
+    } else {
+        return text;
+    }
+}
+function isEmpty(val) {
+    var result = true;
+    switch (typeof val) {
+    case 'string':
+        if (val === '0') {
+            result = true;
+        } else {
+            result = trim(val).length === 0 ? true : false;
+        }
+        break;
+    case 'number':
+        result = val === 0;
+        break;
+    case 'object':
+        result = val === null;
+        break;
+    case 'array':
+        result = val.length === 0;
+        break;
+    default:
+        result = true;
+    }
+    return result;
+}
+function isNumber(val) {
+    var reg = /^[\d|\.|,]+$/;
+    return reg.test(val);
+}
+function isTel(tel) {
+    var reg = /^[\d|\-|\s|\_]+$/; //只允许使用数字-空格等
+    return reg.test(tel);
+}
+// 检查地址数据
+function checkConsignee(frm) {
+    var msg = [], err = false, message;
+    if (frm.elements['selCountries'] && isEmpty(frm.elements['selCountries'].value)) {
+        msg.push("{$Think.lang.L9080}");
+        err = true;
+    }
+    if (frm.elements['selProvinces'] && isEmpty(frm.elements['selProvinces'].value)) {
+        err = true;
+        msg.push("{$Think.lang.L9081}");
+    }
+    if (frm.elements['selCities'] && isEmpty(frm.elements['selCities'].value)) {
+        err = true;
+        msg.push("{$Think.lang.L9082}");
+    }
+    if (frm.elements['selDistricts'] &&  isEmpty(frm.elements['selDistricts'].value)) {
+        err = true;
+        msg.push('{$Think.lang.L9083}');
+    }
+    if (isEmpty(frm.elements['name'].value)) {
+        err = true;
+        msg.push('{$Think.lang.L9084}');
+    }
+    if (frm.elements['address'] && isEmpty(frm.elements['address'].value)) {
+        err = true;
+        msg.push('{$Think.lang.L9085}');
+    }
+    if (frm.elements['code'] && (!isNumber(frm.elements['code'].value))) {
+        err = true;
+        msg.push('{$Think.lang.L9086}');
+    }
+    if ((frm.elements['phone'] && (!isTel(frm.elements['phone'].value)))) {
+        err = true;
+        msg.push('{$Think.lang.L9087}');
+    }
+    if (err) {
+        message = msg.join("\n");
+        alert(message);
+    }
+    return !err;
+}
+</script>

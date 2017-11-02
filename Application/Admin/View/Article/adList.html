@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>广告列表</title>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：广告列表</h3>
+        <ul>
+        	<li><a href="{:U('Admin/Article/adsManage')}">返回广告位</a></li>
+            <li><a href="{:U('Admin/Article/adInfo?ads_id='.$ads_id)}">添加广告</a></li>
+        </ul>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+      <tr class="top">
+        <th width="15%">广告位标题</th>
+        <th width="20%">标题(内容)</th>
+        <th width="20">图片(地址)</th>
+        <th width="10%">语言版本</th>
+        <th width="10%">状态</th>
+        <th width="10%">操作</th>
+      </tr>
+      <volist name="tempAdList" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+          <td>{$vo.adstitle}&nbsp;</td>
+          <td>{$vo.title}&nbsp;</td>
+          <td><a href="http://{$vo.url|default="www.baidu.com"}" target="_blank">
+          	<img src="/Public/{$vo.images_path}" width='200'></a>
+          </td>
+          <td>
+            <eq name="vo.lang" value="1">中文</eq>
+            <eq name="vo.lang" value="2">繁体</eq>
+            <eq name="vo.lang" value="3">英文</eq>
+          </td>
+          <td> <if condition="$vo['status'] eq 0">停用<else />启用</if></td>
+          <td>
+            <a href="{:U('Admin/Article/adInfo?ad_id='.$vo['ad_id'].'&ads_id='.$ads_id)}">编辑</a> |
+            <a href="{:U('Admin/Article/deleteAd?ad_id='.$vo['ad_id'])}" id="isDel">删除</a>
+          </td>
+        </tr>
+      </volist>
+    </table>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>

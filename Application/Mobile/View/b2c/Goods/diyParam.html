@@ -1,0 +1,82 @@
+<if condition="$goodsInfo['associate_info']">
+    <li>
+        <h2>材质：</h2>
+        <div class="spec-box" id="associateMaterial">
+            <volist name="goodsInfo['associate_info']" id="vo">
+                <span data-fixed-price="{$vo.fixed_price}" class="checks <if condition='$key eq 0'>active</if>" data-content="{$vo.material_name}" ref="{$vo.material_id}" onclick="setMaterial(this,{$goodsInfo.goods_id},{$vo.material_id},{$goodsInfo.goods_type})">
+                {$vo.material_name}
+                </span>&nbsp;
+            </volist>
+        </div>
+    </li>
+    <if condition="$goodsInfo['associate_luozuan']">
+        <li>
+            <notempty name="goodsInfo['associate_luozuan']"><h2>主石：</h2></notempty>
+            <div class="spec-box" id="associateLuozuan">
+                <volist name="goodsInfo['associate_luozuan']" id="v">
+                                <span class="checks <if condition='$key eq 0'>active</if>" data-content="{$v.gal_id}" title="{$v.shape_name}" ref="{$v.weights_name}" onclick="setDiamond(this, {$v.goods_id}, {$v.gal_id}, {$goodsInfo.goods_type})">
+                                    {$v.shape_name} <if condition="$v.weights_name">{$v.weights_name|round=2}CT</if>
+                                </span>
+                </volist>
+            </div>
+        </li>
+    </if>
+    <if condition="$goodsInfo['associate_deputystone']">
+        <li>
+            <notempty name="goodsInfo['associate_deputystone']"><h2>副石：</h2></notempty>
+            <div class="spec-box" id="deputystone">
+                <volist name="goodsInfo['associate_deputystone']" id="vo">
+                    <span class="checks <if condition='$key eq 0'>active</if>" onclick="setDeputystone(this,{$goodsInfo.goods_id},{$vo.gad_id},{$goodsInfo.goods_type})" ref="{$vo.gad_id}">{$vo.deputystone_name}</span>
+                </volist>
+            </div>
+        </li>
+    </if>
+    <input type="hidden" id="price_model" name="price_model" value="{$goodsInfo['price_model']}" >
+    <!-- 钻戒，戒指 -->
+    <if condition="$goodsInfo['price_model'] && (InStringByLikeSearch($category_name,array('钻戒','戒指')))" >
+        <include file="Goods:sizeAndWords" />
+    </if>
+
+    <!-- 项链，手链 -->
+    <if condition="$goodsInfo['price_model'] && (InStringByLikeSearch($category_name,array('项链','手链')))">
+        <include file="Goods:sizeAndWords" />
+    </if>
+
+    <!-- 对戒 -->
+    <if condition="$goodsInfo['price_model'] && (InStringByLikeSearch($category_name,array('对戒')))">
+        <include file="Goods:sizeAndWords" />
+    </if>
+
+    <!-- 其他 -->
+    <if condition="!$goodsInfo['price_model']">
+        <if condition="$goodsInfo['is_show_hand'] eq 1">
+            <include file="Goods:sizeAndWords" />
+        </if>
+    </if>
+    <if condition="$goodsInfo['goods_type'] eq 4">
+        <li>
+            <h2>数量：</h2>
+            <div class="spec-box">
+                <div class="customize-box">
+                    <a href="javascript:;" class="add"><img src="__IMG__/add_icon.png" alt=""></a>
+                    <input type="text" id="goodsnumber" min="1" name="" value="1" max="999" class="number-cust">
+                    <a href="javascript:;" class="reduction"><img src="__IMG__/reduction_icon.png" alt=""></a>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </li>
+
+        <li class="mb0">
+            <h2>交货日期：</h2>
+            <div class="spec-box">
+                <p class="lh">{$goodsInfo['expected_delivery_time']}个工作日内</p>
+            </div>
+        </li>
+    </if>
+	<li>
+		<h2>特别说明：</h2>
+		<div class="spec-box">
+			<p class="lh">售价不含主钻价格，报价以出货为准</p>
+		</div>
+	</li>
+</if>

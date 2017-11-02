@@ -1,0 +1,12 @@
+<tr data-id="{$SJID}" class="list">
+    <td><input type="text" value="" name="luozuan[{$SJID}][certificate_number]"  class="certificate_number" onkeyup="keyup(this.value, {$SJID}, 'luozuan')" onfocus="showdiv('luozuan', {$SJID})" ><div id="luozuan_{$SJID}" class="dropdownBorder" style="width:120px;"></div>        </td>
+    <td><input type="text" value="" name="luozuan[{$SJID}][goods_price]" class="goods_price"></td>
+    <td class="c4"></td>
+    <td>
+    	<span>1</span>
+    	<input type="hidden" value="1" name="luozuan[{$SJID}][goods_num]" class="goods_num">
+    </td>
+    <td class="goods_number"></td>
+    <td class="goods_price"></td>
+    <td><a href="#" class="orderDelGoodsLuozuan" data-id="{$SJID}">删除</a></td>
+</tr>

@@ -1,0 +1,399 @@
+
+<style>
+  .zlf_query .form-horizontal .qtabs,
+  .zlf_query .form-horizontal .element { background: #FFF; opacity: 1; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; box-shadow: none; margin-top: 5px;}
+  .zlf_query .form-horizontal .qtabs { border: 1px solid #E8E8E4; box-shadow: 0 0 5px #ddd; -webkit-box-shadow: 0 0 5px #ddd; -moz-box-shadow: 0 0 5px #ddd; -ms-box-shadow: 0 0 5px #ddd;}
+  .zlf_query .qtabs ul { width: 100%; padding: 0; display: table; border-bottom: 1px solid #E6E6E6;}
+  .zlf_query .qtabs ul li { display: table-cell; width: 50%; text-align: center;}
+  .zlf_query .qtabs ul li a { font-size: 14px;}
+  .zlf_query .qtabs ul li a.active { border-bottom: 2px solid red; color: red; display: inline-block; padding: 10px 0;}
+  .zlf_query .btn-bg { background: url('/Application/Home/View/b2c_new/Styles/Img/button_bg.jpg'); border: none;}
+  .zlf_query .form-horizontal .control-label,
+  .zlf_query .form-control { color: #979797;}
+  .zlf_query .form-horizontal .control-label { font-size: 15px;}
+  .zlf_query .ftitle { padding: 15px 0;}
+	.footer { margin-top: 0;}
+  .fh { margin-top: 10px; padding: 0; text-align: center;}
+  @media (min-width: 992px) {
+    .mr { padding-right: 0;}
+    .ml { padding-left: 0;}
+    .fh { line-height: 30px;}
+  }
+  
+  .strong { 
+		margin-top: 15px;
+  
+  }
+  .sorting ul {
+		padding-left:0;
+  }
+  
+  .sorting ul li {
+		float: left;
+		color: #838180;
+		cursor: pointer;
+		width: 80px;
+		height: 25px;
+		text-align: center;
+		border: 1px solid #DDD;
+		margin-left: -1px;
+	}
+  .chengpin { margin-top: 20px;}
+  .chengpin .sorting { margin-left: -10px;}
+</style>
+<include file=".:Com:b2c:product:goods_js" />
+<body class="index-bg">	
+	<!-- tab -->
+	<div class="login zlf_query" style="background: url('/Public/{$LuozuanAd[0]['images_path']}')">
+		<div class="container">
+			<div class="col-md-5 col-md-offset-7 col-sm-5 col-sm-offset-7">
+				<form class="form-horizontal">
+        <h5 class="text-center ftitle">专业设计提供专属方案，尽享更多惊喜优惠！！</h5>
+				<div class="qtabs">
+          <ul>
+            <li><a href="javascript:;" class="dz active">祼钻定制</a></li>
+            <li><a href="javascript:;" class="dj">成品定制</a></li>
+          </ul>
+  				<div class="element tab-dz">
+  					<div class="form-group">
+  						<label for="inputEmail3" class="col-md-3 control-label">形状：</label>
+  						<div class="col-md-9">
+  						  <select name="Shape" id="" class="form-control">
+							<option value="">请选择</option>      
+							<option value="ROUND">圆形</option>      
+							<option value="OVAL">椭圆</option>      
+							<option value="MARQUISE">马眼</option>      
+							<option value="HEART">心形</option>      
+							<option value="PEAR">水滴</option>      
+							<option value="PRINCESS">方形</option>      
+							<option value="EMERALD">祖母绿</option>      
+							<option value="CUSHION">枕形</option>
+							<option value="RADIANT">蕾蒂恩</option> 
+							<option value="BAGUETTE">梯方</option> 
+							<option value="SQUARE EMERALD">方形祖母绿</option> 
+						  </select>
+  						</div>
+  					</div>
+  					<div class="form-group">
+              <label for="inputEmail3" class="col-md-3 control-label">大小：</label>
+              <div class="col-md-9">
+                <select name="Weight" id="" class="form-control zdy-select">
+                  <option value="">不限</option>      
+                  <option value="0.30-0.49">0.30ct~0.49ct</option>      
+                  <option value="0.50-0.79">0.5ct~0.79ct</option>      
+                  <option value="0.80-0.99">0.80ct~0.99ct</option>      
+                  <option value="1">1ct以上</option>   
+                  <option value="自定义">自定义</option>   
+                </select>
+                <div class="form-group zdy-form" style="margin: 0; display: none;">
+                  <div class="row">
+                    <div class="col-md-5 mr" style="margin-top: 10px;">
+                      <input type="text" name="starWeight" class="form-control">
+                    </div> 
+                    <div class="col-md-2 fh">
+                      ~
+                    </div>
+                    <div class="col-md-5 ml" style="margin-top: 10px;">
+                      <input type="text" name="endWeight" class="form-control">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="col-md-3 control-label">预算：</label>
+              <div class="col-md-9">
+                <select name="Price" id="" class="form-control zdy-select">
+                  <option value="">不限</option>      
+                  <option value="2000-4999">2000~4999元</option>      
+                  <option value="5000-7999">5000~7999元</option>      
+                  <option value="8000-9999">8000~9999元</option>      
+                  <option value="10000">1万以上</option>   
+                  <option value="自定义">自定义</option>          
+                </select>
+                <div class="form-group zdy-form" style="margin: 0; display: none;">
+                  <div class="row">
+                    <div class="col-md-5 mr" style="margin-top: 10px;">
+                      <input type="text" name="starPrice" class="form-control">
+                    </div> 
+                    <div class="col-md-2 fh">
+                      ~
+                    </div>
+                    <div class="col-md-5 ml" style="margin-top: 10px;">
+                      <input type="text" name="endPrice" class="form-control">
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+            <script>
+            $(function(){
+
+              $('.zdy-select').each(function(){
+                if($(this).find('option:selected').val() == "自定义"){
+                  $(this).next('.zdy-form').show();
+                }else{
+                  $(this).next('.zdy-form').hide();
+                }
+              });
+
+              $('.zdy-select').change(function(){
+                if($(this).find('option:selected').val() == "自定义"){
+                  $(this).next('.zdy-form').show();
+                }else{
+                  $(this).next('.zdy-form').hide();
+                }
+              });
+            });
+            </script>
+  					<div class="form-group">
+  						<div class="col-md-offset-3 col-md-9">
+  						  <button type="" class="btn btn-danger btn-bg getLuozuanProgramme" style="width: 100%;">获取专属方案</button>
+  						</div>
+  					</div>
+  				</div>
+          <div class="element tab-dj" style="display: none;">
+            <div class="form-group">
+              <label for="inputEmail3" class="col-md-3 control-label">分类：</label>
+              <div class="col-md-9">
+                <select name="category_id" id="category_id" class="form-control">
+                  <option value="">请选择</option>
+				  <volist name="category_list" id="val">
+					<option value="{$val['category_id']}">{$val['name_alias']}</option>
+				  </volist>     
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="col-md-3 control-label">款式：</label>
+              <div class="col-md-9">
+                <select name="childrenCategory" id="childrenCategory" class="form-control">
+                  <option value="">不限</option> 
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="col-md-3 control-label">预算：</label>
+              <div class="col-md-9">
+                <select name="price_name" id="" class="form-control">
+                  <option value="">不限</option>   
+				  <volist name="priceList" id="val">
+                  <option price-id="{$val['attr_id']}" price-code="{$val['attr_code']}" value="{$val['attr_value_name']}">{$val['attr_value_name']}</option>      
+                  </volist>        
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-offset-3 col-md-9">
+                <button type="" class="btn btn-danger btn-bg getChengpinProgramme" style="width: 100%;">获取专属方案</button>
+              </div>
+            </div>
+          </div>
+        </div>
+			</form>
+			</div>
+		</div>
+	</div>
+	<div class="container luozuan" id="luozuan_box">
+	<include file=".:Com:b2c:product:luozuan_list2" />
+	</div>
+	<div class="container chengpin">
+	<include file=".:Com:b2c:product:goods_list3" />
+	</div>
+	<div id="pages" class="pages text-center"></div>
+  <script>
+    $(function(){
+		$('.luozuan').hide();
+		$('.chengpin').hide();
+		$('.pages').hide();
+		var dz_path	= "{$LuozuanAd[0]['images_path']}";
+		var dj_path	= "{$ChengpinAd[0]['images_path']}";
+		$('.dz').bind('click', function(){
+			$('#luozuan_table div').remove();
+			$('.qtabs li a').removeClass('active');
+			$(this).addClass('active');
+			$('.chengpin').hide();
+			$('.tab-dz').show();
+			$('.tab-dj').hide();
+			$('.zlf_query').css('background', 'url(/Public/'+dz_path+')');
+			$('.luozuan').hide();
+			$('.chengpin').hide();
+			$('.pages').hide();
+		});
+		$('.dj').bind('click', function(){
+			$('.qtabs li a').removeClass('active');
+			$(this).addClass('active');
+			$('.luozuan').hide();
+			$('.tab-dz').hide();
+			$('.tab-dj').show();
+			$('.zlf_query').css('background', 'url(/Public/'+dj_path+')');
+			$('.luozuan').hide();
+			$('.chengpin').hide();
+			$('.pages').hide();
+		});
+    });
+  </script>
+	<!-- tab end //-->
+</body>
+</html>
+<script>
+$(document).ready(function(){
+	//判断是否为正数
+	function validate(num){
+	  var reg = /^\d+(?=\.{0,1}\d+$|$)/
+	  if(reg.test(num)) return true;
+	  return false ;  
+	}
+	//获取二级分类列表
+	function childrenCategory(cid){
+		$.ajax({
+			type: "get",
+			url : "{:U('Home/Goods/getCategory/cid/"+cid+"')}", 
+			dataType:'json', 
+			async:false,
+			success: function(res){
+				if(res){
+					var content = '<option value="">不限</option>';
+					$.each( res, function(index,item){
+						content +='<option value="'+item.category_id+'" >'+item.name_alias+'</option>';
+					});
+					$('#childrenCategory').html(content);
+				}else{
+					layer.msg('网络错误',{
+						shift :6,
+						icon: 5
+					});
+					return false;
+				}
+			},
+		});
+	}
+	var cid		= $('select[name="category_id"] option:selected').val();
+	if(cid){
+		childrenCategory(cid);
+	}
+	
+	
+	
+	//裸钻订制报价
+	$('.getLuozuanProgramme').click(function(){
+		luozuan.page_id		= '1';
+		luozuan.page_size	= '10';
+		var Shape = $('select[name="Shape"] option:selected').val();
+		var Weight = $('select[name="Weight"] option:selected').val();
+		var Price = $('select[name="Price"] option:selected').val();
+		if(!Shape){
+			layer.msg("请选择形状",{
+				shift:6,
+			});
+			return false;
+		}
+		if(Weight && Weight == '自定义'){
+			var starWeight	= $('input[name="starWeight"]').val();
+			var endWeight	= $('input[name="endWeight"]').val();
+			if(validate(starWeight) == false){
+				layer.msg("请输人有效的起始重量",{
+					shift:6,
+				});
+				return false;
+			}
+			if(validate(endWeight) == false){
+				layer.msg("请输人有效的结束重量",{
+					shift:6,
+				});
+				return false;
+			}
+			Weight = starWeight+'-'+endWeight;
+		}
+		if(Price && Price == '自定义'){
+			var starPrice	= $('input[name="starPrice"]').val();
+			var endPrice	= $('input[name="endPrice"]').val();
+			if(validate(starPrice) == false){
+				layer.msg("请输人有效的起始价格",{
+					shift:6,
+				});
+				return false;
+			}
+			if(validate(endPrice) == false){
+				layer.msg("请输人有效的结束价格",{
+					shift:6,
+				});
+				return false;
+			}
+			Price = starPrice+'-'+endPrice;
+		}
+		luozuan.clear_condition_all();
+
+		luozuan.set_condition('Shape',Shape);
+		luozuan.set_condition('Weight',Weight);
+		luozuan.set_condition('Price',Price);
+		load_selected();
+		$('.pages').show();
+		$('.luozuan').show();
+		var wz = $('#luozuan_box').offset().top;
+		$('body,html').animate({scrollTop : wz},400);
+
+		return false;
+	})
+	
+	$('#category_id').change(function(){
+		var cid	= $(this).val();
+		if(cid){
+			childrenCategory(cid);
+		}
+	
+	})
+	//成品订制报价
+	$('.getChengpinProgramme').click(function(){
+		goods.page_id	= '1';
+		goods.page_size	= '10';
+		var cid		= $('select[name="category_id"] option:selected').val();
+		var childrenCategory= $('select[name="childrenCategory"] option:selected').val();
+		var price_name	= $('select[name="price_name"] option:selected').val();
+		var price_id	= $('select[name="price_name"] option:selected').attr('price-id');
+		var price_code	= $('select[name="price_name"] option:selected').attr('price-code');
+		if(!cid){
+			layer.msg("请选择分类",{
+				shift:6,
+			});
+			return false;
+		}
+		console.log(price_id);
+		console.log(price_name);
+		console.log(price_code);
+		goods.clear_condition_all();
+		if(price_id && price_name && price_code){
+			goods.set_condition(price_id,price_name,price_code);
+		}
+		if(childrenCategory){
+			goods.set_category_id(childrenCategory);
+		}else{
+			goods.set_category_id(cid);
+		}
+		
+		goods.get_goods_list(func_display_goods_list);
+		$('.pages').show();
+		$('.chengpin').show();
+		var cp = $('.chengpin').offset().top;
+		$('body,html').animate({scrollTop : cp},400);
+		
+		return false;
+	});
+
+	$('.all-checkbox').bind('click',function(){
+        func_select_all('gid',this);
+    });
+	
+	$('#addCartAll').bind('click',function(){
+		luozuan.addThisPageToCart();
+	});
+
+
+});
+
+
+
+
+</script>

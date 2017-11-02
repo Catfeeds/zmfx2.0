@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/main.css">
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<title>搜索</title>
+</head>
+<style>
+	::-moz-placeholder { color: #369; }
+::-webkit-input-placeholder { color:#369; }
+:-ms-input-placeholder { color:#369; }
+.form-control{margin-top:8px;}
+</style>
+<body class="wrap-bg">
+	<!-- Header -->
+    <header class="header text-center search-box">
+			<form action="{:U('/Goods/searchList')}" method="get">
+    		<div class="col-xs-9">
+    			<div class="input-group">
+		            <input type="text" name="keyword" class="form-control search-input" placeholder="搜索  编号、名称、证书号">
+					<span class="input-group-btn">
+		                <button class="btn btn-default btn-sub" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+		            </span>
+		        </div>
+    		</div>
+			</form>
+    		<div class="col-xs-3" style="padding-left: 0; padding-right: 0;">
+    			<a href="{:U('Index/index')}">取消</a>
+    		</div>
+    </header>
+    <!-- Header END //-->
+
+    <!-- Main -->
+    <div class="container-fluid search-main">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<p class="ptitle">热门搜索</p>	
+			</div>
+			<div class="panel-body">
+				<div id="gmap-street-view" style="width: 100%;">
+					<volist name="hot_search" id="vo">
+						<a href="{:U('/Goods/searchList',array('keyword' => $vo))}" class="btn btn-default navbar-btn">{$vo}</a>&nbsp;
+					</volist>
+				</div>
+			</div>
+			<?php /*<div class="panel-heading">
+				<p class="ptitle">我的搜索历史</p>	
+			</div> 
+			<div class="panel-body localhost-box">
+				<ul class="list-group locallist">
+					<li class="list-group-item">裸钻</li>
+					<li class="list-group-item">手镯</li>
+				</ul>
+			</div>
+			</div>
+			
+			<div class="container text-center remove-list">
+				<button class="btn btn-cart btn-pad">清空搜索历史</button>
+			</div>
+			<script>
+				$(function(){
+					$(".remove-list").click(function(){
+						$(".locallist li").remove();
+					});
+				});
+			</script>
+			*/ ?>
+		</div>
+	</div>
+	<!-- Main END //-->
+    
+    <!-- Footer -->
+    {:W('Frame/footer', array('index'))}
+    <!-- Footer END //-->
+
+</body>
+</html>

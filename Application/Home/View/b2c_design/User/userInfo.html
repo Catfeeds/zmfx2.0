@@ -1,0 +1,41 @@
+<script>
+$(document).ready(function(){
+	laydate.skin('molv');  //加载皮肤，参数lib为皮肤名 
+	laydate({
+		elem: '#birthday',
+		 max: laydate.now(),
+		start: '2000-01-01',    //开始日期
+	});
+})
+</script>
+
+<style>
+#laydate_box * {
+	-webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+</style>
+<!-- user -->
+<div class="user">
+	<div class="container">
+		<div class="path">
+			<ol class="breadcrumb">
+				当前位置：
+			  <li><a href="/">首页</a></li>
+			  <li><a href="{:U('/Home/User/index')}">个人中心</a></li>
+			  <li class="active">用户资料</li>
+			</ol>
+		</div>
+
+		<div class="userdata">
+			<div class="row">
+				<include file=".:Com:b2c:user:user_left" />
+				<div class="col-md-9">
+					<include file=".:Com:b2c:user:user_info" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- user end //-->

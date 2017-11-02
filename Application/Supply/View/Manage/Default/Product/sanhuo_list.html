@@ -1,0 +1,684 @@
+<div class="cate-info">
+    <dl>
+        <dt>{$L['text_product_sn']}</dt>
+        <dd><input type="text" name="goods_sn" /></dd>
+    </dl>
+    <dl>
+        <dt>{$L['text_goods_status']}</dt>
+        <dd>
+            <select name="product_status">
+                <option value="" >{$L['text_product_all']}</option>
+                <option value="0">{$L['text_product_unshelves']}</option>
+                <option value="1">{$L['text_product_onshelves']}</option>
+                <option value="2">{$L['finance_already_examine']}</option>
+                <option value="3">{$L['finance_not_already_examine']}</option>
+            </select>
+        </dd>
+    </dl>
+    <!--日期-->
+    <dl>
+        <dt>{$L['text_time_update']}</dt>
+        <dd><input type="text" name="time_begin" size="12" class="laydate-icon" onclick="laydate()" placeholder="{$L['text_enter_date']}"></dd>
+        <dt>{$L['text_until']}</dt>
+        <dd><input type="text" name="time_end" size="12" class="laydate-icon" onclick="laydate()" placeholder="{$L['text_enter_date']}"></dd>
+    </dl>
+    <dl>
+        <dd><input type="button" id="search_sanhuo" class="search" value="{$L['search']}"></dd>
+    </dl>
+</div>
+<!--表格-->
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th><input type="checkbox" class="select_sanhuo_all"></th>
+                <th>{$L['text_product_sn']}</th>
+                <th>{$L['text_product_type']}</th>
+                <th>{$L['text_diamond_fraction']}</th>
+                <th>{$L['text_stock_weight']}</th>
+                <th>{$L['text_stock_number']}</th>
+                <th>{$L['text_product_color']}</th>
+                <th>{$L['text_product_clarity']}</th>
+                <th>{$L['text_product_cut']}</th>
+                <th>{$L['text_unified_pricing']}</th>
+                <th>{$L['text_upload_time']}</th>
+                <th>{$L['text_goods_status']}</th>
+                <th>{$L['text_product_status']}</th>
+                <th>{$L['operation']}</th>
+            </tr>
+        </thead>
+        <tbody id="sanhuo_content"></tbody>
+        <script type="text/template" id="sanhuo_content_tpl">
+            <% if(datas.length > 0){ %>
+                <% _.each(datas, function (item) { %>
+                <tr title="{$L['text_upload_time']}:<%= item.create_time %>">
+                    <% if(item.valid_status == 1) { %>
+                    <td><input type="checkbox" name="sanhuo_goods_id[]" value="<%= item.goods_id %>" /></td>
+                    <% }else{ %>
+                    <td><input type="checkbox" disabled /></td>
+                    <% } %>
+                    <td><%= item.goods_sn %></td>
+                    <td>
+                        <if condition="LANG_SET eq 'en-us' ">
+                            <%= item.type_name_en %>
+                        <else />
+                            <%= item.type_name %>
+                        </if>
+
+                        
+
+                    </td>
+                    <td><%= item.weights %></td>
+                    <td><%= item.goods_weight %></td>
+                    <td><%= item.goods_quantity %></td>
+                    <td><%= item.color %></td>
+                    <td><%= item.clarity %></td>
+                    <td><%= item.cut %></td>
+                    <td><%= item.goods_price %></td>
+                    <td><%= item.create_time %></td>
+                    <td><%= item.goods_status_text %></td>
+                    <% if(item.valid_status == 1) { %>
+                        <td><%= item.product_status_text %></td>
+                        <td>
+                            <% if(item.product_status == 0) { %>
+                            <a data-goods-id="<%= item.goods_id %>" class="on_sale" href="javascript:void(0);">{$L['text_product_upshelves']}</a>/
+                            <a data-goods-id="<%= item.goods_id %>" class="modify_info"  href="javascript:void(0);">{$L['change']}</a>/
+                            <a data-goods-id="<%= item.goods_id %>" class="remove" href="javascript:void(0);">{$L['delete']}</a>
+                            <% }else{ %>
+                            <a data-goods-id="<%= item.goods_id %>" class="off_shelves" href="javascript:void(0);">{$L['text_product_doshelves']}</a>
+                            <% } %>
+                        </td>
+                    <% }else{ %>
+                        <% if(item.valid_status == 0 ) { %>
+                            <td>{$L['finance_wait_examine']}</td>
+                        <% }else{ %>
+                            <td>{$L['finance_falied_examine']}</td>
+                        <% } %>
+                        <td>
+                            {$L['text_product_upshelves']}/
+                            <a data-goods-id="<%= item.goods_id %>" class="modify_info"  href="javascript:void(0);">{$L['change']}</a>/
+                            <a data-goods-id="<%= item.goods_id %>" class="remove" href="javascript:void(0);">{$L['delete']}</a>
+                        </td>
+                    <% } %>
+                </tr>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="20">{$L["no_data"]}..</td>
+                </tr>
+            <% } %>
+        </script>
+    </table>
+</div>
+<div class="compose-btn">
+    <button class="btn btn-sm btn-default on_sale_batch" disabled>{$L['batch']}{$L['text_product_upshelves']}</button>
+    <button class="btn btn-sm btn-default off_shelves_batch" disabled>{$L['batch']}{$L['text_product_doshelves']}</button>
+    <button class="btn btn-sm btn-default remove_batch" disabled>{$L['batch']}{$L['delete']}</button>
+</div>
+<div class="prve">
+</div>
+<div class="modal fade" id="sanhuo_edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" rel="nofollow">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    {$L['text_sanhuo_edit']}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="sanhuo_info" class="form-inline">
+                    <input type="hidden" class="form-control" name="goods_id" value="">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-condensed" style="text-align: left;">
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_diamond_type']}:</label>                                       
+                                        <if condition="LANG_SET eq 'en-us' ">
+                                            {:getSelectHtml(array('class'=>'form-control','name'=>'tid'),'goods_sanhuo_type',array('value'=>'tid','text'=>'type_name_en'), array('type_name_en'=>array('neq','')) )}
+                                        <else />
+                                            {:getSelectHtml(array('class'=>'form-control','name'=>'tid'),'goods_sanhuo_type',array('value'=>'tid','text'=>'type_name'))}
+                                        </if>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_sanhuo_sn']}:</label>
+                                        <input type="text" class="form-control" name="goods_sn" value="">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_place_origin']}:</label>
+                                        <select name="location" class="form-control">
+												<option value="" >{$L["text_please_chose"]}</option>
+												<option value="深圳" >{$L['text_shenzhen']}</option>
+												<option value="上海" >{$L['text_shanghai']}</option>
+												<option value="北京" >{$L['text_beijing']}</option>
+												<option value="香港" >{$L['text_xianggang']}</option>
+												<option value="国外" >{$L['text_china_other']}</option>
+											</select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_cut']}:</label>
+                                        {:getSelectHtml(array('class'=>'form-control','name'=>'cut'),'goods_sanhuo_cut',array('value'=>'cut_name','text'=>'cut_name'))}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_color']}:</label>
+                                        {:getSelectHtml(array('class'=>'form-control','name'=>'color'),'goods_sanhuo_color',array('value'=>'color_name','text'=>'color_name'))}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_clarity']}:</label>
+                                        {:getSelectHtml(array('class'=>'form-control','name'=>'clarity'),'goods_sanhuo_clarity',array('value'=>'clarity_name','text'=>'clarity_name'))}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['price']}:</label>
+                                        <input type="text" name="goods_price" class="form-control" value="">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_total_weight']}:</label>
+                                        <input type="text" name="goods_weight" class="form-control" data-old-value value="">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['number']}:</label>
+                                        <input type="text" class="form-control" name="goods_quantity" value="">
+                                    </div>
+                                </td>
+                            </tr>
+							<tr>
+								<td>
+									<div class="form-group">
+										<label>{$L['text_special_offer']}:</label>
+										<input type="text" name="goods_price2" class="form-control" value="">
+									</div>
+								</td>
+								<td>
+									<div class="form-group">
+										<label>{$L['text_sale_mode']}:</label>
+										<select name="goods_sellway" class="form-control">
+											<option value="" >{$L["text_please_chose"]}</option>
+											<option value="统包走" >{$L['text_turnkey_package']}</option>
+											<option value="称重" >{$L['text_sale_weight']}</option>
+										</select>
+									</div>
+								</td>
+							</tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="col-xs-4" style="padding-right: 0;" >
+                                        <div class="form-group">
+                                            <label>{$L['text_add_4cattr']}:</label>
+                                            <select id="select_4c_type" class="form-group">
+                                                <option value="color">{$L['text_product_color']}</option>
+                                                <option value="clarity">{$L['text_product_clarity']}</option>
+                                                <option value="cut">{$L['text_product_cut']}</option>
+                                                <option value="weights">{$L['text_diamond_fraction']}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6" style="padding: 0">
+                                        <select id="select_weights_parent" name="weights" class="form-control" style="padding:0;margin-left:2px;display:none;">
+                                        </select>
+                                        <select id="select_cc_value" class="form-group" style="padding:0;margin-right:2px;">
+                                        </select>
+                                        <input type="text" id="input_cc_ku" data-4c-max-value="0" class="form-control" onpaste="return false" ondragenter="return false" oncontextmenu="return false;" style="ime-mode:disabled;" />
+                                    </div>
+                                    <div class="col-xs-2 pull-left">
+                                        <button type="button" id="add_4c" class="btn btn-primary" style="line-height:12px;" disabled >{$L['add']}</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <div class="form-group">
+                                        <label style="width: 100%;">{$L['text_product_color']}({$L['text_not_assigned']}:<span id="color_4c_count">0</span>)</label>
+                                    </div>
+                                </td>
+                                <td colspan="2" id="sanhuo_4c_color_panel">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <div class="form-group">
+                                        <label style="width: 100%;">{$L['text_product_clarity']}({$L['text_not_assigned']}:<span id="clarity_4c_count">0</span>)</label>
+                                    </div>
+                                </td>
+                                <td colspan="2" id="sanhuo_4c_clarity_panel">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <div class="form-group">
+                                        <label style="width: 100%;">{$L['text_product_cut']}({$L['text_not_assigned']}:<span id="cut_4c_count">0</span>)</label>
+                                    </div>
+                                </td>
+                                <td colspan="2" id="sanhuo_4c_cut_panel">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <div class="form-group">
+                                        <label style="width: 100%;">{$L['text_diamond_fraction']}({$L['text_not_assigned']}:<span id="weights_4c_count">0</span>)</label>
+                                    </div>
+                                </td>
+                                <td colspan="2" id="sanhuo_4c_weights_panel">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="col-xs-9">
+                    <span id="sanhuo_edit_msg"></span>
+                </div>
+                <div class="col-xs-3">
+                    <button type="button" class="btn btn-primary" id="but_modify_sanhuo_submit">
+                        {$L['text_submit_change']}
+                    </button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div>
+</div>
+<script>
+    var datas;
+    function func_search_sanhuo_list(){
+        var res       = sanhuo.get_sanhuo();
+        var page_html = page.create({PageID:res['data']['page_id'],PageSize:res['data']['page_size'],TotalNum:res['data']['total']}).getHtml();
+        if( page_html == '' ){
+            var pageid = Math.ceil( res['data']['total'] / res['data']['page_size'] );
+            if( pageid < 1 ){
+                pageid = 1;
+            }
+            sanhuo.set_page( pageid , res['data']['page_size'] );;
+            res       = sanhuo.get_sanhuo();
+            page_html = page.create({PageID:res['data']['page_id'],PageSize:res['data']['page_size'],TotalNum:res['data']['total']}).getHtml();
+        }
+        datas         = res['data']['list'];
+        $('#search_sanhuo').closest('#sanhuo').find('.prve').html(page_html);
+        $('#sanhuo_content').html( _.template($('#sanhuo_content_tpl').html(), datas) );
+        $('#sanhuo .prve a').on('click',function(){
+            sanhuo.set_page($(this).attr('data-page-id'),$(this).attr('data-page-size'));
+            func_search_sanhuo_list();
+        });
+		//分页GO操作
+		$('#sanhuo .prve .go').on('click',function(){
+			var data_page_id = parseInt($(this).prev().val(),10);
+			var data_page_size = parseInt($("input[name='page_size']").val(),10);
+			if(data_page_id){
+				sanhuo.set_page(data_page_id,data_page_size);
+				func_search_sanhuo_list();
+			}
+		});
+        $('#sanhuo .on_sale_batch').prop('disabled',true);
+        $('#sanhuo .off_shelves_batch').prop('disabled',true);
+        $('#sanhuo .remove_batch').prop('disabled',true);
+        $('input[type="checkbox"]').prop('checked',false);
+    }
+	
+    function flush4Ccount(){
+        $('#clarity_4c_count').html(cc.data.clarity);
+        $('#weights_4c_count').html(cc.data.weights);
+        $('#color_4c_count').html(cc.data.color);
+        $('#cut_4c_count').html(cc.data.cut);
+    }
+    function get_4c_input_html(cc_value,cc_ku,baifenbi,cc_type){
+        html = '<div class="col-xs-6" style="margin-top: 2px;padding:0;">'+
+                    '<div class="input-group">'+
+                        '<span class="input-group-addon">'+cc_value+'-'+baifenbi+'%</span>'+
+                        '<input type="text" class="form-control cc-input" data-cc-type="'+cc_type+'" data-cc-value="'+cc_value+'" data-old-value="'+cc_ku+'" value="'+cc_ku+'"/>'+
+                        '<span class="input-group-btn" style="height: 28px;">'+
+                        '<button class="btn btn-default remove_4c" data-cc-type="'+cc_type+'" data-cc-value="'+cc_value+'" data-cc-ku="' +cc_ku+ '" type="button" style="height: 28px;">X</button>'+
+                        '</span>'+
+                    '</div>'+
+                '</div>';
+        return html;
+    }
+
+    //界面交互逻辑
+    $(function(){
+        var html = "";
+        var w_data = cc.get_sanhuo_4c('weights',0);
+        _.each(w_data,function(v,k){
+            html += "<option value='"+v.weights_name+"' data-value='"+ v.weights_id+"'>" + v.weights_name+"</option>";
+        });
+        $('#select_weights_parent').html(html);
+
+        //默认数据
+        func_search_sanhuo_list();
+        $('#search_sanhuo').on('click',function() {
+            sanhuo.set_arg('page_id','1');
+            sanhuo.set_arg('goods_sn',$('#search_sanhuo').closest('#sanhuo').find('input[name="goods_sn"]').val());
+            sanhuo.set_arg('product_status',$('#search_sanhuo').closest('#sanhuo').find('select[name="product_status"]').val());
+            sanhuo.set_arg('time_begin',$('#search_sanhuo').closest('#sanhuo').find('input[name="time_begin"]').val());
+            sanhuo.set_arg('time_end',$('#search_sanhuo').closest('#sanhuo').find('input[name="time_end"]').val());
+            func_search_sanhuo_list();
+        });
+        $('.select_sanhuo_all').on('click',function() {
+            func_select_all('sanhuo_goods_id[]',this);
+        });
+        $('.select_sanhuo_all,input[name="sanhuo_goods_id[]"]').live('click',function() {
+            $('#sanhuo .on_sale_batch').prop('disabled',true);
+            $('#sanhuo .off_shelves_batch').prop('disabled',true);
+            $('#sanhuo .remove_batch').prop('disabled',true);
+            $('input[name="sanhuo_goods_id[]"]:checked').each(function(){
+                $('#sanhuo .on_sale_batch').prop('disabled',false);
+                $('#sanhuo .off_shelves_batch').prop('disabled',false);
+                $('#sanhuo .remove_batch').prop('disabled',false);
+            });
+        });
+        //批量操作
+        $("#sanhuo .on_sale_batch,#sanhuo .off_shelves_batch,#sanhuo .remove_batch").on('click',function(){
+            var sanhuo_goods_ids = $('input[name="sanhuo_goods_id[]"]:checked').map(function(){
+                return $(this).val();
+            }).get();
+            //上架
+            if($(this).hasClass('on_sale_batch')){
+                sanhuo.on_sale(sanhuo_goods_ids);
+            }
+            //下家
+            if($(this).hasClass('off_shelves_batch')){
+                sanhuo.off_shelves(sanhuo_goods_ids);
+            }
+            //删除
+            if($(this).hasClass('remove_batch')){
+                if(confirm('{$L["text_detlte_notice"]}')) {
+                    sanhuo.remove_sanhuo(sanhuo_goods_ids);
+                }
+            }
+            func_search_sanhuo_list();
+        });
+        //单页操作
+        $("#sanhuo .on_sale,#sanhuo .off_shelves,#sanhuo .remove,#sanhuo .modify_info").live('click',function(){
+            var sanhuo_goods_ids = new Array();
+            sanhuo_goods_ids.push($(this).attr('data-goods-id'));
+            //上架
+            if($(this).hasClass('on_sale')){
+                sanhuo.on_sale(sanhuo_goods_ids);
+            }
+            //下家
+            if($(this).hasClass('off_shelves')){
+                sanhuo.off_shelves(sanhuo_goods_ids);
+            }
+            //删除
+            if($(this).hasClass('remove')){
+                if(confirm('{$L["text_detlte_notice"]}')) {
+                    sanhuo.remove_sanhuo(sanhuo_goods_ids);
+                }
+            }
+            //修改
+            if($(this).hasClass('modify_info')){
+                var goods_id = $(this).attr('data-goods-id');
+                var data     = sanhuo.get_sanhuo_info(goods_id);
+                _.each(data,function(v,k){
+                    v             =  _.unescape(v);
+                    $('#sanhuo_info .form-control[name="'+k+'"]').val(v);
+                    var obj = $('#sanhuo_info .form-control[name="'+k+'"]');
+                    if(k=='goods_weight'){
+                        $('#sanhuo_info .form-control[name="goods_weight"]').attr('data-old-value',v);
+                    }
+                });
+                var html = "";
+                $('#select_weights_parent').hide();
+                $('#select_4c_type').val('color');
+                var data = cc.get_sanhuo_4c('color',0);
+                _.each(data,function(v,k){
+                    html +="<option value='"+ v.color_name+"'>" + v.color_name+"</option>";
+                });
+                $("#select_cc_value").html(html);
+                $("#sanhuo_edit_msg").html('');
+                $("#sanhuo_4c_clarity_panel").html('');
+                $("#sanhuo_4c_weights_panel").html('');
+                $("#sanhuo_4c_color_panel").html('');
+                $("#sanhuo_4c_cut_panel").html('');
+                $('#sanhuo_edit').modal();
+                //4c数据初始化计算
+                var v   = $("#sanhuo_info .form-control[name='goods_weight']").val();
+                cc.set_goods_weight(v);
+                cc.data['cut']     = cc.goods_weight;
+                cc.data['clarity'] = cc.goods_weight;
+                cc.data['color']   = cc.goods_weight;
+                cc.data['weights'] = cc.goods_weight;
+                var cc_data = sanhuo.get_goods_4c(goods_id);
+                var baifenbi;
+                _.each(cc_data,function(v){
+                    baifenbi         = cc.set_cc_value(v.cc_ku, v.cc_type);
+                    var en_cc_value =  $('<div />').text(v.cc_value).html();
+                    var html        = get_4c_input_html(en_cc_value, v.cc_ku,baifenbi, v.cc_type);
+                    $("#sanhuo_4c_"+ v.cc_type + "_panel").append(html);
+                });
+                var w_id = $('#select_weights_parent option:selected').attr('data-value');
+                data = cc.get_sanhuo_4c('weights',w_id);
+                if(data.length == 0){
+                    cc.data['weights'] = 0;
+                }
+                flush4Ccount();
+                return;
+            }
+            func_search_sanhuo_list();
+        });
+
+        $("#but_modify_sanhuo_submit").live('click',function(){
+            if(cc.data['cut'] != 0 || cc.data['clarity'] != 0 || cc.data['color'] != 0 || cc.data['weights'] != 0){
+                $("#sanhuo_edit_msg").html('{$L["text_msg_006"]}');
+                return false;
+            }else{
+                var clarity_input_object =  $("#sanhuo_4c_clarity_panel input");
+                var weights_input_object =  $("#sanhuo_4c_weights_panel input");
+                var cut_input_object     =  $("#sanhuo_4c_cut_panel input");
+                var color_input_object   =  $("#sanhuo_4c_color_panel input");
+                var data                 = {};
+                data.clarity = new Array();
+                data.cut     = new Array();
+                data.weights = new Array();
+                data.color   = new Array();
+                $(clarity_input_object).each(function(){
+                    var _d = {};
+                    _d.cc_ku    = $(this).val();
+                    _d.cc_value = $(this).attr('data-cc-value');
+                    _d.cc_type  = $(this).attr('data-cc-type');
+                    data.clarity.push(_d);
+                });
+                $(weights_input_object).each(function(){
+                    var _d = {};
+                    _d.cc_ku    = $(this).val();
+                    _d.cc_value = $(this).attr('data-cc-value');
+                    _d.cc_type  = $(this).attr('data-cc-type');
+                    data.weights.push(_d);
+                });
+                $(cut_input_object).each(function(){
+                    var _d = {};
+                    _d.cc_ku    = $(this).val();
+                    _d.cc_value = $(this).attr('data-cc-value');
+                    _d.cc_type  = $(this).attr('data-cc-type');
+                    data.cut.push(_d);
+                });
+                $(color_input_object).each(function(){
+                    var _d = {};
+                    _d.cc_ku    = $(this).val();
+                    _d.cc_value = $(this).attr('data-cc-value');
+                    _d.cc_type  = $(this).attr('data-cc-type');
+                    data.color.push(_d);
+                });
+                var cc_str = JSON.stringify(data);
+                data = $('#sanhuo_info').serialize();
+                data = data + '&cc=' + cc_str;
+                var res = sanhuo.modify_sanhuo(data);
+                $("#sanhuo_edit_msg").html(res.msg);
+                if(res.ret==100){
+                    $("#sanhuo_edit_msg").css({opacity:'1'}).animate({opacity:0},2500);
+                    $('#sanhuo_edit').modal('hide');
+                    $('#main_msg').modal('show');
+                    func_search_sanhuo_list();
+                }
+            }
+        });
+
+        //监听4c输入
+        $("#input_cc_ku").keyup(function() {
+            var v       = this.value;
+            $('#add_4c').prop('disabled',true);
+            var cc_type = $('#select_4c_type').val();
+            if(cc.check_input_4c_data(v,cc_type,0) === false){
+                this.value  = v.substring(0,v.length-1);
+            }
+            if( this.value !== '' && $('#select_cc_value').val() && cc.check_input_4c_data(this.value,cc_type,0) ){
+                $('#add_4c').prop('disabled',false);
+            }
+        });
+        $('.cc-input').live('keyup',function(){
+            var v       = this.value;
+            var ov      = $(this).attr('data-old-value');
+            var cc_type = $(this).attr('data-cc-type');
+            if( v == '' ){
+                this.value = ov;
+                return false;
+            }
+            if(cc.check_input_4c_data(v,cc_type,ov) === false){
+                this.value = v.substring(0,v.length-1);
+            }else{
+                $(this).attr('data-old-value',v);
+                cc.set_cc_value('-'+ov,cc_type);
+                var baifenbi = cc.set_cc_value(v,cc_type);
+                $(this).prev().html($(this).attr('data-cc-value')+'-'+baifenbi+'%');
+                $(this).next().children().attr('data-cc-ku',v);
+                flush4Ccount();
+            }
+        });
+
+        $('input[name="goods_weight"]').live('keyup change',function(){
+            var old_goods_weight = $(this).attr('data-old-value');
+            var goods_weight     = this.value;
+            if(sanhuo.check_goods_weight(goods_weight)==true){
+                cc.set_goods_weight(goods_weight);
+                var d = accAdd(goods_weight,-old_goods_weight);
+                cc.set_cc_value(-d,'cut');
+                cc.set_cc_value(-d,'clarity');
+                cc.set_cc_value(-d,'color');
+                cc.set_cc_value(-d,'weights');
+                $(this).attr('data-old-value',goods_weight);
+                flush4Ccount();
+            }else{
+                this.value  = v.substring(0,this.value.length-1);
+            }
+        });
+
+        $('#add_4c').on('click',function(){
+            var cc_ku    = $("#input_cc_ku").val();
+            var cc_type  = $('#select_4c_type').val();
+            var cc_value = $('#select_cc_value').val();
+            var en_cc_value   =  $('<div />').text(cc_value).html();
+            if(cc.check_input_4c_data(cc_ku,cc_type,0) === false || !cc_value){
+                return false;
+            }
+            var baifenbi = cc.set_cc_value(cc_ku,cc_type);
+            var html     = get_4c_input_html(en_cc_value,cc_ku,baifenbi,cc_type);
+            var cc_type  = $('#select_4c_type').val();
+            switch(cc_type){
+                case "cut":
+                        $("#sanhuo_4c_cut_panel").append(html);
+                    break;
+                case "color":
+                        $("#sanhuo_4c_color_panel").append(html);
+                    break;
+                case "clarity":
+                        $("#sanhuo_4c_clarity_panel").append(html);
+                    break;
+                case "weights":
+                        $("#sanhuo_4c_weights_panel").append(html);
+                    break;
+            }
+            $('#select_cc_value option[value="'+cc_value+'"]').remove();
+            flush4Ccount();
+            return;
+        });
+
+        $('.remove_4c').live('click',function(){
+            var data_cc_value = $(this).attr('data-cc-value');
+            var data_cc_ku    = $(this).attr('data-cc-ku');
+            var data_cc_type  = $(this).attr('data-cc-type');
+            cc.set_cc_value('-'+data_cc_ku,data_cc_type);
+            if( $('#select_4c_type').val() ==  data_cc_type ){
+                $('#select_cc_value').append('<option value="'+data_cc_value+'">'+data_cc_value+'</option>')
+            }
+            $(this).closest('.col-xs-6').remove();
+            flush4Ccount();
+        });
+
+        $('#select_4c_type').on('change',function(){
+            var type      = $(this).val();
+            var data,html = "";
+            switch(type){
+                case "cut":
+                        $('#select_weights_parent').hide();
+                        data = cc.get_sanhuo_4c('cut',0);
+                        _.each(data,function(v,k){
+                            html +="<option value='"+ v.cut_name+"'>" + v.cut_name+"</option>";
+                        });
+                    break;
+                case "color":
+                        $('#select_weights_parent').hide();
+                        data = cc.get_sanhuo_4c('color',0);
+                        _.each(data,function(v,k){
+                            html +="<option value='"+ v.color_name+"'>" + v.color_name+"</option>";
+                        });
+                    break;
+                case "clarity":
+                        $('#select_weights_parent').hide();
+                        data = cc.get_sanhuo_4c('clarity',0);
+                        _.each(data,function(v,k){
+                            html +="<option value='"+ v.clarity_name+"'>" + v.clarity_name+"</option>";
+                        });
+                    break;
+                case "weights":
+                        var w_id = $('#select_weights_parent option:selected').attr('data-value');
+                        data = cc.get_sanhuo_4c('weights',w_id);
+                        html = "";
+                        _.each(data,function(v,k){
+                            html +="<option value='"+ v.weights_name+"'>" + v.weights_name+"</option>";
+                        });
+                        $('#select_weights_parent').show();
+                    break;
+            }
+            $("#select_cc_value").html(html);
+        });
+
+        $('#select_weights_parent').on('change',function(){
+            var w_id = $('#select_weights_parent option:selected').attr('data-value'),html='';
+            var data = cc.get_sanhuo_4c('weights',w_id);
+            _.each(data,function(v,k){
+                html +="<option value='"+ v.weights_name+"'>" + v.weights_name+"</option>";
+            });
+            $("#select_cc_value").html(html);
+            if(!$('#select_cc_value').val()){
+                $('#add_4c').prop('disabled',true);
+                cc.data.weights = 0;
+            }else{
+                cc.data.weights = cc.goods_weight;
+            }
+            flush4Ccount();
+            $("#sanhuo_4c_weights_panel").html('');
+        });
+    });
+</script>

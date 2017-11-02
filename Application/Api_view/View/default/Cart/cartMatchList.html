@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link href="__JS__/iCheck/skins/minimal/blue.css" rel="stylesheet">
+<link href="__JS__/iCheck/skins/square/blue.css" rel="stylesheet">
+<link href="__JS__/iCheck/skins/flat/blue.css" rel="stylesheet">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/cart.css">
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/common.js"></script>
+<title>已匹配钻石列表</title>
+</head>
+
+<body class="wrap-bg">
+	<!--头部-->
+    <!-- <header class=" header text-center"> -->
+      <!-- <a href="{:U('Cart/index')}" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a> -->
+    	<!-- 裸钻列表 -->
+      <!-- <a href="javascript:;" onclick="deleteCart(1)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a> -->
+    <!-- </header> -->
+    <!--内容-->
+    <div class="container wrap">
+	
+    	<div class="row cart">
+        <!--总计-->
+          <div class="all">
+            <span>共{$data['count']}件裸钻　</span>
+            <span>总计：<em>￥{$data['totalprice']}</em></span>
+			 <span onclick="deleteCart(1)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></span>			
+          </div>
+            <!--已经匹配的裸钻列表-->
+			<volist name="data['data']" id="vo">
+            <div class="media">
+            	<div class="square-blue single-row pull-left">
+                    <div class="radio">
+                        <label>
+                           <input value="{$vo['id']}" type="checkbox">
+                           <span class="fa fa-check"></span>
+                        </label>
+
+                    </div>
+				</div>
+				<div class="media-body">
+                  <h4 class="media-heading">【裸钻】 货品编号：{$vo['goods_attrs']['goods_name']}</h4>
+                  	<p class="info"> {$vo['goods_attrs']['certificate_type']}&nbsp;&nbsp;{$vo['goods_attrs']['certificate_number']}<br>{$vo['goods_attrs']['weight']}ct&nbsp;&nbsp;{$vo['goods_attrs']['color']}色&nbsp;&nbsp;{$vo['goods_attrs']['clarity']}净度&nbsp;&nbsp;{$vo['goods_attrs']['cut']}切工</p>
+                      <div class="form-group pull-left cart-btn"></div>
+                      <p class="text-right">粒单价：<big>¥{$vo['goods_attrs']['price']}</big></p>
+				</div>
+            </div>
+			</volist>
+			<!--更多在底部-->
+			<div class="load"></div>
+   		</div>
+	</div>
+<!--底部-->
+{:W('Frame/footer', array('cart'))}
+
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/iCheck/jquery.icheck.js"></script>
+<script src="__JS__/icheck-init.js"></script>
+<script type="text/javascript" src="__JS__/fuelux/js/spinner.min.js"></script>
+<script src="__JS__/spinner-init.js"></script>
+<script src="__JS__/public.js"></script>
+<script src="__JS__/layer-mobile/layer.js"></script>
+</body>
+</html>
+<script>
+/*  获取已经匹配的裸钻
+	page：			当前页数
+	n：				每页数量
+*/
+//鼠标滑动初始位置,滚动方向,当前页数，每页数量
+var page=1,n=2;
+function get_list(){
+	var cart_id = "{$_GET['cart_id']}";
+	page += 1;
+	$.ajax({
+		type: "post",
+		url : "{:U('Cart/getLuozuan')}", 
+		data: {page:page,n:n,cart_id:cart_id},
+		dataType:'json', 
+		success: function(res){
+			if(res.status == 100 ){
+				if(res.data){
+					var html = "";
+					if(res.data.data != ''){
+						$.each(res.data.data,function(i,item){
+							html += "<div class='media'>";
+							html +="<div class='square-blue single-row pull-left'><div class='radio'>";
+							html +="<label><input value='"+item.id+"' type='checkbox'><span class='fa fa-check'></span></label>";
+							html +="</div></div>";
+							html +="<div class='media-body'>";
+							html +="<h4 class='media-heading'>【裸钻】 货品编号："+item.goods_attrs.goods_name+"</h4> ";
+							html +="<p class='info'> "+item.goods_attrs.certificate_type+"&nbsp;&nbsp;"+item.goods_attrs.certificate_number+"<br>"+item.goods_attrs.weight+"ct&nbsp;&nbsp;"+item.goods_attrs.color+"色&nbsp;&nbsp;"+item.goods_attrs.clarity+"净度&nbsp;&nbsp;"+item.goods_attrs.cut+"切工</p>";
+							html +="<div class='form-group pull-left cart-btn'></div> ";
+							html +="<p class='text-right'>粒单价：<big>¥"+item.goods_attrs.price+"</big></p>";
+							html +="</div>";
+							html +="</div>";
+						});
+					}else{
+						html = "<div class='media' id='nodata' style='text-align:center;'>暂无数据...</div>"
+					}
+					$('#luozuan').append(html);
+				}
+			}
+		},
+		error:	function(){
+		
+		}
+	});
+}
+$(window).scroll(function() {
+	var condition = $('#nodata').html();
+	if(condition != "暂无数据..."){
+		var scrollTop = $(this).scrollTop();               //滚动条距离顶部的高度
+		var scrollHeight = $(document).height();           //当前页面的总高度
+		var windowHeight = $(this).height();               //当前可视的页面高度
+		//判断滚动条是否滚到底部
+		if(scrollTop + windowHeight == scrollHeight){
+			<!-- $('.load').css('height',40).html('<img src="http://img.lanrentuku.com/img/allimg/1212/5-121204193R5-50.gif" alt="">'); -->
+			get_list(2);
+			//setTimeout(function(){
+			//	$('.load').css('height','0').text('')
+			//},1200);
+		}
+	}
+}); 
+</script>

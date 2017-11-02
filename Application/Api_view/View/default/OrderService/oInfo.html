@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>申请售后</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/aftersales.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script src="__JS__/layer-mobile/layer.js"></script> 
+</head>
+<body class="wrap-bg">
+	<!-- Main -->
+    <div class="user-info">
+			<form id="form_1">
+				<section class="after-sales-list">
+					<div class="shouhou shouhouxq">
+						<!-- 结构类型1 -->
+						<div class="tbody">
+							<div class="cbimg pull-left"><img src="{$info.thumb}" alt=""></div>
+							<div class="after-data pull-left">
+								<p>{$info.goods_name}</p>
+								<p>数量：x{$info.goods_number} &nbsp;&nbsp;&nbsp; 价格：￥{$info.goods_price}</p>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<div class="shlx">
+						<h4>问题描述</h4>
+						<textarea name="description" cols="30" rows="5" class="description form-control" placeholder="请详细描述商品问题（最多500字内）"></textarea>
+						<p>温馨提示：非质量问题不支持退货</p>
+					</div>
+				</section>
+
+				<section class="after-sales-list">
+					<div class="shlx">
+						<h4>售后类型</h4>
+						<div class="shouhoutype">
+							<input name="service_type" class="service_type" type="hidden" value='1' />
+							<button type="button" data-value="1" class="service_type_option btn btn-default btn-primary">换货</button>
+							<button type="button" data-value="2" class="service_type_option btn btn-default">退货退款</button>
+							<button type="button" data-value="0" class="service_type_option btn btn-default">其它</button>
+						</div>
+					</div>
+				</section>
+
+				<input name="order_id" type="hidden" value='{$info.order_id}' />
+				<input name="og_id" type="hidden" value='{$info.og_id}' />
+			</form>
+
+			<section class="shouhouxq-sub">
+				
+				<p class="alert text-center">
+					<button type="submit" id="my_submit" class="btn btn-danger btn-block">提 交</button>
+				</p>
+			</section>
+    </div>
+    <!-- Main END //-->
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.service_type_option').click(function(){
+				$('.service_type').val($(this).attr('data-value'));
+				$('.service_type_option').removeClass('btn-primary');
+				$(this).addClass('btn-primary');
+			});
+			$("#my_submit").click(function(){
+				layer.open({
+					content: '确定递交售后么？',
+					btn: ['确定', '取消'],
+					yes: function(index){
+						layer.close(index);
+						$.ajax({
+							url:"/OrderService/sumitService?<?php echo '&agent_id='.C('agent_id').'&token='.C('token').'&uid='.C('uid')?>",
+							type: 'POST',
+							data: $('#form_1').serialize(),
+							//datatType:'json',
+							success: function(d){
+								if(d.ret==100){
+									layer.open({	content: d.msg,	time: 2		});
+									setTimeout("window.location.href='/OrderService/sList?<?php echo '&agent_id='.C('agent_id').'&token='.C('token').'&uid='.C('uid')?>'",2000);									
+								}else{
+									layer.open({	content: d.msg,	time: 2		});
+								}
+							}
+						});
+					}
+				});	
+			});
+		});
+	</script>
+</body>
+</html>

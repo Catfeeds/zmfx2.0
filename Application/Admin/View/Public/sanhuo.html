@@ -1,0 +1,178 @@
+<!--散货列表-->
+<notempty name="goodsList['sanhuo']">
+<div class="info sanhuo">
+	<div class="title">散货产品:</div>
+	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top goodsSanhuoList">
+            <if condition="!$orderInfo['order_status']">
+                <th>序号</th>
+            </if>
+            <th>产品编号</th>
+            <th>每卡单价(&yen;)</th>
+            <th>小计价格(&yen;)</th>
+            <th>4C属性(颜色/净度/切工)</th>
+            <th>订购重量(Cut)</th>
+            <eq name="orderInfo.order_status" value="0"> 
+                <th>
+                    库存参考
+                </th>
+            </eq>
+            <if condition="!$orderInfo['order_status']">
+                <th>有货</th>
+                <th>发货时间</th>         
+            </if>
+            <if condition="in_array('admin/order/orderdelgoods',$AuthList) and ($orderInfo['order_status'] eq 0)">
+                <th>删除</th>              
+            </if>
+        </tr>
+        <volist name="goodsList['sanhuo']" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'} list">
+            <if condition="!$orderInfo['order_status'] ">
+                <td>
+                    <!--$vo.fahuo_time gt 0 and $vo.have_goods gt 0 and 下次增加这个条件的时候就不隐藏，提示需要钻明后台确认有货-->
+                    <if condition="$vo['attribute']['agent_id'] neq $agent_id">
+                        <input type="checkbox" class="add_caigou" name="add_caigou[]" value="{$vo['og_id']}" />
+                    </if>
+                    {$vo['og_id']}
+                </td>           
+            </if>
+            <td>{$vo['attribute']['goods_sn']}</td>
+            <td class="goods_price_on">{$vo.goods_price_sanhuo}</td>
+            <td>
+                <eq name="orderInfo.order_status" value="0">
+                    <input type="text" value="{$vo.goods_price}" data-id="{$vo['og_id']}" name="goodsSanhuo[{$vo['og_id']}][price]" class="goods_price">
+                <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+                    {$vo.goods_price}
+                <else />
+                    {$vo.goods_price_up}
+                </eq>
+            </td>
+            <td>{$vo.4c}</td>
+            <td>
+                <eq name="orderInfo.order_status" value="0">
+                    <input type="text" value="{$vo.goods_number}" data-id="{$vo['og_id']}" name="goodsSanhuo[{$vo['og_id']}][goods_num]" default_val="{$vo.goods_number}" class="goods_num" style="width:100px;">
+                <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+                    {$vo.goods_number}
+                <else />
+                    {$vo.goods_number_up}
+                </eq>
+            </td>
+           
+            <eq name="orderInfo.order_status" value="0">
+                <!--库存参考-->
+                <td class="goods_number" data-id="{$vo['og_id']}">{$vo.goods_number_sanhuo}</td>
+             </eq>
+
+            <if condition=" !$orderInfo['order_status']">
+                <if condition="$vo['attribute']['agent_id'] neq $agent_id">
+                    <if condition="$vo['fahuo_time'] gt 0">
+                        <td>
+                            <if condition="$vo.have_goods gt 0">
+                                有货
+                            <else />
+                                无货
+                            </if>
+                        </td>
+                        <td>{$vo.fahuo_time|date="Y-m-d",###}</td>
+                    <else/>
+                        <td>待确认</td>
+                        <td>待确认</td>
+                    </if>
+                <else />
+                    <td></td>
+                    <td></td>
+                </if>          
+            
+                         
+            </if>
+
+            <if condition="in_array('admin/order/orderdelgoods',$AuthList) and ($orderInfo['order_status'] eq 0)">
+                <td><a href="{:U('Admin/Order/orderDelGoods?order_id='.$orderInfo['order_id'].'&og_id='.$vo['og_id'])}" id="isDel">删除</a></td>              
+            </if>
+        </tr>
+        </volist>
+        <tr class="count">
+        	
+            <if condition="!$orderInfo['order_status']">
+                <td></td>
+            </if>
+            <eq name="orderInfo.order_status" value="0">
+                <td></td><!--库存参考-->
+            </eq>
+            <td colspan="3"></td>
+            
+            <if condition="$orderInfo['order_status'] eq 0">
+                <td colspan="2"></td><!--发货时间，是否有货-->
+            </if>
+
+           
+            <if condition="in_array('admin/order/orderdelgoods',$AuthList) and ($orderInfo['order_status'] eq 0)">
+                <td></td>     <!--删除 -->               
+            </if>
+
+        	<td class="tr"><span>合计:</span></td>
+            <td class="tl"><span>&yen;</span><span id="sanhuoTotal">{$sanhuoPrice}</span></td>
+        </tr>
+	</table>
+    <div class="clear"></div>
+</div>
+<eq name="orderInfo.order_status" value="0">
+<div class="info period">
+	<div class="title">散货结算:</div>
+    <label>
+    <input type="radio" name="sanhuoPay" value="1" class="fl" checked/>
+    <span class="fl">做期支付</span>
+    </label>
+    <select name="sanhuo_period_num" id="sanhuo_period_num" class="fl">
+        <option value="2">分二期支付</option>
+        <option value="3">分三期支付</option>
+        <option value="4">分四期支付</option>
+        <option value="5">分五期支付</option>
+    </select>
+    <span class="fl">逾期利率(万分比)：</span>
+    <input type="text" name="sanhuo_period_overdue" class="fl mr30 overdue" />
+    <label>
+    <input type="radio" name="sanhuoPay" value="2" class="fl">
+    <span class="fl mr10">全款支付</span>
+    </label>
+    <div class="clear"></div>
+</div>
+<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+<else />
+<div class="info">
+	<div class="title">散货结算:</div>
+    <eq name="periodList.sanhuo.order_id" value="$orderInfo.order_id">
+        <ul class="periodList">
+        <li class="bg">
+        	<span>做{$periodList.sanhuo.period_num}期支付</span>
+            <span>应支付总金额:&yen;{$sanhuoPrice}</span>
+            <span>逾期利率:0.0{$periodList.sanhuo.period_overdue}%</span>
+        </li>
+        <volist name="receivablesList.sanhuo" id="vo">
+        	<li>
+	            <span>第{$vo.period_current}期</span><span>{$vo.period_day}天内</span>
+				<span>应支付:&yen;{$vo.receivables_price}</span>
+	            <span>已支付:&yen;{$vo.payment_price}</span>
+	            <eq name="vo.receivables_status" value="1"><span>&nbsp;&nbsp;&nbsp;未核销</span></eq>
+	            <eq name="vo.receivables_status" value="2"><span>&nbsp;&nbsp;&nbsp;核销部分</span></eq>
+	            <eq name="vo.receivables_status" value="3"><span>&nbsp;&nbsp;&nbsp;已核销</span></eq>
+            </li>
+        </volist>
+        </ul>
+    <else />
+    	<ul class="periodList">
+        <li><span>全款支付,应支付金额:{$sanhuoPrice}</span>
+        <volist name="receivablesList.sanhuo" id="vo">
+            <span>已支付:&yen;{$vo.payment_price}</span>
+            <eq name="vo.receivables_status" value="1"><span>&nbsp;&nbsp;&nbsp;未核销</span></eq>
+            <eq name="vo.receivables_status" value="2"><span>&nbsp;&nbsp;&nbsp;核销部分</span></eq>
+            <eq name="vo.receivables_status" value="3"><span>&nbsp;&nbsp;&nbsp;已核销</span></eq>
+        </volist>
+        </li>
+        </ul>
+    </eq>
+</div>
+</eq>
+<div class="info period_list" id="sanhuo_period_list"></div>
+</notempty>
+<!--散货列表结束-->

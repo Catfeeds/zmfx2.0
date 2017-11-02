@@ -1,0 +1,126 @@
+<!------------------自有珠宝产品列表开始---------------------->
+<notempty name="goodsList['goods']">
+<div class="info goods">
+	<div class="title">珠宝产品:</div>
+	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+            <th width="15%">产品编号</th>
+            <th width="22%">产品名称</th>
+            <th width="10%">数量(件)</th>
+            <th width="10%">下单价格(&yen;)</th>
+            <th>SKU规格/金工石</th>
+            <eq name="orderInfo.order_status" value="0">
+            <th width="7%">库存参考</th>
+            </eq>
+        </tr>
+        <volist name="goodsList['goods']" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'} list" goods-id="{$vo.goods_id}">
+        	<input type="hidden" class="unitPrice" value="{$vo.unit_price}" />
+            <td><a href="{:U('Admin/Goods/productInfo?goods_id='.$vo['goods_id'])}">{$vo.goods_sn}</a></td>
+            <td>{$vo.goods_name}</td>
+            <td>
+	            <eq name="orderInfo.order_status" value="0">
+	            	<input type="number" style="width: 50px;" name="goods[{$vo['og_id']}][goods_num]" value="{$vo.goods_number}" default_val={$vo.goods_number} class="goods_num"  />
+	            	<input type="hidden" class="stock" value="{$vo.attribute.goods_sku.goods_number}" />	<!-- 此产品对应的sku库存 -->
+	            <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+	            	{$vo.goods_number}
+	            <else />
+	            	{$vo.goods_number_up}
+	            </eq>
+            </td>
+            <td>
+	            <eq name="orderInfo.order_status" value="0">
+	            	<input style="width: 70px" class="goods_price" type="text" value="{$vo.goods_price}" data-id="{$vo['og_id']}" name="goods[{$vo['og_id']}][price]" class="goods_price">
+	            <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+	            	{$vo.goods_price}
+	            <else />
+	            	{$vo.goods_price_up}
+	            </eq>
+            </td>
+            <td>{$vo.4c}</td>
+            <eq name="orderInfo.order_status" value="0">
+            	<td>
+            		<eq name="vo.goods_type" value="3">
+	            		<span>总库存:</span>
+	            		<span>{$vo.goods_number_goods}</span><br/>
+	            		<span>SKU库存:</span>
+	            		<span class="goods_number" data-id="{$vo['og_id']}">{$vo.goods_sku_number}</span>
+            		</eq>
+            		<eq name="vo.goods_type" value="4">
+            			<span class="goods_number" data-id="{$vo['og_id']}">{$vo.goods_number_goods}</span>
+            		</eq>
+            	</td>
+            </eq>
+        </tr>
+        </volist>
+        <tr class="count">
+        	<td class="tr2" colspan="6">
+        		<span>合计:</span>
+        		<span>&yen;</span>
+        		<span id="goodsTotal">{$goodsPrice}</span>
+        	</td>
+        </tr>
+	</table>
+    <div class="clear"></div>
+</div>
+<eq name="orderInfo.order_status" value="0">
+<div class="info period">
+	<div class="title">产品结算:</div>
+    <label>
+    <input type="radio" name="goodsPay" value="1" class="fl" checked/>
+    <span class="fl">做期支付</span>
+    </label>
+    <select name="goods_period_num" id="goods_period_num" class="fl">
+        <option value="2">分二期支付</option>
+        <option value="3">分三期支付</option>
+        <option value="4">分四期支付</option>
+        <option value="5">分五期支付</option>
+    </select>
+    <span class="fl">逾期利率(万分比)：</span>
+    <input type="text" name="goods_period_overdue" class="fl mr30 overdue" />
+    <label>
+    <input type="radio" name="goodsPay" value="2" class="fl">
+    <span class="fl mr10">全款支付</span>
+    </label>
+    <div class="clear"></div>
+</div>
+<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+<else />
+<div class="info">
+	<div class="title">产品结算:</div>
+    <eq name="periodList.goods.order_id" value="$orderInfo.order_id">
+        <ul class="periodList">
+        <li class="bg">
+        	<span>做{$periodList.goods.period_num}期支付</span>
+            <span>应支付总金额：&yen;{$goodsPrice}</span>
+            <span>逾期利率:0.0{$periodList.goods.period_overdue}%</span>
+        </li>
+        <volist name="receivablesList.goods" id="vo">
+        	<li>
+	            <span>第{$vo.period_current}期</span>
+	            <span>{$vo.period_day}天内</span>
+	            <span>应支付:&yen;{$vo.receivables_price}</span>
+	            <span>已支付:&yen;{$vo.payment_price}</span>
+	            <eq name="vo.receivables_status" value="1"><span>&nbsp;&nbsp;&nbsp;未核销</span></eq>
+	            <eq name="vo.receivables_status" value="2"><span>&nbsp;&nbsp;&nbsp;核销部分</span></eq>
+	            <eq name="vo.receivables_status" value="3"><span>&nbsp;&nbsp;&nbsp;已核销</span></eq>
+            </li>
+        </volist>
+        </ul>
+    <else />
+    	<ul class="periodList">
+        <li><span>全款支付，应支付金额：{$goodsPrice}</span>
+        <volist name="receivablesList.goods" id="vo">
+            <span>已支付:&yen;{$vo.payment_price}</span>
+            <eq name="vo.receivables_status" value="1"><span>&nbsp;&nbsp;&nbsp;未核销</span></eq>
+            <eq name="vo.receivables_status" value="2"><span>&nbsp;&nbsp;&nbsp;核销部分</span></eq>
+            <eq name="vo.receivables_status" value="3"><span>&nbsp;&nbsp;&nbsp;已核销</span></eq>
+        </volist>
+        </li>
+        </ul>
+    </eq>
+</div>
+</eq>
+<div class="info period_list" id="goods_period_list"></div>
+</notempty>
+<!------------------自有珠宝产品列表结束------------------->

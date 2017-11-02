@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>配送模式</title>
+  </head>
+  <body>
+    <div class="page-main">
+      <div class="subMenu">
+        <h3>当前操作：修改配送模式</h3>
+        <ul>
+          <volist name="menuList[7]['sub']" id="vo">
+            <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+          </volist>
+        </ul>
+      </div>
+      <div class="article">
+        <div class="categoryInfo">
+          <form action="{:U('Admin/System/deliveryInfo?mode_id='.$editDeli['mode_id'])}" method="POST">
+              <table>
+                <tr>
+                  <th>ID：</th>
+                  <td>{$editDeli.mode_id}</td>
+                </tr>
+                <tr>
+                  <th>配送方式名称：</th>
+                  <td>
+                    <input type="text" id="mode_name" name="mode_name" value="{$editDeli.mode_name}">
+                  </td>
+                </tr>
+                <tr>
+                  <th>配送方式备注：</th>
+                  <td>
+                    <input type="text" id="mode_note" name="mode_note" value="{$editDeli.mode_note}">
+                  </td>
+                </tr>
+                <tr>
+                  <th>预计到货时间：</th>
+                  <td>
+                    <input type="text" id="mode_time" name="mode_time" value="{$editDeli.mode_time}">
+                  </td>
+                </tr>
+                <tr>
+                  <th>保险费：</th>
+                  <td>
+                    <input type="text" id="mode_safep" name="mode_safep" value="{$editDeli.mode_safep}">
+                  </td>
+                </tr>
+                <tr>
+                  <th>物流运费：</th>
+                  <td>
+                    <input type="text" id="mode_expressp" name="mode_expressp" value="{$editDeli.mode_expressp}">
+                  </td>
+                </tr>
+                <tr>
+                  <th colspan="2">
+                    <input type="submit" name="submit" value="提交"/>
+                  </th>
+                </tr>
+              </table>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>售后明细</title>
+  </head>
+  <style>
+    .title { font-size: 16px !important; border-right: none;}
+    .column-box { background: #FFF; margin-bottom: 20px;}
+    .column-box .column-header { border-bottom: 1px solid #E6E6E6; }
+    .column-box .column-header p { padding: 15px;}
+    .column-box .column-header p span { display: inline-block; border-left: 4px solid #FF7101; padding: 0 15px; font-size: 18px;}
+    .column-box .column-main { padding: 15px;}
+    .column-box .column-main .mleft { display: inline-block; margin-left: 30px;}
+    .column-box .column-main p { border-bottom: 1px solid #E6E6E6; padding: 13px 0; color: #666;}
+    .column-box .column-main span.data { color: #000;}
+    .column-box .column-main textarea { border: 1px solid #E6E6E6; background: #FFF;}
+    .column-box .results .results-title { display: inline-block; width: 80px; text-align: right;}
+    .column-box .results input,
+    .column-box .results select { width: 200px; height: 25px; line-height: 25px; border: 1px solid #CACACA; background: #FFF;}
+    .column-box .results select { width: 212px; height: 33px;}
+    .column-box .results p { padding: 8px 0; border: none;}
+    .btn-sh { width: 320px; height: 40px; font-size: 16px; cursor: pointer; text-align: center; color: #FFF; background: #1B76BF; border-radius: 2px; -webkit-border-radius: 2px; -moz-border-radius: 2px; -ms-border-radius: 2px; border: none;}
+    .state { padding: 10px; background: #ccc; font-size: 18px; color: red;}
+    .clear { clear: both;}
+    .red { color: red !important;}
+  </style>
+
+  <body>
+    <if condition=" $info.status eq '0' ">
+      <form action="{:U('Admin/OrderService/serviceInfo')}" method="post" onsubmit="return toVaild();">
+    <else />
+      <if condition=" $info.status eq '1' ">
+        <form action="{:U('Admin/OrderService/serviceOver')}" method="post" onsubmit="return toVaild();">
+      <else />
+        <form>
+      </if>
+    </if>
+    <div class="page-main edit">
+        <div class="subMenu">
+          <h3>当前操作：审核</h3>
+          <ul>
+            <li class="">
+              <a href="javascript:history.go(-1);">返回上一页</a>
+            </li>
+          </ul>
+        </div>
+        <div class="clear"></div>
+        <if condition=" $info.status eq '0' ">
+          <p class="state">待审核</p>
+        <elseif condition=" $info.status eq '1' " />
+          <p class="state">已审核</p>
+        <else /> 
+          <p class="state">已完成</p>
+        </if>
+        
+        <section>
+          <div class="column-box">
+            <div class="column-header">
+              <p><span>审核资料</span></p>
+            </div>
+            <div class="column-main">
+              <p><span class="data">账户信息：</span>{$info.user_name}  <span class="mleft"><span class="data">联系方式：</span>{$info.phone}</span></p>
+              <p><span class="data">产品信息：</span>{$info.goods_name} <br> <img src="{$info.thumb}" /></p>
+              <p><span class="data">问题描述：</span>{$info.description} </p>
+              <p><span class="data">售后类型：</span>{$info.service_type} <span class="mleft"> <span class="data">申请时间：</span>{$info.create_time}</span></p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="column-box">
+            <div class="column-header">
+              <p><span>审核留言</span></p>
+            </div>
+            <div class="column-main">
+              <p>
+                <if condition=" $info.status eq '0' ">
+                  <textarea name="admin_reply" type="text" style="width:100%;heigth:150px;">{$info.admin_reply}</textarea>
+                <else />
+                  {$info.admin_reply}
+                </if>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="column-box">
+            <div class="column-header">
+              <p><span>审核结果</span></p>
+            </div>
+
+            <!-- 结果1 -->
+            <div class="column-main results">
+              <p><span class="results-title">标题：</span>
+              <if condition=" $info.status eq '0' ">
+                <select name="result_type">
+                  <option value="1">同意换货</option>
+                  <option value="2">不同意换货</option>
+                  <option value="3">同意退货退款</option>
+                  <option value="4">不同意退货退款</option>
+                </select>
+              <else />
+                <span>
+                  <if condition=" $info.result_type eq '1' ">
+                    同意换货
+                    <elseif condition=" $info.result_type eq '2' " /> 不同意换货
+                    <elseif condition=" $info.result_type eq '3' " /> 同意退货退款
+                    <elseif condition=" $info.result_type eq '4' " /> 不同意退货退款
+                  </if>
+                </span>
+              </if>
+              </p>
+              <p>
+                <span class="results-title">快递公司：</span>
+                <if condition=" $info.status eq '0' ">
+                  <input type="text" name="express_company" value="{$info.express_company}" />
+                <else />
+                  <span>{$info.express_company}</span>
+                </if>
+              </p>
+              <p>
+                <span class="results-title">运单号：</span>
+                <if condition=" $info.status eq '0' ">
+                  <input type="text" name="express_number" value="{$info.express_number}" />
+                <else />
+                  <span>{$info.express_number}</span>
+                </if>
+              </p>
+              <p><span class="results-title">运费：</span> 
+                <if condition=" $info.status eq '0' ">
+                  <input type="text" name="express_price" value="{$info.express_price}" />
+                <else />
+                  <span>{$info.express_price}</span>
+                </if>
+              </p>
+              <p>提示：如果有换货，需要发物流，请填写货运单号，没有物流不需要填写</p>
+              <if condition=" $info.status eq '0' ">
+                <input type="submit" class="button fl" value="回复提交">
+              <elseif condition=" $info.status eq '1' " />
+                <input type="submit" class="button fl" value="关闭">
+              <else /> 
+                <p class="red">流程完成</p>
+              </if>
+            </div>
+          </div>
+        </section>
+        <input type="hidden" name="order_service_id" value="{$order_service_id}">
+
+        <script language="javascript">
+          function toVaild() {
+            if(confirm('确认此操作吗？')) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+        </script>
+      <br />
+      <br />
+    </div>
+    </form>
+  </body>
+</html>

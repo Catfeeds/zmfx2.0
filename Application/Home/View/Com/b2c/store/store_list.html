@@ -1,0 +1,28 @@
+<div class="row">
+	<volist name="storeList" id="vo">
+	<div class="col-md-6 col-sm-6">
+		<div class="lb-box">
+			<p>
+				<if condition="$vo['thumb']">
+				<a href="{:U('/Home/Store/detail',array('id'=>$vo['id']))}">
+					<img src="__PUBLIC__/Uploads/store/{$vo['thumb']}" class="lb-img" />
+				</a>
+				</if>
+			</p>
+			<div class="lb-content text-center">
+				<p class="xh"><img src="__IMG__/lb-icon_02.png" alt=""></p>
+				<h4>
+					<a href="{:U('/Home/Store/detail',array('id'=>$vo['id']))}" >
+						<strong>{$vo.name|msubstr=0,20,'utf-8'}</strong>
+					</a>
+				</h4>
+				<p><img src="__IMG__/lb-icon_05.png" alt=""></p>
+				<h4 style="width: 100%; height: 38px; overflow: hidden;">{$vo.province_name}{$vo.city_name}市{$vo.district_name}{$vo.address}</h4>
+				<h4>{$vo.phone}</h4>
+			</div>
+		</div>
+	</div>
+	</volist>
+	<div class="clearfix"></div>
+</div>
+<div class="mallhot mallhot-type diamond diamond-select text-center" id="page">{$page}</div>

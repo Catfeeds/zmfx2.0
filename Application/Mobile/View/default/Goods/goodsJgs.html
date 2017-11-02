@@ -1,0 +1,370 @@
+<style>
+  .icon-head,.icon-head1 { background: #fff; display: inline-block; border: 1px solid #C1C1C1; margin: 0; margin-left: -1px; text-align: center; width: 150px; height: 31px; line-height: 31px; padding: 0px 2px; position: relative; cursor: pointer;}
+  .icon-head .fh,.icon-head1 .fh { height: 23px; line-height: 23px; display: inline-block;}
+  .icon-head .fh img,.icon-head1 .fh img { max-height: 100%; margin-top: -5px;}
+  .caret { display: inline-block; width: 0; height: 0; margin-left: 2px; vertical-align: middle; border-top: 4px dashed; border-top: 4px solid\9; border-right: 4px solid transparent; border-left: 4px solid transparent; margin-right: 2px; margin-top: 14px; float: right;}
+  .symbols-name { float: left; margin-top: 5px; text-align: right;}
+  .symbols-select { position: relative; margin-top: 5px;}
+  .symbols-select-ul,.symbols-select-ul1 { width: 150px; max-height: 165px; border: 1px solid #C1C1C1; overflow: auto; padding: 1px; margin: 0; text-align: left; background: #fff; position: absolute; top: 30px; left: -1px; z-index: 999; overflow: auto;}
+  .symbols-select-ul li,.symbols-select-ul1 li { width: 35px; height: 35px; float: left; margin-right: 1px; border-bottom: 1px solid #eee; cursor: pointer;}
+  .symbols-select-ul li img,.symbols-select-ul1 li img { height: 100%;}
+  .list-default { margin: 1em;}
+  
+  .product-attr { margin: 0;}
+  .product-attr dl dt { width: 25%;}
+  .product-attr dl dd { max-width: 75%;}
+</style>
+
+<div class="product-attr">
+
+  <dl>
+    <dt>定制金工石：</dt>
+    <dd></dd>
+  </dl>
+
+  <dl>
+    <dt>材质：</dt>
+    <div>
+      <volist name="goodsJgs.material" id="vo">
+        <dd class="border {$vo.css}" name="selMaterial" data-value="{$vo.material_id}">{$vo.material_name}</dd>
+      </volist>
+    </div>
+  </dl>
+  
+  <dl>
+    <dt>重量：</dt>
+    <div>
+      <volist name="goodsJgs.material" id="vo">
+        <dd>{$vo.weights_name}g</dd>
+      </volist>
+      <div>
+  </dl>
+  <input type="hidden" id="price_model" name="price_model" value="{$goodsJgs['price_model']}">
+
+  <if condition="!$goodsJgs['price_model']">
+    <dl>
+      <dt>损耗：</dt>
+      <div>
+        <volist name="goodsJgs.material" id="vo">
+          <dd>{$vo.loss_name}%</dd>
+        </volist>
+        <div>
+    </dl>
+    <dl>
+      <dt>工费：</dt>
+      <div>
+        <volist name="goodsJgs.material" id="vo">
+          <dd>&yen;{$vo.basic_cost}</dd>
+        </volist>
+      </div>
+    </dl>
+	
+    <dl>
+      <dt>刻字：</dt>
+      <dd><input type="text" maxlength="10" name="word" value="{$word}" placeholder="最多只能填写10个字符"> </dd>
+    </dl>
+    <dl>
+      <dt>手寸：</dt>
+      <dd>
+        <input id="selHand" name="selHand" type="input" value="" list="hands_all" />
+        <datalist id="hands_all">
+            <volist name="goodsJgs.hand" id="vo">
+                  <option value="{$vo.key}" <eq name="vo.key" value="$head">selected=""</eq>>{$vo.val}</option>
+            </volist>
+        </datalist>
+      </dd>
+    </dl>
+    <input type="hidden" name="selHand1" value="">
+    <input type="hidden" name="word1" value="">
+    <input type="hidden" name="sd_id1" value="">
+    <if condition=" $sd_list ">
+      <!-- 个性符号 -->
+      <input type="hidden" name="sd_id" value='0'>
+      <span class="symbols-box">
+        <dl>
+          <dt>个性符号：</dt>
+          <div class="symbols-select">
+            <span class="icon-head">
+              <span class="fh">请选择您要的定制符号</span>
+              <i class="caret"></i>
+            </span>
+            <ul class="symbols-select-ul" style="display: none;">
+              <volist name="sd_list" id="vo">
+                <li><img src="{$vo.images_path}" value="{$vo.sd_id}" /></li>
+              </volist>
+              <div class="clear"></div>
+            </ul>
+          </div>
+        </dl>
+      </span>
+      <script type="text/javascript">
+        $(function() {
+          $('.icon-head').bind('click', function() {
+            $('.symbols-select-ul').toggle();
+          });
+          $('.symbols-select-ul li').bind('click', function() {
+            $('.icon-head .fh').html('').append("<img src=" + $(this).find('img').attr('src') + ">");
+            $('.symbols-select-ul').hide();
+            var v = $(this).find('img').attr('value');
+            $("input[name='sd_id']").val(v);
+          });
+        });
+      </script>
+    </if>
+  </if>
+
+  <if condition=" $goodsJgs['price_model'] && (InStringByLikeSearch($goodsJgs['category_name'],array('钻戒','戒指'))) ">
+    <dl>
+      <dt>手寸：</dt>
+      <dd>
+        <select class="selHand" id="selHand" name="selHand">
+          <volist name="goodsJgs.hand" id="vo">
+            <option value="{$vo}">{$vo}</option>
+          </volist>
+        </select>
+      </dd>
+    </dl>
+    <dl>
+      <dt>刻字：</dt>
+      <dd><input type="text" maxlength="10" name="word" value="{$word}" placeholder="最多只能填写10个字符"> </dd>
+    </dl>
+    <if condition=" $sd_list ">
+      <!-- 个性符号 -->
+      <input type="hidden" name="sd_id" value='0'>
+      <span class="symbols-box">
+        <dl>
+          <dt>个性符号：</dt>
+          <div class="symbols-select">
+            <span class="icon-head">
+                        <span class="fh">请选择您要的定制符号</span>
+            <i class="caret"></i>
+            </span>
+            <ul class="symbols-select-ul" style="display: none;">
+              <volist name="sd_list" id="vo">
+                <li><img src="{$vo.images_path}" value="{$vo.sd_id}" /></li>
+              </volist>
+              <div class="clear"></div>
+            </ul>
+          </div>
+        </dl>
+      </span>
+      <script type="text/javascript">
+        $(function() {
+          $('.icon-head').bind('click', function() {
+            $('.symbols-select-ul').toggle();
+          });
+          $('.symbols-select-ul li').bind('click', function() {
+            $('.icon-head .fh').html('').append("<img src=" + $(this).find('img').attr('src') + ">");
+            $('.symbols-select-ul').hide();
+            var v = $(this).find('img').attr('value');
+            $("input[name='sd_id']").val(v);
+          });
+        });
+      </script>
+    </if>
+    <input type="hidden" name="selHand1" value="">
+    <input type="hidden" name="word1" value="">
+    <input type="hidden" name="sd_id1" value="">
+  </if>
+  <if condition=" $goodsJgs['price_model'] && (InStringByLikeSearch($goodsJgs['category_name'],array('项链','手链'))) ">
+    <dl>
+      <dt>尺寸：</dt>
+      <dd>
+        <select class="selHand" id="selHand" name="selHand">
+          <volist name="goodsJgs.hand" id="vo">
+            <option value="{$vo}">{$vo}</option>
+          </volist>
+        </select>
+      </dd>
+    </dl>
+    <dl>
+      <dt>刻字：</dt>
+      <dd><input type="text" maxlength="10" name="word" value="{$word}" placeholder="最多只能填写10个字符"> </dd>
+    </dl>
+    <if condition=" $sd_list ">
+      <!-- 个性符号 -->
+      <input type="hidden" name="sd_id" value='0'>
+      <span class="symbols-box">
+        <dl>
+          <dt>个性符号：</dt>
+          <div class="symbols-select">
+            <span class="icon-head">
+                        <span class="fh">请选择您要的定制符号</span>
+            <i class="caret"></i>
+            </span>
+            <ul class="symbols-select-ul" style="display: none;">
+              <volist name="sd_list" id="vo">
+                <li><img src="{$vo.images_path}" value="{$vo.sd_id}" /></li>
+              </volist>
+              <div class="clear"></div>
+            </ul>
+          </div>
+        </dl>
+      </span>
+      <script type="text/javascript">
+        $(function() {
+          $('.icon-head').bind('click', function() {
+            $('.symbols-select-ul').toggle();
+          });
+          $('.symbols-select-ul li').bind('click', function() {
+            $('.icon-head .fh').html('').append("<img src=" + $(this).find('img').attr('src') + ">");
+            $('.symbols-select-ul').hide();
+            var v = $(this).find('img').attr('value');
+            $("input[name='sd_id']").val(v);
+          });
+        });
+      </script>
+    </if>
+    <input type="hidden" name="selHand1" value="">
+    <input type="hidden" name="word1" value="">
+    <input type="hidden" name="sd_id1" value="">
+  </if>
+  <if condition=" $goodsJgs['price_model'] && (InStringByLikeSearch($goodsJgs['category_name'],array('对戒'))) ">
+    <dl>
+      <dt>手寸(男)：</dt>
+      <dd>
+        <select id="selHand" class="selHand" name="selHand">
+          <volist name="goodsJgs.hand1" id="vo">
+            <option value="{$vo}">{$vo}</option>
+          </volist>
+        </select>
+      </dd>
+    </dl>
+    <dl>
+      <dt>刻字：</dt>
+      <dd><input type="text" maxlength="10" name="word" value="{$word}" placeholder="最多只能填写10个字符"> </dd>
+      <if condition=" $sd_list ">
+        <!-- 个性符号 -->
+        <input type="hidden" name="sd_id" value='0' />
+        <span class="symbols-box">
+          <dl>
+            <dt>个性符号：</dt>
+            <div class="symbols-select">
+              <span class="icon-head">
+                              <span class="fh">请选择您要的定制符号</span>
+              <i class="caret"></i>
+              </span>
+              <ul class="symbols-select-ul" style="display: none;">
+                <volist name="sd_list" id="vo">
+                  <li><img src="{$vo.images_path}" value="{$vo.sd_id}" /></li>
+                </volist>
+                <div class="clear"></div>
+              </ul>
+            </div>
+          </dl>
+        </span>
+        <script type="text/javascript">
+          $(function() {
+            $('.icon-head').bind('click', function() {
+              $('.symbols-select-ul').toggle();
+            });
+            $('.symbols-select-ul li').bind('click', function() {
+              $('.icon-head .fh').html('').append("<img src=" + $(this).find('img').attr('src') + ">");
+              $('.symbols-select-ul').hide();
+              var v = $(this).find('img').attr('value');
+              $("input[name='sd_id']").val(v);
+            });
+          });
+        </script>
+      </if>
+    </dl>
+    <dl>
+      <dt>手寸(女)：</dt>
+      <dd>
+        <select id="selHand1" class="selHand" name="selHand1">
+          <volist name="goodsJgs.hand2" id="vo">
+            <option value="{$vo}">{$vo}</option>
+          </volist>
+        </select>
+      </dd>
+    </dl>
+    <dl>
+      <dt>刻字：</dt>
+      <dd><input type="text" maxlength="10" name="word1" value="{$word1}" placeholder="最多只能填写10个字符"> </dd>
+      <if condition=" $sd_list ">
+        <!-- 个性符号 -->
+        <input type="hidden" name="sd_id1" value='0' />
+        <span class="symbols-box">
+          <dl>
+            <dt>个性符号：</dt>
+            <div class="symbols-select">
+              <span class="icon-head1">
+                              <span class="fh">请选择您要的定制符号</span>
+              <i class="caret"></i>
+              </span>
+              <ul class="symbols-select-ul1" style="display: none;">
+                <volist name="sd_list" id="vo">
+                  <li><img src="{$vo.images_path}" value="{$vo.sd_id}" /></li>
+                </volist>
+                <div class="clear"></div>
+              </ul>
+            </div>
+          </dl>
+        </span>
+        <script type="text/javascript">
+          $(function() {
+            $('.icon-head1').bind('click', function() {
+              $('.symbols-select-ul1').toggle();
+            });
+            $('.symbols-select-ul1 li').bind('click', function() {
+              $('.icon-head1 .fh').html('').append("<img src=" + $(this).find('img').attr('src') + ">");
+              $('.symbols-select-ul1').hide();
+              var v = $(this).find('img').attr('value');
+              $("input[name='sd_id1']").val(v);
+            });
+          });
+        </script>
+      </if>
+    </dl>
+  </if>
+  <if condition=" $goodsJgs['price_model'] && !(InStringByLikeSearch($goodsJgs['category_name'],array('钻戒','戒指','项链','手链','对戒'))) ">
+    <input type="hidden" name="selHand" value="">
+    <input type="hidden" name="word" value="">
+    <input type="hidden" name="sd_id" value="">
+    <input type="hidden" name="selHand1" value="">
+    <input type="hidden" name="word1" value="">
+    <input type="hidden" name="sd_id1" value="">
+  </if>
+  <dl>
+    <dt>可选主石：</dt>
+    <div>
+      <volist name="goodsJgs.luozuan" id="vo">
+        <dd class="border {$vo.css}" name="selLuozuan" data-value="{$vo.gal_id}">{$vo.shape_name}&nbsp;{$vo.weights_name}CT</dd>
+      </volist>
+    </div>
+  </dl>
+  <dl>
+    <dt>副石：</dt>
+    <div>
+      <volist name="goodsJgs.deputystone" id="vo">
+        <dd class="border {$vo.css}" name="selDeputystone" data-value="{$vo.gad_id}">{$vo.deputystone_name}</dd>
+      </volist>
+    </div>
+  </dl>
+
+  <if condition=" !$goodsJgs['price_model'] ">
+    <dl>
+      <dt>附加工费：</dt>
+      <div>
+        <volist name="goodsJgs.luozuan" id="vo">
+          <dd>&yen;{$vo.price}</dd>
+        </volist>
+      </div>
+    </dl>
+  </if>
+
+  <h3>预计交货时间：<?php echo $expectedDeliveryTime?>个工作日</h3>
+	<dl>
+	  <dt>特别说明：</dt>
+	  <div>
+		  <dd>售价不含主钻价格，报价以出货为准</dd>
+	  </div>
+	</dl>
+	
+  </div>
+  <div class="am-pace pace-btn">
+    <!-- <button type="button" class="am-btn am-btn-blue am-radius" id="goodsDiy">立即定制</button> -->
+    <button type="button" class="am-btn am-btn-blue am-radius" id="goodsBuy">立即定制</button>
+    <button type="button" class="am-btn am-btn-blue am-radius" id="rapidBuy">立即购买</button>
+  </div>
+  <script type="text/javascript" src="__JS__/goodsJgs.js"></script>

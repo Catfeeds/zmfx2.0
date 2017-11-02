@@ -1,0 +1,44 @@
+<include file="Public:header" />
+
+<body>
+    <section class="upload-credentials credentials-state">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>上传凭证-状态</h2>
+            </div>
+        </header>
+
+        <section class="wrapper">
+            <div class="item-box">
+				<if condition="$result['status'] eq 100">
+					<div class="content succeed">
+						<h2>凭证上传成功!</h2>
+						<h2>请等待财务审核</h2>
+						<p>如需帮助请联系客服 <?php echo C('site_contact');?></p>
+						<p><a href="/User/orderList" class="know">知道啦</a></p>
+					</div>
+                <else />
+					<div class="content fail">
+						<h2>凭证上传失败!</h2>
+						<h2>请重新上传</h2>
+						<p>如需帮助请联系客服 <?php echo C('site_contact');?></p>
+						<p><a href="/User/orderList" class="know">知道啦</a></p>
+					</div>
+				</if>
+            </div>
+        </section>
+
+    </section>
+<include file="Public:foot" />
+</body>
+</html>
+
+
+
+
+
+

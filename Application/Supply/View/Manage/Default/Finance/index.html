@@ -1,0 +1,177 @@
+<extend name="Manage:Default:base" />
+<block name="title">{$L['login_title']}</block>
+<block name="desc">{$L['login_description']}</block>
+<block name="body">
+	<div class="wrapper">
+		<div class="row">
+			<div class="sign">
+				<span><img src="__IMG__/left-top.jpg"></span>
+				<ul>
+					<li>{$L['heading_finance_magen']}:</li>
+				</ul>
+			</div>
+			<div class="col-lg-12 product">
+				<section class="panel">
+					<header class="panel-heading custom-tab ">
+						<ul class="nav nav-tabs">
+							<li class="active">
+								<a href="#deposit" class="order-number" data-toggle="tab">{$L['text_collection_record']}</a>
+							</li>
+						</ul>
+					</header>
+					<div class="panel-body cate">
+						<div class="tab-content">
+							<div class="tab-pane active" id="deposit">
+								<div class="cate-info" style="width:100%;float:left;height:50px;">
+									<dl>
+										<dt>{$L['text_order_sn']}：</dt>
+										<dd><input type="text" value="{$_GET['order_sn']}" name="order_sn"></dd>
+									</dl>
+									<dl>
+										<dt>{$L['text_receiving_status']}：</dt>
+										<dd>
+											<select name="receiving_status">
+												<option value="0" >{$L['all']}</option>
+												<option value="1" <if condition="$_GET['receiving_status'] eq 1" >selected </if> >{$L['text_already_receivables']}</option>
+												<option value="2" <if condition="$_GET['receiving_status'] eq 2" >selected </if> >{$L['text_ing_receivables']}</option>
+											</select>
+										</dd>
+									</dl>
+									<dl>
+										<dt>{$L['text_order_time']}：</dt>
+										<dd><input name="order_time" type="text" class="laydate-icon" id="demo" onclick="laydate()" placeholder="{$L['text_enter_date']}" value="{$_GET['order_time']}"></dd>
+									</dl>
+									<dl><dd><button id="search" class="btn btn-default btn-xs">{$L['search']}</button></dd></dl>
+									<dl><dd><button type="" id="reset" class="btn btn-default btn-xs">{$L['reset']}</button></dd></dl>
+								</div>
+								<!--表格-->
+								<div class="table-responsive" style="width:100%;float:left;">
+									<table class="table table-bordered table-hover" id="hidden-table-info">
+										<thead>
+										<tr>
+											<th>{$L['text_order_id']}</th>
+											<th>{$L['text_order_sn']}</th>
+											<th>{$L['text_finance_stage']}</th>
+											<th>{$L['text_order_totalprice']}</th>
+											<th>{$L['text_order_time']}</th>
+											<th>{$L['text_pay_endtime']}</th>
+											<th>{$L['text_collection_money']}</th>
+											<th>{$L['text_collection_status']}</th>
+											<th>{$L['operation']}</th>
+										</tr>
+										</thead>
+										<tbody id="fiance_list">
+										
+										</tbody>									
+										
+									</table>
+								</div>
+								<div class="prve">
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>	
+</block>
+<block name="my_js">
+	<script>
+		<!--主页面跳转到此页面选中div-->
+		var index = {
+			args:{
+				page_id:"1",
+				page_size:"10",
+			},
+			set_page:function(page_id,page_size){
+			    this.args['page_id']   = page_id.toString();
+                this.args['page_size'] = page_size.toString();
+		   },
+		   
+		  finance_list:function(){
+			var data = {};
+			data['page_id'] = this.args.page_id;
+			data['page_size'] = this.args.page_size;
+			
+			data['order_sn'] = $('input[name="order_sn"]').val();
+			data['receiving_status'] = $('select[name="receiving_status"]').val();
+			data['order_time'] = $('input[name="order_time"]').val();
+			$.getJSON("{:U('Finance/finance_list')}",data,function(data){
+				var datas = data['data']['list'];
+				var content = '';
+				
+				if(datas){
+					var receivables_name = '{$L["text_ing_receivables"]}';
+					$.each(datas,function(val){
+						content += '<tr>';
+						content += '<td>'+this.payment_id+'</td>';
+						content += '<td>'+this.order_sn+'</td>';
+						content += '<td>'+this.number+'</td>';
+						content += '<td>'+this.order_price+'</td>';
+						content += '<td>'+this.order_create_time_str+'</td>';
+						content += '<td>'+this.create_time_str+'</td>';
+						content += '<td>'+this.total_payment_price+'</td>';
+						if(this.status == 1){
+							receivables_name = '{$L["text_already_receivables"]}';
+						}else{
+							receivables_name = '{$L["text_ing_receivables"]}';
+						}
+						content += '<td>'+receivables_name+'</td>';
+						
+						content += '<td><a class="financeinfo"  href="{:GetSupplyUrl("Finance","financeInfo","order_id='+this.order_id+'")}">{$L["text_order_read"]}</a></td>';
+						content += '</tr>';
+					});
+					$('#fiance_list').html(content);
+
+
+					var page_html = page.create({PageID:index.args['page_id'],PageSize:index.args['page_size'],TotalNum:data['data']['total']}).getHtml();
+
+					$('#deposit').find('.prve').html(page_html);
+
+			        if( page_html == '' ){
+			            var pageid = Math.ceil( res['data']['total'] / res['data']['page_size'] );
+			            if( pageid < 1 ){
+			                pageid = 1;
+			            }
+			            index.set_page( pageid , res['data']['page_size'] );                    
+			        }
+
+
+					
+
+					$('#deposit .prve a').on('click',function(){
+						index.set_page($(this).attr('data-page-id'),$(this).attr('data-page-size'));//设置新的page_id变量。
+						index.finance_list();
+					});
+					//分页GO操作
+					$('#deposit .prve .go').on('click',function(){
+						var data_page_id = parseInt($(this).prev().val(),10);
+						var data_page_size = parseInt($("input[name='page_size']").val(),10);
+						if(data_page_id){
+							index.set_page(data_page_id,data_page_size);
+							index.finance_list();
+						}
+					});
+				}else{
+					$('#fiance_list').html(content);
+					$('#deposit').find('.prve').html(content);
+				}
+			});
+			}
+		}
+		$(function(){
+			//获取列表
+			index.finance_list();
+			//搜索
+			$('#search').click(function(){
+				index.finance_list();
+			})
+			//重置按钮
+			$('#reset').click(function(){
+				window.location.href = "{:GetSupplyUrl('Finance','index')}";
+			})
+			//订单详情
+		});
+	</script>
+</block>

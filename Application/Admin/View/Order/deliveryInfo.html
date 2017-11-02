@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>订单发货单信息</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" /> 
+<script type="text/javascript" src="__JS__/deliveryInfo.js"></script>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：订单发货单信息</h3>
+        <ul>
+            <volist name="menuList[3]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>  
+        </ul>
+    </div>
+    <div class="order">
+    <form action="{:U('Admin/Order/deliveryInfo?order_id='.$orderInfo['order_id'])}" method="post">
+    	<div class="order-top">
+            <div class="info fl">
+                <span class="title">订单编号:</span>
+                <span class="red"><a href="{:U('Admin/Order/orderInfo?order_id='.$orderInfo['order_id'])}" showOrder="{$orderInfo.order_id}">{$orderInfo.order_sn}&nbsp;(返回订单)</a></span>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+            <div class="info fl">
+            	<span class="title">订单来源:</span>
+                <a href="{$orderInfo.objUrl}">{$orderInfo.obj}</a>
+                <div class="clear"></div>
+            </div>
+            <if condition="!in_array_diy('7,8',$group) and ($orderInfo['uid'])">
+            <div class="info fr tar">
+            	<span class="title">所属业务员:</span>
+                <span>{$orderInfo.parent_admin_name}</span>
+                <div class="clear"></div>
+            </div>
+            </if>
+            <div class="clear"></div>
+            <div class="info fl">
+            	<span class="title">配送方式:</span>
+                <span>{$orderInfo.mode_name}</span>
+                <div class="clear"></div>
+            </div>
+            <if condition="($orderInfo['uid'])">
+            <div class="info fr tar">
+            	<span class="title">收货信息:</span>
+                <span>{$addressInfo}</span>                
+                <div class="clear"></div>
+            </div>
+            </if>
+            <div class="clear"></div>
+        </div>
+        <div class="order-content">
+        	<!-- 裸钻列表 -->
+			<notempty name="goodsList['luozuan']">
+        	<div class="info">
+            	<div class="title">证书货产品:</div>
+            	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+                    <tr class="top">
+                    	<th>选中</th>
+                        <th>证书号</th>
+                        <th>4C属性(重量/颜色/净度/切工)</th>
+                        <th>订购数量(颗)</th>
+                        <th>价格</th>
+                        <th>状态</th>
+                    </tr>
+                    <volist name="goodsList['luozuan']" id="vo" mod="2">
+                    <tr class="{$mod?'bg2':'bg1'}">
+                        <td>
+	                        <neq name="vo.delivery_status" value="3">
+	                        	<input type="checkbox" name="goodsLuozuan[]" value="{$vo['og_id']}">
+	                        </neq>
+                        </td>
+                        <td>{$vo['attribute']['certificate_type']}{$vo['attribute']['certificate_number']}</td>
+                        <td>{$vo.4c}</td>
+                        <td>{$vo.goods_number_up}</td>
+                       	<td>{$vo.goods_price_up}</td>
+                        <td>{$vo.delivery_string}</td>
+                    </tr>
+                    </volist>
+            	</table>
+                <div class="clear"></div>
+            </div>
+			</notempty>
+            <!-- 裸钻列表结束 -->
+            <!-- 散货列表 -->
+            <notempty name="goodsList['sanhuo']">
+            <div class="info">
+            	<div class="title">散货产品:</div>
+            	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+                    <tr class="top goodsSanhuoList">
+                    	<th>选中</th>
+                        <th>产品编号</th>
+                        <th>4C属性(颜色/净度/切工)</th>
+                        <th>订购重量(Cut)</th>
+                        <th>已发货重量</th>
+                        <th>现发货数量</th>
+                        <th>现发货金额</th>
+                        <th>货品价格</th>
+                        <th>状态</th>
+                    </tr>
+                    <volist name="goodsList['sanhuo']" id="vo" mod="2">
+                    <tr class="{$mod?'bg2':'bg1'}">
+                    	<td>
+	                        <neq name="vo.delivery_status" value="3">
+	                        	<input type="checkbox" name="goodsSanhuo[{$vo['og_id']}][og_id]" value="{$vo['og_id']}">
+	                        </neq>
+                        </td>
+                        <td>{$vo['attribute']['goods_sn']}</td>
+                        <td>{$vo.4c}</td>
+                        <td class="goods_number">{$vo.goods_number_up}</td>
+                        <td class="delivery_num">{$vo.delivery_num}</td>
+                        <neq name="vo.delivery_status" value="3">
+                        <td><input type="text" value="{$vo.residue}" class="goodsSanhuoGoodsNumber" name="goodsSanhuo[{$vo['og_id']}][goods_number]" style="width:80px"></td>
+                        <else /><td>0</td></neq>
+                        <td>{$vo.delivery_price}</td>
+                        <td>{$vo.goods_price_up}</td>
+                        <td>{$vo.delivery_string}</td>
+                    </tr>
+                    </volist>
+            	</table>
+                <div class="clear"></div>
+            </div>
+            </notempty>
+            <!-- 散货列表结束 -->
+            <!-- 自有珠宝产品列表 -->
+            <notempty name="goodsList['goods']">
+            <div class="info">
+            	<div class="title">珠宝产品:</div>
+            	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+                    <tr class="top">
+                    	<th>选中</th>
+                        <th>产品编号</th>
+                        <th>产品名称</th>
+                        <th>SKU规格/金工石</th>
+                        <th>购买数量</th>
+                        <th>购买价格</th>
+                        <th>已发货数量</th>
+                        <th>现发货数量</th>
+                        <th>现发货金额</th>
+                        <th>状态</th>
+                    </tr>
+                    <volist name="goodsList['goods']" id="vo" mod="2">
+                    <tr class="{$mod?'bg2':'bg1'}">
+                    	<td>
+	                        <neq name="vo.delivery_status" value="3">
+	                        	<input type="checkbox" name="goods[{$vo['og_id']}][og_id]" value="{$vo['og_id']}">
+	                        </neq>
+                        </td>
+                        <td>{$vo['attribute']['goods_sn']}</td>
+                        <td>{$vo['attribute']['goods_name']}</td>
+                        <td>{$vo.4c}</td>
+                        <td>{$vo.goods_number_up}</td>
+                        <td>{$vo.goods_price_up}</td>
+                        <td>{$vo.delivery_num}</td>
+                        <neq name="vo.delivery_status" value="3">
+                        <td><input type="text" value="{$vo.residue}" class="goodsGoodsNumber" name="goods[{$vo['og_id']}][goods_number]" style="width:80px"></td>
+                        <else /><td>0</td></neq>
+                        <td>{$vo.delivery_price}</td>
+                        <td>{$vo.delivery_string}</td>
+                    </tr>
+                    </volist>
+            	</table>
+                <div class="clear"></div>
+            </div>
+            </notempty>
+            <!-- 自有珠宝产品列表结束 -->
+            <!-- 代销货列表 -->
+            <notempty name="goodsList['consignment']">
+            <div class="info">
+            	<div class="title">代销货产品:</div>
+            	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+                    <tr class="top">
+                    	<th width="5%">选中</th>
+                        <th width="10%">产品编号</th>
+                        <th width="15%">产品名称</th>
+                        <th width="10%">购买数量</th>
+                        <th width="8%">购买价格</th>
+                        <th width="10%">已发货数量</th>
+                        <th width="10%">现发货数量</th>
+                        <th width="10%">现发货金额</th>
+                        <th width="8%">状态</th>
+                    </tr>
+                    <volist name="goodsList['consignment']" id="vo" mod="2">
+                    <tr class="{$mod?'bg2':'bg1'}">
+                    	<td>
+	                        <neq name="vo.delivery_status" value="3">
+	                        	<input type="checkbox" name="consignment[{$vo['og_id']}][og_id]" value="{$vo['og_id']}">
+	                        </neq>
+                        </td>
+                        <td>{$vo['attribute']['goods_sn']}</td>
+                        <td>{$vo['attribute']['goods_name']}</td>
+                        <td>{$vo.goods_number_up}</td>
+                        <td>{$vo.goods_price_up}</td>
+                        <td>{$vo.delivery_num}</td>
+                        <neq name="vo.delivery_status" value="3">
+                        <td><input type="text" value="{$vo.residue}" class="consignmentGoodsNumber" name="consignment[{$vo['og_id']}][goods_number]" style="width:80px"></td>
+                        <else /><td>0</td></neq>
+                        <td>{$vo.delivery_price}</td>
+                        <td>{$vo.delivery_string}</td>
+                    </tr>
+                    	<tr>
+                    			<td colspan="10">{$vo.4c}</td>
+                    	</tr>
+                    </volist>
+            	</table>
+                <div class="clear"></div>
+            </div>
+            </notempty>
+
+            <!-- 代销货列表 szzmzb板房 -->
+            <notempty name="goodsList['consignment_szzmzb']">
+            <div class="info">
+                <div class="title">代销货产品szzmzb板房:</div>
+                <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+                    <tr class="top">
+                        <th width="5%">选中</th>
+                        <th width="10%">产品编号</th>
+                        <th width="15%">产品名称</th>
+                        <th width="10%">购买数量</th>
+                        <th width="8%">购买价格</th>
+                        <th width="10%">已发货数量</th>
+                        <th width="10%">现发货数量</th>
+                        <th width="10%">现发货金额</th>
+                        <th width="8%">状态</th>
+                    </tr>
+                    <volist name="goodsList['consignment_szzmzb']" id="vo" mod="2">
+                    <tr class="{$mod?'bg2':'bg1'}">
+                        <td>
+                            <neq name="vo.delivery_status" value="3">
+                                <input type="checkbox" name="consignment_szzmzb[{$vo['og_id']}][og_id]" value="{$vo['og_id']}">
+                            </neq>
+                        </td>
+                        <td>{$vo['attribute']['goods_sn']}</td>
+                        <td>{$vo['attribute']['goods_name']}</td>
+                        <td>{$vo.goods_number_up}</td>
+                        <td>{$vo.goods_price_up}</td>
+                        <td>{$vo.delivery_num}</td>
+                        <neq name="vo.delivery_status" value="3">
+                        <td><input type="text" value="{$vo.residue}" class="consignmentGoodsNumber" name="consignment_szzmzb[{$vo['og_id']}][goods_number]" style="width:80px"></td>
+                        <else /><td>0</td></neq>
+                        <td>{$vo.delivery_price}</td>
+                        <td>{$vo.delivery_string}</td>
+                    </tr>
+                        <tr>
+                                <td colspan="10">{$vo.4c}</td>
+                        </tr>
+                    </volist>
+                </table>
+                <div class="clear"></div>
+            </div>
+            </notempty>
+            <!-- 代销货列表结束 -->
+			
+            <?php if($orderInfo['order_status']==3):?>	
+			<div class="info">
+                <div class="title">发货方式：</div>
+                <input type="radio" name="type" value="1" checked="">送货上门
+				<input type="radio" name="type" value="0">			  第三方物流   
+				<input type="hidden" name="is_delivery" value="1" />			
+			</div>
+			<div id="experss_chose_1" class="page-main edit" >
+					<div style="padding:10px 50px;">
+						<div class="info">
+							<div class="title">配送人：</div>
+							<input type="text" name="name" value="">
+						</div>
+						<div class="info">
+							<div class="title">手机号：</div>
+							<input type="text" name="phone" value="">
+						</div>
+					</div>
+			</div>
+			<div id="experss_chose_0" class="page-main edit" style="display:none;">
+					<div style="padding:10px 50px;">
+						<div class="info">
+							<div class="title">快递公司：</div>
+							<select name="company">
+								<option selected="" value="">请选择</option>
+								<?php if ($expert_data == true): ?>
+									<?php foreach ($expert_data as $k=>$v):?>
+											<option value="<?php echo ($v['name'])?>" ><?php echo ($v['name'])?></option>
+									<?php endforeach;?>
+								<?php endif; ?> 
+							</select>
+						</div>
+						<div class="info">
+							<div class="title">运单号：</div>
+							<input type="text" name="number" value="">
+						</div>
+					</div>
+			</div>
+			<?php else: ?>
+            <div class="info">
+            	<div class="title">物流信息:</div>
+            	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+					<?php if($expert_order_data_1 == true):?>
+						<?php foreach ($expert_order_data_1 as $k=>$v):?>
+										<?php if($k == '0'):?>
+											<tr class="top">
+												<th width="10%">发货方式</th>
+												<th width="15%">配送人  </th>
+												<th width="10%">手机号  </th>
+												<th width="10%">发货时间</th>
+												<th width="10%">状态	</th>																
+											</tr>
+										<?php endif; ?>
+										<tr class="{$mod?'bg2':'bg1'}">
+											<td>送货上门											</td>
+											<td><?php echo ($v['name']); ?>							</td>
+											<td><?php echo ($v['phone']);?> 						</td >
+											<td><?php echo (date("Y-m-d H:i:s", $v['ctime']));?> 	</td>
+											<td><?php echo ($v['status']=='1' ? '开启' : '关闭');?> </td>														
+										</tr>
+						<?php endforeach;?>
+					<?php endif; ?>
+
+					<?php if($expert_order_data_0 == true):?>
+						<?php foreach ($expert_order_data_0 as $k=>$v):?>
+								<?php if($k == '0'):?>								
+									<tr class="top">
+										<th width="10%">发货方式</th>
+										<th width="15%">快递公司</th>
+										<th width="10%">运单号  </th>												
+										<th width="10%">发货时间</th>
+										<th width="10%">状态	</th>															
+									</tr>
+								<?php endif; ?>
+								<tr class="{$mod?'bg2':'bg1'}">
+									<td>第三方物流											</td>
+									<td><?php echo ($v['company']);?>						</td>
+									<td><?php echo ($v['number']); ?>						</td>
+									<td><?php echo (date("Y-m-d H:i:s", $v['ctime']));?> 	</td>
+									<td><?php echo ($v['status']=='1' ? '开启' : '关闭');?> </td>														
+								</tr>	
+						<?php endforeach;?>								
+					<?php endif; ?> 					
+            	</table>
+                <div class="clear"></div>
+            </div>
+			<?php endif;?>
+			
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <eq name="orderInfo.order_status" value="3">
+                	<input type="submit" class="button fl" value="确认发货" name="orderDelivery">
+                	<!-- <input type="submit" class="button fl" value="确认退货" name="orderReturn" /> -->
+                </eq>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+</body>
+
+<script>
+	change_type($("input[name='type']:checked").val());
+	$("input:radio").change(function(){
+		change_type($("input[name='type']:checked").val());
+	});
+
+	function change_type(num){
+		if(num=='1'){
+			$("#experss_chose_1").show(); 
+			$("#experss_chose_0").hide();
+			$("#experss_chose_0 input").val("");
+			$("#experss_chose_0 select").val("");
+		}else{
+			$("#experss_chose_0").show();
+			$("#experss_chose_1").hide();
+			$("#experss_chose_1 input").val(""); 			
+		}
+	} 
+</script>
+
+</html>

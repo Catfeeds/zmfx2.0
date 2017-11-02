@@ -1,0 +1,174 @@
+
+<include file="Public:header" />
+<script type="text/javascript" src="/Public/layer/layer.js"></script>
+<body class="white">
+    <section class="online-booking">
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onClick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>在线预约</h2>
+            </div>
+        </header>
+
+        <!-- 时间选择 -->
+        <link rel="stylesheet" type="text/css" href="__CSS__/style-date.css" />
+        <script src="__JS__/date.js"></script>
+        <script src="__JS__/iscroll.js"></script>
+        <!-- 时间选择 end -->
+
+        <section class="wrapper">
+			<form class="form-box" id="myform" action="" method="post">
+            <div class="online-booking-box">
+                <ul>
+                    <li class="item clearfix">
+                        <div class="provinces">
+                            <span id="provinces" class="cont">请选择省份</span>
+                            <span><img src="__IMG__/down_icon.png" width="15" alt=""></span>
+                        </div>
+                        <div class="city">
+                            <span id="city" class="cont">请选择城市</span>
+                            <span><img src="__IMG__/down_icon.png" width="15" alt=""></span>
+                        </div>
+                        <div class="county">
+                            <span id="county" class="cont">请选择区/县</span>
+                            <span><img src="__IMG__/down_icon.png" width="15" alt=""></span>
+                        </div>
+                    </li>
+
+                    <li class="item">
+                        <div id="experience-stores" class="stores-input">请选择体验店</div>
+                    </li>
+
+                    <li class="item">
+                        <input type="text"  id="beginTime" name="beginTime" class="stores-input" placeholder="年/月/日">
+                        <div id="datePlugin"></div>
+                    </li>
+
+                    <li class="item">
+                        <input type="text" id="uname" name="uname" class="stores-input" placeholder="请输入您的名字">
+                    </li>
+
+                    <li class="item">
+                        <input type="text" id="phone" name="phone" class="stores-input" placeholder="请输入您的手机号">
+                    </li>
+
+                    <li class="item">
+                        <button type="button" class="confirm-btn" id="confirmSubmit">确定</button>
+                    </li>
+                </ul>
+            </div>
+			</form>
+        </section>
+    </section>
+
+    <script>
+        //省
+        var arr1 = [{$provinceArr}];
+        var mobileSelect1 = new MobileSelect({
+			trigger: '#provinces',
+			title: '请选择省份',
+			wheels: [
+						{data: arr1}
+					],
+			position:[0], //初始化定位
+			callback: function(indexArr, data1){
+				var region_name = data1.toString();
+				//data1为返回数据
+				$.ajax({
+					url: "{:U('/Store/loadcity')}",
+					type: 'post',
+					data: {'region_name':region_name,'region_type':2},
+					success: function (result) {
+						$("#city").html("请选择城市");
+						$("#county").html("请选择区/县");
+						rarr1 = result.data;
+						mobileSelect2.updateWheel(0, rarr1);
+					}
+				});
+			}	
+        });
+
+        //市
+        var arr2 = ['请选择城市'];
+        var mobileSelect2 = new MobileSelect({
+			trigger: '#city',
+			title: '请选择城市',
+			wheels: [
+						{data: arr2}
+					],
+			position:[0], //初始化定位
+			callback: function(indexArr, data1){
+				var region_name = data1.toString();
+				//indexArr为所得数组的下标
+				$.ajax({
+					url: "{:U('/Store/loadcity')}",
+					type: 'post',
+					data: {'region_name':region_name,'region_type':3},
+					success: function (result) {
+						$("#county").html("请选择区/县");
+						rarr2 = result.data;
+						mobileSelect3.updateWheel(0, rarr2);	
+					}
+				});
+			}	
+        });
+
+        //区
+        var arr3 = ['请选择区/县'];
+        var mobileSelect3 = new MobileSelect({
+        trigger: '#county',
+        title: '请选择区/县',
+        wheels: [
+                    {data: arr3}
+                ],
+        position:[0] //初始化定位
+        });
+
+        //体验店
+        var arr4 = [{$storeArr}];
+        var mobileSelect1 = new MobileSelect({
+        trigger: '#experience-stores',
+        title: '请选择体验店',
+        wheels: [
+                    {data: arr4}
+                ],
+        position:[0] //初始化定位
+        });
+
+        $(function(){
+            //时间选择
+        	$('#beginTime').date();
+        });
+
+		$(document).ready(function () {
+			// 确定预约
+			$('#confirmSubmit').click(function () {
+				var phone	= parseInt($('#phone').val());
+				var name	= $('#uname').val().toString();
+				var store_id	= parseInt($('#store_id').val());
+				var time= $('#beginTime').val().toString();
+				$.ajax({
+					url: "{:U('/Store/online')}",
+					type: 'post',
+					dataType: 'json',
+					data: {'phone':phone,'name':name,'store_id':store_id,'time':time},
+					success: function (result) {
+						if (result.success==true) {
+							layer.msg(result.msg,{
+								shift:6,
+							});
+							setTimeout('window.location.href="'+result.url+'"',800);
+						}else{
+							layer.msg(result.msg,{
+								shift:6,
+							});
+						}
+					}
+				});
+			});
+		})
+    </script>
+</body>
+</html>

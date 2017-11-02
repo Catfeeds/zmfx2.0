@@ -1,0 +1,43 @@
+<script>
+	$(document).ready(function(){
+		$('.item').has('.active').addClass('hover');
+	});
+</script>
+<div id="catMenu">
+	<div class="m">
+		<div class="mt"><h2>所有产品分类</h2></div>
+		<if condition="$categorys">
+		<div class="mc">
+			<volist name="categorys" key="key" id="vo">
+				<if condition="$cat_show eq 1">
+					<div class="item <if condition="$vo['category_id'] eq $cid">hover</if>"><h3> <a href="{:U('/Home/Goods/goodsCat/cid/'.$vo['category_id'])}">{$vo.name_alias}</a></h3>
+				<else />
+					<div class="item <if condition="$vo['category_id'] eq $gcid">hover</if>"><h3> <a href="{:U('/Home/Goods/goodsCategory/gcid/'.$vo['category_id'])}">{$vo.name_alias}</a></h3>
+				</if>
+				<if condition="$vo['sub']">
+				<ul>
+					<volist name="vo['sub']" id="v">
+						<if condition="$cat_show eq 1">
+							<li <if condition="$v['category_id'] eq $cid"> class='active'</if>><a href="{:U('/Home/Goods/goodsCat/cid/'.$v['category_id'])}">{$v.name_alias}</a></li>
+						<else />
+							<li <if condition="$v['category_id'] eq $gcid"> class='active'</if>><a href="{:U('/Home/Goods/goodsCategory/gcid/'.$v['category_id'])}">{$v.name_alias}</a></li>
+						</if>
+					</volist>
+				</ul>
+				</if>
+			</div>
+			</volist>
+		</div>
+		</if>
+	</div>
+</div>
+<if condition="$cid lt 1 and $gcid lt 1">
+	<script>
+		$(document).ready(function(){
+			if(!$('#catMenu').hasClass('.hover')){
+				$('#catMenu .item:first-child').addClass('hover');
+			}
+		});
+	</script>
+</if>
+<if condition="array_search('catMenu',$template_modle) eq true "></if>

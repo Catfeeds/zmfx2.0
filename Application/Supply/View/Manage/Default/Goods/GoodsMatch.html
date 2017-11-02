@@ -1,0 +1,66 @@
+<div class="luozuanTiao">
+    <div class="luozuanTile">{$L['text_product_material']}：</div>
+    <div class="luozuanContent">
+        <volist name="materialList" id="vo">
+            <label>
+                <input type="checkbox" value="{$vo.material_id}"/>
+                <span>{$vo.material_name}</span>
+            </label>
+        </volist>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="luozuanTiao">
+    <div class="luozuanTile">{$L['text_side_stone']}：</div>
+    <div class="luozuanContent">
+        <div class="luozuan_match2">
+            <volist name="material.deputystone" id="vo">
+                <div class="tiao">
+                    <input type="text" value="{$vo.deputystone_name}" style="width: 120px;" name="material[deputystone][{$vo.gad_id}][deputystone_name]" placeholder="{$L['text_name']}">
+                    <input type="text" value="{$vo.deputystone_price}" name="material[deputystone][{$vo.gad_id}][deputystone_price]" placeholder="{$L['price']}">
+                    <button type="button" class="luozuan_button del">{$L['delete']}</button>
+                </div>
+            </volist>
+        </div>
+        <button type="button" class="luozuan_button add2">{$L['text_add_match']}{$L['text_side_stone']}</button>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="luozuanTiao" id="material">
+    <volist name="material.list" id="vo">
+        <div class="material" id="material_{$vo.material_id}">
+            <div class="materialTitle">{$vo.material_name}：</div>
+            <div class="materialContent">
+                <div class="materialTop">
+                    <span>{$L['text_expected_weight']}：</span>
+                    <input type="text" style="width: 120px;" value="{$vo.weights_name}" name="material[info][{$vo.material_id}][weights_name]" placeholder="(({$L['unit']}：G)" />
+                    <span>{$L['text_product_ioss']}：</span>
+                    <input type="text" style="width: 80px;" value="{$vo.loss_name}" name="material[info][{$vo.material_id}][loss_name]" placeholder="(({$L['unit']}：%)" />
+                    <span>{$L['text_basic_fee']}：</span>
+                    <input type="text" style="width: 120px;" value="{$vo.basic_cost}" name="material[info][{$vo.material_id}][basic_cost]" placeholder="({$L['unit']}：￥)" />
+                </div>
+                <div class="materialBottom">
+                    <div class="materialBottomTitle">{$L['text_match_diamond']}：</div>
+                    <div class="luozuan_match">
+                        <volist name="vo.sub" id="io">
+                            <div class="tiao">
+                                <select name="material[luozuan][{$io.material_id}][{$io.gal_id}][shape_id]" class="luozuan_shape">
+                                    <option value="0">{$L['text_match_shape']}</option>
+                                    <volist name="goodsLuozuanShape" id="so">
+                                        <option value="{$so.shape_id}"<eq name="io['shape_id']" value="$so['shape_id']">selected="selected"</eq>>{$so.shape_name}</option>
+                                    </volist>
+                                </select>
+                                <input type="text" value="{$io.weights_name}" name="material[luozuan][{$io.material_id}][{$io.gal_id}][weights_name]" placeholder="{$L['unit']}CT">
+                                <input type="text" value="{$io.price}" name="material[luozuan][{$io.material_id}][{$io.gal_id}][price]" placeholder="{$L['text_product_fee']}">
+                                <button type="button" class="luozuan_button del">{$L['detele']}</button>
+                            </div>
+                        </volist>
+                    </div>
+                    <button type="button" class="luozuan_button add" data-id="{$vo.material_id}">{$L['text_add_match']}</button>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </volist>
+</div>

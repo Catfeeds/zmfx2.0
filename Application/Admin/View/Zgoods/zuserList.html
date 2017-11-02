@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>用户信息列表</title>
+<script type="text/javascript" src="__JS__/disGoods.js"></script>
+	<style>
+		.opention{
+			width:100%;
+			height:25px;
+			margin-top:25px;
+			line-height:25px;
+			font-size:12px;
+		}
+		.opention .cut{
+			border: 1px solid;
+			cursor: pointer;
+			float: left;
+			margin: 0 20px;
+			text-align: center;
+			width: 8%;
+			background:#E1E1E1;
+			border:1px solid #ADADAD;
+		}
+		.opention .cut a{
+			color:#000;
+		}
+		.opention .cut:hover{
+			background:#E1FBFF;
+		}
+		.chongzhi{
+			height: 20px !important;
+			line-height: 20px !important;
+			width:35px;
+			text-align:center;
+		}
+
+
+	</style>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：用户信息列表</h3>
+		<ul>
+            <volist name="menuList[104]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+    </div>
+	<div class="filter">
+	
+	<br />
+	<form action="" method="get">
+		<input type="hidden" name='p' value='1'/>
+		<div class="fl">用户名:&nbsp;</div>
+		<input type='text' name='username' value="<?php echo $_GET['username'];?>">
+		<div class="fl">用户真实姓名:&nbsp;</div>
+		<input type='text' name='realname' value="<?php echo $_GET['realname'];?>">
+		<div class="f1" style="float:left;">
+			<input class="button" type="submit" value="查询" />
+		</div>	
+	</form>
+	
+	</div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse; width:50%">
+		<br />
+        <tr class="top">	
+            <th width="5%">序号</th>
+            <th width="15%">用户名</th>			
+            <th width="9%">用户真实姓名</th>
+            <th width="9%">是否停用</th>
+        </tr>
+ 
+ 
+        <volist name="userlist" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+            <td>{$vo.uid}</td>
+            <td>{$vo.username}</td>
+            <td>{$vo.realname}</td>
+            <td>
+				<input type="radio" class="ugroup" name="ugroup_{$vo.uid}" value="1" <if condition="$vo.ugroup eq 1">checked="checked"</if> >是	&nbsp;
+				<input type="radio" class="ugroup" name="ugroup_{$vo.uid}" value="0" <if condition="$vo.ugroup eq 0">checked="checked"</if> >否
+			</td>
+        </tr>
+        </volist>
+
+    </table>
+	<div class="opention">
+		<a class="cut" href="http://zlfyun.btbzm.com/Home/Zlf/regUser.html">同步用户信息</a>
+	</div>
+    <div class="page">{$page}</div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		$(".ugroup").click(function(){
+			var nowUgroup = $(this).val();
+			var nowUid	  = parseInt($(this).attr("name").replace('ugroup_',''));
+			$.ajax({
+				url: '/Admin/Zgoods/updUserUgroup',
+				type: 'POST',
+				dataType: 'json',
+				data: {'uid':nowUid,'ugroup':nowUgroup},
+				success: function(msg){
+					if(msg.success==true){ }else{ alert("修改失败！"); }
+				}
+			});		
+		});
+	});
+</script>
+</html>

@@ -1,0 +1,160 @@
+<include file="Public:header" />
+
+<body>
+    <section class="news">
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>珠宝资讯</h2>
+            </div>
+        </header>
+        <section class="wrapper">
+            <div id="news-tab">
+        		<div class="swiper-wrapper">
+						<?php if ($publicdataList): ?>
+							<?php foreach($publicdataList as $key=>$val):?>
+									<div class="swiper-slide <?php if($key==0){ echo 'active';};?>"  attr_id="<?php echo !empty($val['cid']) ? $val['cid'] : ' ';?>"><?php echo !empty($val['catname']) ? $val['catname'] : ' ';?></div>
+							<?php endforeach;?>
+      					<?php endif; ?>
+        		</div>
+        	</div>
+			
+            <div id="tabs-container" class="swiper-container">
+        		<div class="swiper-wrapper">
+				
+						<?php if ($publicdataList): ?>
+							<?php foreach($publicdataList as $key=>$val):?>
+								<div class="swiper-slide">
+									<div class="content-slide">
+										<ul class="news-list  NewsList<?php echo !empty($val['cid']) ? $val['cid'] : ' ';?>">
+											
+										</ul>
+									</div>
+								</div>
+							<?php endforeach;?>
+      					<?php endif; ?>
+				
+        		</div>
+        	</div>
+            <div class="index-bottom">
+<include file="Public:footer" />
+</div>
+
+<!-- 返回顶部 start -->
+<a href="javascript:;" class="back-top" style="display: none;">
+    <img src="__IMG__/back_top.png" alt="">
+</a>
+
+<script>
+    $(function(){
+        //返回顶部
+        $(window).scroll(function(){
+              if($(document).scrollTop() + $(window).height() >= $(document).height()){
+                 $('.back-top').fadeIn();
+              }else{
+                 $('.back-top').hide();
+              }
+        });
+        $('.back-top').bind('click', function(){
+            $('body,html').animate({scrollTop : 0},400);
+        });
+    });
+</script>
+<!-- 返回顶部 end -->
+
+
+        </section>
+    </section>
+
+    <script>
+        //新闻标题滑动
+        var mySwiper1 = new Swiper('#news-tab', {
+            freeMode: true,
+            slidesPerView: 'auto',
+			onClick: function(swiper){
+				//BringAjax.IntendData.ChangeHtml 				= $("#tabs-container .swiper-wrapper .swiper-slide").eq($("#news-tab .swiper-wrapper .active").index()).find('ul');
+				//BringAjax.Send();
+			}
+        });
+
+ 
+		
+		
+		
+        //新闻列表滑动
+        var tabsSwiper = new Swiper('#tabs-container', {
+			speed: 500,
+            autoHeight: true,
+			onSlideChangeStart: function() {
+				$("#news-tab .active").removeClass('active');
+				$("#news-tab .swiper-slide").eq(tabsSwiper.activeIndex).addClass('active');
+			}
+		});
+
+        $("#news-tab .swiper-slide").on('touchstart mousedown', function(e) {
+			e.preventDefault()
+			$("#news-tab .active").removeClass('active')
+			$(this).addClass('active')
+			tabsSwiper.slideTo($(this).index());
+			
+			
+			BringAjax.Interactive[0].page 							= 0;
+			BringAjax.Interactive[0].page_len 						= 30;
+			BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey]  = '';
+			ReCondition.cid                                 		= $(this).attr('attr_id');
+			BringAjax.IntendData.ChangeHtml 						= '.NewsList'+$(this).attr('attr_id');
+			BringAjax.Send();
+			
+ 
+			
+		})
+		$("#news-tab .swiper-slide").click(function(e) {
+			e.preventDefault()
+		})
+		
+		
+
+			var ArCondition = {
+				'cid'		: '<?php echo $publicdataList[0]['cid']?>',
+				'page'		: '0',
+				'page_len'	: '30',
+			}
+
+			
+			
+			BringAjax.IntendData.ChangeHtml 				= '.NewsList<?php echo $publicdataList[0]['cid']?>';
+			BringAjax.IntendData.NullHtml					= '.empty-msg';
+			EasyTransition(ArCondition,function(){
+					$.each(BringAjax.CacheData[BringAjax.IntendData.CacheHtmlKey].data ,function(k ,v) {
+						if(v){
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<li>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<a href="/Article/info/aid/'+v.aid+'">';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="news-item-left fl">';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += v.title;
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="news-item-right fr">';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] +=  CommonFunction.Time.TimeStamp2(v.addtime);
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="clearfix"></div>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</a>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</li>';
+
+						}
+					})
+			});	
+					
+		
+		
+			$(window).scroll(function(){ 
+				 if($(document).scrollTop() + $(window).height() >= $(document).height()){  
+					$('.loading').show();
+					BringAjax.Interactive[0].page +=1 ;
+					BringAjax.Interactive[0].page_len =30;
+					BringAjax.Send();  
+				  }
+			});
+    </script>
+</body>
+</html>

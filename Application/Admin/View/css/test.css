@@ -1,0 +1,42 @@
+*{ margin: o; border: none;  padding: 0; font-family: "微软雅黑"; font-size: 12px;}
+.fl{ float: left;}
+.fr{ float: right;}
+body{ background: #EEEAE9; color: #000000;}
+table{ margin: 0px auto 20px; width: 800px; background: #FFFFFF;}
+table{border-collapse:collapse;border: 1px solid #888888 ;border-right: none; border-bottom: none;}
+td,th{ border-bottom: 1px solid #888888; border-right: 1px solid #888888; text-align: center; line-height: 30px;}
+th{ background: #d9d9d9;}
+input[type="checkbox"]{ visibility: hidden; margin: 0;}
+.title{ width: 800px; height: 30px; margin: 20px auto 10px; text-align: center; line-height: 30px; font-size: 18px;}
+.action{ margin: 0 auto; width: 800px;}
+.action input{ border: 1px solid #888888;font-size: 13px;height: 50px; width:50px; background: #c9c9c9; border-radius: 100%;}
+.action input:hover{ background: #d9d9d9; font-weight: bold; font-size: 15px;}
+.checkboxFour {width: 20px;height: 20px;background: #ddd;margin: 3px 3px 3px 12px;border-radius: 100%;}
+.checkboxFour{position: relative;-webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);}
+.checkboxFour{-moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);}
+.checkboxFour label {display: block;width: 12px;height: 12px;border-radius: 100px;background: #EEEAE9;}
+.checkboxFour label {-webkit-transition: all .5s ease;-moz-transition: all .5s ease;}
+.checkboxFour label {-o-transition: all .5s ease;-ms-transition: all .5s ease;transition: all .5s ease;}
+.checkboxFour label {cursor: pointer;position: absolute;top: 4px;left: 4px;z-index: 1;}
+.checkboxFour label {-webkit-box-shadow:inset 0px 1px 3px rgba(0,0,0,0.5);-moz-box-shadow:inset 0px 1px 3px rgba(0,0,0,0.5);}
+.checkboxFour label {box-shadow:inset 0px 1px 3px rgba(0,0,0,0.5);}
+.checkboxFour input[type=checkbox]:checked + label {background: #26ca28;}
+.checkboxFour input[type=checkbox]:hover + label{ background: #26ca28;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

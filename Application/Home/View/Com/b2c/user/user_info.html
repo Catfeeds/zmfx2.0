@@ -1,0 +1,125 @@
+<script>
+$(document).ready(function(){
+	laydate.skin('molv');  //加载皮肤，参数lib为皮肤名 
+	laydate({
+		elem: '#birthday',
+		max: laydate.now(),
+		start: '2000-01-01',    //开始日期
+	});
+})
+</script>
+
+<style>
+#laydate_box * {
+	-webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+</style>
+<!-- user -->
+
+<div class="userdata-box">
+	<!-- 修改个人信息的form -->
+	<div class="row" style="padding: 45px; padding-left: 100px;">
+		<form id="userInfo" name="formMsg" action="{:U('Home/User/updateUserInfo')}" method="post" onsubmit="return false;">
+			<p><strong>账 &nbsp;&nbsp;&nbsp;&nbsp; 号：</strong> <span>{$userInfo.username}</span></p>
+			<p>
+				<strong>出生日期：</strong>
+				<span>									
+				<input class="laydate-icon" type="text" name="birthday"  placeholder="出生日期" id="birthday" value="{$userInfo['birthday']|date='Y-m-d',###}">
+				</span>
+			</p>
+			<p>
+				<strong>姓 &nbsp;&nbsp;&nbsp;&nbsp; 别：</strong> 
+				<span>
+					<input type="radio" name="sex" value="0" <if condition="$userInfo['sex'] eq 0 ">checked="checked"</if> />{$Think.lang.L9025}&nbsp;&nbsp;
+					<input type="radio" name="sex" value="1" <if condition="$userInfo['sex'] eq 1 ">checked="checked" </if> />{$Think.lang.L9026}&nbsp;&nbsp;
+				</span>
+			</p>
+			<p>
+				<strong><span>电子邮件：</span></strong> <input id="email" value="{$userInfo['email']}" name="email" type="text">
+			</p>
+			<p><strong>手 &nbsp;&nbsp;&nbsp;&nbsp; 机：</strong><span><input type="text" id="mobile_phone" name="phone" value="{$userInfo.phone}" /></span></p>
+			<p><strong>Q &nbsp;&nbsp;&nbsp;&nbsp; Q:</strong><span><input id="qq" type="text" name="qq" value="{$userInfo.qq}" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ID="Text2" ></span></p>
+			<p><strong>真实姓名：</strong><span><input name="realname" id="realname" type="text" class="input" value="{$userInfo.realname}"/></span></p>
+			<p><strong>职&nbsp;&nbsp;&nbsp;&nbsp;业：</strong><span><input name="job" id="job" type="text" class="input" value="{$userInfo.job}"/></td></span></p>
+			<p><strong>公司名称：</strong><span><input name="company_name" id="company_name" type="text" class="input" value="{$userInfo.company_name}"/></span></p>
+			<p><strong>企业法人: </strong><span><input name="legal" type="text" id="legal" class="input" value="{$userInfo.legal}"/></span></p>
+			<input type="hidden" name="act" value="act_edit_profile" >
+			<p><button class="btn btn-default userdata-sub">保存</button></p>
+		</form>
+	</div>
+</div>
+				
+<!-- user end //-->
+<script>
+//验证初始化
+$('#userInfo').validator({ 
+    theme: 'simple_right',
+    focusCleanup: true,
+    stopOnError:false,
+    //debug: true,
+    timely: 2,
+    //自定义规则（PS：建议尽量在全局配置中定义规则，统一管理）
+    rules: {
+        username: [/^[a-zA-Z0-9]+$/, '用户名无效! 仅支持字母与数字。'],
+        phone: [/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/,'手机号码不正确'],
+        email:[/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})$/, '邮箱格式不正确'],
+        remote: 
+        	function(element){
+	            return $.ajax({
+	                url: '/Home/Public/checkusername',
+	                type: 'post',
+	                data: element.name +'='+ element.value,
+	                dataType: 'json',
+	                success: function(d){  
+	                    window.console && console.log(d);
+	                }
+	            });
+		},
+		qq:[/^[0-9]+(.[0-9]{3,15})?$/,'QQ号不正确']
+    }, 
+  
+    fields: {   
+        "email": {
+            rule: "required;remote;",
+            tip: "输入你的用户名",
+            ok: "",
+            msg: {required: "请输入用户名",remote:"用户名已存在"}
+        },
+         "email": {
+            rule: "required;email",
+            tip: "输入你的邮箱",
+            ok: "",
+            msg: {required: "请输入邮箱地址!"}
+        },
+        "phone": {
+            rule: "required;phone",
+            tip: "输入你的手机号码。",
+            ok: "",
+            msg: {required: "请输入手机号!"}
+        }
+    },
+    //验证成功
+    valid: function(form) {
+        $.ajax({
+            url: '/Home/User/updateUserInfo',
+            type: 'POST',
+            data: $(form).serialize(),
+            success: function(d){
+				if(d.success == 'true'){
+					layer.msg(d.msg,{
+						shift :6,
+						icon: 6
+					});
+				}else{
+					layer.msg(d.msg,{
+						shift :6,
+						icon: 5
+					});
+				}
+            }
+        });
+    }
+});
+</script>

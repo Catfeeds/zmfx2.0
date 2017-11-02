@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{:C("seo_title")}</title>
+	<meta http-equiv="Expires" content="0">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-control" content="no-cache">
+	<meta http-equiv="Cache" content="no-cache">
+	<meta name="Keywords" content="{:C('seo_keywords')}" />
+	<meta name="Description" content="{:C('seo_description')}" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/lrtk.css">
+	<link rel="stylesheet" href="__CSS__/animate.css">
+	<link rel="stylesheet" href="__CSS__/style.css">
+
+	<script type="text/javascript" src="__PUBLIC__/Js/Jquery/Jquery.Cookie.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Js/laydate/laydate.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Js/jquery.validator.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/layer/layer.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Js/yz.js"></script>
+  <style>
+    /*.navbar-default .navbar-nav>.open>a, 
+    .navbar-default .navbar-nav>.open>a:focus, 
+    .navbar-default .navbar-nav>.open>a:hover { background: #434343 !important;} */
+    {$css_zidingyi}
+  </style>
+</head>
+<body class="">
+	<!-- header -->
+	<div class="header">
+		<div class="container">
+			<div class="shortcut hidden-xs">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-6 col-md-6">
+						<p class="text-left hi"><span class="hidden-xs">您好，欢迎来到{:C('site_name')} </span>
+							<if condition="$Think.session.web.uid eq ''">
+								[<a href="{:U('Home/Public/login')}" style="color: #A68F7D;" target="_blank">登录</a>] 
+								[<a href="{:U('Home/Public/regist')}" style="color: #A68F7D;" target="_blank">注册</a>]
+							<else/>
+								<a href="{:U('/Home/User/index')}" style="color: #A68F7D;">[{$Think.session.web.username}]</a>
+								<a href="javascript:void(0)" onClick="loginout();">退出</a>
+							</if>
+						</p>
+						</div>
+						<div class="col-sm-6 col-md-6">
+							<div class="shortcut-right">
+								<ul class="list-inline text-right">
+									<li class=""><a href="{:U('/Home/Order/orderCart')}" target="_blank">购物车(<span class="cat-c">{$cartNumber}件</span>) <i class="glyphicon glyphicon-shopping-cart"></i> </a></li>
+									<li class="hidden-xs">|</li>
+									<li class=""><a href="{:U('/Home/User/olist')}" target="_blank"> 我的订单 <i class="glyphicon glyphicon-list-alt"></i></a></li>
+									<li class="hidden-xs">|</li>
+									<li class="hidden-xs"><a href="{:U('/Home/Article/help')}" target="_blank">帮助中心</a></li>
+								</ul>   
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- header end //-->
+
+	<div class="cart">
+		<div class="steps">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h2 style="margin-top: 8px;"><img src="__PUBLIC__/{:C('web_logo')}" alt="" style="max-width: 150px;"> &nbsp;收银台</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<script>
+// 用户退出 --> ken
+function loginout() {
+    $.ajax({
+        url: '/Home/Public/loginout',
+        type: 'get',
+        dataType: 'json',
+        success: function (result) {
+            if (result.success) {
+                layer.msg(result.msg,{
+					shift:6,
+				});
+				delCookie('password');
+				delCookie('autologin');
+				setTimeout(function(){
+					window.location.href="/Home/Public/login.html";
+				},1500);
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+}
+</script>

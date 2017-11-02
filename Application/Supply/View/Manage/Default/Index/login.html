@@ -1,0 +1,301 @@
+<extend name="Manage:Default:Index:base" />
+<block name="title">{$L['login_title']}</block>
+<block name="desc">{$L['login_description']}</block>
+<block name="body_class">login</block>
+<block name="my_css">
+    <style>
+        .registr{
+            background:none;
+        }
+        .dropdown-list .new{
+            display: block;
+            margin: 0;
+            float: none;
+            background: none;
+            padding: 15px;
+        }
+        .dropdown-list .new a{
+            color: #333;
+            padding: 0;
+            opacity: 1;
+            display: block;
+        }
+        .footer{
+            clear: both;
+            position: absolute;
+            bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+    </style>
+</block>
+<block name="body">
+
+<!--[if IE 7]> 
+<style>
+    body .form-control { width: 80%;}
+    body .regist-input input[type="text"] { float: left;}
+    body .but_verification_code img { width: 100%; height: 100%;}
+    body .btn-block { padding: 3px 12px;}
+    
+</style>
+<![endif]-->
+
+<!--[if IE]> 
+<style>
+    body .sign-title { font-size: 16px;}
+</style>
+<![endif]-->
+
+	<div class="registr">
+        <div class="dropdown pull-right">
+            <a href="javascript:void(0);" class="btn btn-default dropdown-toggle info-number" data-toggle="dropdown">
+                {$nowlang}
+                <i class="fa fa-chevron-down"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-head pull-right">
+                <ul class="dropdown-list normal-list">
+                    <li class="new"><a href="javascript:void(0);" onclick="setlang('zh-cn')">{$L['text_zh-cn']}</a></li>
+                    <li class="new"><a href="javascript:void(0);" onclick="setlang('zh-tw')">{$L['text_zh-tw']}</a></li>
+                    <li class="new"><a href="javascript:void(0);" onclick="setlang('en-us')">{$L['text_en-us']}</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container"></div>
+    </div>
+    <div class="container">
+        <form class="form-signin" action="index.html" id="myTab">
+            <div id="login-tab" class="form-signin-heading text-center">
+                <h1 class="sign-title">{$L['sign-title']}</h1>
+                <a href="#login" class="active" data-toggle="tab">{$L['tab_login']}</a>
+                <a href="#register" data-toggle="tab">{$L['tab_register']}</a>
+            </div>
+            <hr/>
+            <!--登录-->
+            <div  id="myTabContent" class="tab-content">
+                <div class="login-wrap tab-pane active" id="login">
+                    <label class="iconic-input">
+                        <i class="fa icon-login"></i>
+                        <input type="text" name="username" class="form-control" placeholder="{$L['entry_account_name']}" autofocus>
+                        <!-- <a href="#" class="clear">X</a> -->
+                    </label>
+                    <label class="iconic-input">
+                        <i class="fa icon-key"></i>
+                        <input type="password" name="password" class="form-control" placeholder="{$L['entry_password']}">
+                        <!-- <a href="#" class="clear">X</a> -->
+                    </label>
+					
+					<if condition="$_SESSION['login']['stutas'] egt 3 ">
+                        <label class="regist-input">
+                            <input type="text" name="verification_code3" style="width: 162px" placeholder="{$L['entry_verification_code']}">
+                            <button class="but_verification_code" style="width: 80px;height:36px;padding: 0">
+                                <img id='ve' src="{:U('Supply/Index/Verify')}" style="width:inherit;height:inherit;">
+                            </button>
+                        </label>
+					</if>
+                    <label class="remember">
+                        <input type="checkbox" name="keep_password" id="keep_password" value="1" >{$L['entry_keep_password']}
+                    </label>
+                    <label class="notice">
+                    </label>
+                    <button type="button" id="login_button" class="btn btn-lg btn-login btn-block" data-loading-text="...">{$L['btn_sign_in_submit']}</button>
+                    <div class="regist">
+                        <a href="{:U('Supply/Index/reset_one')}">
+                            {$L['a_find']}
+                        </a>
+                    </div>
+                </div>
+                <!--注册-->
+                <div class="login-wrap tab-pane" id="register">
+                    <label class="iconic-input">
+                        <i class="fa icon-login"></i>
+                        <input type="text" name="username" class="form-control" placeholder="{$L['entry_account_name']}" autofocus>
+                    </label>
+                    <label class="iconic-input">
+                        <i class="fa icon-key"></i>
+                        <input type="password" name="password" class="form-control" placeholder="{$L['entry_password']}">
+                        <a class="password-show"><img src="__IMG__/btnImg.png" alt=""></a>
+                    </label>
+                    <label class="regist-input">
+                        <input type="text" name="verification_code" style="width: 162px;" placeholder="{$L['entry_verification_code']}">
+                        <button class="but_verification_code" style="width: 80px;height:36px;padding: 0">
+                            <img id= 'ves' src="{:U('Supply/Index/Verify')}" style="width:inherit;height:inherit;">
+                        </button>
+                    </label>
+                    <label class="remember">
+                        <input type="checkbox" id="terms_of_service" value="1">{$L['entry_terms_of_service']}
+                    </label>
+                    <label class="notice"></label>
+                    <button type="button" id="register_button" class="btn btn-lg btn-block" data-loading-text="{$L['text_data_submiting']}">{$L['btn_register_submit']}</button>
+                    <div class="regist-lo">
+                        {$L['text_has_account']}
+                        <a href="#login" data-toggle="tab">
+                            {$L['tab_login2']}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--底部-->
+        
+    </div>
+    <div class="footer">
+        <p>{$L['copyright']} <br /> {$L['copyright_information']}</p>
+    </div>
+    
+</block>
+<block name="my_js">
+<script type="text/javascript" src="/Public/Js/Jquery/Jquery.Cookie.js"></script>
+<script>
+	if($.cookie('username')&& $.cookie('password')){
+        $('#login input[name="username"]').val(getEncodeCookie('username'));
+        $('#login input[name="password"]').val(getEncodeCookie('password'));
+        $('#keep_password').trigger('click');
+    }
+    function setlang(lang_type){
+        self.location.href = '{:U("Index/login")}?lang='+lang_type
+    }
+    $('button').on('click',function(){return false});
+    $('#terms_of_service').on('click',function(){
+        $('#register_button').off('click');
+        if($('#terms_of_service').prop("checked")==true){
+            $('#register_button').on('click', function () {
+                var username = trim($('#register input[name="username"]').val());
+                var password = trim($('#register input[name="password"]').val());
+                var verification_code = $('#register input[name="verification_code"]').val();
+                if(!judge_pwd(password)){ return false;}
+                $.ajax({
+                    type: 'post',
+                    dataType:'json',
+                    data:{username:username,password:password,verification_code:verification_code,type:'register'},
+                    beforeSend:function(){
+                        $(this).button('loading');
+                    },
+                    complete: function() {
+                        $(this).button('reset');
+                    },
+                    success:function(data){
+                        if(data.error_text){                            
+                            if(data.code==2){
+                                alert('{$L['error_email_verify_send_ok']}');
+                                setTimeout(function (){location.reload();},1000);
+                            }
+                            $('#register .notice').html(data.error_text);
+                            $('.but_verification_code').click();
+
+                        }else{
+                            window.location.href = data.url;
+                        }
+                    }
+                });
+                return false;
+            });
+            $('#register_button').addClass('btn-warning');
+        }else{
+            $('#register_button').on("click",function(){return false;});
+            $('#register_button').removeClass('btn-warning');
+        }
+    });
+    $('.but_verification_code').on('click', function () {
+        var src = "{:U('/Index/Verify/v/"+Math.random()+"')}";
+        $('#ve').attr('src',src);
+        $('#ves').attr('src',src);
+        return false;
+    });
+    $('#login_button').on('click', function () {
+        var username = trim($('#login input[name="username"]').val());
+        var password = trim($('#login input[name="password"]').val());
+        var verification_code3 = $('#login input[name="verification_code3"]').val();
+        if(!judge_pwd(password)){ return false;}
+        $.ajax({
+            type: 'post',
+            dataType:'json',
+            data:{username:username,password:password,verification_code:verification_code3,type:'login'},
+            beforeSend:function(){
+                $(this).button('loading');
+            },
+            complete: function() {
+                $(this).button('reset');
+            },
+            success:function(data){
+                if(data.error_text){
+                    $('#login .notice').html(data.error_text);                   
+                    if(data.login_stutas == 3){     //超过三次时， 
+                            location.reload();
+                    }
+                }else{
+                    if($('#keep_password').prop("checked")==true){
+                        setEncodeCookie('username',username);
+                        setEncodeCookie('password',password);
+                    }else{
+                        setEncodeCookie('username','');
+                        setEncodeCookie('password','');
+                    }
+                    window.location.href = data.url;
+                }
+            }
+        });
+        return false;
+    });
+    function setEncodeCookie(key, plain){
+        var code = strToASC(plain);
+        $.cookie(key, code, { expires: 7, path:'/'});
+    }
+    function strToASC(plain){
+         var arr = new Array();
+         for(var i = 0 ; i < plain.length ; i++)
+            arr[i] = plain.charCodeAt(i)+8; 	//每个ascii码加8以加密
+         return JSON.stringify(arr);
+    }
+    function getEncodeCookie(key){
+        var arr = JSON.parse($.cookie(key));
+        return ASCToStr(arr);
+    }
+    function ASCToStr(arr){
+        var temp = '';
+        for(var i = 0 ; i < arr.length ; i++)
+            temp += String.fromCharCode(arr[i]-8);
+        return temp;
+    }
+    function trim(str){
+        str = str.replace(/^(\s|\u00A0)+/,'');
+        for(var i=str.length-1; i>=0; i--){
+            if(/\S/.test(str.charAt(i))){
+                str = str.substring(0, i+1);
+                break;
+            }
+        }
+        return str;
+    }
+
+    function judge_pwd(pwd){
+        var macth_tips=/^\s*[.A-Za-z0-9_-]{6,20}\s*$/;
+        if(pwd.match(macth_tips)){
+            return true;
+        }else{
+            alert("{$L['entry_new_password']}");
+        }
+    } 
+    $(function(){
+        $('.password-show').click(function(){
+            if($(this).prev('.form-control').attr('type') == "password"){
+                $(this).prev('.form-control').attr('type', 'text');
+                $(this).css('opacity', '0.8');
+            }else{
+                $(this).prev('.form-control').attr('type', 'password');
+                $(this).css('opacity', '1');
+            }
+        });
+    });
+    //回车触发确定登录注册按钮
+    document.onkeydown=function(){
+       if (event.keyCode == 13){
+          if($('#login').hasClass('active')){
+          	$('#login_button').click();
+          }else if($('#register').hasClass('active')){
+          	$('#register_button').click();
+          }
+       }
+    }
+</script>
+</block>

@@ -1,0 +1,231 @@
+<include file="Public:header" />
+<script src="__JS__/public.js"></script>
+<script src="__JS__/luozuan.js"></script>
+<script src="__JS__/swiper-3.3.1.min.js"></script>
+<script src="__JS__/swiper-demos.js"></script>
+<link rel="stylesheet" href="__CSS__/swiper-3.3.1.min.css">
+<!--导航-->
+<div class="am-g ">
+<!-- <include file="Public:search" />
+<div class="admin-content head">
+  <ul>
+      <li class="head-bg"><a href="{:U('Index/index')}">{:C('site_name')}</a></li>
+      <li class="head-rl">证书货</li>
+  </ul>
+</div>
+-->
+<header data-am-widget="header" class="am-header am-serch cat">
+    <div class="am-header-left am-header-nav">
+		<a href="{:U('/Index/index')}" class="">
+            <img class="am-header-icon-custom" src="__ASS__/Img/search_01.png" alt=""/>
+        </a>
+    </div>
+	<h1 class="am-header-title">
+		<a class="active" href="/Goods/luozuan.html">证书货</a>&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="/Goods/luozuanColor.html">彩钻</a>&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="/Goods/sanhuo.html">散货钻石</a>
+	</h1>
+</header>
+
+<!--订单-->
+<div class="service">
+
+	<input name="luozuan_type"	value="{$navActive}" type="hidden" />
+	<input name="goods_sn"	value="{$goods_sn}" type="hidden" />
+
+	<div class="control">
+	     <img src="__IMG__/san-bg_03.jpg" alt="">
+		<!--<ul>
+	        <li><a class="cour" href="{:U('Goods/luozuan')}">证书货</a></li>
+	        <li><a href="{:U('Goods/sanhuo')}">散货钻石</a></li>
+	     </ul> -->
+	</div>
+    <!--内容-->
+    <div class="wrap">
+         <div class="diamond-para">
+            <dl class="w25">
+              <dt>形状</dt>
+              <div id="swiper">
+				<a href="#" class="arrow-left1 arrow_left"></a>
+				<a href="#" class="arrow-right1 arrow_right"></a>
+				<div class="swiper-container swiper1">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide">
+							<dd name="Shape" ref="ROUND" class="selectList">圆形</dd>
+						<dd name="Shape" ref="OVAL" class="selectList">椭圆</dd>
+						<dd name="Shape" ref="MARQUISE" class="selectList">马眼</dd>
+						<dd name="Shape" ref="HEART" class="selectList">心形</dd>
+						</div>
+						<div class="swiper-slide">
+						<dd name="Shape" ref="PEAR" class="selectList">水滴</dd>
+						<dd name="Shape" ref="PRINCESS" class="selectList">方形</dd>
+						<dd name="Shape" ref="EMERALD" class="selectList">祖母绿</dd>
+						<dd name="Shape" ref="CUSHION" class="selectList">枕形</dd>
+						</div>
+						<div class="swiper-slide">
+						<dd name="Shape" ref="RADIANT" class="selectList">雷蒂恩</dd>
+						<dd name="Shape" ref="BAGUETTE" class="selectList">梯方</dd>
+						<dd name="Shape" ref="SQUARE EMERALD" class="selectList">方形祖母绿</dd>
+						</div>
+					</div>
+				</div>
+				<div class="pagination pagination1"></div>
+				</div>
+            </dl>
+            <dl>
+              <dt>重量</dt>
+			  <div class="para">
+				  <input type="text" name="minWeight" onblur="getPriceAndWeight()" value="0"/>─
+				  <input type="text" name="maxWeight" onblur="getPriceAndWeight()" value="500"/>克拉
+			  </div>
+            </dl>
+            <dl>
+              <dt>价格</dt>
+			  <div class="para">
+				   <input type="text" name="minPrice" onblur="getPriceAndWeight()" value="0"/>─
+				   <input type="text" name="maxPrice" onblur="getPriceAndWeight()" value="100000000"/>元
+			  </div>
+            </dl>
+            <dl class="w25">
+              <dt>颜色</dt>
+              <div id="swiper">
+				<a href="#" class="arrow-left2 arrow_left"></a>
+				<a href="#" class="arrow-right2 arrow_right"></a>
+				<div class="swiper-container swiper2">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide">
+						<dd name="Color" ref="D" class="selectList">D</dd>
+						<dd name="Color" ref="E" class="selectList">E</dd>
+						<dd name="Color" ref="F" class="selectList">F</dd>
+						<dd name="Color" ref="G" class="selectList">G</dd>
+						</div>
+						<div class="swiper-slide">
+						<dd name="Color" ref="H" class="selectList">H</dd>
+						<dd name="Color" ref="I" class="selectList">I</dd>
+						<dd name="Color" ref="J" class="selectList">J</dd>
+						<dd name="Color" ref="K" class="selectList">K</dd>
+						</div>
+						<div class="swiper-slide">
+						<dd name="Color" ref="L" class="selectList">L</dd>
+						<dd name="Color" ref="M" class="selectList">M</dd>
+						<dd name="Color" ref="N" class="selectList">N</dd>
+						<dd name="Color" ref="Fancy" class="selectList">Fancy</dd>
+						</div>
+					</div>
+				</div>
+				<div class="pagination pagination2"></div>
+				</div>
+            </dl>
+            <dl class="w25">
+              <dt>净度</dt>
+              <div id="swiper">
+				<a href="#" class="arrow-left3 arrow_left"></a>
+				<a href="#" class="arrow-right3 arrow_right"></a>
+				<div class="swiper-container swiper3">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide">
+						<dd name="Clarity" ref="FL" class="selectList">FL</dd>
+						<dd name="Clarity" ref="IF" class="selectList">IF</dd>
+						<dd name="Clarity" ref="VVS1" class="selectList">VVS1</dd>
+						<dd name="Clarity" ref="VVS2" class="selectList push_button">VVS2</dd>
+						</div>
+						<div class="swiper-slide">
+						<dd name="Clarity" ref="VS1" class="selectList">VS1</dd>
+						<dd name="Clarity" ref="VS2" class="selectList">VS2</dd>
+						<dd name="Clarity" ref="SI1" class="selectList">SI1</dd>
+						<dd name="Clarity" ref="SI2" class="selectList">SI2</dd>
+						</div>
+					</div>
+				</div>
+				<div class="pagination pagination3"></div>
+			  </div>
+            </dl>
+            <dl>
+              <dt>切工</dt>
+               	<dd class="selectList" name="Cut" ref="Ideal">Ideal</dd>
+				<dd class="selectList" name="Cut" ref="EX">EX</dd>
+				<dd class="selectList" name="Cut" ref="VG">VG</dd>
+				<dd class="selectList" name="Cut" ref="GD">GD</dd>
+            </dl>
+            <dl>
+              <dt>抛光</dt>
+              	<dd class="selectList" name="Polish" ref="Ideal">Ideal</dd>
+				<dd class="selectList" name="Polish" ref="EX">EX</dd>
+				<dd class="selectList" name="Polish" ref="VG">VG</dd>
+				<dd class="selectList" name="Polish" ref="GD">GD</dd>
+            </dl>
+            <dl>
+              <dt>对称</dt>
+              <dd class="selectList" name="Symmetry" ref="Ideal">Ideal</dd>
+				<dd class="selectList" name="Symmetry" ref="EX">EX</dd>
+				<dd class="selectList" name="Symmetry" ref="VG">VG</dd>
+				<dd class="selectList" name="Symmetry" ref="GD">GD</dd>
+            </dl>
+            <dl class="w25">
+              <dt>荧光</dt>
+              <div id="swiper">
+				<a href="#" class="arrow-left4 arrow_left"></a>
+				<a href="#" class="arrow-right4 arrow_right"></a>
+				<div class="swiper-container swiper4">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide">
+							<dd name="Fluor" class="selectList" ref="N">N</dd>
+							<dd name="Fluor" class="selectList" ref="F">F</dd>
+							<dd name="Fluor" class="selectList" ref="M">M</dd>
+							<dd name="Fluor" class="selectList" ref="S">S</dd>
+						</div>
+						<div class="swiper-slide">
+							<dd name="Fluor" class="selectList" ref="VS">VS</dd>
+							<dd name="NaiKa" class="selectList" ref="NoMilk">无奶</dd>
+							<dd name="NaiKa" class="selectList" ref="NoCoffee">无咖</dd>
+							<dd name="Fluor" class="selectList" ref="Other">其它</dd>
+						</div>
+					</div>
+				</div>
+				<div class="pagination pagination4"></div>
+			  </div>
+            </dl>
+            <dl>
+              <dt>所属地</dt>
+              	<dd class="selectList radio" name="Location" ref="现货">现货</dd>
+				<dd class="selectList radio" name="Location" ref="订货">订货</dd>
+            </dl>
+            <dl>
+              <dt>证书</dt>
+              	<dd class="selectList" name="Cert" ref="GIA">GIA</dd>
+				<dd class="selectList" name="Cert" ref="HRD">HRD</dd>
+				<dd class="selectList" name="Cert" ref="IGI">IGI</dd>
+				<dd class="selectList" name="Cert" ref="NGTC">国检</dd>
+				<dd class="selectList" name="Cert" ref="GTC">省检</dd>
+            </dl>
+         </div>
+         <div class="am-pace">
+             <button type="button" onclick="clearParameters();" class="am-btn am-btn-blue am-radius">重置</button>
+             <button type="button" onclick="addThisPageToCart();" class="am-btn am-btn-blue am-radius">加入购物车</button>
+         </div>
+
+	<div class="am-list-news-bd demond-all">
+    <p class="sort-box">共找到<span class="red"></span>钻石 <span class="sorting" orderby="weight" orderway="ASC">钻重排序 <i>↑</i></span> <span class="sorting" orderby="price" orderway="">价格排序 <i></i></span></p>
+    <ul class="am-list" id="diamondData">
+      <volist name="list" id="vo">
+          <li class="am-list-item-dated"></li>
+      </volist>
+    </ul>
+  </div>
+</div>
+    <!--更多在底部-->
+     <div class="am-list-news-ft ">
+		 <input type="hidden" id="_pageIndex" value="" />
+		 <button id="lastDataNum" onclick="loading();" type="button" class=" am-list-news-more mond-btn">更多</button>
+	 </div>
+  </div>
+<!--
+  <div id="filterVideo">
+<div id="dialogVideo">
+	<div class="model-header" id="model-header1">
+		<button class="btn close" onclick="closeVideoDialog()">关闭</button>
+		<span>裸钻3D视频展示</span>
+	</div>
+	<div class="videoDetail" id="videoDetail"></div>
+</div>
+</div>-->

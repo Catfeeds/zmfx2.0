@@ -1,0 +1,53 @@
+
+/* 售后服务 */
+.red { color: red;}
+.after-sales-box { background: #FFF; border-bottom: 1px solid #BBB;}
+.after-sales-list { background: #FFF; border-top: 1px solid #BBB; border-bottom: 1px solid #BBB; padding: 10px; margin: 10px 0;}
+.after-sales-head span { display: inline-block; width: 50%; padding: 12px 0; text-align: center; float: left;}
+.after-sales-head span:first-child { border-right: 1px solid #ccc;}
+.after-sales-head span.active a { color: #5281D7;}
+.after-sales-list .thead,
+.after-sales-list .tbody { border-bottom: 1px solid #D6D6D6; padding: 10px 0;}
+.after-sales-box .after-sales-head a { color: #000;}
+.after-sales-list .tbody .cbimg { width: 30%;}
+.after-sales-list .tbody .after-data { width: 70%;}
+.after-sales-list .cbimg img { width: 100%; max-width: 150px;}
+.after-sales-list .after-data p { padding-left: 5px;}
+.after-sales-list .after-data p:first-child { padding-bottom: 10px;}
+.after-sales-list .tfoot { padding-top: 6px;}
+.after-sales-list .shouhou .cbimg { width: 25%;}
+.after-sales-list .shouhou .after-data { width: 50%;}
+.after-sales-list .shouhou .toview { width: 25%; margin-top: 25px;}
+.after-sales-list .tbody2 .after-data { width: 75%;}
+.after-sales-list .tbody2 .toview { width: 25%; margin-top: 30px;}
+.after-sales-list .tbody2 p { margin-bottom: 0px;}
+
+
+/* 申请售后-详情 */
+.after-sales-list .shouhouxq .cbimg { width: 25%;}
+.after-sales-list .shouhouxq .after-data { width: 75%;}
+.after-sales-list .shouhouxq .thead, 
+.after-sales-list .shouhouxq .tbody { border: none;}
+.after-sales-list .shlx h4 { margin: 5px 0; margin-bottom: 8px;}
+.after-sales-list .shouhoutype { margin: 10px 0;}
+.after-sales-list .shouhoutype button { margin: 0 5px;}
+.shouhouxq-sub .alert { margin-bottom: 0;} 
+
+/* 售后进度-详情 */
+
+.sh-progress .shlx h4 { border-bottom: 1px solid #D6D6D6; padding-bottom: 10px;}
+.sh-progress .shlx .times { margin: 5px 0; color: #999;}
+.sh-progress .shlx .shenhezhong { color: #D3C2BC; text-align: center; padding: 1.2em 0;}
+
+/* 证书查询 */
+.zsquery { margin-top: 20px;}
+.zsquery .alert { padding: 6px 15px;}
+
+/* 证书查询结果 */
+.cxbox { border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;}
+.cxbox { background: #FFF; padding: 10px 5px;}
+.cxbox table { border: 1px solid #ccc; width: 98%; margin:0; padding:0; border-collapse: collapse; border-spacing: 0; margin: 0 auto;}
+.cxbox table tr { border: 1px solid #E4E4E4; padding: 5px;}
+.cxbox table th, table td { padding: 8px 10px; text-align: center;}
+.cxbox table th { text-transform: uppercase; width: 35%; font-size: 13px; letter-spacing: 1px; border-right: 1px solid #E4E4E4; color: #444;}
+.cxbox table td { width: 65%; color: #666;}

@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品分类</title>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：产品分类</h3>
+        <ul>
+            <if condition="$isSuperAgent">
+			    <li class=""><a href="{:U('Admin/Goods/productCatInfo')}">添加产品分类</a></li>
+		    </if>
+            <li class=""><a href="{:U('productCatConfig')}">配置我的产品分类</a></li>
+        </ul>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+        	<th width="5%">分类ID</th>
+            <th width="65%">分类名称、别名</th>
+			<th width="10%">图片</th>
+            <th width="20%">操作</th>
+        </tr>
+        <volist name="list" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+            <td>{$vo.category_id}</td>
+            <td class="tl pl10">{$vo.category_name}(*{$vo.name_alias})</td>
+			<if condition="$vo['img']">
+				<td><img src="/Public/{$vo.img}" width="80%"></td>   
+			<elseif condition="$vo['cimg']" />
+				<td><img src="/Public/{$vo.cimg}" width="80%"></td>   
+			<else/>
+				<td><img src="/Public/images/category/zuan_temp.jpg" width="80%"></td>
+			</if>			
+                <td>
+					<a  href="{:U('Admin/Goods/productCatLitsupdatepic?pid='.$vo['category_id'])}">上传图片</a>
+					<if condition="$isSuperAgent">
+                    <a  href="{:U('Admin/Goods/productCatInfo?pid='.$vo['category_id'])}">添加下级分类</a>
+                    <a  href="{:U('Admin/Goods/productCatInfo?isTop=1&id='.$vo['category_id'])}">修改</a>
+                    <a  href="{:U('Admin/Goods/delProductCat?id='.$vo['category_id'])}">删除</a>
+					</if>
+				</td>
+        </tr>
+        	<!--二级分类-->
+            <volist name="vo[sub]" id="io" mod="2">
+            <tr class="{$mod?'bg2':'bg1'}">
+                <td>{$io.category_id}</td>
+                <td class="tl pl10">&nbsp;&nbsp;&nbsp;|----{$io.category_name}(*{$io.name_alias})</td>
+				<td></td>
+                <if condition="$isSuperAgent">
+                <td>
+                    <a  href="{:U('Admin/Goods/productCatInfo?id='.$io['category_id'])}">修改</a>
+                    <a  href="{:U('Admin/Goods/delProductCat?id='.$io['category_id'])}">删除</a>
+                </td>
+				<else /> 
+				<td></td>
+                </if>
+            </tr>
+            </volist>
+            <!--二级分类结束-->
+        </volist> 
+    </table>
+</div>
+</body>
+</html>

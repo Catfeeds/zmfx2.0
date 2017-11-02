@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加代销货品列表</title>
+<script type="text/javascript" src="__JS__/disGoods.js"></script>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：添加代销货品列表</h3>
+        <ul>
+            <li class=""><a href="{:U('Admin/Goods/disGoodsList')}">代销货列表</a></li>
+        </ul>
+    </div>
+   
+	<div class="filter">
+		<form action="{:U('Admin/Goods/disGoodsAdd')}" method="get">
+			<div class="fl">代销产品编号或产品名称：</div>
+			<input class="input" type="text"  name="goods_sn"  value="{$goods_sn}"/>
+			<div class="fl">&nbsp;</div>
+			 <input class="button" type="submit" value="查询" />
+		</form>
+	</div>
+	 <form action="#" method="post">
+    <div class="list" style="padding-bottom:20px;">
+        <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+            <tr class="top">
+            	<th width="3%">选择</th>
+                <th width="3%">ID</th>
+                <th width="10%">产品编号</th>
+                <th width="35%">产品主图</th>
+                <th width="15%">产品名称</th>
+                <th width="5%">产品类型</th>
+                <th width="10%">产品价格</th>
+                <th width="5%">产品库存</th>
+            </tr>
+            <volist name="list" id="vo" mod="2">
+            <tr class="{$mod?'bg2':'bg1'}">
+            	<td><input type="checkbox" name="goods_id[]" value="{$vo.goods_id}"></td>
+                <td>{$vo.goods_id}</td>
+                <td>{$vo.goods_sn}</td>
+                <td data-photos="{$vo.goods_id}" id="photos">
+	            	<volist name="vo.imgSub" id="io" key="k">
+	            		<img data-key="{$key}" src="/Public{$io.small_path}" Big="/Public{$io.big_path}" style=" width: 65px; height: 65px; margin:3px; border: 1px solid #D9D9D9; padding: 1px;">
+	            	</volist>
+                </td>
+                <td>{$vo.goods_name}</td>
+                <td>
+                	<eq name="vo.goods_type" value="4">定制货品</eq>
+                	<eq name="vo.goods_type" value="3">珠宝成品</eq>
+                </td>
+                <td>{$vo.caigou_price}</td>
+                <td>{$vo.goods_number}</td>
+            </tr>
+            </volist>
+        </table>
+        <div class="action">
+        	<input type="submit" value="添加代销货品到">
+        	<select name="category_id" style="height: 28px;">
+                <volist name="catList" id="vo">
+                <option value="{$vo.category_id}">&nbsp;{$vo.name_alias}</option>
+                <volist name="vo.sub" id="io">
+                    <option value="{$io.category_id}">&nbsp;&nbsp;&nbsp;|---{$io.name_alias}</option>
+                </volist>
+                </volist>
+            </select>
+        </div>
+        </form>
+        <div class="page">{$page}</div>
+    </div>
+</div>
+</body>
+</html>

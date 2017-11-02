@@ -1,0 +1,149 @@
+<include file="Public:header" />
+
+<script src="__JS__/public.js"></script>
+<script src="__JS__/diamond_sanhuo.js"></script>
+<script src="__JS__/swiper-3.3.1.min.js"></script>
+<script src="__JS__/swiper-demos.js"></script>
+
+<link rel="stylesheet" href="__CSS__/swiper-3.3.1.min.css">
+<!--<div class="admin-content head">
+	<ul>
+		<li class="head-bg"><a href="{:U('Index/index')}">{:C('site_name')}</a></li>
+		<li class="head-rl">散&nbsp;货</li>
+	</ul>
+</div>-->
+<header data-am-widget="header" class="am-header am-serch cat">
+    <div class="am-header-left am-header-nav">
+		<a href="{:U('/Index/index')}" class="">
+            <img class="am-header-icon-custom" src="__ASS__/Img/search_01.png" alt=""/>
+        </a>
+    </div>
+	<h1 class="am-header-title">
+		<a href="/Goods/luozuan.html">证书货</a>&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="/Goods/luozuanColor.html">彩钻</a>&nbsp;&nbsp;&nbsp;&nbsp;
+		<a class="active" href="/Goods/sanhuo.html">散货钻石</a>
+	</h1>
+</header>
+<!--订单-->
+<div class="service">
+	<div class="control">
+		<img src="__IMG__/sanhuo-bg_03.jpg" alt="">
+	    <!--<ul>
+	        <li><a href="{:U('Goods/luozuan')}">证书货</a></li>
+	        <li><a class="cour" href="{:U('Goods/sanhuo')}">散货钻石</a></li>
+		</ul>-->
+	</div>
+	<!--下拉列表-->
+	<div class="grad">
+		<b>选择货品：</b>
+		<select name="GoodsType" onchange="setGoodsType(this)">
+   			<volist name="goodsType" id="vo">
+   			    <option value="{$vo.tid}">{$vo.type_name}</option>
+   			</volist>
+		</select>
+		<select id="goods_sn" name="gid" onchange="setGoodsSn(this)"><option value="-1">请选择货号</option></select>
+	</div>
+	<!--内容-->
+	<div class="wrap">
+		<div class="diamond-para sanhuo">
+			<dl class="w25">
+				<dt>分数</dt>
+				<div id="swiper">
+					<a href="#" class="arrow-left1 arrow_left"></a>
+					<a href="#" class="arrow-right1 arrow_right"></a>
+					<div class="swiper-container swiper1">
+						<div class="swiper-wrapper">
+							<volist name="sanhuoWeights" id="vo">
+							<if condition="($key+1) % 4 eq 1"><div class="swiper-slide"></if>
+   							<dd class='selectList' name="Weight" ref="{$vo.weights_name}">{$vo.weights_name}</dd>
+   							<if condition="($key+1) % 4 eq 0"></div></if>
+   							</volist>
+   						</div>
+   					</div>
+   					<div class="pagination pagination1"></div>
+   				</div>
+			</dl>
+			<dl class="w25">
+				<dt>颜色</dt>
+				<div id="swiper">
+					<a href="#" class="arrow-left2 arrow_left"></a>
+					<a href="#" class="arrow-right2 arrow_right"></a>
+					<div class="swiper-container swiper2">
+						<div class="swiper-wrapper">
+							<volist name="sanhuoColor" id="vo">
+							<if condition="($key+1) % 4 eq 1"><div class="swiper-slide"></if>
+   							<dd class='selectList' name="Color" ref="{$vo.color_contain}">{$vo.color_name}</dd>
+   							<if condition="($key+1) % 4 eq 0"></div></if>
+   							</volist>
+   						</div>
+   					</div>
+   					<div class="pagination pagination2"></div>
+   				</div>
+			</dl>
+			<dl class="w25">
+				<dt>净度</dt>
+				<div id="swiper">
+					<a href="#" class="arrow-left3 arrow_left"></a>
+					<a href="#" class="arrow-right3 arrow_right"></a>
+					<div class="swiper-container swiper3">
+						<div class="swiper-wrapper">
+							<volist name="sanhuoClarity" id="vo">
+							<if condition="($key+1) % 4 eq 1"><div class="swiper-slide"></if>
+   							<dd class='selectList' name="Clarity" ref="{$vo.clarity_id}">{$vo.clarity_name}</dd>
+   							<if condition="($key+1) % 4 eq 0"></div></if>
+   							</volist>
+   						</div>
+   					</div>
+   					<div class="pagination pagination3"></div>
+   				</div>
+			</dl>
+			<dl class="w25">
+				<dt>切工</dt>
+				<div id="swiper">
+					<a href="#" class="arrow-left4 arrow_left"></a>
+					<a href="#" class="arrow-right4 arrow_right"></a>
+					<div class="swiper-container swiper4">
+						<div class="swiper-wrapper">
+							<volist name="sanhuoCut" id="vo">
+							<if condition="($key+1) % 4 eq 1"><div class="swiper-slide"></if>
+   							<dd class='selectList' name="Cut" ref="{$vo.cut_name}">{$vo.cut_name}</dd>
+   							<if condition="($key+1) % 4 eq 0"></div></if>
+   							</volist>
+   						</div>
+   					</div>
+   					<div class="pagination pagination4"></div>
+   				</div>
+			</dl>
+			<dl class="w25">
+				<dt>所属地</dt>
+				<div id="swiper">
+					<a href="#" class="arrow-left5 arrow_left"></a>
+					<a href="#" class="arrow-right5 arrow_right"></a>
+					<div class="swiper-container swiper5">
+						<div class="swiper-wrapper">
+							<volist name="locationList" id="vo">
+							<if condition="($key+1) % 4 eq 1"><div class="swiper-slide"></if>
+   							<dd class='selectList radio' name="Location" ref="{$vo}">{$vo}</dd>
+   							<if condition="($key+1) % 4 eq 0"></div></if>
+   							</volist>
+   						</div>
+   					</div>
+   					<div class="pagination pagination5"></div>
+   				</div>
+			</dl>
+		</div>
+		<div class="am-pace">
+			<button type="button" onclick="clearParameters();" class="am-btn am-btn-blue am-radius">重置</button>
+			<button type="button" onclick="addThisPageToCart();" class="am-btn am-btn-blue am-radius">加入购物车</button>
+		</div>
+		<div class="am-list-news-bd demond-all">
+			<ul class="am-list" id="_dataRows"></ul>
+		</div>
+	</div>
+	<!--更多在底部-->
+	<div class="am-list-news-ft ">
+		<input type="hidden" name="_pageIndex" id="_pageIndex" value="" />
+		<button id="lastDataNum" type="button" onclick="loading()" class=" am-list-news-more mond-btn">下一页</button>
+	</div>
+	<br>
+</div>

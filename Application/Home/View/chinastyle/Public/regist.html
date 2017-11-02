@@ -1,0 +1,24 @@
+<extend name=".:Base:Public:regist" />
+<block name="header">
+    <include file="Public:header" />
+</block>
+<block name="left">
+  <div class="regleft">
+      <span>新用户注册</span>
+      <form id="regist" name="regist" action="regist" method="post">
+          <table class="regist">
+              <tr><td width="30%" class="tdRight">{$Think.lang.L801}：</td><td><input name="User[username]" type="text"></td></tr>
+              <tr><td class="tdRight">{$Think.lang.L9102}：</td><td><input minlength="6" type="password" name="User[password]"></td></tr>
+              <tr><td class="tdRight">电子邮件：</td><td><input type="text" name="User[email]"></td></tr>
+              <tr><td class="tdRight">手 机 号：</td><td><input type="text" name="User[phone]"></td></tr>
+              <tr><td class="tdRight"></td><td><input type="checkbox"><a href="#">会员注册协议</a></td></tr>
+              <tr><td colspan="2" class="tdCenter"><input id="result" type="submit" class="regBtn" value="{$Think.lang.L9103}" style="cursor: pointer;"></td></tr>
+              <tr><td colspan="2" class="tdCenter"><a href="{:U('Home/Public/login')}" style="float: right; margin-right: 30px; margin-top: 20px; color: #FFF; text-decoration: underline;">我己有账号，马上去登录</a></td></tr>
+          </table>
+      </form>
+  </div>
+</block>
+<block name="right"></block>
+<block name="footer">
+    <include file="Public:footer" />
+</block>

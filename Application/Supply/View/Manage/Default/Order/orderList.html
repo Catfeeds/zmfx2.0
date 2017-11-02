@@ -1,0 +1,489 @@
+<extend name="Manage:Default:base" />
+<block name="title">{$L['login_title']}</block>
+<block name="desc">{$L['login_description']}</block>
+<block name="body">
+	<style>
+		#order_lanmu2 a, #order_lanmu2 a:hover{border-bottom:0px;};
+	</style>
+		
+	</style>
+	<div class="wrapper">
+		<div class="row">
+			<div class="sign">
+				<span><img src="__IMG__/left-top.jpg"></span>
+				<ul>
+					<li>{$L['order_page_title']}:</li>
+				</ul>
+			</div>
+			<div class="col-lg-12 product">
+				<section class="panel">
+					<header class="panel-heading custom-tab" id="order_lanmu">
+						<ul class="nav nav-tabs ul-first">							
+							<li class="active">
+								<a href="#treatment1" class="order-number" data-toggle="tab">{$L['text_order_waithandle']}<span class="badge">{$Think.session.Order_List_Wait_total}</span></a>
+							</li>
+							<li class="">
+								<a href="#pay" class="order-number" data-toggle="tab">{$L['text_order_waitpay']}<span class="badge">{$Think.session.Order_List_Waitpay_total}</span></a>
+							</li>
+							<li class="">
+								<a href="#carried" class="order-number" data-toggle="tab">{$L['text_order_handleing']}<span class="badge">{$Think.session.Order_List_Waiting_total}</span></a>
+							</li>
+							<li class="">
+								<a href="#completed" data-toggle="tab">{$L['text_order_overhandle']}</a>
+							</li>
+							<li class="">
+								<a href="#canceled" data-toggle="tab">{$L['text_order_cancel']}</a>
+							</li>
+							<!-- <li class="">
+								<a href="#kehusearch" data-toggle="tab">{$L['text_kehu_search']}</a>
+							</li>
+							<li class="">
+								<a href="#return" data-toggle="tab">{$L['text_order_returngoods']}</a>
+							</li> -->
+						</ul>
+
+						<ul class="nav nav-tabs" id="order_lanmu2">		
+							<li class="active">
+								 <a href="#treatment" class="order-number" data-toggle="tab">{$L['text_yixiang_caigou']}<span class="badge"></span></a>
+							</li>
+							<li class="">
+								 <a href="#kehusearch" data-toggle="tab">{$L['text_kehu_search']}</a>
+							</li>
+						</ul>
+					</div>
+					</header>
+					<div class="clearfix"></div>
+					<div class="panel-body cate">
+						<div class="tab-content">
+							<div class="tab-pane active" id="order">
+								<div class="cate-info">
+									<dl>
+										<dt></dt>
+										<dd>
+											<input type="text" placeholder="{$L['text_order_sn']}" name="order_sn">
+										</dd>
+									</dl>
+									<dl>
+										<dt></dt>
+										<dd><input type="text" placeholder="{$L['text_certificate_sn']}/{$L['text_product_sn']}" name="certificate_number"></dd>
+									</dl>
+									
+									<dl>
+										<dt>{$L['text_order_time']}</dt>
+										<dd><input type="text" size="12" class="laydate-icon" name="order_time_begin" onclick="laydate()" placeholder="{$L['text_enter_date']}"></dd>
+										<dt>{$L['text_until']}</dt>
+										<dd><input type="text" size="12" class="laydate-icon" name="order_time_end" onclick="laydate()" placeholder="{$L['text_enter_date']}"></dd>
+									</dl>
+									 
+									 
+									<dl  id="tip_select_id">
+										<select name="order_type" class="fl fclass">
+													<option value="0">{$L['order_type_all']}</option>
+													<option value="1">GIA{$L['icon_order']}</option>
+													<option value="2">{$L['heading_product_sanhuo']}{$L['icon_order']}</option>
+													<option value="3">{$L['heading_product_chengpin']}{$L['icon_order']}</option>
+													<option value="4">{$L['customized']}{$L['icon_order']}</option>
+													<option value="5">{$L['blend']}{$L['icon_order']}</option>
+										</select>										
+									</dl>
+									
+									<dl><dd><input type="button" id="search_order" class="search"  value="{$L['search']}"></dd></dl>
+								</div>
+								<!--表格-->
+								<div class="table-responsive">
+									<table class="table table-bordered table-hover table-info">
+										<thead>
+										<tr>
+											<th>{$L['text_order_id']}</th>
+											<th>{$L['text_order_sn']}</th>
+											<th>{$L['text_order_price']}</th>											
+											<th>{$L['text_order_time']}</th>
+											<!--<th>{$L['text_order_status']}</th>-->
+											<th id="showOrderInfo">{$L['text_order_detail']}</th>
+											<th>{$L['remarks']}</th>
+										</tr>
+										</thead>
+										<tbody id="order_content"></tbody>
+										
+										<script type="text/template" id="order_content_tpl">
+											<% _.each(datas, function (item) { %>
+												<tr>                                                
+													<td><%= item.order_id %></td>
+													<td><%= item.order_sn %></td>
+													<td><%= item.order_price %></td>
+													<td><%= item.create_time_str %></td>
+													<!--<td><%= item.order_status_str %></td>-->
+													<td data-id="<%= item.order_id %>" class="showOrderInfo"><a href="route/mo/Order/vi/orderInfo.html?order_id=<%= item.order_id %>&lanmu_status=<%= lanmu %>">{$L['text_order_read']}</a></td>
+													
+													<td>
+													<% if(lanmu == 'kehusearch' || lanmu == 'treatment' ) { %>	
+														<%= item.yichuli %>
+													<% }else{ %>
+														<%= item.order_status_str %>
+													<% } %>
+														
+
+													</td>
+												</tr>
+											<% }); %>
+                                        </script>
+						
+									</table>
+								</div>
+								<div class="prve"></div>
+							</div>
+							
+							<div class="tab-pane" id="return">
+								<div class="return">
+									<div class="input-group m-bot15">
+										<input type="text" class="form-control">
+													<span class="input-group-btn">
+														<button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+													</span>
+									</div>
+								</div>
+								<div class="return-info">
+									<dl>
+										<dt>{$L['text_order_sn']}：</dt>
+										<dd>201512092515</dd>
+										<dt>{$L['text_order_time']}：</dt>
+										<dd>2015-12-18</dd>
+									</dl>
+									<dl>
+										<dt><b>{$L['text_order_detail']}：</b></dt>
+										<dd>
+											<div class="table-responsive">
+												<table class="table table-bordered ">
+													<thead>
+													<tr>
+														<th>{$L['text_product_sn']}</th>
+														<th>{$L['text_product_shape']}</th>
+														<th>{$L['text_certificate_sn']}</th>
+														<th>{$L['text_product_weight']}</th>
+														<th>{$L['text_product_color']}</th>
+														<th>{$L['text_product_clarity']}</th>
+														<th>{$L['text_product_cut']}</th>
+														<th>{$L['text_product_polish']}</th>
+														<th>{$L['text_product_symmetry']}</th>
+														<th>{$L['text_product_fluor']}</th>
+														<th>{$L['text_product_dia_depth']}</th>
+														<th>{$L['text_product_dia_table']}</th>
+														<th>{$L['text_product_milk']}</th>
+														<th>{$L['text_product_coffee']}</th>
+														<th>{$L['text_product_dia_global_price']}</th>
+														<th>{$L['text_type_RMB']}</th>
+														<th>{$L['text_product_dia_discount']}</th>
+														<th>{$L['text_product_price']}</th>
+													</tr>
+													</thead>
+													<tbody>
+													<tr>
+														<td>ZM730</td>
+														<td>圆形</td>
+														<td>GIA1203580371</td>
+														<td>0.51</td>
+														<td>H</td>
+														<td>VS1</td>
+														<td>VG</td>
+														<td>VG</td>
+														<td>VG</td>
+														<td>N</td>
+														<td>58.00</td>
+														<td>62.00</td>
+														<td>无奶</td>
+														<td>无咖</td>
+														<td>3500</td>
+														<td>16466.45</td>
+														<td>71.5</td>
+														<td>8397.85</td>
+													</tr>
+													</tbody>
+												</table>
+											</div>
+										</dd>
+									</dl>
+									<dl>
+										<dt>{$L['text_service_type']}：</dt>
+										<dd>{$L['text_change_product']}</dd>
+									</dl>
+									<dl>
+										<dt>{$L['text_apply_reasons']}：</dt>
+										<dd>
+											<textarea rows="6" class="form-control"></textarea>
+										</dd>
+									</dl>
+									<dl>
+										<button class="btn btn-warning btn-sm" type="button">{$L['text_agree']}</button>
+										<button class="btn btn-default btn-sm" type="button">{$L['text_refuse']}</button>
+									</dl>
+								</div>
+								<!--退货单结束-->
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</block>
+<block name="my_js">
+<script>
+
+
+
+	/////////用于导航栏的返回切换  start
+		$('#order_lanmu2 a:hover').css('border-bottom', '0');
+        //定义订单查询
+        var get_lanmu_status = '';
+        if('{$_GET[\'lanmu_status\']}'){
+        	get_lanmu_status = '{$_GET[\'lanmu_status\']}';
+        }else{
+        	get_lanmu_status = 'treatment';
+        }
+
+    	if( get_lanmu_status == 'treatment' || get_lanmu_status == 'treatment1' || get_lanmu_status == 'kehusearch'){   
+   	 	
+    	 	$('#order_lanmu li:nth-child(1)').addClass("active");//待处理 
+
+    	 	$('#order_lanmu2').show();//待处理下面的导航
+
+    	 	$('#order_lanmu2 li').each(function(){            										
+            	$(this).removeClass("active");		            	          	
+            });
+
+    	 	if(get_lanmu_status == 'treatment'){ //意向采购
+    	 		$('#order_lanmu2 li:first').addClass("active");
+    	 	}
+
+    	 	if(get_lanmu_status == 'kehusearch'){
+    	 	 	$('#order_lanmu2 li:nth-child(2)').addClass("active");
+    	 	}
+    	 	
+
+    	}else{            	 	
+    	 	$('#order_lanmu2').hide();//待处理下面的导航
+
+    	 	$('#order_lanmu li').each(function(){            										
+            	$(this).removeClass("active");		            	          	
+            });
+
+            if(get_lanmu_status == 'pay'){  
+    	 		$('#order_lanmu li:nth-child(2)').addClass("active");
+    	 	}
+
+    	 	if(get_lanmu_status == 'carried'){
+    	 		$('#order_lanmu li:nth-child(3)').addClass("active");
+    	 	}
+
+    	 	if(get_lanmu_status == 'completed'){
+    	 		$('#order_lanmu li:nth-child(4)').addClass("active");
+    	 	}
+    	 	if(get_lanmu_status == 'canceled'){
+    	 		$('#order_lanmu li:nth-child(5)').addClass("active");
+    	 	}
+
+    	}
+
+    /////////用于导航栏的返回切换  end
+
+
+        var order = {
+            args:{
+                page_id:"1",
+                page_size:"10",
+                order_sn:'',
+                certificate_number:'',
+                product_type:0,
+                order_time_begin:'',
+                order_time_end:'',
+                lanmu_status: get_lanmu_status,//{$_GET['lanmu_status']}//'treatment',
+            },
+            get_filter_args:function(){
+                l = this;
+                var c_args = {};
+                _.each(this.args,function(value,key){
+                    if( _.isEmpty(value) === false ){
+                        c_args[key] = value;
+                    }
+                });
+                return c_args;
+            },
+            clear_args:function(){
+                _.each(this.args,function(value,key){
+                    if( key!=='page_id' && key!= 'page_size' ) {
+                        this.args[key] = '';
+                    }
+                },this)
+            },
+            set_arg:function(key,value){
+                this.args[key] = value;
+            },
+            set_page:function(page_id,page_size){
+                this.args['page_id']   = page_id.toString();
+                this.args['page_size'] = page_size.toString();
+            },
+            get_order_list:function(){
+                var data = this.get_filter_args();
+                var res  = {};
+                $.ajaxSettings.async = false; 
+                	
+                if(data['lanmu_status'] == '#treatment1'){                	
+                 	if($('#order_lanmu2 li:first-child').hasClass('active')){                		
+                 		data['lanmu_status'] = 'treatment';
+                 	}else{
+                 		data['lanmu_status'] = 'kehusearch';
+                 	}
+                } 
+
+                if( data['lanmu_status'] == '#kehusearch' || data['lanmu_status'] == 'kehusearch'){               	            	
+                	$.getJSON("{:U('Order/traderOrderList')}",data,function(data){                		
+	                    res = data;
+	                });
+
+                }else if( data['lanmu_status'] == '#treatment' || data['lanmu_status'] == 'treatment'){    
+                	$.getJSON("{:U('Order/ZMOrderList')}",data,function(data){                		
+	                    res = data;
+	                });
+					$("#tip_select_id").show(); 
+                }else{
+                	$.getJSON("{:U('Order/orderList')}",data,function(data){
+	                    res = data;
+	                });
+					$("#tip_select_id").hide();
+                }                
+                this.clear_args();
+                return res;
+            }
+        };
+        
+        var datas;
+       
+
+        function func_search_order_list(){
+        	
+            order.set_arg('order_sn',           $('#search_order').closest('#order').find('input[name="order_sn"]').val());
+            order.set_arg('certificate_number', $('#search_order').closest('#order').find('input[name="certificate_number"]').val());
+            order.set_arg('order_time_begin',   $('#search_order').closest('#order').find('input[name="order_time_begin"]').val());
+            order.set_arg('order_time_end',     $('#search_order').closest('#order').find('input[name="order_time_end"]').val());
+            order.set_arg('order_type',     	$('#search_order').closest('#order').find('select[name="order_type"]').val());
+ 
+            var res     = order.get_order_list();
+            datas       = res['data']['list'];
+            lanmu       = res['data']['lanmu_status'];
+            
+            console.log(res);
+            
+            $('#order_content').html( _.template($('#order_content_tpl').html(), datas) );
+			if(res['data']['total']>0){				
+            	$(func_return_order_lanmu()).find('.badge').html(res['data']['total']);
+            }
+            
+            var page_html    = page.create({PageID:res['data']['page_id'],PageSize:res['data']['page_size'],TotalNum:res['data']['total']}).getHtml();
+            $('#search_order').closest('#order').find('.prve').html(page_html);
+
+            $('#order .prve a').on('click',function(){
+                order.set_page($(this).attr('data-page-id'),$(this).attr('data-page-size'));//设置新的page_id变量。
+                order.set_arg('lanmu_status',       func_return_order_lanmu() );
+                func_search_order_list();
+            });
+
+            $('#order .prve .go').on('click',function(){
+
+				var data_page_id = parseInt($(this).prev().val(),10);
+				var data_page_size = parseInt($("input[name='page_size']").val(),10);
+							
+				if(data_page_id){
+					order.set_page(data_page_id, data_page_size);
+					order.set_arg('lanmu_status',       func_return_order_lanmu() );					
+					func_search_order_list();
+				}	
+			});
+            
+        }
+        $(function(){
+            func_search_order_list();
+            $('#search_order').on('click',function() {
+            	order.set_arg('lanmu_status',   func_return_order_lanmu() );
+            	order.set_arg('page_id',1);
+                func_search_order_list();
+            });
+            $('#order_lanmu li').on('click',function() {            	 
+
+            	 if( $(this).find('a').attr('href') == '#treatment1'){
+        	 		$('#order_lanmu2 li').each(function(){            										
+		            	$(this).removeClass("active");		            	          	
+		            });
+		            $('#order_lanmu2 li:first').addClass("active");
+            	 } 
+
+            	 if( $(this).find('a').attr('href') == '#treatment' || $(this).find('a').attr('href') == '#treatment1' || $(this).find('a').attr('href') == '#kehusearch'){    
+
+            	 	$('#order_lanmu2').show();
+
+            	 }else{
+            	 	
+            	        	 	
+            	 	$('#order_lanmu2').hide();
+            	 }
+            	order.set_arg('lanmu_status',   $(this).find('a').attr('href') );     
+            	order.set_arg('page_id',1);
+                func_search_order_list();
+            });
+
+
+            //弹出一个页面层  			
+			// $('.showOrderInfo').live('click', function(){
+			// 	var order_id = $(this).data("id");						    
+			//     layer.open({
+			//         type: 2,
+			//         title: '{$L["text_order_detail"]}',
+			//         maxmin: true,
+			//         shadeClose: true, //点击遮罩关闭层
+			//         area : ['1000px' , '600px'],
+			//         content: 'route/mo/Order/vi/orderInfo.html?order_id=' + order_id
+			//     });
+			// });
+
+
+
+
+			
+        });
+
+
+        function func_return_order_lanmu(){
+        	var order_lanmu_status;       		
+        	$('#order_lanmu li').each(function(){            										
+            	if($(this).attr('class') == 'active'){
+            		order_lanmu_status = $(this).find('a').attr('href');
+            		
+            		if(order_lanmu_status == '#treatment1'){
+
+	                  	if($('#order_lanmu2 li:first-child').hasClass('active')){                		
+		                  	order_lanmu_status = 'treatment';
+		                }else{
+		                  	order_lanmu_status = 'kehusearch';
+		                }
+		                                
+	                } 
+
+            		return false;
+            	}           	
+            });
+            return order_lanmu_status;
+        }
+
+
+        // $(function(){
+        // 	//订单管理页面导航二级菜单显示 - 待处理
+        // 	$('.ul-first li').click(function(){
+        // 		if($('.ul-first li:first-child').hasClass('active')){
+	       //  		$('#order_lanmu2').show();
+	       //  	}else{
+	       //  		$('#order_lanmu2').hide();
+	       //  	}
+        // 	});
+        // });
+    </script>
+</block>

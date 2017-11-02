@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>散货信息</title>
+<script type="text/javascript" src="__JS__/sanhuoInfo.js"></script>
+    <style>
+        .edit .info{clear:none;}
+    </style>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：散货信息</h3>
+    </div>
+    <form action="{:U('Admin/Goods/sanhuoInfo?goods_id='.$info['goods_id'])}" method="post">
+    	<div class="sanhuo">
+        	<div class="sanhuoTitle"><span>散货详情参数</span></div>
+        	<div class="sanhuoInfo">
+                <div class="tiao">
+                	<div class="info">
+                        <div class="title">散货类型:</div>
+                        <select name="tid" style="width:220px;">
+                            <volist name="sanhuoTypeList" id="vo">
+                            <option value="{$vo.tid}"<eq name="info.tid" value="$vo['tid']">selected</eq>>{$vo.type_name}</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <div class="info">
+                        <div class="title">库存重量:</div>
+                        <input name="goods_weight" type="text" value="{$info.goods_weight}" style="width:208px;">
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="tiao">
+                    <div class="info">
+                        <div class="title">产品地址:</div>
+                        <select name="location" style="width:220px;">
+                            <option value="国外"<eq name="info.location" value="国外">selected</eq>>国外</option>
+                            <option value="深圳"<eq name="info.location" value="深圳">selected</eq>>深圳</option>
+                            <option value="上海"<eq name="info.location" value="上海">selected</eq>>上海</option>
+                            <option value="北京"<eq name="info.location" value="北京">selected</eq>>北京</option>
+                            <option value="香港"<eq name="info.location" value="香港">selected</eq>>香港</option>
+                        </select>
+                    </div>
+                    <div class="info">
+                        <div class="title">钻石分数:</div>
+                        <select name="weights" style="width:220px;">
+                            <volist name="weights" id="vo">
+                            <option value="{$vo.weights_name}"<eq name="info.weights" value="$vo['weights_name']">selected</eq>>{$vo.weights_name}</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="tiao">
+                	<div class="info">
+                        <div class="title">散货货号:</div>
+                    	<input name="goods_sn" type="text" value="{$info.goods_sn}" style="width:208px;">
+                    </div>
+                    <div class="info">
+                        <div class="title">净&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度:</div>
+                        <select name="clarity" style="width:220px;">
+                            <volist name="clarity" id="vo">
+                            <option value="{$vo.clarity_name}"<eq name="info.clarity" value="$vo['clarity_name']">selected</eq>>{$vo.clarity_name}</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="tiao">
+                    <div class="info">
+                        <div class="title">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格:</div>
+                        <input name="goods_price" type="text" value="{$info.goods_price}" style="width:208px;">
+                    </div>
+                    <div class="info">
+                        <div class="title">颜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色:</div>
+                        <select name="color" style="width:220px;">
+                            <volist name="color" id="vo">
+                            <option value="{$vo.color_name}"<eq name="info.color" value="$vo['color_name']">selected</eq>>{$vo.color_name}</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="tiao">
+                	<div class="info">
+                        <div class="title">特&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价:</div>
+                    	<input name="goods_price2" type="text" value="{$info.goods_price2}" style="width:208px;">
+                    </div>
+                    <div class="info">
+                        <div class="title">切&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;工:</div>
+                        <select name="cut" style="width:220px;">
+                            <volist name="cut" id="vo">
+                            <option value="{$vo.cut_name}"<eq name="info.cut" value="$vo['cut_name']">selected</eq>>{$vo.cut_name}</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+				<div class="tiao">
+					<!-- <div class="info">
+						<div class="title">高亮显示:</div>
+						<input type="checkbox" style="width:28px;" <eq name="info.highlight" value="1"> checked</eq> value="1" name="highlight">
+					</div> -->
+					<div class="info">
+						<div class="title">销售方式:</div>
+						<input type="input" list="goods_sellway" style="width:208px;" value="{$info.goods_sellway}" name="goods_sellway">
+						<datalist id="goods_sellway">
+							<option value="统包销售"> </option>
+							<option value="称重销售"> </option>
+						</datalist>
+					</div>
+					<div class="clear"></div>
+				</div>
+            </div>
+            <div class="sanhuo4c">
+            	<div class="title">散货钻石4C信息</div>
+                <div class="title2">颜色</div>
+               	<ul>
+                	<volist name="color" id="vo"> 
+                        <li class="t9">
+                        	<div class="input" id="i_color_{$vo.color_id}">
+                            	<input type="text" value="{$CC[1][$vo['color_name']]['cc_ku']}" name="c_color[{$vo.color_id}][bl]" placeholder="库存重量">
+                                <button type="button">确定</button>
+                            </div>
+                            <input type="checkbox" id="color_{$vo.color_id}" name="c_color[{$vo.color_id}][name]" value="{$vo.color_name}" >
+                            <span class="t_color_{$vo.color_id}">{$vo.color_name}</span>
+                            <span id="b_color_{$vo.color_id}" class="bl"></span>
+                        </li>    
+                    </volist>
+                    <div class="clear"></div>
+                </ul>
+                <div class="title2">净度</div>
+               	<ul>
+                	<volist name="clarity" id="vo"> 
+                        <li class="t8">
+                        	<div class="input" id="i_clarity_{$vo.clarity_id}">
+                            	<input type="text" value="{$CC[2][$vo['clarity_name']]['cc_ku']}" name="c_clarity[{$vo.clarity_id}][bl]" placeholder="库存重量">
+                                <button type="button">确定</button>
+                            </div>
+                            <input type="checkbox" id="clarity_{$vo.clarity_id}" name="c_clarity[{$vo.clarity_id}][name]" value="{$vo.clarity_name}" >
+                            <span class="t_clarity_{$vo.clarity_id}">{$vo.clarity_name}</span>
+                            <span id="b_clarity_{$vo.clarity_id}" class="bl"></span>
+                        </li>
+                    </volist>
+                    <div class="clear"></div>
+                </ul>
+                <div class="title2">切工</div>
+               	<ul>
+                	<volist name="cut" id="vo"> 
+                        <li class="t4">
+                            <div class="input" id="i_cut_{$vo.cut_id}">
+                                <input type="text" value="{$CC[3][$vo['cut_name']]['cc_ku']}" name="c_cut[{$vo.cut_id}][bl]" placeholder="库存重量">
+                                <button type="button">确定</button>
+                            </div>
+                            <input type="checkbox" id="cut_{$vo.cut_id}" name="c_cut[{$vo.cut_id}][name]" value="{$vo.cut_name}" >
+                            <span class="t_cut_{$vo.cut_id}">{$vo.cut_name}</span>
+                            <span id="b_cut_{$vo.cut_id}" class="bl"></span>
+                        </li>
+                    </volist>
+                    <div class="clear"></div>
+                </ul>
+                <div class="title2">钻石分数或筛号</div>
+               	<ul id="weights2">
+                	<volist name="weights2" id="vo"> 
+                        <li class="t4">
+                            <div class="input" id="i_weights_{$vo.weights_id}">
+                                <input type="text" value="{$CC[4][$vo['weights_name']]['cc_ku']}" name="c_weights[{$vo.weights_id}][bl]" placeholder="库存重量">
+                                <button type="button">确定</button>
+                            </div>
+                            <input type="checkbox" id="weights_{$vo.weights_id}" name="c_weights[{$vo.weights_id}][name]" value="{$vo.weights_name}" >
+                            <span class="t_weights_{$vo.weights_id}">{$vo.weights_name}</span>
+                            <span id="b_weights_{$vo.weights_id}" class="bl"></span>
+                        </li>
+                    </volist>
+                    <div class="clear"></div>
+                </ul>
+            </div>
+            <div class="formInfo">
+				<if condition="!$info or $agent_id neq $info['agent_id']">
+					<input type="submit" class="button fl" value="保存散货数据">&nbsp;
+				<else />
+					无权修改
+				</if>
+				<input type="button" class="button fl ml10" value="返回" onclick="window.history.back();">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<div id="main">
+	<include file="Public:cat" />
+	<div class="goodsCategoryList">
+		<div class="goodsCategoryParam">
+			<div class="filter_box">
+				 <div class="filter_top">
+				 	<h1 id="categoryName">关键字：<font style="color:red">{$keyword}</font></h1>
+				 	<strong>共查询到</strong>
+					<div class="total">(共<span id="res_count">{$count} </span>个商品)</div>
+				 </div>
+			</div>
+		</div>
+		<div class="contentList">
+			<ul>
+				<if condition="$products">
+				<volist name="products" id="vo">
+				<li>
+					<div class='li_img'><a href="/Home/Goods/goodsInfo/goods_type/{$vo['goods_type']}/gid/{$vo['goods_id']}"><img src='{$vo.thumb}'/></a></div>
+					<div class='li_title'><a href='/Home/Goods/goodsInfo/goods_type/{$vo['goods_type']}/gid/{$vo['goods_id']}'>{$vo.goods_name}</a></div>
+					<div class='li_price'>￥
+						<in name="vo['activity_status']" value="0,1">
+							{$vo['activity_price']}
+						<else/>
+							{$vo['goods_price']}
+						</in>
+					</div>
+				</li>
+				</volist>
+				</if>
+			</ul>
+		</div>
+		<div id="page" class="page">{$page}</div>
+	</div>
+</div>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

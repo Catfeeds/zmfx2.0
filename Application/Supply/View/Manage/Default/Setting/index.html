@@ -1,0 +1,712 @@
+<extend name="Manage:Default:base" />
+<block name="title">{$L['login_title']}</block>
+<block name="desc">{$L['login_description']}</block>
+<block name="body">
+	<style>
+		dl { overflow: hidden;}
+		.layui-layer-msg {
+			position: fixed !important;
+		    left: 50% !important;
+		    /* top: 50% !important; */
+		}
+	</style>
+	<!--[if IE]> 
+	<style>
+		.tools .btn { margin-top: 15px;}
+	</style>
+	<![endif]-->
+	<div class="wrapper">
+		<div class="row">
+			<div class="sign">
+				<span><img src="__IMG__/left-top.jpg"></span>
+				<ul>
+					<li><b>{$L['heading_title_opinion']}：</b></li>
+				</ul>
+			</div>
+			<div class="col-lg-12 product">
+				<section class="panel">
+					<header class="panel-heading custom-tab ">
+						<ul class="nav nav-tabs">
+							<li class="active" data-cls="data">
+								<a href="#data" class="order-number" data-toggle="tab">{$L['heading_title_datamanage']}</a>
+							</li>
+							<li class="" data-cls="account">
+								<a href="#account" class="order-number" data-toggle="tab">{$L['heading_title_account']}</a>
+							</li>
+							<li class="" data-cls="message">
+								<a href="#message" class="order-number" data-toggle="tab">{$L['heading_title_system']}</a>
+							</li>
+							<li class="" data-cls="feedback">
+								<a href="#feedback" data-toggle="tab">{$L['heading_title_message']}</a>
+							</li>
+							<li class="" data-cls="help">
+								<a href="#help" data-toggle="tab">{$L['heading_title_help']}</a>
+							</li>
+						</ul>
+					</header>
+					<div class="panel-body cate">
+						<div class="tab-content">
+							<div class="tab-pane active" id="data">
+								
+							</div>
+							<!--<div class="col-md-2 text-center">
+										个人资料
+										<div class="profile-pic ">
+											<img alt="" src="<%= user.userimage %>" width="88" height="86">
+										</div>
+										<button class="btn btn-warn btn-radius" type="button">修改头像</button>
+									</div>-->
+							<script type="text/template" id="datamanage">
+								<div class="wrapper">
+									
+									<div class="col-md-8 data">
+										<h5><%= account.corp_name %></h5>
+										<dl>
+											<dt>{$L['text_legal_representative_desc']}：</dt>
+											<dd><%= account.legal_representative %></dd>
+										</dl>
+										<dl>
+											<dt><%= account.id_type %>:</dt>
+											<dd><%= account.id_number %></dd>
+										</dl>
+										<dl>
+											<dt>{$L['text_registered_address']}：</dt>
+											<dd><%= account.country == "china" ? "{$L['text_china']}" : "{$L['text_china_other']}"%></dd>
+										</dl>
+										<dl>
+											<dt>{$L['text_establishment_date']}：</dt>
+											<dd><%= account.create_time %></dd>
+										</dl>
+										<dl>
+											<dt>{$L['text_business_type']}：</dt>
+											<dd>
+												<div>
+													<h6><%= account.business_type %></h6>
+													<textarea rows="10" cols="80" style="resize:none;" class="form-control" name="business_desc" value="<%= account.business_desc %>" ><%= account.business_desc %></textarea>
+												</div>
+											</dd>
+										</dl>
+										<dl>
+											<dt>{$L['text_business_liaisons']}：</dt>
+											<dd><input name="business_liaisons" type="text" class="form-control" value="<%= account.business_liaisons %>" maxlength="10" ></dd>
+										</dl>
+										<dl>
+											<dt>{$L['text_business_contact_telphone']}：</dt>
+											<dd><input name="business_contact_telphone" type="text" class="form-control" value="<%= account.business_contact_telphone %>"></dd>
+										</dl>
+										<dl>
+											<dt>{$L['text_contact_info']}：</dt>
+											<dd class="left">
+												<dl>
+													<dt>{$L['text_email']}</dt>
+													<dd><input name="corp_email" type="text" class="form-control" value="<%= account.corp_email %>" ></dd>
+												</dl>
+												<dl>
+													<dt>{$L['text_telphone']}</dt>
+													<dd><input name="corp_telphone" type="text" class="form-control" value="<%= account.corp_telphone %>"></dd>
+												</dl>
+												<dl>
+													<dt>{$L['text_fax']}</dt>
+													<dd><input name="corp_fax" type="text" class="form-control" value="<%= account.corp_fax %>"></dd>
+												</dl>
+												<dl>
+													<dt>{$L['text_address']}</dt>
+													<dd><input maxlength="50" name="corp_address" type="text" class="form-control" value="<%= account.corp_address %>"></dd>
+												</dl>
+												<dl class="text-right">
+													<dd><input type="button" id="submit" class="btn btn-warning " value="{$L['change']}"></dd>
+												</dl>
+											</dd>
+										</dl>
+									</div>
+								</div>
+							</script>
+							
+							<div class="tab-pane" id="account">
+								<!--账户安全-->
+								<div class="wrapper">
+
+									<div class="row">
+										<h5>{$L['text_prompt']}!</h5>
+										<div class="account">
+											<header data-toggle="collapse" data-target="#btn">
+												<i class="fa fa-unlock-alt"></i>{$L['text_login_pwd']}
+														<span class="tools pull-right">
+															<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#btn">{$L['text_modify']}</button>
+														 </span>
+											</header>
+											<div id="btn" class="collapseing  collapse">
+												<div>
+													<ul>
+														<li>
+															<label>{$L['text_login_oldpwd']}</label>
+															<input name="old_password" type="password">
+														</li>
+														<li><label>{$L['text_login_newpwd']}</label>
+															<input name="new_password" type="password">
+														</li>
+														<li>
+															<label>{$L['text_login_confirmpwd']}</label>
+															<input name="confirm_password" type="password">
+														</li>
+														<li><input id="update_pwd" class="btn btn-warning" type="submit" value="{$L['confirm_submit']}"></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<div class="account">
+											<header data-toggle="collapse" data-target="#email">
+												<i class="fa fa-envelope"></i>{$L['email_bind']}（<span id="account_show" style="color: #0AB110;"></span>）
+												<span class="tools pull-right" >
+												<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#email" >{$L['text_modify']}</button>
+												</span>
+											</header>
+											
+											<div id="email" class="collapseing collapse">
+												<div id="old_account">
+													<ul>
+														<li id="emails">
+															
+														</li>
+														<script type="text/template" id="dataemails">
+															<label style='margin-left: -76px'>{$L['email_addr']} </label>
+															<%= username %>
+														</script>
+														<li><label>{$L['email_code']}</label>
+															<input type="text" class="" name="email_code">
+															<input type="button" id="getemailcode" class="btn btn-warning btn-xs" value="{$L['get_code']}">
+														</li>
+														<li><input class="btn btn-warning" type="submit" id="checkemail" value="{$L['confirm_submit']}"></li>
+													</ul>
+												</div>
+												<div id="new_account" style="display:none;">
+													<ul>
+														<li id="determine-emails">
+															<label style="margin-left: -76px">{$L['email_new_bind']}</label> 
+															<input type="text" class="" name="new_username">
+														</li>
+														<li><label>{$L['email_code']}</label>
+															<input type="text" class="" name="new_email_code">
+															<input type="button" id="getnewemailcode" class="btn btn-warning btn-xs" value="{$L['get_code']}">
+														</li>
+														<li><input class="btn btn-warning" type="submit" id="check_new_email" value="{$L['confirm_submit']}"></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="message">
+								<div class="wrapper message">
+									<div class="container">
+										<h5>{$L['message_center']}!</h5>
+										<table class="table table-info table-hover">
+											<thead>
+											<tr><th>{$L['message_status']}</th>
+												<th>{$L['message_title']}</th>
+												<th>{$L['message_date']}</th>
+											</tr></thead>
+											<tbody id="messages">
+											
+											</tbody>
+<script type="text/template" id="datamassage">
+	<% _.each(datas, function (val) { %>
+		<tr class="list" data-id="<%= val.id %>">
+			<td class="status"><i class="fa fa <%= val.status == 0 ? "fa-envelope" : "fa-envelope-o"%>"></i><%= val.status == 0 ? "{$L['message_unread']}" : "{$L['message_read']}"%></td>
+			<td><%= val.title %></td>
+			<td><%= val.createtime %></td>
+		</tr>
+		<tr class="none">
+		<td colspan="2"><%= val.content %></td>
+		<td colspan="1" class="text-center"><input data-id="<%= val.id %>" id="delete_message" type="button" class="btn btn-warning btn-sm" value="{$L['message_delete']}"></td>
+		</tr>
+	<% }); %>
+</script>
+
+										</table>
+										<div class="prve">
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+							<div class="tab-pane" id="feedback">
+								<div class="wrapper">
+
+									<div class="container">
+										<div class="col-md-8 data feed">
+											<dl>
+												<dt>{$L['opinion_title']}：</dt>
+												<dd><input maxlength="50" name="title" type="text" class="form-control" class="span4"></dd>
+											</dl>
+											<dl>
+												<dt>{$L['opinion_content']}：</dt>
+												<dd><textarea maxlength="500" class="" name="content" rows="10" cols="80" style="resize:none;"></textarea></dd>
+											</dl>
+											<dl>
+												<dt>{$L['text_contact_info']}：</dt>
+												<dd><input type="text" class="form-control" name="email" class="span4" placeholder="{$L['text_email_notice']}"></dd>
+											</dl>
+											<dl class="text-right">
+												<dd><input id="opinion" class="btn btn-warning " type="submit" value="{$L['opinion_submit']}"></dd>
+											</dl>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="help">
+						<div class="smart-body">
+							
+							<div class="col-xs-4 col-md-2">
+								<ul class="nav nav-tabs default bordered nav-stacked pull-left help-left title_html">
+									<li class="text-center">
+										<a href="javascript:void(0)" aria-expanded="true">
+											<span style="font-size: 16px;">{$L["text_help_center"]}</span>
+										</a>
+									</li>
+
+									<li class="text-center active">
+										<a href="#home" data-toggle="tab" aria-expanded="true">
+											<span class="">Home</span>
+										</a>
+									</li>
+									<li class="text-center">
+										<a href="#profile" data-toggle="tab" aria-expanded="false">
+											<span class=""><i class="icon-man"></i></span>
+											<span class="">Profile</span>
+										</a>
+									</li>
+									<li class="text-center">
+										<a href="#messages" data-toggle="tab" aria-expanded="false">
+											<span class=""><i class="icon-email"></i></span>
+											<span class="">Messages</span>
+										</a>
+									</li>
+									<li class="text-center">
+										<a href="#settings" data-toggle="tab" aria-expanded="false">
+											<span class=""><i class="icon-settings2"></i></span>
+											<span class="">Settings</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+							<div class="col-xs-8 col-md-10">
+								<div class="tab-content help-right content_html">
+									<div class="tab-pane fade active in" id="home">
+										<div class="slimScrollBar" style="position: relative; overflow: hidden; width: auto; height: 120px;">
+											<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 120px;"><div class="scrollable" data-height="120" style="overflow: hidden; width: auto; height: 120px;">
+
+												<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+											consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+											laborum.</p>
+												
+												
+											</div><div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 46.7532px; background: rgb(0, 0, 0);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(51, 51, 51);"></div></div>
+										</div>
+									</div>
+									<div class="tab-pane fade" id="profile">
+											<p>incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+									</div>
+									<div class="tab-pane fade" id="messages">
+											<p>incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+									</div>
+									<div class="tab-pane fade" id="settings">	
+											<p>incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+									</div>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="my_js">
+	<script>
+		<!-- 主页面跳转到此页面选中div -->
+		$(function(){
+			var point = '{$_GET["point"]}';
+			if(point){
+				$('.nav-tabs li').each(function(){
+					if($(this).attr('data-cls') == point){
+						$(this).addClass('active');
+						$(this).siblings().removeClass('active');
+						$('#'+point).addClass('active');
+						$('#'+point).siblings().removeClass('active');
+						return false;
+					}
+				})
+			}
+			
+		});
+	</script>
+    <script>
+		var countdown = 120;
+		function settime(){
+			if (countdown == 0) {
+				$('#getemailcode').attr("disabled",false);    
+				$('#getemailcode').val("{$L['get_code']}"); 
+				countdown = 120; 
+			}else{
+				$('#getemailcode').attr("disabled", true); 
+				$('#getemailcode').val("{$L['re_send']}(" + countdown + ")");
+				setTimeout(function(){
+					settime();
+				},1000)
+				countdown--;
+			}
+		};
+		var datamanage = {
+			datas:{},
+			data_value:{},
+			page_id:"1",
+            page_size:"15",
+			getdata:function(cur){
+				return function(){
+					$.ajaxSettings.async = false;
+					$.getJSON("{:U('Setting/datamanage')}",function(data){
+						cur.datas = data;
+					});
+				}
+			},
+			set_page:function(page_id,page_size){
+                this.page_id   = page_id;
+                this.page_size = page_size;
+            },
+			panel_view_user:function(){
+				this.getdata(this)();
+				var data = this.datas;
+				if(data.ret == 100){
+					var data = data['data'];
+					var con  = _.template($('#datamanage').html());
+					var html = con(data);
+					$('#data').html(html);
+				}else{
+					layer.msg(data.msg,{
+						offset:['260px'],
+						shift :6,
+					});
+					return false;
+				}
+			},
+			panel_view_email:function(){
+				this.getdata(this)();
+				var data = this.datas;
+				if(data.ret == 100){
+					var data = data['data'];
+					var con  = _.template($('#dataemails').html());
+					var html = con(data.SupplyUser);
+					$('#emails').html(html);
+					$('#account_show').html(data.SupplyUser.username);
+				}else{
+					layer.msg(data.msg,{
+						offset:['260px'],
+						shift :6,
+					});
+					return false;
+				}
+			},
+			panel_view_message:function(){
+				var data = {};
+				data['page'] = this.page_id;
+				data['size'] = this.page_size;
+				$.getJSON("{:U('Setting/message_list')}",data,function(data){
+					datas = data['data']['list'];
+					if(data.ret == 100){
+						$('#messages').html( _.template($('#datamassage').html(), datas) );
+						var page_html = page.create({PageID:data['data']['page'],PageSize:data['data']['size'],TotalNum:data['data']['total']}).getHtml();
+						$('#message').find('.prve').html(page_html);
+						$('#message .prve a').on('click',function(){
+							datamanage.set_page($(this).attr('data-page-id'),$(this).attr('data-page-size'));//设置新的page_id变量。
+							datamanage.panel_view_message();
+						});
+						//分页GO操作
+						$('#message .prve .go').on('click',function(){
+							var data_page_id = parseInt($(this).prev().val(),10);
+							var data_page_size = parseInt($("input[name='page_size']").val(),10);
+							if(data_page_id){
+								datamanage.set_page(data_page_id,data_page_size);
+								datamanage.panel_view_message();
+							}
+						});
+					}else{
+						//layer.msg(data.msg,{
+						//	offset:['260px'],
+						//	shift :6,
+						//});
+						return false;
+					}
+				});
+			},
+			panel_view_expand:function(){
+				$.getJSON("{:U('Setting/expand')}",function(data){
+					var title_html = '<li style="background: #eee" class="text-center"><p style="color: #000; padding: 10px 15px;"><span style="font-size: 16px;">{$L["text_help_center"]}</span></p></li>';
+					var content_html = '';					
+					$.each(data.data, function(i,item){
+						if(i == 0){
+							title_html +="<li class='text-center active'>" ;
+							title_html +="<a href='#"+item.aid+"' data-toggle='tab' aria-expanded='true'>";
+							content_html += "<div class='tab-pane fade active in' id='"+item.aid+"'>";
+						}else{
+							title_html +="<li class='text-center'>";
+							title_html +="<a href='#"+item.aid+"' data-toggle='tab' aria-expanded='false'>";
+							content_html += "<div class='tab-pane fade' id='"+item.aid+"'>";
+						}
+						title_html +="<span class=''><i class='icon-"+item.aid+"'></i></span>";
+						title_html +="<span class=''>"+item.title+"</span>";
+						title_html +="</a>";
+						title_html +="</li>";	
+						content_html +=_.unescape(item.content);
+						content_html +="</div>";
+					})
+					$('.title_html').html(title_html);
+					$('.content_html').html(content_html);
+				});
+			},
+			
+			view:function(){
+				this.panel_view_user();
+				this.panel_view_email();
+				this.panel_view_message();
+				this.panel_view_expand();
+			},
+			values:function(name){
+				this.data_value[name] = $('input[name="'+name+'"]').val();
+			},
+			update_date:function(){
+				var data = this.data_value;
+				$.post("{:U('Setting/update_date')}",data, function(data){
+					layer.msg(data.msg,{
+						offset:['260px'],
+						shift :6,
+					});
+				},'json');
+			},
+			update_pwd:function(){
+				var data = this.data_value;
+				$.post("{:U('Setting/update_password')}",data, function(data){
+					if(data.ret == 100 ){
+						layer.msg(data.msg,{
+							offset:['260px'],
+							shift :6,
+						});
+						var _parent = window.parent;
+						_parent.location.reload();
+					}else{
+						layer.msg(data.msg,{
+							offset:['260px'],
+							shift :6,
+						});
+						return false;
+					}
+				},'json');
+			},
+			get_email_code:function(){
+				var	datavalue = this.data_value;
+				$.post("{:U('Setting/getemailcode')}",datavalue, function(data){
+					if(data.ret == 100){
+						layer.msg(data.msg,{
+							offset:['260px'],
+							shift :6,
+						});
+						settime();
+						return false;
+					}else{
+						layer.msg(data.msg,{
+							offset:['260px'],
+							shift :6,
+						});
+						return false;
+					}
+				},'json');
+			},
+			check_email:function(){
+				var datavalue = this.data_value;
+				$.post("{:U('Setting/checkemail')}",datavalue, function(data){
+					if(data.ret == 100){
+						layer.msg(data.msg,{
+							offset:['260px'],
+							shift :6,
+						});
+						if(datavalue['type'] == 1){
+							setTimeout(function(){
+								$('#old_account').hide();
+								$('#new_account').show();
+							}, 2000);
+						}else{
+							setTimeout(function(){
+								window.parent.location.reload();
+							}, 2000);
+						}
+						return false;
+					}else{
+						layer.msg(data.msg,{
+							offset:['260px'],
+							shift :6,
+						});
+						return false;
+					}
+				},'json');
+			},
+			send_opinion:function(){
+				var data = this.data_value;
+				$.post("{:U('Setting/add_opinion')}",data, function(data){
+						layer.msg(data.msg,{
+							offset:['260px'],
+							shift :6,
+						});
+						return false;
+				},'json');
+			},
+			update_status:function(id,a){
+				var data = {};
+				data['id'] = id;
+				$.post("{:U('Setting/update_status')}",data, function(data){
+						if(data.ret == 100){
+							$('.badge', parent.document).html(data['data']['total_count']);
+							$(a).find('.status').html('<i class="fa fa fa-envelope-o"></i>{$L["message_read"]}');
+						}
+				},'json');
+			},
+			delete_message:function(id,a){
+				var data = {};
+				data['id'] = id;
+				$.post("{:U('Setting/delete_message')}",data, function(data){
+						if(data.ret == 100){
+							layer.msg(data.msg,{
+								offset:['260px'],
+								shift :6,
+							});
+							var _parent = window.parent;
+							_parent.location.reload();
+						}
+				},'json');
+			},
+		}
+		$(function(){
+            datamanage.view();
+			$('#submit').live('click',function() {
+				datamanage.values('business_liaisons');
+				datamanage.values('business_contact_telphone');
+				datamanage.values('corp_email');
+				datamanage.values('corp_telphone');
+				datamanage.values('corp_fax');
+				datamanage.values('corp_address');
+				datamanage.data_value['business_desc'] = $('textarea[name="business_desc"]').val();
+				if(checkeinput_length('business_liaisons','','10','{$L["error_business_liaisons"]}') == false){
+					return false;
+				}
+				/*
+				if(checkeinput('phone','business_contact_telphone') == false){
+					return false;
+				}
+				if(checkeinput('email','corp_email') == false){
+					return false;
+				}
+				if(checkeinput('tel','corp_telphone') == false){
+					return false;
+				}
+				if(checkeinput_length('corp_email','','','{$L["error_email"]}') == false){
+					return false;
+				}
+				*/
+				if(checkeinput_length('business_contact_telphone','','','{$L["error_business_contact_telphone"]}') == false){
+					return false;
+				}
+				if(checkeinput('email','corp_email') == false){
+					return false;
+				}
+				if(checkeinput_length('corp_telphone','','','{$L["error_telphone"]}') == false){
+					return false;
+				}
+				if(checkeinput_length('corp_address','','50','{$L["error_address"]}') == false){
+					return false;
+				}
+				datamanage.update_date();
+			})
+			$('#update_pwd').on('click',function(){
+				datamanage.values('old_password');
+				datamanage.values('new_password');
+				datamanage.values('confirm_password');
+				if(checkeinput_length('old_password','','','{$L["error_old_password"]}') == false){
+					return false;
+				}
+				if(checkeinput_length('new_password','6','20','{$L["error_new_password"]}') == false){
+					return false;
+				}
+				if(checkeinput_length('confirm_password','6','20','{$L["error_confirm_password"]}') == false){
+					return false;
+				}
+				datamanage.update_pwd();
+			})
+			$('#getemailcode').on('click',function(){
+				datamanage.data_value['type'] = 1;
+				datamanage.get_email_code();
+			})
+			$('#getnewemailcode').on('click',function(){
+				datamanage.values('new_username');
+				datamanage.data_value['type'] = 2;
+				if(checkeinput('email','new_username') == false){
+					return false;
+				}
+				datamanage.get_email_code();
+			})
+			$('#checkemail').on('click',function(){
+				datamanage.values('email_code');
+				datamanage.data_value['type'] = 1;
+				if(checkeinput_length('email_code','','','{$L["error_email_code"]}') == false){
+					return false;
+				}
+				datamanage.check_email();
+			})
+			$('#check_new_email').on('click',function(){
+				datamanage.values('new_username');
+				datamanage.values('new_email_code');
+				datamanage.data_value['type'] = 2;
+				if(checkeinput_length('new_email_code','','','{$L["error_email_code"]}') == false){
+					return false;
+				}
+				datamanage.check_email();
+			})
+			$('#opinion').on('click',function(){
+				datamanage.values('title');
+				datamanage.values('email');
+				datamanage.data_value['content'] = $('textarea[name="content"]').val();
+				if(checkeinput_length('title','','50','{$L["error_title"]}') == false){
+					return false;
+				}
+				if(checketextarea_length('content','','500','{$L["error_content"]}') == false){
+					return false;
+				}
+				if(checkeinput('email','email') == false){
+					return false;
+				}
+				datamanage.send_opinion();
+			})
+			$('.list').live('click',function(){
+				var id = $(this).attr('data-id');
+				if($(this).next().hasClass('none')){
+					$(this).next().removeClass('none');
+					datamanage.update_status(id,this);
+				}else{
+					$(this).next().addClass('none');
+				}
+			})
+			$('#delete_message').live('click',function(){
+				var id = $(this).attr('data-id');
+				layer.confirm('{$L["text_delete_notice"]}', {
+				  btn: ['{$L["text_sure"]}','{$L["text_cancel"]}'] //按钮
+				}, function(){
+					datamanage.delete_message(id);
+				})
+			})
+		});
+        
+    </script>
+</block>

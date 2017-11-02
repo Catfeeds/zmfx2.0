@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>模板设置</title>
+</head>
+<!-- start -->
+
+<style>
+  .minbox { margin: 20px;}
+  .minbox .index-set h4 { padding-left: 10px;}
+  .minbox .index-set { margin-top: 20px;}
+  .datalsit { padding: 10px; background: #FFF; margin: 5px 40px; border: 1px solid #C7C7C7;}
+  .datalsit table { border: 1px solid #787878;}
+  .datalsit table caption { text-align: left; margin-bottom: 10px;}
+  .datalsit table th:last-child { border-right: none;}
+  .datalsit table th { background: #E3E3E3; padding: 5px; font-weight: initial; border-bottom: 1px solid #787878; border-right: 1px solid #787878;}
+  .datalsit table td { border-bottom: 1px solid #787878; border-right: 1px solid #787878; padding: 3px 0;}
+  .datalsit table td:last-child { border-right: none;}
+  .datalsit table tr:last-child td { border-bottom: none;}
+  .datalsit table td select { width: 100px; padding: 2px 5px;}
+  .editTest { display: none;}
+  .set-icon { width: 20px; height: 20px; display: inline-block; line-height: 20px; cursor: pointer; background: #52D66C; border: 1px solid #A2B387; text-align: center; border-radius: 30px; -webkit-border-radius: 30px; -moz-border-radius: 30px; -ms-border-radius: 30px; -o-border-radius: 30px;}
+  .edits,.save { cursor: pointer;}
+</style>
+
+<div class="page-main edit">
+  <div class="subMenu">
+    <h3>当前操作：{$title}模块设置</h3>
+  </div>
+  <div class="minbox">
+    <div class="index-set">
+      <h4><span class="set-icon">-</span> 首页配置</h4>
+      <div class="datalsit">
+        <table cellpadding="0"cellspacing="0" class="text-center listTbl">
+          <caption>楼层主题名称</caption>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>中文标题</th>
+              <th>副标题</th>
+              <th>字体</th>
+              <th>是否展示</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+			<volist name="indexData" id="vo">
+            <tr>
+              <td>{$vo['position_id']}</td>
+              <td>
+                <span class="editTitle">{$vo['title']}</span>
+                <input type="text" name="title" class="editTest" value="{$vo['title']}">
+              </td>
+              <td>
+                <span class="editTitle">{$vo['english_title']}</span>
+                <input type="text" name="english_title" class="editTest" value="{$vo['english_title']}">
+              </td>
+              <td>
+                <select name="font" class="font">
+                  <option <eq name="vo['font']" value="宋体" > selected </eq> value="宋体">宋体</option>
+                  <option <eq name="vo['font']" value="微软雅黑" > selected </eq> value="微软雅黑">微软雅黑</option>
+                  <option <eq name="vo['font']" value="黑体" > selected </eq>  value="黑体">黑体</option>
+                </select>
+              </td>
+              <td>
+                <select name="is_show" class="is_show">
+                  <option <eq name="vo['is_show']" value="1" > selected </eq> value="1">是</option>
+                  <option <eq name="vo['is_show']" value="0" > selected </eq> value="0">否</option>
+                </select>
+              </td>
+              <td>
+				<span class="edits">修改</span> <span class="save">保存</span>
+				<if condition="$vo['type'] eq 2">
+				<span class="contents"><a href="{:U('/Admin/System/templateContent',array('position_id'=>$vo['position_id']))}">内容编辑</a></span>
+				</if>
+			  </td>
+            </tr>
+			</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+	
+	<br/>
+    <neq name="template_id" value="10">
+        <div class="info">
+            <div class="title">导航风格展示设置:</div>
+            <input type="radio" class="radio_style" name="radio_style_tip"  value="0" <eq name="nav_is_pic['config_value']" value="0" > checked="" </eq>>二级导航列表展示
+            <input type="radio" class="radio_style" name="radio_style_tip"  value="1" <eq name="nav_is_pic['config_value']" value="1" > checked="" </eq>>二级导航带图片展示
+        </div>
+    <else />
+        <input type="hidden" name="radio_style_tip" value="1" />
+    </neq>
+
+  </div>
+</div>
+
+
+
+<script>
+	$(".radio_style").change(function() {
+			$.ajax({
+				type: "post",
+				url : "{:U('Admin/System/b2c_nav_is_pic/')}",
+				data: {nav_is_pic:$(this).val()},
+				dataType:'json', 
+				success: function(res){
+						if(res.status){
+							 layer.msg(res.msg,{
+								shift :6,
+							});
+						} 
+					},
+			});
+		});
+
+//发送ajax请求更新数据
+function updata(a){
+	var position_id	= a.parents('tr').children('td:eq(0)').html();
+	var title	= a.parents('tr').children('td:eq(1)').children('.editTest').val();
+	var english_title	= a.parents('tr').children('td:eq(2)').children('.editTest').val();
+	var font	= a.parents('tr').children('td:eq(3)').children('select[name="font"]').val();
+	var is_show	= a.parents('tr').children('td:eq(4)').children('select[name="is_show"]').val();
+	var data	= {position_id:position_id,title:title,english_title:english_title,font:font,is_show:is_show};
+	$.ajax({
+		type: "post",
+		url : "{:U('Admin/System/b2cIndexSetting/')}",
+		data: data,
+		dataType:'json', 
+		success: function(res){
+			if(res.status == 100 ){
+				a.parents('tr').children('td:eq(1)').children('.editTest').val(title);
+				a.parents('tr').children('td:eq(1)').children('.editTitle').html(title);
+				a.parents('tr').children('td:eq(2)').children('.editTest').val(english_title);
+				a.parents('tr').children('td:eq(2)').children('.editTitle').html(english_title);
+				a.parents('tr').find('.editTitle').show();
+				a.parents('tr').find('.editTest').hide();
+			}else{
+				layer.msg(res.msg,{
+					shift :6,
+					icon: 5
+				});
+				return false;
+			}
+		},
+	});
+
+}
+$(function(){
+    $('.set-icon').bind('click', function(){
+      var Tables = $(this).parent('h4').next('.datalsit');
+      if(Tables.css('display') == "block"){
+        Tables.css('display','none');
+        $(this).html('+');
+      }else{
+        Tables.css('display','block');
+        $(this).html('-');
+      }
+    });
+    $('.edits').bind('click', function(){
+		$(this).parents('tr').find('.editTitle').toggle();
+		$(this).parents('tr').find('.editTest').toggle();
+    });
+	//保存数据
+    $('.save').bind('click', function(){
+		var a = $(this);
+		updata(a);
+	});
+	//更改字体保存数据
+	$('.font').change(function(){
+		var a = $(this);
+		updata(a);
+	})
+	//更改展示状态保存数据
+	$('.is_show').change(function(){
+		var a = $(this);
+		updata(a);
+	})
+	
+  });
+</script>
+
+<!-- end -->

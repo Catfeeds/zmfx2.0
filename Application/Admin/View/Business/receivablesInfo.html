@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>应收款信息</title>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：收款记录操作</h3>
+    </div>
+    <form action"{:U('Admin/Business/receivablesInfo?receivables_id = '.$info['receivables_id'])}" method="post">
+    	<div style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">订单编号:</div>
+                <span>{$info.order_sn}</span>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">当前期数:</div>
+				<span>第{$info.period_current}期</span>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">应支付金额:</div>
+                <span>{$info.receivables_price}</span>
+            </div>
+            <div class="info">
+                <div class="title">已支付金额:</div>
+                <input name="payment_price" type="text" value="{$info.payment_price}">
+            </div>
+            <div class="info">
+                <div class="title">最后支付时间:</div>
+                <span>{$info.payment_time|date="Y-m-d H:i",###}</span>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">备注:</div>
+                <textarea name="receivables_note"></textarea>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="确认支付金额">
+                <input type="reset" class="button fl ml10" value="重置">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

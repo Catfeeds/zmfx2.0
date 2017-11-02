@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>付款记录</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.css" />
+<script type="text/javascript" src="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/datepicker-tw.js"></script>
+<script type="text/javascript">
+$(function() {
+	$( "#from" ).datepicker($.datepicker.regional[ "zh-TW" ] );
+});
+</script>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：付款记录</h3>
+    </div>
+    <div class="filter">
+    <form action="{:U('Admin/Business/apayablelistlist')}" method="get">
+        <div class="fl">订单编号：</div>
+        <input class="input" type="text" name="order_sn" value="{$order_sn}"/>
+		<div class="fl">收款时间：</div>
+		<input type='text' name='receipt_time' class='datepicker' id="from" value="{$receipt_time}" >
+		<div class="fl">收款状态：</div>
+		<select name='receipt_status'>
+			<option value="3" <eq name='receipt_status' value="3">selected</eq>>全部</option>
+			<option value="0" <eq name='receipt_status' value="0">selected</eq>>未支付</option>
+			<option value="1" <eq name='receipt_status' value="1">selected</eq>>已支付</option>
+			<option value="2" <eq name='receipt_status' value="2">selected</eq>>已审核</option>
+		</select>
+        <div class="fl">&nbsp;</div>
+        <input class="button" type="submit" value="查询" />
+    </form>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+            <th>付款ID</th>
+            <th>订单编号</th>
+            <th>付款金额</th>
+            <th>折扣金额</th>
+            <th>付款方式</th>
+            <th>付款时间</th>
+            <th>付款状态</th>
+            <th>操作</th>
+        </tr>
+        <volist name="list" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+            <td>{$vo.payment_id}</td>
+            <td>{$vo.order_sn}</td>
+            <td>{$vo.payment_price}</td>
+            <td>{$vo.discount_price}</td>
+            <td>{$vo.mode_name}</td>
+            <td>{$vo.order_price}{$vo.create_time|date="Y-m-d H:i",###}</td>
+            <td>
+                <eq name="vo.payment_status" value="0">待支付</eq>
+                <eq name="vo.payment_status" value="1">已支付</eq>
+                <eq name="vo.payment_status" value="2">已审核</eq>
+            </td>
+            <td>
+            	<a href="{:U('Admin/Business/payMoney?payment_id='.$vo['payment_id'])}" >查看</a>
+            </td>
+        </tr>
+        </volist>
+    </table>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>

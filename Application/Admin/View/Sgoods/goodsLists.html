@@ -1,0 +1,261 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品列表</title>
+<script type="text/javascript" src="__JS__/disGoods.js"></script>
+</head>
+
+<style>
+.opention{
+	width:100%;
+	height:25px;
+	margin-top:25px;
+	line-height:25px;
+	font-size:12px;
+}
+.opention .cut{
+	border: 1px solid;
+    cursor: pointer;
+    float: left;
+    margin: 0 20px;
+    text-align: center;
+    width: 8%;
+	background:#E1E1E1;
+	border:1px solid #ADADAD;
+}
+.opention .cut a{
+	color:#000;
+}
+.opention .cut:hover{
+	background:#E1FBFF;
+}
+.chongzhi{
+	height: 20px !important;
+    line-height: 20px !important;
+	width:35px;
+	text-align:center;
+}
+
+
+</style>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：产品列表</h3>
+        <!--<ul>
+            <volist name="menuList[104]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>-->
+    </div>
+	<div class="filter">
+
+	<form action="{$my_all_param.submit_url}" method="get">
+		<div class="fl">产品编号:&nbsp;</div>
+		<input type='text' name='goods_sn' value="{$_GET['goods_sn']}">
+		<div class="fl">产品名称:&nbsp;</div>
+		<input type='text' name='goods_name' value="{$_GET['goods_name']}">
+		<div class="fl">产品分类:&nbsp;</div>
+		<div class="info">
+			<input id="my_id_1" type="hidden" name="search_id" value="{$search_id}">
+			<volist name="select_lists" id="na">
+				<select rank="{$na['rank']}" onChange="ajax_get_my_child(1,this)">
+					<volist name="na.lists" id="vo">
+						<option value="{$vo['id']}" <if condition="$vo['id'] eq $na['checked']['id']">selected</if>>{$vo['name']}</option>
+					</volist>
+				</select>
+			</volist>
+		</div>
+
+		<div class="fl">上架状态：</div>
+		<select name="sell_status" class="fl">
+			<option value="0">全部产品</option>
+			<option <?php if($_GET['sell_status']==1) echo 'selected'; ?>	value="1" >已上架</option>
+			<option <?php if($_GET['sell_status']==2) echo 'selected'; ?>	value="2" >未上架</option>
+        </select>
+
+        <div class="fl">&nbsp;</div>
+		<div class="f1" style="float:left;">
+			<input class="button" type="submit" value="查询" />
+		</div>
+	</form>
+	
+	</div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+        <tr class="top">
+			<th width="5%"><input class='MySelfChoice' type="checkbox"></th>		
+            <th width="5%">产品ID</th>
+            <th width="15%">公司款号</th>			
+            <th width="9%">产品名称</th>
+            <th width="9%">产品分类</th>
+            <th width="9%">上架状态</th>
+            <th width="9%">销售价格</th>
+			<th width="9%">产品价格</th>
+            <th width="10%">操作</th>
+        </tr>
+ 
+ 
+        <volist name="dataList" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+			<td attr_id='{$vo.goods_id}'><input type="checkbox" name="SzzmzbBanFanId" class="productId" value="{$vo.goods_id}"></td>
+            <td>{$vo.goods_id}</td>
+            <td><a href="/Admin/Zgoods/goodsInfo/goods_id/{$vo.goods_id}">{$vo.goods_sn}</a></td>
+            <td>{$vo.goods_name}</td>
+            <td>{$vo.ca_name}</td>
+            <td>
+				{$vo.sell_status_name}
+			</td>
+            <td>{$vo.goods_price}</td>
+			<td>{$vo.caigou_price}</td>
+            <td>
+				<?php if($vo['sell_status']!=0){ ?>
+                	<a class='MySelfOneButtonSun' g_type="2" goods_id="{$vo['goods_id']}">下架</a>
+				<?php }else{ ?>
+                	<a class='MySelfOneButtonSun' g_type="1" goods_id="{$vo['goods_id']}">上架</a>
+				<?php } ?>
+				<a target="_bank" href="{:U('/Home/Goods/'.$detail_action.'/',array('goods_type'=>$vo['goods_type'],'gid'=>$vo['goods_id']))}">查看</a>
+				<span>无权修改</span>
+				<!--<a href="/Admin/Zgoods/goodsInfo/goods_id/{$vo.goods_id}">修改</a>-->
+            </td>
+        </tr>
+        </volist>
+		
+		
+		
+		
+		
+    </table>
+	<div class="opention">
+
+		<div class="cut MySelfOneButtonSun" g_type="3">批量上架</div>
+		<div class="cut MySelfOneButtonSun" g_type="4">批量下架</div>
+		<div class="cut MySelfOneButtonSun" g_type="5">一键上架</div>
+		<div class="cut MySelfOneButtonSun" g_type="6">一键下架</div>
+		<p style="color:red">*只更新当前已上架产品</p>
+	</div>
+    <div class="page">{$page}</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		/**
+		 * 商品上下架操作
+		 * @author 孙阳
+		 * @datetime 2017/11/1 13:51
+		 */
+		$(".MySelfChoice").click(function(){
+			if($("input[class='MySelfChoice']").is(':checked')){
+				$(".productId").attr("checked",true);
+			}else{
+				$(".productId").attr("checked",false);
+			}
+		});
+		$(".MySelfOneButtonSun").click(function(){
+			//1上架 0下架
+			//-1代表 一键上下架
+			var g_type = parseInt($(this).attr("g_type"));
+			var obj_data = new Array();
+			var g_status = 0;
+			switch (g_type){
+				case 1:
+					var goods_id = $(this).attr("goods_id");
+					g_status = 1;
+					obj_data.push(goods_id);
+					break;
+				case 2:
+					var goods_id = $(this).attr("goods_id");
+					g_status = 0;
+					obj_data.push(goods_id);
+					break;
+				case 3:
+					g_status = 1;
+					$("input:checkbox[name='SzzmzbBanFanId']:checked").each(function(){
+						obj_data.push($(this).val());
+					});
+					break;
+				case 4:
+					g_status = 0;
+					$("input:checkbox[name='SzzmzbBanFanId']:checked").each(function(){
+						obj_data.push($(this).val());
+					});
+					break;
+				case 5:
+					g_status = 1;
+					obj_data.push(-1);
+					break;
+				case 6:
+					g_status = 0;
+					obj_data.push(-1);
+					break;
+			}
+			ajax_up_gstatus(obj_data,g_status);
+		});
+	});
+
+	function ajax_up_gstatus(obj,sell_status){
+		var length = obj.length;
+		if(length==0){
+			alert('请选择商品ID，商品ID不能为空！');
+			return;
+		}
+		var index = layer.load(0, {		 shade: [0.2,'#fff'] 	});
+		$.ajax({
+			url: '/Admin/Sgoods/ajaxUpdateGoodsStatus',
+			type: 'POST',
+			dataType: 'json',
+			data: {goods_id:obj,sell_status:sell_status},
+			success: function(r){
+				layer.close(index);
+				if(r.status==100){
+					window.location.reload();
+				}
+			}
+		});
+	}
+	/**
+	 * @param num
+	 * @param obj
+	 * @author 孙阳
+	 * @datetime 2017/11/1 9:40
+	 */
+	function ajax_get_my_child(num,obj){
+		//num用于一个页面存在多个多级分类的情况使用的
+		if(!num){
+			num = 1;
+		}
+		var _this = $(obj);
+		var ajax_url = '{:U("Admin/Sgoods/ajaxGetParents")}';
+		var select_id;
+		var obj_data = {
+			pid:_this.val(),
+		};
+		$.get(ajax_url,obj_data,function(res){
+			var html_string = '<select name="type" onchange="ajax_get_my_child(1,this)">';
+			html_string +='<option value="">请选择</option>';
+			if(res.status==100){
+				for(var i=0;i<res.count;i++){
+					html_string += '<option value="'+res.lists[i].pid+'">'+res.lists[i].name+'</option>';
+				}
+			}
+			html_string +='</select>';
+			_this.nextAll().remove();
+			if(res.count>0){
+				_this.after(html_string);
+			}
+			if(obj_data.pid>0){
+				select_id = obj_data.pid;
+			}else{
+				if(_this.attr('rank')==1){
+					select_id = 0;
+				}else{
+					select_id = _this.prev().val();
+				}
+			}
+			$('#my_id_'+num).val(select_id);
+		});
+	}
+</script>
+</body>
+
+
+</html>

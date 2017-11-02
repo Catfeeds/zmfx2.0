@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>编辑产品分类</title>
+<script type="text/javascript" src="__JS__/categoryEdit.js"></script>
+<script type="text/javascript" src="__JS__/jquery.sortable.js"></script>
+<link rel="stylesheet" type="text/css" href="__CSS__/html5sortable.css" /> 
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：编辑产品分类</h3>
+    </div>
+    <form action="{:U('Admin/Goods/productCatInfo')}" method="post">
+        <div style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">分类名称:</div>
+                <input type="text" name="category_name" value="{$info.category_name}">
+            </div>
+            <div class="info">
+                <div class="title">上级分类:</div>{$topCatName}
+            </div>
+            <!--成品属性:-->
+            <div class="info specDiv">
+                <div class="title">成品属性:</div>
+                <div class="specDivContent specDivContent_1 gbin1-list sortable">
+					<volist name="productAttr" id="vo">
+						<li data-id="{$vo.attr_id}">{$vo.attr_name}<input type="hidden" name="attr[{$vo.type}][]" value="{$vo.attr_id}" /></li>
+					</volist>
+					<a class="btn_common addCatAttr" data-type="1" href="{:U('Admin/Goods/productCatAttributeEdit')}">添加</a>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <!--成品规格:-->
+            <div class="info specDiv">
+                <div class="title">成品规格:</div>
+                <div class="specDivContent specDivContent_2">
+	                <volist name="specificAttr" id="vo">
+						<li data-id="{$vo.attr_id}">{$vo.attr_name}<input type="hidden" name="attr[{$vo.type}][]" value="{$vo.attr_id}" /></li>
+					</volist>
+					<div class="sortable"></div>
+					<!-- 成品规格属性少于3个时，显示添加按钮 -->
+					<lt name="specificAttr|count" value="3">
+						<a class="btn_common addCatAttr" data-type="2" href="{:U('Admin/Goods/productCatAttributeEdit')}">添加</a>
+                	</lt>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <!--金工石属性:-->
+            <div class="info specDiv">
+                <div class="title">金工石属性:</div>
+                <div class="specDivContent specDivContent_3 gbin1-list sortable">
+					<volist name="jgsAttr" id="vo">
+						<li data-id="{$vo.attr_id}">{$vo.attr_name}<input type="hidden" name="attr[{$vo.type}][]" value="{$vo.attr_id}" /></li>
+					</volist>
+					<a class="btn_common addCatAttr" data-type="3" href="{:U('Admin/Goods/productCatAttributeEdit')}">添加</a>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="hidden" value="{$id}" name="id" />
+                <input type="submit" class="button fl" value="保存">
+                <!--<input type="reset" class="button fl ml10" value="重置"> -->
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+	$('.gbin1-list').sortable();	//规格不能修改顺序
+</script>
+</html>

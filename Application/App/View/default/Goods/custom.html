@@ -1,0 +1,288 @@
+<script src="__JS__/m_back.js"></script>
+<script src="__JS__/common.js"></script>
+<include file="Public:header" />
+<script src="__JS__/public.js"></script> 
+<body class="product-bg">
+
+
+
+
+<div class="hidden_body">
+	<!--头部-->
+    <header class="header sub-header text-center">
+    	个性定制专区
+        <a onclick="history.go(-1)" class="pull-left" style="margin-top: 12px;"><i class="glyphicon glyphicon-chevron-left"></i></a>
+        <a   id="search-right" class="pull-right">搜索</a>
+    </header>
+    <!--内容-->
+	
+    <div class="container" id="maincont">
+    	<div class="product text-center">
+        	<ul id="dataList">
+		 <if condition="$data">
+			<volist name="data" id="vo">
+            	<li>
+                	<div class="product-img"><a   href="{:U('/Goods/goodsInfo/goods_id/'.$vo['goods_id'].'/type/4')}"     attr_id="{$vo.goods_id}"><img src="{$vo.thumb}" alt="产品图片" width="140" height="140"></a></div>
+                    <div class="info">
+                    	<a href="{:U('/Goods/goodsInfo/goods_id/'.$vo['goods_id'].'/type/4')}" >
+                            <p>{$vo.goods_name|msubstr=0,10,'utf-8'}</p>
+                            <em>&yen;
+								<in name="vo['activity_status']" value="0,1">
+									{$vo.activity_price}
+								<else/>
+									{$vo.goods_price}
+								</in>
+							</em>
+                    	</a>
+                    </div>
+				</li>
+			</volist>
+		</if>					 
+            </ul>
+   <input type="hidden" class="count_page_input" data_num="{$data[0].num}" />
+        </div>
+			<div  id="pullUp" style="text-align:center">
+			 <if condition="$data[0]['num'] lt 10">
+				<span   style="font-size:18px" >没有更多数据了...</span>
+			<else />
+				<span   style="font-size:18px" >下拉搜索更多数据...</span>
+			</if>
+		    </div>
+	</div>
+	<!-- Search alert -->
+	<div class="container-paluid" id="search-alert" style="display: none">
+    	<div class="panel panel-default custom-product-search">
+		<if condition="$cateAttrs">
+			<volist name="cateAttrs" id="vo">
+			<div class="panel-heading">
+				<p class="ptitle">{$vo.attr_name}：</p>	
+			</div>
+			<div class="panel-body">
+				<div class="gmap-street-view" style="width: 100%;">
+				<if condition="$vo['value']">
+					<volist name="vo['value']" id="v">
+					<!--class="btn btn-default navbar-btn btn-primary"-->
+						<a attr_id="{$v.attr_id}"  attr_code="{$v.attr_code}"   class="btn btn-default navbar-btn" >
+							{$v.attr_value_name}
+						</a>
+					</volist>
+				 </if>
+				</div>
+			</div>
+			</volist>
+		</if>
+		</div>
+		<div class="searchsub">
+			<div class="col-xs-6">
+				<button type="button" class="btn btn-primary exit-button btn-block"  onclick="submitData()" >搜索</button>
+			</div>
+			<div class="col-xs-6">
+				<button   class="btn btn-primary exit-button btn-block" onclick="reset()" >重置</button>
+			</div>
+		</div>
+	</div>
+	<!-- Search alert END //-->
+	
+
+</div>
+
+<div class="iframe_body"></div>
+
+</body>
+<script>
+		var attr_id = [];
+		var attr_code = [];
+		var page =1;
+		var submit_data_page='';
+ 		var attr_id_strs = '';		
+		setCookie('type_custom_attr_id','');
+		$(function(){
+			/* 条件选择样式 */
+			$(".gmap-street-view a").bind("click",function(){
+				if($(this).is('.btn-primary') == true){
+					$(this).removeClass('btn-primary');
+				}else{
+					$(this).addClass("btn-primary");
+				}
+			});
+			
+			/* 搜索切换 */
+			$("#search-right").click(function(){
+				if($(this).text() == "取消"){
+					 $("#search-alert").fadeOut("fast");
+					$("#maincont").fadeIn();
+					$(this).text("搜索");
+				}else{
+					$("#search-alert").fadeIn();
+					$("#maincont").fadeOut("fast");
+					$(this).text("取消");
+				}
+			});
+		});	
+		
+		/* 重置*/
+		function reset(){
+				 window.location.reload();
+		}	
+		
+		function submitData(page){
+			var attr_id_str='';
+			/* 准备数据	*/
+			$(".btn.btn-default.navbar-btn.btn-primary").each(function(i){
+					if(getCookie('type_custom_attr_id')==$(this).attr("attr_id") && i>0){
+						attr_id_str +=$(this).attr("attr_code")+',';
+					}else{
+						attr_id_str +='--'+$(this).attr("attr_id")+','+$(this).attr("attr_code")+',';
+					}
+					setCookie('type_custom_attr_id',$(this).attr("attr_id"));
+			});
+
+			if(page==null){  submit_data_page='1';}
+			/* 当为空时，显示默认数据*/
+			$.post("/Goods/customcall",
+				{
+					Action:"post",
+					page:page,
+					//sortType:getCookie('type'),
+					//sortValue:getCookie(getCookie('type')),
+					//n:getCookie('n'),
+					attr_id:attr_id_str,
+					//attr_code:attr_code,
+					categroyId:'60',
+					goodsType:'4'
+					//series_id:getCookie('series_id')
+					//attribute_id:getCookie('attribute_id'),
+				},
+				refData
+			);
+		}
+		
+		function refData(data){
+			var html = "";
+			if(data){
+				if(data.data){
+					data.data.forEach(function(e){
+						html += "<li>";
+						html += "<div class='product-img'><a href='/Goods/goodsInfo/goods_id/"+e.goods_id+"/type/"+e.goods_type+"'    attr_id="+e.goods_id+"><img src='"+e.thumb+"' width='140' height='140'/></a></div>";
+						html += "<div class='info'><a href='/Goods/goodsInfo/goods_id/"+e.goods_id+"/type/"+e.goods_type+"' ><p>"+e.goods_name+"</p></a>";
+						if(e.activity_status == '0' || e.activity_status == '1' ){
+							html += "<em>&yen;"+e.activity_price+"</em>";
+						}else{
+							html += "<em>&yen;"+e.goods_price+"</em>";
+						}
+						html += "</div></a></div>";
+						html += "</li>";
+					}); 
+				}
+				//if(data.tip=='12'){$("#dataList").html(html); }
+				if(data.tip=='2' || data.tip=='12'){
+					$("#dataList").append(html); 
+				}else{
+					tipshtml="";
+					if(data.data.length<10){
+						tipshtml+=" <span   style='font-size:18px' >没有更多数据了...</span>";
+					}else{
+						tipshtml+=" <span   style='font-size:18px' >下拉搜索更多数据...</span>";
+					}
+					$("#pullUp").html(tipshtml);
+					$("#dataList").html(html); 
+				}
+			}else{
+				/*
+				var class_length=$('.info').length;
+				if(class_length){
+					var class_length_num=class_length%10;
+					var results=/^[1-9]+/.test(class_length_num)?"1":"2";
+					if(results==2){
+						$("#dataList").html('');
+					}
+				}
+				*/
+				//if(attr_id && page==2 ){	$("#dataList").html('');	}		 
+				//datahtml="";
+				html+=" <span   style='font-size:18px' >搜索不到更多数据了...</span>"
+				$("#pullUp").html(html);
+				//if(data.tip=='2'){	}else{	$("#dataList").html(datahtml);	}
+			}
+				$("#search-alert").fadeOut();
+				$("#maincont").fadeIn();
+				$("#search-right").text("搜索");
+		}
+		
+		
+		window.onscroll = function () { 
+			if (getScrollTop() + getClientHeight() == getScrollHeight()) { 
+				var tippage=$("#search-right").text();
+				if(tippage=="取消"){return false;}
+				var count_page=$(".count_page_input").attr('data_num');//当前第
+				if(getScrollTop()<200){return false;}
+				if(submit_data_page==1){page=1; submit_data_page='2';}
+				submitData(page++);
+			} 
+		}
+	/*
+	
+	 <?php if($goodsid){	echo " $('.hidden_body').empty();		a_href_good_info(1,$goodsid,4)";	}?>		//链接跳转。
+	
+		function tips_id(obj){
+			setCookie('last_save_data_attr_id',$(obj).attr("attr_id"));
+		}
+
+		//隐藏iframe代码、
+		var a_href_good_info_html='';
+		var a_href_good_info_html_top='';
+		function a_href_good_info(obj,id,type){
+			if(obj==1){
+				a_href_good_info_html_top=249;
+			}else{
+				a_href_good_info_html_top=($(obj).offset().top);
+			}
+			a_href_good_info_html='<iframe   name="zhidao" id="iframepage" src="/Goods/goodsInfo/goods_id/'+id+'/type/'+type+'.html" frameborder="0" style="margin-top:-50px;width:100%;height:100%;display:block;"     marginheight="0"     ></iframe>';
+			 $(".hidden_body").fadeOut("fast");					//隐藏
+			 $(".iframe_body").html(a_href_good_info_html);
+			 $(".iframe_body").removeAttr("style");
+	 		 $(document).scrollTop(0);
+		}
+		
+		//展示代码。
+		function history_go_this(){
+			<?php  $keyword=$_SESSION["GOODS_SEARCHLIST_KEYWORD_FOR"];	if($goodsid && empty($car_goodsid)){	echo " window.location.href='/Goods/searchList.html?keyword=$keyword ';";	}elseif($car_goodsid){		echo " window.location.href='/cart';";				}else{	echo " $('.hidden_body').fadeIn();	$('.iframe_body').fadeOut('fast');$(document).scrollTop(a_href_good_info_html_top-248);";	}?>
+		}
+		
+		
+		function href_url(url_id){
+			window.location.href=url_id;
+		}
+		
+		
+		
+		详情页。
+		<if condition="$goodsInfo['goods_type'] eq 4">
+			 <a onclick="parent.window.history_go_this();"  class="pull-left">
+		<else />	
+			 <a onclick="history.go(-1)"  class="pull-left">
+		</if>
+		
+		
+		
+		
+		
+		*/
+		
+		
+ 
+ 
+ 
+		
+		
+		
+		
+		
+		
+		
+ 
+
+ 	
+	
+</script>
+</html>

@@ -1,0 +1,47 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<style>
+  .order-state { width: 500px; margin: 80px auto;}
+  .order-box { width: 360px; margin: 0 auto; padding: 20px;}
+  .order-box dl dt { float: left;}
+  .order-box dl dd { padding-left: 50px; color: #666; margin-bottom: 10px;}
+  .order-box dd h2 { margin: 5px 0; font-weight: 500; color: #333;}
+  .order-box dd button { width: 75px; border: 1px solid #7D7B7A; background: #FFF; color: #333; padding: 4px 8px; border-radius: 2px; cursor: pointer; margin-right: 10px;}
+  .Method-pay { border-top: 1px solid #CCC; padding: 18px;}
+  .Method-pay .pay { width: 100px; font-size: 16px; float: left;}
+  .Method-pay ul { float: left; border-left: 1px solid #ccc; padding-left: 30px;}
+  .Method-pay ul li { width: 240px; float: left; line-height: 25px;}
+  .Method-pay li p { padding-left: 20px;}
+  .Method-pay .clear { clear: both;}
+  .Method-pay .paydata { margin-top: 10px;}
+  .Method-pay .radio-pay { cursor: pointer;}
+</style>
+<body>
+  <div class="order-state">
+	<if condition="$result">
+    <div class="order-box">
+      <dl>
+        <dt><img src="/Public/images/succeed.png" alt=""></dt>
+        <dd><h2>支付成功！</h2></dd>
+        <dd>您成功支付了，请等待商家发货........</dd>
+        <dd>
+			<button type="button" onclick="window.location='/Home/User/orderInfo/order_id/{$order_id}.html'">查看订单</button>
+			<button type="button" onclick="window.location='/Home/User/orderList.html'">订单首页</button>
+		</dd>
+      </dl>
+    </div>
+	<else/>
+    <div class="order-box">
+      <dl>
+        <dt><img src="/Public/images/failure.png" alt=""></dt>
+        <dd><h2>支付失败！</h2></dd>
+        <dd><button type="button" onclick="window.location='/Home/User/orderInfo/order_id/{$order_id}.html'">确定</button></dd>
+      </dl>
+    </div>
+	</if>
+  </div>
+</body>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

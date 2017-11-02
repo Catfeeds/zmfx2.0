@@ -1,0 +1,89 @@
+<include file="Public:header" />
+<body>
+<!-- header start -->
+<header>
+    <div class="header-wrap">
+        <div class="home-head">
+            <a href="index.html">
+                <img src="__PUBLIC__/{:C('web_logo')}" class="logo" alt="">
+            </a>
+        </div>
+    </div>
+</header>
+<!-- header end -->
+
+<!-- content start -->
+<section class="wrapper">
+    <div class="index">
+        <!-- 焦点图 -->
+        <include file="Com:focus" />
+
+        <!-- nav start -->
+        <include file="Com:block" />
+        <!-- nav end -->
+
+        <!-- 活动热卖 start -->
+        <include file="Com:hot" />
+        <!-- 活动热卖 end -->
+
+        <!-- 钻石定制 start -->
+        <include file="Com:custom" />
+        <!-- 钻石定制 end -->
+
+        <!-- 商城热卖 start -->
+        <include file="Com:mall" />
+        <!-- 商城热卖 end -->
+
+        <!-- 品牌系列 start -->
+        <include file="Com:brand" />
+        <!-- 品牌系列 start -->
+
+
+		<?php if ($content == true): ?>
+			<div class="item-box zdy-content">
+				<?php echo html_entity_decode($content);?>
+			</div>
+		<?php endif; ?>
+
+        <!-- 页底 start -->
+        <include file="Com:information" />
+        <!-- 页底 end -->
+    </div>
+</section>
+<!-- content end -->
+<include file="Public:search" />
+
+<include file="Public:tabs" />
+
+<script>
+    $(function(){
+
+
+        //banner
+        var swiper1 = new Swiper('#banner-tab', {
+            pagination: '.swiper-pagination',
+            paginationClickable: true,
+            autoplay: 2500,
+            loop: true
+        });
+
+        //hot tab
+        var swiper2 = new Swiper('#hot-tab', {
+            paginationClickable: '.swiper-pagination',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 30,
+            autoplay: 2500,
+            loop: true
+        });
+
+        //资讯滚动
+        $(".line").slideUp();
+    });
+</script>
+<style>
+    body { margin-bottom: 2.2rem;}
+</style>
+<include file="Public:foot" />
+</body>
+</html>

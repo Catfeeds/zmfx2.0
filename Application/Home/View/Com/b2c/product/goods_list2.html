@@ -1,0 +1,123 @@
+<div class="groups">
+	<ul>
+		<li>
+			<h3 class="pull-left">全部</h3>
+			<span class="pull-right">共<span class="red count">0</span>件商品</span>
+			<div class="clearfix"></div>
+		</li>
+		<li class="attrs xlattr" >商品分类
+			<a>全部</a>
+			<foreach name="c_list" item="vo">
+				<a href="javascript:void(0);" <eq name='vo["category_id"]' value='$category_id' > class="active" </eq>  data-value-id="{$vo.category_id}">{$vo.name_alias}</a>
+			</foreach>
+		</li>
+		<li class="attrs attr-child" id="js_category_child" ></li>
+	</ul>
+	<div class="groups" id='div_attributes'>
+		<ul id='attributes'>
+        </ul>
+	</div>
+</div>
+
+<div class="sorting">
+    <div class="row">
+        <div class="col-md-10">
+            <ul>
+                <li class='orderby'>按价格 <i class="glyphicon" data-value='goods_price'></i></li>
+                <li class='orderby'>按时间 <i class="glyphicon" data-value='goods_id'></i></li>
+                <li class='orderby'>按分类 <i class="glyphicon" data-value='category_id'></i></li>
+                <div class="clearfix"></div>
+            </ul>
+        </div>
+        <div class="col-md-2 text-right">
+            共<span class="red" id="count">0</span>件商品
+        </div>
+    </div>
+</div>
+<div class="goods-list fadeIn animated">
+    <div class="row" id="listbox"></div>
+</div>
+<div id="pages" class="pages text-center"></div>
+<script>
+
+function　getCategroy(id){
+	if( id == '' ){
+		return void(0);
+	}
+	if( id == "{$category_id}"){
+		return void(0);
+	}
+	$.getJSON("{:U('Goods/getCategroyItem')}",{id:id},function(data){
+		$('#js_category_child').html('');
+		if( data.ret == 100 ){
+			data = data.data;
+			if( data.length > 0  ){
+				var html  = '<a href="javascript:void(0);" class="active" data-value-id="'+id+'" >所有</a>';
+				for(var row in data){
+					html += '<a href="javascript:void(0);" data-value-id="'+data[row].category_id+'" >'+data[row].category_name+'</a>'
+				}
+				$('#js_category_child').html(html);
+				//子分类单选
+				$('#js_category_child a').each(function(){
+					$(this).click(function(){
+						if(!$(this).hasClass('active')){
+							$('.attr-child a').removeClass('active');
+							$(this).addClass('active');   
+							var id = $(this).attr('data-value-id');
+							goods.set_category_id(id);
+							goods.set_page('1');
+							goods.get_attributes(func_display_attributes_data);
+						}
+						goods.get_goods_list(func_display_goods_list);
+					});
+				});
+			}
+		} else {
+			layer.msg('获取数据出错',{ shift:6, });
+		}
+	});
+}
+$(function(){
+	goods.get_goods_list(func_display_goods_list);
+	goods.get_attributes(func_display_attributes_data);
+	$('.orderby').click(function(){
+		if( $(this).find('i').hasClass('glyphicon-arrow-down') || $(this).find('i').hasClass('glyphicon-arrow-up') ){
+			if( $(this).find('i').hasClass('glyphicon-arrow-down') ){
+				$('.orderby').find('i').removeClass('glyphicon-arrow-down');
+				$(this).find('i').addClass('glyphicon-arrow-up');
+				var order = $(this).find('i').attr('data-value');
+				goods.set_orderby(order,'asc');
+			} else {
+				$('.orderby').find('i').removeClass('glyphicon-arrow-up');
+				$(this).find('i').addClass('glyphicon-arrow-down');
+				var order = $(this).find('i').attr('data-value');
+				goods.set_orderby(order,'desc');
+			}
+		} else {
+			$('.orderby').find('i').removeClass('glyphicon-arrow-down');
+			$('.orderby').find('i').removeClass('glyphicon-arrow-up');
+			$(this).find('i').addClass('glyphicon-arrow-down');
+			var order = $(this).find('i').attr('data-value');
+			goods.set_orderby(order,'desc');
+		}
+		goods.get_goods_list(func_display_goods_list);
+	});
+	
+	//分类单选
+	$('.xlattr a').each(function(){
+		$(this).click(function(){
+			if(!$(this).hasClass('active')){
+				$('.xlattr a').removeClass('active');
+				var id = $(this).attr('data-value-id');
+				$(this).addClass('active');
+				getCategroy(id);
+				goods.set_category_id(id);
+				goods.set_page('1');
+				$('#div_attributes').show();
+				goods.get_attributes(func_display_attributes_data);
+			}
+			goods.get_goods_list(func_display_goods_list);
+		});
+	});
+});
+</script>

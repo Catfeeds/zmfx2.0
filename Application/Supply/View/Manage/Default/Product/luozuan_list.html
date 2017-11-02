@@ -1,0 +1,430 @@
+<div class="cate-info">
+    <dl>
+        <dt>{$L['text_product_sn']}</dt>
+        <dd><input type="text" name="goods_id" /></dd>
+    </dl>
+    <dl>
+        <dt>{$L['text_certificate_sn']}</dt>
+        <dd><input type="text" name="certificate_number" /></dd>
+    </dl>
+    <dl>
+        <dt>{$L['text_goods_status']}</dt>
+        <dd>
+            <select name="product_status">
+                <option value="" >{$L['text_product_all']}</option>
+                <option value="0">{$L['text_product_unshelves']}</option>
+                <option value="1">{$L['text_product_onshelves']}</option>
+                <option value="2">{$L['finance_already_examine']}</option>
+                <option value="3">{$L['finance_not_already_examine']}</option>
+            </select>
+        </dd>
+    </dl>
+    <!--日期-->
+    <dl>
+        <dt>{$L['text_time_update']}</dt>
+        <dd><input type="text" name="time_begin" size="12" class="laydate-icon" onclick="laydate()" placeholder="{$L['text_enter_date']}"></dd>
+        <dt>{$L['text_until']}</dt>
+        <dd><input type="text" name="time_end" size="12" class="laydate-icon" onclick="laydate()" placeholder="{$L['text_enter_date']}"></dd>
+    </dl>
+    <dl>
+        <dd><input type="button" id="search_luozuan" class="search" value="{$L['search']}"></dd>
+    </dl>
+</div>
+<!--表格-->
+<div class="table-responsive">
+    <table class="table table-hover table-responsive table-bordered">
+        <thead>
+        <tr>
+            <th><input type="checkbox" class="select_luozuan_all"></th>
+            <th>{$L['text_product_sn']}</th>
+            <th>{$L['text_product_shape']}</th>
+            <th>{$L['text_certificate_sn']}</th>
+            <th>{$L['text_product_weight']}</th>
+            <th>{$L['text_product_color']}</th>
+            <th>{$L['text_product_clarity']}</th>
+            <th>{$L['text_product_cut']}</th>
+            <th>{$L['text_product_polish']}</th>
+            <th>{$L['text_product_symmetry']}</th>
+            <th>{$L['text_product_fluor']}</th>
+            <th>{$L['text_product_dia_depth']}</th>
+            <th>{$L['text_product_dia_table']}</th>
+            <th>{$L['text_product_milk']}</th>
+            <th>{$L['text_product_coffee']}</th>
+            <th>{$L['text_product_dia_global_price']}</th>
+            <th>{$L['text_product_dia_discount']}</th>
+            <th>{$L['text_product_price']}</th>
+            <th>{$L['text_product_status']}</th>
+            <th>{$L['operation']}</th>
+        </tr>
+        </thead>
+        <tbody id="luozuan_content"></tbody>
+        <script type="text/template" id="luozuan_content_tpl">
+            <% if(datas.length > 0){ %>
+                <% _.each(datas, function (item) { %>
+                <tr title="{$L['text_upload_time']}:<%= item.create_time %>">                    
+                    <td><input type="checkbox" name="luozuan_goods_id[]" value="<%= item.gid %>" /></td>
+                  
+                    <td><%= item.gid %></td>
+                    <td><%= item.shape %></td>
+                    <td><%= item.certificate_type %> <%= item.certificate_number %></td>
+                    <td><%= item.weight %></td>
+                    <td><%= item.color %></td>
+                    <td><%= item.clarity %></td>
+                    <td><%= item.cut %></td>
+                    <td><%= item.polish %></td>
+                    <td><%= item.symmetry %></td>
+                    <td><%= item.fluor %></td>
+                    <td><%= item.dia_depth %></td>
+                    <td><%= item.dia_table %></td>
+                    <td><%= item.milk %></td>
+                    <td><%= item.coffee %></td>
+                    <td><%= item.dia_global_price %></td>
+                    <td><%= item.dia_discount %></td>
+                    <td><%= (item.weight * item.dia_global_price * item.dia_discount/100) %></td>
+                    <% if(item.valid_status == 1) { %>
+                        <td><%= item.product_status_text %></td>
+                        <td>
+                            <% if(item.product_status == 0) { %>
+                                <a data-goods-id="<%= item.gid %>" class="on_sale" href="javascript:void(0);">{$L['text_product_upshelves']}</a>/
+                                <a data-goods-id="<%= item.gid %>" class="modify_info" href="javascript:void(0);">{$L['change']}</a>/
+                                <a data-goods-id="<%= item.gid %>" class="remove" href="javascript:void(0);">{$L['delete']}</a>
+                            <% }else{ %>
+                                <a data-goods-id="<%= item.gid %>" class="off_shelves" href="javascript:void(0);">{$L['text_product_doshelves']}</a>
+                            <% } %>
+                        </td>
+                    <% }else{ %>
+                        <% if(item.valid_status == 0 ) { %>
+                            <td>{$L['finance_wait_examine']}</td>
+                        <% }else{ %>
+                            <td>{$L['finance_falied_examine']}</td>
+                        <% } %>
+                        <td>
+                            {$L['text_product_upshelves']}/
+                            <a data-goods-id="<%= item.gid %>" class="modify_info" href="javascript:void(0);">{$L['change']}</a>/
+                            <a data-goods-id="<%= item.gid %>" class="remove" href="javascript:void(0);">{$L['delete']}</a>
+                        </td>
+                    <% } %>
+                </tr>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="20">{$L['no_data']}..</td>
+                </tr>
+            <% } %>
+        </script>
+    </table>
+</div>
+<div class="compose-btn">
+    <button class="btn btn-sm btn-default on_sale_batch" disabled>{$L['batch']}{$L['text_product_upshelves']}</button>
+    <button class="btn btn-sm btn-default off_shelves_batch" disabled>{$L['batch']}{$L['text_product_doshelves']}</button>
+    <button class="btn btn-sm btn-default remove_batch" disabled>{$L['batch']}{$L['delete']}</button>
+    <button class="btn btn-sm btn-default on_sale_batch_one">{$L['text_product_all']}{$L['text_product_upshelves']}</button>
+    <button class="btn btn-sm btn-default off_shelves_batch_one">{$L['text_product_all']}{$L['text_product_doshelves']}</button>
+</div>
+<div class="prve">
+</div>
+<div class="modal fade" id="luozuan_edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" rel="nofollow">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    {$L['text_luozuan_edit']}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="luozuan_info" class="form-inline">
+                    <input type="hidden" class="form-control" name="gid" value="">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-condensed" style="text-align: left;">
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_type']}:</label>
+                                        {:getSelectHtml(array('class'=>'form-control','name'=>'shape'),'goods_luozuan_shape',array('value'=>'shape','text'=>'shape_name'))}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_diamond_name']}:</label>
+                                        <input type="text" class="form-control" name="goods_name" value="J">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_GIA_type']}:</label>
+                                        {:getSelectHtml(array('class'=>'form-control','name'=>'certificate_type'),'supply_goods_luozuan_attr_type',array('value'=>'value','text'=>'value'),array('type'=>array('eq','certificate_type')))}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_certificate_sn']}:</label>
+                                        <input type="text" class="form-control" name="certificate_number" value="">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_address']}:</label>
+                                        <input type="text" class="form-control"  name="location" value="">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_stock']}:</label>
+                                        <input type="text" name="goods_number" class="form-control" value="">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_weight']}:</label>
+                                        <input type="text" name="weight" class="form-control" value="0.51">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_color']}:</label>
+                                        {:getSelectHtml(array('class'=>'form-control','name'=>'color'),'supply_goods_luozuan_attr_type',array('value'=>'value','text'=>'value'),array('type'=>array('eq','color')))}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_clarity']}:</label>
+                                        {:getSelectHtml(array('class'=>'form-control','name'=>'clarity'),'supply_goods_luozuan_attr_type',array('value'=>'value','text'=>'value'),array('type'=>array('eq','clarity')))}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_cut']}:</label>
+                                        {:getSelectHtml(array('class'=>'form-control','name'=>'cut'),'supply_goods_luozuan_attr_type',array('value'=>'value','text'=>'value'),array('type'=>array('eq','cut')))}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_polish']}:</label>
+                                        {:getSelectHtml(array('class'=>'form-control','name'=>'polish'),'supply_goods_luozuan_attr_type',array('value'=>'value','text'=>'value'),array('type'=>array('eq','polish')))}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_symmetry']}:</label>
+                                        {:getSelectHtml(array('class'=>'form-control','name'=>'symmetry'),'supply_goods_luozuan_attr_type',array('value'=>'value','text'=>'value'),array('type'=>array('eq','symmetry')))}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_fluor']}:</label>
+                                        {:getSelectHtml(array('class'=>'form-control','name'=>'fluor'),'supply_goods_luozuan_attr_type',array('value'=>'value','text'=>'value'),array('type'=>array('eq','fluor')))}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_milk']}:</label>
+                                        <input type="text" name="milk" class="form-control" value="">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_coffee']}:</label>
+                                        <input type="text" name="coffee" class="form-control" value="">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_dia_table']}:</label>
+                                        <input type="text" name="dia_table" class="form-control" value="">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_dia_depth']}:</label>
+                                        <input type="text" name="dia_depth" class="form-control" value="">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_size']}:</label>
+                                        <input type="text" name="dia_size" class="form-control" value="">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_dia_global_price']}:</label>
+                                        <input type="text" name="dia_global_price" class="form-control" value="">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>{$L['text_product_dia_discount']}:</label>
+                                        <input type="text" name="dia_discount" class="form-control" value="">
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="col-xs-8">
+                    <span id="luozuan_edit_msg"></span>
+                </div>
+                <div class="col-xs-4">
+                    <button type="button" class="btn btn-primary" id="but_modify_luozuan_submit">
+                        {$L['text_submit_change']}
+                    </button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div>
+</div>
+<script>
+    var datas;
+    function func_search_luozuan_list(){
+        var res       = luozuan.get_luozuan();
+        var page_html = page.create({PageID:res['data']['page_id'],PageSize:res['data']['page_size'],TotalNum:res['data']['total']}).getHtml();
+
+        if( page_html == '' ){
+            var pageid = Math.ceil( res['data']['total'] / res['data']['page_size'] );
+            if( pageid < 1 ){
+                pageid = 1;
+            }
+            luozuan.set_page( pageid , res['data']['page_size'] );;
+            //res       = luozuan.get_luozuan();
+            // page_html = page.create({PageID:res['data']['page_id'],PageSize:res['data']['page_size'],TotalNum:res['data']['total']}).getHtml();
+        }
+        datas = res['data']['list'];
+        $('#search_luozuan').closest('#luozuan').find('.prve').html(page_html);
+        $('#luozuan_content').html( _.template($('#luozuan_content_tpl').html(), datas) );
+        $('#luozuan .prve a').on('click',function(){
+            luozuan.set_page($(this).attr('data-page-id'),$(this).attr('data-page-size'));
+            func_search_luozuan_list();
+        });
+		//分页GO操作
+		$('#luozuan .prve .go').on('click',function(){
+			var data_page_id   = parseInt($(this).prev().val(),10);
+			var data_page_size = parseInt($("input[name='page_size']").val(),10);
+            
+			if(data_page_id){
+				luozuan.set_page(data_page_id,data_page_size);
+				func_search_luozuan_list();
+			}
+		});
+        $('#luozuan .on_sale_batch').prop('disabled',true);
+        $('#luozuan .off_shelves_batch').prop('disabled',true);
+        $('#luozuan .remove_batch').prop('disabled',true);
+        $('input[type="checkbox"]').prop('checked',false);
+    }
+    //界面交互逻辑
+    $(function(){
+        //默认数据
+        func_search_luozuan_list();
+        $('#search_luozuan').on('click',function() {
+            luozuan.set_arg('page_id','1');
+            luozuan.set_arg('gid',$('#search_luozuan').closest('#luozuan').find('input[name="goods_id"]').val());
+            luozuan.set_arg('certificate_number',$('#search_luozuan').closest('#luozuan').find('input[name="certificate_number"]').val());
+            luozuan.set_arg('product_status',$('#search_luozuan').closest('#luozuan').find('select[name="product_status"]').val());
+            luozuan.set_arg('time_begin',$('#search_luozuan').closest('#luozuan').find('input[name="time_begin"]').val());
+            luozuan.set_arg('time_end',$('#search_luozuan').closest('#luozuan').find('input[name="time_end"]').val());
+            func_search_luozuan_list();
+        });
+        $('.select_luozuan_all').on('click',function() {
+            func_select_all('luozuan_goods_id[]',this);
+        });
+        $('.select_luozuan_all,input[name="luozuan_goods_id[]"]').live('click',function() {
+            $('#luozuan .on_sale_batch').prop('disabled',true);
+            $('#luozuan .off_shelves_batch').prop('disabled',true);
+            $('#luozuan .remove_batch').prop('disabled',true);
+            $('input[name="luozuan_goods_id[]"]:checked').each(function(){
+                $('#luozuan .on_sale_batch').prop('disabled',false);
+                $('#luozuan .off_shelves_batch').prop('disabled',false);
+                $('#luozuan .remove_batch').prop('disabled',false);
+            });
+        });
+        //批量操作
+        $("#luozuan .on_sale_batch, #luozuan .off_shelves_batch, #luozuan .remove_batch, #luozuan .on_sale_batch_one, #luozuan .off_shelves_batch_one").on('click',function(){
+            var luozuan_goods_ids = $('input[name="luozuan_goods_id[]"]:checked').map(function(){
+                return $(this).val();
+            }).get();
+            //上架
+            if($(this).hasClass('on_sale_batch')){
+                luozuan.on_sale(luozuan_goods_ids);
+            }
+            //下架
+            if($(this).hasClass('off_shelves_batch')){
+                luozuan.off_shelves(luozuan_goods_ids);
+            }
+            //删除
+            if($(this).hasClass('remove_batch')){
+                if(confirm('{$L["text_detlte_notice"]}')) {
+                    luozuan.remove_luozuan(luozuan_goods_ids);
+                }
+            }
+            if($(this).hasClass('on_sale_batch_one')){
+                luozuan.on_sale_one();
+            }
+            //下架
+            if($(this).hasClass('off_shelves_batch_one')){
+                luozuan.off_shelves_one();
+            }
+            func_search_luozuan_list();
+        });
+        //单页操作
+        $("#luozuan .on_sale,#luozuan .off_shelves,#luozuan .remove,#luozuan .modify_info").live('click',function(){
+            var luozuan_goods_ids = new Array();
+            luozuan_goods_ids.push($(this).attr('data-goods-id'));
+            //上架
+            if($(this).hasClass('on_sale')){
+                luozuan.on_sale(luozuan_goods_ids);
+            }
+            //下架
+            if($(this).hasClass('off_shelves')){
+                luozuan.off_shelves(luozuan_goods_ids);
+            }
+            //删除
+            if($(this).hasClass('remove')){
+
+                if(confirm("{$L['text_msg_007']}")) {
+                    luozuan.remove_luozuan(luozuan_goods_ids);
+                }
+            }
+            //修改
+            if($(this).hasClass('modify_info')){
+                var gid  = $(this).attr('data-goods-id');
+                var data = luozuan.get_luozuan_info(gid);
+                _.each(data,function(v,k){
+                    $('#luozuan_info .form-control[name="'+k+'"]').val(v);
+                });
+                $("#luozuan_edit_msg").html('');
+                $('#luozuan_edit').modal();
+                return false;
+            }
+            func_search_luozuan_list();
+        });
+        $("#but_modify_luozuan_submit").live('click',function(){
+            var data = $('#luozuan_info').serialize();
+            var res  = luozuan.modify_luozuan(data);
+            $("#luozuan_edit_msg").html(res.msg);
+            if(res.ret == 100){
+                $("#luozuan_edit_msg").css({opacity:'1'}).animate({opacity:0},2500);
+                $('#luozuan_edit').modal('hide');
+                $('#main_msg').modal('show');
+                func_search_luozuan_list();
+            }
+        });
+    });
+</script>

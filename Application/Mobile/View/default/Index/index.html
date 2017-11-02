@@ -1,0 +1,48 @@
+<include file="Public:header" />
+<!-- <php>include("./Application/Mobile/View/default/Ad/ad_7_".C("agent_id").".html");</php> -->
+<if condition="$CarouselAdList">                    
+<div class="am-slider am-slider-default" data-am-flexslider id="demo-slider-{$ads_id}">
+  <ul class="am-slides"> 
+  	<volist name="CarouselAdList" id="vo">
+    <li><a href="{$vo.url}"><img src="__PUBLIC__/{$vo.images_path}" alt="{$vo.title}" title="{$vo.title}" /></a></li> 
+    </volist>                                       
+  </ul>
+</div>
+</if>
+<script>
+	document.domain = "{$domain}";
+	<?php if($_SESSION['setSignOut_tips']=='1') {	echo " alert('退出成功！'); ";  unset($_SESSION['setSignOut_tips']);}?>
+</script>
+<!--主导航-->
+<div class="screen">
+	<div class="mainnav">
+		<ul>
+			<li><a href="{:U('Goods/index')}"><img src="__IMG__/abbor_05.png" alt="" ><p>产品分类</p></a></li>
+			<li><a href="{:U('User/index')}"><img src="__IMG__/abbor_07.png" alt="" ><p>会员中心</p></a></li>
+			<if condition=" $domain['trader_type'] NEQ '2' ">
+			<li><a href="{:U('User/traderAdd')}"><img src="__IMG__/abbor_09.png" alt="" ><p>加入分销商</p></a></li>
+			</if>
+		</ul>
+    </div>
+	<include file="Public:search" />
+	<!--二级导航-->    
+    <div class="subnav">
+    	<span class="sub">
+        	<ul>
+				<li><a href="{:U('Goods/luozuan')}"><img src="__IMG__/cat_01.jpg" alt=""><b>裸&nbsp;钻</b></a></li>
+				<li><a href="{:U('Goods/goodsCatelog',array('tab'=>'1'))}"><img src="__IMG__/cat_02.jpg" alt=""><b>珠宝成品</b></a></li>
+			</ul>
+        </span>
+        <span class="sub">
+        	<ul>
+				<li><a href="{:U('Goods/goodsDiy')}"><img src="__IMG__/cat_03.jpg" alt=""><b>珠宝定制</b></a></li>
+				<li><a href="{:U('Article/index')}"><img src="__IMG__/cat_04.jpg" alt=""><b>最新资讯</b></a></li>
+			</ul>
+        </span>
+    </div>
+</div>
+<include file="Public:footer" />
+<script src="__JS__/index.js">
+</script>
+</body>
+</html>

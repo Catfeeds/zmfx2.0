@@ -1,0 +1,111 @@
+<include file="Public:header" />
+<body>
+    <section class="address">
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="location='/User/index'" class="back-img" alt="">
+                </div>
+                <h2>地址管理 </h2>
+            </div>
+        </header>
+
+        <div class="address-box wrapper">
+
+ 
+
+        </div>
+
+        <style>
+            body {
+                margin-bottom: 3.5rem;
+            }
+        </style>
+        <div class="add-box">
+            <a href="/User/Address" class="add-address-btn"><img src="__IMG__/add_address_icon.png" width="15" alt=""> 新建地址</a>
+        </div>
+        <script>
+ 
+			
+		
+			var ReCondition = {
+				'action'		: 'list',
+			}
+
+			
+			BringAjax.IntendData.ChangeHtml 				= '.address-box';
+			BringAjax.IntendData.NullHtml					= '.empty-msg';
+			EasyTransition(ReCondition,function(){
+					$.each(BringAjax.CacheData[BringAjax.IntendData.CacheHtmlKey].data ,function(k ,v) {
+						if(v){
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="address-list">';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="content">';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="top clearfix">';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="fl">'+v.name+'</div>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="fr">'+v.phone+'</div>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="describe">';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += (v.title) ? v.title : '';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += (v.code!='0') ? v.code : '';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += (v.country_name) ? v.country_name : '';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += (v.province_name) ? v.province_name : '';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += (v.city_name) ? v.city_name : '';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += (v.district_name) ? v.district_name : '';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += (v.address) ? v.address : '';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="operation clearfix">';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="fl">';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += (v.is_default=='1') ? '<input type="radio" class="zdy-radio active" checked=checked name="default-address" value="" > <label class="moren-text moren-active" for="radio_04">设为默认</label>' : '<input type="radio" class="zdy-radio" name="default-address" value="" > <label class="moren-text" >设为默认</label>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="fr">';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<a href="/User/Address/id/'+CommonFunction.SecretKey.JsB64(v.address_id)+'">';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<img src="__IMG__/edit_icon.png" class="operation-icon" alt="">';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</a>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<img src="__IMG__/remove_icon.png" class="operation-icon remove-address" alt="">';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+							BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+						}
+					})
+			});	
+			
+			
+			
+			$('body').delegate('.remove-address','click',function () {
+				var __this 			= $(this);
+				ReCondition.action  = 'delete';
+				ReCondition.id 		= CommonFunction.String.CutLastKeyword($(this).prev()[0].pathname,'/');
+				BringAjax.IntendData.SwitchMain = 1;
+				EasyTransition(ReCondition,function(){
+							layer.open({
+								content: '确定要删除该地址吗？'
+								,btn: ['确定', '取消']
+								,yes: function(index){
+									CommonFunction.Prompt.Tan('删除地址'+BringAjax.CacheData[BringAjax.IntendData.CacheHtmlKey].msg);
+									$(__this).parents('.address-list').fadeOut(3000);
+									layer.close(index);
+								}
+							});
+				});
+			});			
+			
+ 
+			$('body').delegate('.zdy-radio','change',function () {
+				ReCondition.action  	= 'default';
+				ReCondition.is_default  = '1';
+				ReCondition.id 			= CommonFunction.String.CutLastKeyword($(this).parent().next().children('a')[0].pathname,'/');
+				BringAjax.IntendData.SwitchMain = 1;
+				EasyTransition(ReCondition,function(){
+						CommonFunction.Prompt.Tan('设置默认地址'+BringAjax.CacheData[BringAjax.IntendData.CacheHtmlKey].msg);
+						<?php if ($_GET['CallBack'] == true): ?>
+							CommonFunction.Link.Href(CommonFunction.String.CutKeyword(window.location.search,'='));
+						<?php endif; ?>
+				});
+			});			
+        </script>
+    </section>
+	<include file="Public:foot" />	
+</body>
+</html>

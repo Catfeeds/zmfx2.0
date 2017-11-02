@@ -1,0 +1,805 @@
+<style>
+    .icon-head,.icon-head1{
+        background: #fff;
+        display: inline-block;
+        border: 1px solid #C1C1C1;
+        margin: 0;
+        margin-left: -1px;
+        text-align: center;
+        /* width: 160px; */
+        height: 28px;
+        overflow: hidden;
+        line-height: 31px;
+        padding: 0px 2px;
+        margin-left: 5px;
+        padding-left: 5px;
+        position: relative;
+        cursor: pointer;
+    }
+    .icon-head .fh,.icon-head1 .fh {
+        height: 25px;
+        font-size: 12px !important;
+        padding: 0 !important;
+    }
+    .symbols-select span {
+        line-height: 24px !important;
+    }
+    .icon-head .fh img,.icon-head1 .fh img  {
+        max-height: 100%;
+    }
+    .caret {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        margin-left: 2px;
+        vertical-align: middle;
+        border-top: 4px dashed;
+        border-top: 4px solid\9;
+        border-right: 4px solid transparent;
+        border-left: 4px solid transparent;
+        margin-right: 2px;
+        margin-top: 11px;
+        float: right;
+    }
+    .symbols-name {
+        float: left;
+        margin-top: 5px;
+    }
+    .symbols-select {
+        position: relative;
+    }
+    .symbols-select-ul,.symbols-select-ul1 {
+        width: 165px;
+        height: 130px;
+        border: 1px solid #C1C1C1;
+        overflow: auto;
+        padding: 1px;
+        margin: 0;
+        text-align: left;
+        background: #fff;
+        position: absolute;
+        top: 30px;
+        left: 6px;
+        z-index: 999;
+        overflow: auto;
+    }
+    .symbols-select-ul li,.symbols-select-ul1 li {
+        width: 35px;
+        height: 35px;
+        float: left;
+        margin-right: 1px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+    }
+    .symbols-select-ul li img,.symbols-select-ul1 li img {
+        height: 100%;
+    }
+    .list-default { margin: 1em;}
+    .symbols-box { display: inline-block;}
+    .goods-details .itemInfo .mr30 { width: 180px; display: inline-block; float: left; margin-right: 30px;}
+    .tenancy .modal-header { padding: 10px;}
+    .tenancy { top: 25%; padding-right: 0 !important;}
+    .tenancy .container-fluid { padding: 10px 20px;}
+    .tenancy .form-control { width: auto; height: 30px; display: inline-block;}
+    .tenancy-btn1, .tenancy-btn2,
+    .tenancy-btn1:hover, .tenancy-btn2:hover,
+    .tenancy-btn1:focus, .tenancy-btn2:focus { background: #DBB473; color: #FFF; padding: 5px 30px; margin: 20px 5px 0 5px;}
+    .lg180 p { margin-bottom: 5px !important;}
+    #days, #lease_price { border: 1px solid #BDBDBD;border-radius: 0;}
+    .titles { width: 115px; display: inline-block;}
+    @media (min-width: 992px) {
+        .lg180 { padding: 20px 165px;}
+    }
+
+</style>
+<div class="itemInfo">
+
+ 
+
+
+    <h4><strong>{$goodsInfo.goods_name}</strong></h4>
+    <div class="item-list">
+        <div class="item-members" style="width:100%;">
+            <span class="mr30">
+                价格: <strong class="price">&yen;</strong><strong class="price" id="memberPrice" >
+                <in name="goodsInfo['activity_status']" value="0,1">
+                    <?php echo intval($goodsInfo['activity_price']);?>
+                <else/>
+        			<?php echo intval($goodsInfo['goods_price']);?>
+                </in>
+            </strong>
+            </span>
+			
+			<?php if (C('new_rules')['lease_components'] && $goodsInfo['lease_switch'] && $goodsInfo['goods_type'] == 3): ?>
+				首日租赁价格：<span class="red"><?php echo intval($goodsInfo['first_lease_price']);?>元</span>
+			<?php endif; ?>
+        </div>
+
+        <div class="item-members lb-hide" style="width:100%;">
+            <span class="mr30">市场价: &yen;<del id="market_price">{$goodsInfo.marketPrice}</del></span>
+			<?php if (C('new_rules')['lease_components'] && $goodsInfo['lease_switch'] && $goodsInfo['goods_type'] == 3): ?>
+				次日起租赁百分比：<span class="red"><?php echo intval($goodsInfo['lease_percentage']);?>% &nbsp;&nbsp;&nbsp; <img src="__IMG__/u39.png" data-toggle="modal" data-target=".bs-example-modal-sm" alt=""></span>
+			<?php endif; ?>
+        </div>
+    </div>
+
+	
+			<?php if (C('new_rules')['lease_components'] && $goodsInfo['lease_switch'] && $goodsInfo['goods_type'] == 3): ?>
+			<div class="modal fade bs-example-modal-sm tenancy" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="z-index: 9999;">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header" style="border-color: #8D8D8D;">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h3 class="modal-title text-center" id="gridSystemModalLabel">租赁计算器</h3>
+				  </div>
+				  <div class="container-fluid">
+					<div class="row">
+					  <div class="col-md-12 lg180">
+						<h5><span class="titles">租赁计算公式：</span><strong>首日租赁价  + 【 （租赁天数-1）  X   当前商品价格  X  租赁百分比】</strong></h5>
+						<p><span class="titles">首日租赁价：</span><span id="on1"><?php echo intval($goodsInfo['first_lease_price']);?></span>元</p>
+						<p><span class="titles">租赁天数：</span> <input type="text" class="form-control" id="days" placeholder="请输入天数，例如：1"> 天</p>
+						<p><span class="titles">租赁百分比：</span><span id="on3"><?php echo intval($goodsInfo['lease_percentage']);?>%</span></p>
+						<p><span class="titles">当前商品价格：</span><span id="on4">                
+				<in name="goodsInfo['activity_status']" value="0,1">
+                    <?php echo intval($goodsInfo['activity_price']);?>
+                <else/>
+        			<?php echo intval($goodsInfo['goods_price']);?>
+                </in></span>元</p>
+						<p><span class="titles">租赁价为：</span> <input type="text" class="form-control" id="lease_price" disabled> 元</p>
+						<p><button type="button" class="btn tenancy-btn1" disabled>计算</button> <button type="button" class="btn tenancy-btn2" disabled>重置</button></p>
+					  </div>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+			
+			<script>
+				$(function(){
+
+				
+				
+					var obj = $('.tenancy-btn1, .tenancy-btn2');
+
+					//监控值来控制按钮
+					$('#days').bind('input propertychange', function(){
+						$(this).val() != '' ? obj.attr('disabled', false) : obj.attr('disabled', true);
+					});
+
+					//计算
+					$('.tenancy-btn1').bind('click', function(){
+						var on1 = Number($('#on1').text()); //首日租赁价
+						var on2 = $('#days').val() - 1;     //租赁天数
+						var on3 = $('#on3').text(); on3 = on3.replace("%","") / 100; //租赁百分比
+						var on4 = Number($('#on4').text()); //当前商品价格
+						var price = on1 + ((on2 * on4) * on3); //首日租赁价 + 【 （租赁天数-1） X 当前商品价格 X 租赁百分比】
+						$('#lease_price').val(Math.round(price)); // 注：四舍五入
+					});
+
+					//重置
+					$('.tenancy-btn2').bind('click', function(){
+						$('#days, #lease_price').val('');
+						obj.attr('disabled', true);
+					});
+				})
+				
+			</script>
+	<?php endif; ?>
+    <!-- Small modal end -->
+
+
+    <if condition="$goodsInfo['attributes']">
+        <!-- 成品 // 只显示主要属性，详细的在"商品参数"显示 -->
+        <div class="item-list">
+            <volist name="goodsInfo['attributes']" id="vo">
+                <in name="vo.attr_id" value="16,18,20,22,23,24,25,26,27,28">
+                    <if condition="!empty(trim($vo['attr_value_name']))">
+                        <span class="item-members">{$vo.attr_name}：{$vo.attr_value_name}</span>
+                    <elseif condition="!empty(trim($vo['attr_value']))"/>
+                        <span class="item-members">{$vo.attr_name}：{$vo.attr_value}</span>
+                    </if>
+                </in>
+            </volist>
+        </div>
+    </if>
+    <if condition="$goodsInfo['goods_type'] eq 4">
+        <div class="item-list oGoods">
+            <p>产品规格</p>
+            <!-- 定制 -->
+            <if condition="$goodsInfo['associate_info']">
+                <p>重量：
+                    <volist name="goodsInfo['associate_info']" id="vo">
+                        <input type="button" disabled class="btn btn-default border-radiusno" value="{$vo.weights_name|round=2}g"> &nbsp;
+                    </volist>
+                </p>
+
+				<?php if (!$goodsInfo['banfang_goods_id']): ?>
+                <neq name="goodsInfo['price_model']" value="1" >
+                    <!--<p class="sunhao lb-hide">损耗：
+                        <volist name="goodsInfo['associate_info']" id="vo">
+                            <input type="button" disabled class="btn btn-default border-radiusno" value="{$vo.loss_name}%"> &nbsp;
+                        </volist>
+                    </p>
+                    <p class="gongfei lb-hide">工费：
+                        <volist name="goodsInfo['associate_info']" id="vo">
+                            <input type="button" disabled class="btn btn-default border-radiusno" value="{$vo.basic_cost}"> &nbsp;
+                        </volist>
+                    </p>-->
+                </neq>
+				<?php endif; ?>
+                <p id="associateMaterial">可选材质：<volist name="goodsInfo['associate_info']" id="vo"><button data-fixed-price="{$vo.fixed_price}" class="ddBorder <if condition="$key eq 0"> dz active</if> btn btn-default border-radiusno " ref="{$vo.material_id}" onclick="setMaterial(this,{$goodsInfo.goods_id},{$vo.material_id},{$goodsInfo.goods_type})">
+                            {$vo.material_name}
+                        </button>&nbsp;
+                    </volist>
+                </p>
+                <p id="associateLuozuan">可选主石：<volist name="goodsInfo['associate_luozuan']" id="v">
+                        <button class="ddBorder <if condition="$key eq 0"> dz active </if> btn btn-default border-radiusno " data-content="{$v.gal_id}" title="{$v.shape_name}" ref="{$v.weights_name}" onclick="setDiamond(this, {$v.goods_id}, {$v.gal_id}, {$goodsInfo.goods_type})">
+                            {$v.shape_name} <if condition=" $v.weights_name ">{$v.weights_name|round=2}CT</if>
+                        </button>&nbsp;
+                    </volist>
+                </p>
+                <if condition="$goodsInfo['associate_deputystone']">
+                    <!--		暂时屏蔽“可选副石”			zengmingming		2017-08-29
+					<p id="deputystone">
+                            <notempty name="goodsInfo['associate_deputystone']">可选副石：</notempty>
+                            <volist name="goodsInfo['associate_deputystone']" id="vo">
+                                <button class="ddBorder <if condition="$key eq 0"> dz active</if> btn btn-default border-radiusno " onclick="setDeputystone(this,{$goodsInfo.goods_id},{$vo.gad_id},{$goodsInfo.goods_type})" ref="{$vo.gad_id}">
+                                    {$vo.deputystone_name}
+                                </button>&nbsp;
+                            </volist>
+                    </p>-->
+                </if>
+
+                <input type="hidden" id="price_model" name="price_model" value="{$goodsInfo['price_model']}" >
+                <if condition="$goodsInfo['price_model'] && (InStringByLikeSearch($category_name,array('钻戒','戒指','女戒','男戒')))" >
+                    <p>
+                        <span class="pull-left" style="padding:0px;margin:0px;">可选手寸：</span>
+                        <div class="selectbox">
+                            <select id="hand" name="hand">
+                                <volist name="goodsInfo.hands" id="vo">
+                                    <option value="{$vo}">{$vo}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </p>
+                    <p>
+                        <span class="pull-left" style="padding:0px;margin:0px;">个性刻字：</span>
+                        <input placeholder="最多只能填写10个字符" style="width: 170px; height: 28px; float: left; vertical-align: -webkit-baseline-middle;" maxLength="10" id="word" class="form-control" type="text" name="word" />
+                        <if condition=" $sd_list">
+                            <!-- 个性符号 -->
+                            <input type="hidden" name="sd_id" value='0' >
+                            <div class="symbols-box">
+                                <!-- <div class="symbols-name">个性符号：</div> -->
+                                <div class="symbols-select">
+                                    <span class="icon-head form-control">
+                                        <span class="fh">定制符号</span>
+                                        <i class="caret"></i>
+                                    </span>
+                                    <ul class="symbols-select-ul form-control" style="display: none;">
+                                        <volist name="sd_list" id="vo">
+                                            <li><img src="{$vo.images_path}" value="{$vo.sd_id}"/></li>
+                                        </volist>
+                                        <div class="clear"></div>
+                                    </ul>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                $(function(){
+                                    $('.icon-head').bind('click', function(){
+                                        $('.symbols-select-ul').toggle();
+                                    });
+                                    $('.symbols-select-ul li').bind('click', function(){
+                                        $('.icon-head .fh').html('').append("<img src="+$(this).find('img').attr('src')+">");
+
+                                        //1.id 2.内容
+                                        Insert("word","*");
+                                        $('.symbols-select-ul').hide();
+                                        var v = $(this).find('img').attr('value');
+                                        $("input[name='sd_id']").val(v);
+                                    });
+
+                                    function Insert(id,str) {
+                                        var obj = document.getElementById(id);
+                                        if(document.selection) {
+                                            obj.focus();
+                                            var sel=document.selection.createRange();
+                                            document.selection.empty();
+                                            sel.text = str;
+                                        } else {
+                                            var prefix, main, suffix;
+                                            prefix = obj.value.substring(0, obj.selectionStart).replace(str,"");
+                                            main = obj.value.substring(obj.selectionStart, obj.selectionEnd);
+                                            suffix = obj.value.substring(obj.selectionEnd).replace(str,"");
+                                            obj.value = prefix + str + suffix;
+                                        }
+                                        obj.focus();
+                                    }
+                                });
+                            </script>
+                        </if>
+                        <div style="clear: both"></div>
+                    </p>
+                </if>
+                <if condition="$goodsInfo['price_model'] && (InStringByLikeSearch($category_name,array('项链','手链')))">
+                    <p>
+                        <span class="pull-left" style="padding:0px;margin:0px;">可选尺寸：</span>
+                        <div class="selectbox">
+                            <select id="hand" name="hand">
+                                <volist name="goodsInfo.hands" id="vo">
+                                    <option value="{$vo}">{$vo}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </p>
+                    <p>
+                        <span class="pull-left" style="padding:0px;margin:0px;">个性刻字：</span>
+                        <input placeholder="最多只能填写10个字符" style="width: 170px; height: 28px; float: left; vertical-align: -webkit-baseline-middle;" maxLength="10" id="word" class="form-control" type="text" name="word" />
+                        <if condition=" $sd_list">
+                            <!-- 个性符号 -->
+                            <input type="hidden" name="sd_id" value='0' >
+                            <div class="symbols-box">
+                                <!-- <div class="symbols-name">个性符号：</div> -->
+                                <div class="symbols-select">
+                                    <span class="icon-head form-control">
+                                        <span class="fh">定制符号</span>
+                                        <i class="caret"></i>
+                                    </span>
+                                    <ul class="symbols-select-ul form-control" style="display: none;">
+                                        <volist name="sd_list" id="vo">
+                                            <li><img src="{$vo.images_path}" value="{$vo.sd_id}"/></li>
+                                        </volist>
+                                        <div class="clear"></div>
+                                    </ul>
+
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                $(function(){
+                                    $('.icon-head').bind('click', function(){
+                                        $('.symbols-select-ul').toggle();
+                                    });
+                                    $('.symbols-select-ul li').bind('click', function(){
+                                        $('.icon-head .fh').html('').append("<img src="+$(this).find('img').attr('src')+">");
+
+                                        //1.id 2.内容
+                                        Insert("word","*");
+                                        $('.symbols-select-ul').hide();
+                                        var v = $(this).find('img').attr('value');
+                                        $("input[name='sd_id']").val(v);
+                                    });
+
+                                    function Insert(id,str) {
+                                        var obj = document.getElementById(id);
+                                        if(document.selection) {
+                                            obj.focus();
+                                            var sel=document.selection.createRange();
+                                            document.selection.empty();
+                                            sel.text = str;
+                                        } else {
+                                            var prefix, main, suffix;
+                                            prefix = obj.value.substring(0, obj.selectionStart).replace(str,"");
+                                            main = obj.value.substring(obj.selectionStart, obj.selectionEnd);
+                                            suffix = obj.value.substring(obj.selectionEnd).replace(str,"");
+                                            obj.value = prefix + str + suffix;
+                                        }
+                                        obj.focus();
+                                    }
+                                });
+                            </script>
+                        </if>
+                        <div style="clear: both"></div>
+                    </p>
+                </if>
+                <if condition="$goodsInfo['price_model'] && (InStringByLikeSearch($category_name,array('对戒')))">
+                    <p>
+                        <span class="pull-left" style="padding:0px;margin:0px;">手寸(男戒)：</span>
+                        <div class="selectbox">
+                            <span class="pull-left" style="padding:0px;margin:0px;">
+                                <select id="hand" class="hand" name="hand">
+                                    <volist name="goodsInfo.hands1" id="vo">
+                                        <option value="{$vo}">{$vo}</option>
+                                    </volist>
+                                </select>
+                                刻字：
+                            </span>
+                            <input placeholder="最多只能填写10个字符" style="width: 170px; height: 28px; float: left; vertical-align: -webkit-baseline-middle;" maxLength="10" id="word" class="form-control" type="text" name="word" />
+                            <if condition=" $sd_list">
+                                <!-- 个性符号 -->
+                                <input type="hidden" name="sd_id" value='0' >
+                                <div class="symbols-box">
+                                    <div class="symbols-select">
+                                        <span class="icon-head form-control">
+                                            <span class="fh">定制符号</span>
+                                            <i class="caret"></i>
+                                        </span>
+                                        <ul class="symbols-select-ul form-control" style="display: none;">
+                                            <volist name="sd_list" id="vo">
+                                                <li><img src="{$vo.images_path}" value="{$vo.sd_id}"/></li>
+                                            </volist>
+                                            <div class="clear"></div>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </if>
+                        </div>
+                        <div style="clear: both"></div>
+                    </p>
+                    <p>
+                        <span class="pull-left" style="padding:0px;margin:0px;">手寸(女戒)：</span>
+                        <div class="selectbox">
+                            <span class="pull-left" style="padding:0px;margin:0px;">
+                                <select id="hand1" class="hand" name="hand1">
+                                    <volist name="goodsInfo.hands2" id="vo">
+                                        <option value="{$vo}">{$vo}</option>
+                                    </volist>
+                                </select>
+                                刻字：
+                            </span>
+                            <input placeholder="最多只能填写10个字符" style="width: 170px; height: 28px; float: left; vertical-align: -webkit-baseline-middle;" maxLength="10" id="word1" class="form-control" type="text" name="word1" />
+                            <if condition=" $sd_list">
+                                <!-- 个性符号 -->
+                                <input type="hidden" name="sd_id1" value='0' >
+                                <div class="symbols-box">
+                                    <div class="symbols-select">
+                                        <span class="icon-head1 form-control">
+                                            <span class="fh">定制符号</span>
+                                            <i class="caret"></i>
+                                        </span>
+                                        <ul class="symbols-select-ul1 form-control" style="display: none;">
+                                            <volist name="sd_list" id="vo">
+                                                <li><img src="{$vo.images_path}" value="{$vo.sd_id}"/></li>
+                                            </volist>
+                                            <div class="clear"></div>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </if>
+                        </div>
+                        <div style="clear: both"></div>
+                    </p>
+                    <script type="text/javascript">
+                        $(function(){
+                            $('.icon-head').bind('click', function(){
+                                $('.symbols-select-ul').toggle();
+                            });
+                            $('.symbols-select-ul li').bind('click', function(){
+                                $('.icon-head .fh').html('').append("<img src="+$(this).find('img').attr('src')+">");
+                                //1.id 2.内容
+                                Insert("word","*");
+                                $('.symbols-select-ul').hide();
+                                var v = $(this).find('img').attr('value');
+                                $("input[name='sd_id']").val(v);
+                            });
+                            $('.icon-head1').bind('click', function(){
+                                $('.symbols-select-ul1').toggle();
+                            });
+                            $('.symbols-select-ul1 li').bind('click', function(){
+                                $('.icon-head1 .fh').html('').append("<img src="+$(this).find('img').attr('src')+">");
+                                //1.id 2.内容
+                                Insert("word1","*");
+                                $('.symbols-select-ul1').hide();
+                                var v = $(this).find('img').attr('value');
+                                $("input[name='sd_id1']").val(v);
+                            });
+                            function Insert(id,str) {
+                                var obj = document.getElementById(id);
+                                if(document.selection) {
+                                    obj.focus();
+                                    var sel=document.selection.createRange();
+                                    document.selection.empty();
+                                    sel.text = str;
+                                } else {
+                                    var prefix, main, suffix;
+                                    prefix = obj.value.substring(0, obj.selectionStart).replace(str,"");
+                                    main = obj.value.substring(obj.selectionStart, obj.selectionEnd);
+                                    suffix = obj.value.substring(obj.selectionEnd).replace(str,"");
+                                    obj.value = prefix + str + suffix;
+                                }
+                                obj.focus();
+                            }
+                        });
+                    </script>
+                </if>
+                <if condition="!$goodsInfo['price_model'] && $goodsInfo['goods_type'] eq 4 ">
+	                <if condition="$goodsInfo['is_show_hand'] eq 1">
+                        <p>
+                            <span class="pull-left" style="padding:0px;margin:0px;">可选手寸：</span>
+                            <div class="selectbox">
+                                <input type="text" id="hand" name="hand" class="form-control inputselect showse">
+                                <ul class="d-select" style="display: none">
+                                    <volist name="hand" id="vo">
+                                        <li>{$vo}</li>
+                                    </volist>
+                                    <div class="clearfix"></div>
+                                </ul>
+                                <div class="clearfix"></div>
+                                <script>
+                                    $(function(){
+                                        $('#hand').bind('focus', function(){
+                                            $('.d-select').show();
+                                        });
+                                        $('#hand').keydown(function(){
+                                            /*var curLength = $(this).val().length;*/
+                                            $('.d-select').hide();
+                                        });
+                                        $('.d-select li').bind('click', function(){
+                                            $('#hand').val($(this).html());
+                                            $('.d-select').hide();
+                                        });
+                                    });
+                                </script>
+                            </div>
+                        </p>
+	                </if>
+                    <p>
+                        <span class="pull-left" style="padding:0px;margin:0px;">个性刻字：</span>
+                        <input placeholder="最多只能填写10个字符" style="width: 170px; height: 28px; float: left; vertical-align: -webkit-baseline-middle;" maxLength="10" id="word" class="form-control" type="text" name="word" />
+                        <if condition=" $sd_list">
+                            <!-- 个性符号 -->
+                            <input type="hidden" name="sd_id" value='0' >
+                            <div class="symbols-box">
+                                <!-- <div class="symbols-name">个性符号：</div> -->
+                                <div class="symbols-select">
+                                    <span class="icon-head form-control">
+                                        <span class="fh">定制符号</span>
+                                        <i class="caret"></i>
+                                    </span>
+                                    <ul class="symbols-select-ul form-control" style="display: none;">
+                                        <volist name="sd_list" id="vo">
+                                            <li><img src="{$vo.images_path}" value="{$vo.sd_id}"/></li>
+                                        </volist>
+                                        <div class="clear"></div>
+                                    </ul>
+
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                $(function(){
+                                    $('.icon-head').bind('click', function(){
+                                        $('.symbols-select-ul').toggle();
+                                    });
+                                    $('.symbols-select-ul li').bind('click', function(){
+                                        $('.icon-head .fh').html('').append("<img src="+$(this).find('img').attr('src')+">");
+
+                                        //1.id 2.内容
+                                        Insert("word","*");
+                                        $('.symbols-select-ul').hide();
+                                        var v = $(this).find('img').attr('value');
+                                        $("input[name='sd_id']").val(v);
+                                    });
+
+                                    function Insert(id,str) {
+                                    var obj = document.getElementById(id);
+                                    if(document.selection) {
+                                        obj.focus();
+                                        var sel=document.selection.createRange();
+                                        document.selection.empty();
+                                        sel.text = str;
+                                    } else {
+                                        var prefix, main, suffix;
+                                        prefix = obj.value.substring(0, obj.selectionStart).replace(str,"");
+                                        main = obj.value.substring(obj.selectionStart, obj.selectionEnd);
+                                        suffix = obj.value.substring(obj.selectionEnd).replace(str,"");
+                                        obj.value = prefix + str + suffix;
+                                    }
+                                    obj.focus();
+                                    }
+                                });
+                            </script>
+                        </if>
+                        <div style="clear: both"></div>
+                    </p>
+                </if>
+				<?php if($goodsInfo['goods_type'] == 4){?>
+                <p class="jhtime">预计交货时间：<?php echo $goodsInfo['expected_delivery_time'] ?>个工作日</p>
+				<p>特别说明：售价不含主钻价格，报价以出货为准</p>
+				<?php }?>
+            </if>
+        </div>
+    </if>
+    <if condition="$goodsInfo['similar']">
+        <div class="item-list oGoods">
+        <p>产品规格</p>
+        <p id = "sku" >
+            <volist name="goodsInfo['similar']" id="vo">
+                <button
+                onclick="setPrice(this,{$goodsInfo.goods_id},'{$vo.sku_sn}')"
+                data-goods-number="{$vo.goods_number}"
+                data-goods-sku-id="{$vo.sku_sn}"
+                data-price="<?php if($goodsInfo['activity_status']=='0' || $goodsInfo['activity_status']=='1'){ echo $vo['activity_price']; } else{	echo 	$vo['goods_price'];}?>"
+                data-marketPrice = "{$vo.goods_price}"
+                class=" <if condition='$key eq 0'> dz biaoji_dataprice active </if> btn btn-default border-radiusno" >
+                    {$vo.attrs}
+                </button>
+                &nbsp;
+            </volist>
+        </p>
+        </div>
+    </if>
+    <p><span class="item-members">商品编号: {$goodsInfo.goods_sn}</span></p>
+    <p>
+        <span class="item-members">
+            数量:
+            <if condition="$goodsInfo['goods_type'] eq 4">
+                <input type="number" id="goodsnumber" min="1" max="999" value="1">
+                <span class="kc">库存: 定制产品无库存项</span>
+            <else />
+                <input type="number" id="goodsnumber" min="1" max="{$goodsInfo['similar'][0]['goods_number']}" value="1">
+                <span class="kc">库存: {$goodsInfo['similar'][0]['goods_number']}</span>
+            </if >
+        </span>
+    </p>
+
+    <div class="buy">
+        <button href="javascript:void(0)" data-goods-id='{$goodsInfo['goods_id']}' data-goods-type="{$goodsInfo['goods_type']}"
+        class="btn link rapidBuy border-radiusno">
+            立即购买
+        </button>
+        <button href="javascript:void(0)" data-goods-id='{$goodsInfo['goods_id']}' data-goods-type="{$goodsInfo['goods_type']}"
+        class="btn link gm border-radiusno">
+            加入购物车
+        </button>
+        &nbsp;&nbsp;
+        <button href="javascript:void(0)" data-goods-id='{$goodsInfo['goods_id']}' data-goods-type="{$goodsInfo['goods_type']}" class="btn link tocart border-radiusno">
+            <img src="__IMG__/goods-details_10.jpg" />
+            立即定制
+        </button>
+    </div>
+</div>
+<script>
+    var luozuan_info = dingzhi.get_luozuan_info();
+    var goods_type   = $('.tocart').attr('data-goods-type');
+    if( goods_type == '4' ){
+        $('.tocart').show();
+    }else{
+        $('.tocart').hide();
+    }
+    $(document).ready(function(){
+        if($("#sku").html() != undefined){
+			$("#market_price").html(parseInt((($("#sku .active").attr('data-marketPrice')*1.5).toFixed(2))));
+			$("#memberPrice").html(parseInt($("#sku .active").attr('data-price')));
+			$("#on4").html(parseInt($("#sku .active").attr('data-price')));
+			$("#goods_number").html($("#sku .active").attr('data-goods-number'));
+		}
+
+        $('.gm').click(function(){
+            var current = $(this);
+			var type	= '';
+			dingzhi.addToCart(current,type);
+		});
+
+        $('.addCollectionDetail').click(function(){
+            var current = $(this);
+            var type	= '';
+            dingzhi.addToCollection(current,type);
+        });
+
+		$('.rapidBuy').click(function(){
+			var current		= $(this);
+			var type		= 'rapidBuy';
+			dingzhi.addToCart(current,type);
+		})
+
+        $('.tocart').click(function(){
+            var luozuan_info = dingzhi.get_luozuan_info();
+            var goods_type   = $(this).attr('data-goods-type');
+            if( goods_type == '4' ){
+                var goods_id = $(this).attr('data-goods-id');
+                dingzhi.set_jietuo_info1(goods_id);
+            }
+        });
+        <if condition="$goodsInfo['goods_type'] eq 4">
+            changePrice({$goodsInfo['goods_id']},4);
+        </if>
+    });
+
+    function setPrice(obj,goods_id,goods_sku){
+	    var data_goods_number = $(obj).attr('data-goods-number');
+		if(!$(obj).hasClass("active")){
+			$("#market_price").html(parseInt((($(obj).attr('data-marketPrice')*1.5).toFixed(2))));
+			$("#memberPrice").html(parseInt($(obj).attr('data-price')));
+			$("#on4").html(parseInt($(obj).attr('data-price')));
+			$("#goods_number").html(data_goods_number);
+			$(".kc").html('库存: '+data_goods_number);
+			$("#goodsnumber").attr('max',data_goods_number);
+		}
+		$(".oGoods").find("button").each(function(){
+            $(this).removeClass("active");
+		});
+        $(obj).addClass("active");
+	}
+
+    <if condition=" !$goodsInfo['price_model'] ">
+        function setMaterial(obj,gid,material_id,goods_type){
+            $(obj).parent().find("button").removeClass("active");
+            $(obj).addClass("active");
+            $.post("/Home/Goods/getAssociateLuozuanByMaterialId",{Action:"post",goods_type:goods_type,gid:gid,material_id:material_id},function(data){
+                if(data.status == 1){
+                    html  = "可选主石：";
+                    data.data.forEach(function(e,i){
+                        if(i == 0){
+                            html += "<button class='ddBorder btn btn-default border-radiusno active' data-content='"+e.gal_id+"'  title='"+e.shape_name+"' ref='"+e.weights_name+"' onclick='setDiamond(this,"+gid+","+e.gal_id+","+goods_type+")'>"+e.shape_name+" "+e.weights_name+"CT</button>&nbsp;";
+                        }else{
+                            html += "<button class='ddBorder btn btn-default border-radiusno' data-content='"+e.gal_id+"' title='"+e.shape_name+"'  ref='"+e.weights_name+"' onclick='setDiamond(this,"+gid+","+e.gal_id+","+goods_type+")'>"+e.shape_name+" "+e.weights_name+"CT</button>&nbsp;";
+                        }
+                    });
+                    $("#associateLuozuan").html(html);
+                    changePrice(gid,goods_type);
+                }
+            });
+        }
+
+        function setDeputystone(obj,gid,deputystone_id,goods_type){
+            $(obj).parent().find("button").removeClass("active");
+            $(obj).addClass("active");
+            changePrice(gid,goods_type);
+        }
+
+        function setDiamond(obj,gid,luozuan_id,goods_type){
+            $(obj).parent().find("button").removeClass("active");
+            $(obj).addClass("active");
+            changePrice(gid,goods_type);
+        }
+    <else />
+        //切换材质改变一口价或者尺寸属性
+        function setMaterial(obj,gid,material_id,goods_type){
+            $(obj).parent().find("button").removeClass("active");
+            $(obj).addClass("active");
+            $.post("/Home/Goods/getAssociateLuozuanByMaterialId",{Action:"post",goods_type:goods_type,gid:gid,material_id:material_id},function(data){
+                if(data.status == 1){
+                    html  = "可选主石：";
+                    data.data.forEach(function(e,i){
+                        if(i == 0){
+                            html += "<button class='ddBorder btn btn-default border-radiusno active' data-content='"+e.gal_id+"'  title='"+e.shape_name+"' ref='"+e.weights_name+"' onclick='setDiamond(this,"+gid+","+e.gal_id+","+goods_type+")'>"+e.shape_name+" "+(e.weights_name?(e.weights_name+'CT'):'')+"</button>&nbsp;";
+                        }else{
+                            html += "<button class='ddBorder btn btn-default border-radiusno' data-content='"+e.gal_id+"' title='"+e.shape_name+"' ref='"+e.weights_name+"' onclick='setDiamond(this,"+gid+","+e.gal_id+","+goods_type+")'>"+e.shape_name+" "+(e.weights_name?(e.weights_name+'CT'):'')+"</button>&nbsp;";
+                        }
+                    });
+                    $("#associateLuozuan").html(html);
+                    $.post("/Home/Goods/getHand",{Action:"post",gid:gid,materialId:material_id},function(data){
+                        if(data.status == 1){
+                            var html  = "";
+                            for( var i in data.data){
+                                html += "<option value='"+data.data[i]+"'>"+data.data[i]+"</option>";
+                            }
+                            $("select[name='hand']").html(html);
+                            if(data.data1){
+                                var html  = "";
+                                for( var i in data.data1){
+                                    html += "<option value='"+data.data1[i]+"'>"+data.data1[i]+"</option>";
+                                }
+                                $("select[name='hand1']").html(html);
+                            }
+                            changePrice(gid,goods_type);
+                        }
+                    });
+                }
+            });
+        }
+        $('#hand,#hand1').change(function(){
+            changePrice('{$goodsInfo.goods_id}','4');
+        });
+        function setDeputystone(obj,gid,deputystone_id,goods_type){
+            $(obj).parent().find("button").removeClass("active");
+            $(obj).addClass("active");
+        }
+        function setDiamond(obj,gid,luozuan_id,goods_type){
+            $(obj).parent().find("button").removeClass("active");
+            $(obj).addClass("active");
+        }
+    </if>
+    function changePrice(gid,goods_type){
+        var deputystoneId  = $("#deputystone .active").attr("ref");
+        var materialId     = $("#associateMaterial .active").attr("ref");
+        var luozuan_id     = $("#associateLuozuan .active").attr("data-content");
+        var hand           = $("#hand").val();
+        var hand1          = $("#hand1").val();
+        $.post("/Home/Goods/getAssociateLuozuanPriceByGalid",{Action:"post",goods_type:goods_type,gid:gid,deputystoneId:deputystoneId,galid:luozuan_id,materialId:materialId,hand:hand,hand1:hand1},function(data){
+            if(data.status == 1){
+                $("#market_price").html(parseInt(data.marketPrice));
+                $("#memberPrice").html(parseInt(data.price));
+				$("#on4").html(parseInt(data.price));
+            }
+        });
+    }
+</script>

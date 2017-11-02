@@ -1,0 +1,23 @@
+@charset "utf-8";
+/* CSS Document */
+
+.inform{}
+.inform .nav-tabs{ background:#fff;padding-bottom: 1px;border-bottom: 1px solid #959595;}
+.inform .nav-tabs li a{color: #555555;padding: 12px 0px;}
+.inform .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus{ border:0; border-bottom:2px solid #4073f4; color:#4073f4;}
+.inform .tab-content{ margin:2%; }
+.inform .media-list a{color:#878686;}
+.inform .media-list .media-body a{ color:#303030;}
+.inform .media-list .have a{color:#878686;}
+.inform .muted p{ font-size:13px;}
+
+/*资讯详情*/
+.detail {}
+.detail .panel-default{ border:0;box-shadow: none;}
+.detail .panel-default>.panel-heading{background-color: transparent;border-bottom: 0;}
+.detail .panel-default:first-child{border-bottom: 1px solid #dddddd;padding-top: 5px; border-radius:0;}
+.detail .panel-title{ font-weight:600;}
+.detail .panel-body p{}
+.detail .panel-body img{ width:100%;}
+.detail .panel-body h4{ font-weight:600;}
+

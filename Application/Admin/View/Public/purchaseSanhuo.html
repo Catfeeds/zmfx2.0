@@ -1,0 +1,108 @@
+<!--散货列表-->
+<notempty name="goodsList['sanhuo']">
+<div class="info sanhuo">
+	<div class="title">散货产品:</div>
+	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+            <th>产品编号</th>
+            <th>采购单价(&yen;)</th>
+            <th>4C属性(颜色/净度/切工)</th>
+            <th>订购数量(卡)</th>
+            <th>小计价格</th>
+            <if condition="!$order_id"><th>操作</th></if>
+        </tr>
+        <volist name="goodsList['sanhuo']" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'} list">
+            <td>
+            <if condition="!$order_id">{$vo.goods_sn}<else />{$vo['attribute']['goods_sn']}</if>
+            <if condition="!$order_id and $vo.have_goods lt 1">(<span style="color:red">无货</span>)</if>
+            </td>
+
+            <td>
+            	<if condition="!$order_id">
+	            	{$vo.goods_price}
+	            <elseif condition="$orderInfo['order_status'] == 0" />
+                    {$vo['goods_price']/$vo['goods_number']|formatPrice}
+	            <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+                    {$vo['goods_price']/$vo['goods_number']|formatPrice}
+	            <else />
+                    {$vo['goods_price']/$vo['goods_number']|formatPrice}
+	            </if>
+            </td>
+            <td>{$vo.4c}</td>
+            <td>
+	            <if condition="!$order_id">
+	            	<input type="text" style="width: 80px; text-align: center;" name="sanhuo[{$vo.id}][goods_num]" value="{$vo.goods_number}" />
+	            <elseif condition="$orderInfo['order_status'] == 0" />
+	            	{$vo.goods_number}
+	            <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+	            	{$vo.goods_number}
+	            <else />
+	            	{$vo.goods_number_up}
+	            </if>
+            </td>
+            <td>
+            <if condition="!$order_id">
+	            	{$vo.goods_price3}
+	            <elseif condition="$orderInfo['order_status'] == 0" />
+	            	{$vo.goods_price}
+	            <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+	            	{$vo.goods_price}
+	            <else />
+	            	{$vo.goods_price_up}
+	            </if>
+            </td>
+            <if condition="!$order_id"><td><a href="{:U('Admin/Order/purchaseOrderdel?id='.$vo['id'])}" id="isDel">删除</a></td></if>
+        </tr>
+        </volist>
+        <tr class="count">
+            <td></td>
+            <td></td>
+            <td></td>
+            <if condition="!$order_id"><td></td></if>
+        	<td class="tr"><span>采购价合计:</span></td>
+            <td class="tl"><span>&yen;</span><span id="luozuanTotal">{$sanhuoPrice}</span></td>
+        </tr>
+	</table>
+    <div class="clear"></div>
+</div>
+<if condition="$order_id">
+<range name="orderInfo.order_status" value="-1,-2,0" type="notin">
+<div class="info">
+	<div class="title">散货结算:</div>
+	<eq name="periodList.sanhuo.order_id" value="$orderInfo.order_id">
+        <ul class="periodList">
+        <li class="bg">
+        	<span>做{$periodList.sanhuo.period_num}期支付</span>
+            <span>应支付总金额:&yen;{$sanhuoPrice}</span>
+            <span>逾期利率:0.0{$periodList.sanhuo.period_overdue}%</span>
+        </li>
+        <volist name="receivablesList.sanhuo" id="vo">
+        	<li>
+            <span>第{$vo.period_current}期</span><span>{$vo.period_day}天内</span>
+			<span>应支付:&yen;{$vo.receivables_price}</span>
+            <span>已支付:&yen;{$vo.payment_price}</span>
+            <eq name="vo.receivables_status" value="1"><span>&nbsp;&nbsp;&nbsp;未支付</span></eq>
+            <eq name="vo.receivables_status" value="2"><span>&nbsp;&nbsp;&nbsp;支付部分</span></eq>
+            <eq name="vo.receivables_status" value="3"><span>&nbsp;&nbsp;&nbsp;已完成支付</span></eq>
+            </li>
+        </volist>
+        </ul>
+    <else />
+    	<ul class="periodList">
+        <li><span>全款支付,应支付金额:{$sanhuoPrice}</span>
+        <volist name="receivablesList.sanhuo" id="vo">
+            <span>已支付:&yen;{$vo.payment_price}</span>
+            <eq name="vo.receivables_status" value="1"><span>&nbsp;&nbsp;&nbsp;未支付</span></eq>
+            <eq name="vo.receivables_status" value="2"><span>&nbsp;&nbsp;&nbsp;支付部分</span></eq>
+            <eq name="vo.receivables_status" value="3"><span>&nbsp;&nbsp;&nbsp;已完成支付</span></eq>
+        </volist>
+        </li>
+        </ul>
+    </eq>
+</div>
+</range>
+</if>
+<div class="info period_list" id="luozuan_period_list"></div>
+</notempty>
+<!------------------散货列表结束------------------->

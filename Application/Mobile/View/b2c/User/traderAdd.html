@@ -1,0 +1,229 @@
+
+<include file="Public:header" />
+<script type="text/javascript" src="/Public/layer/layer.js"></script>
+<body class="white">
+    <section class="join-zmfxs">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onClick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>加入分销</h2>
+            </div>
+        </header>
+
+        <section class="wrapper">
+			<form class="form-box" id="myform" action="" method="post">
+            <div class="join-zmfx-box">
+                <h1>温馨提示：以下资料均为保密资料，请放心填写。</h1>
+
+                <div class="zmfx-item">
+                    <ul>
+                        <li>
+                            <span class="fl">分销商</span>
+                            <span class="fr">
+                                <input type="text" class="border-none" name="trader_name" id="trader_name" placeholder="请输入分销商名称">
+                            </span>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <span class="fl">请输入公司名称</span>
+                            <span class="fr">
+                                <input type="text" class="border-none" name="company_name" id="company_name" placeholder="请输入公司名称">
+                            </span>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <span class="fl">站点域名</span>
+                            <span class="fr">
+                                <input type="text" class="border-none" name="domain" id="domain" placeholder="非必填">
+                            </span>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <span class="fl">联系人</span>
+                            <span class="fr">
+                                <input type="text" class="border-none" name="contacts" id="contacts" placeholder="联系人">
+                            </span>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <span class="fl">联系电话</span>
+                            <span class="fr">
+                                <input type="text" class="border-none" name="phone" id="phone" placeholder="联系电话">
+                            </span>
+                            <div class="clearfix"></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="zmfx-item">
+                    <ul>
+                        <li>
+                            <span class="fl">营业执照</span>
+                            <span class="fr">
+                                <input type="text" class="border-none" name="business_license" id="business_license" placeholder="请输入营业执照编号">
+                            </span>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <span class="fl zx-address">注册资金</span>
+                            <span class="fr">
+                                <div class="selects">
+                                    <span id="reg-rmb"><input type="hidden" name="funds" value="1" />20-50万</span>
+                                    <span><img src="__IMG__/down_icon.png" alt=""></span>
+                                </div>
+                            </span>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                            <span class="fl zx-address">分销地区</span>
+                            <span class="fr">
+                                <div class="selects">
+                                    <span id="chengshi">请选择</span>
+                                    <span><img src="__IMG__/down_icon.png" alt=""></span>
+                                </div>
+
+                                <div class="selects">
+                                    <span id="diqu">请选择</span>
+                                    <span><img src="__IMG__/down_icon.png" alt=""></span>
+                                </div>
+                            </span>
+                            <div class="clearfix"></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="zmfx-item-bottom">
+                    <ul>
+                        <li>
+                            <div class="flex">
+                                <textarea name="note" id="note" class="join-textarea" placeholder="我要申请加入"></textarea>
+                            </div>
+                        </li>
+                        <li>
+                            <button type="button" id="confirmSubmit" class="confirm-btn">确认预约</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+			</form>
+
+
+            <div class="index-bottom">
+				<div class="phone clearfix">
+					<a href="tel:{:C('site_contact')}" class="fl"><img src="__IMG__/phone_icon.png" alt="">{:C('site_contact')}</a>
+					<?php
+						$DEFAULT_AGENT_DOMAIN = C('DEFAULT_AGENT_DOMAIN');
+						if(substr_count($DEFAULT_AGENT_DOMAIN,'.')==1){
+							$defaultDomain = 'www.'.$DEFAULT_AGENT_DOMAIN.'?is_inside_callback=1';
+						}else{
+							$defaultDomain = $DEFAULT_AGENT_DOMAIN.'?is_inside_callback=1';
+						}
+					?>
+					<a href="http://<?php echo $defaultDomain;?>" title="官方网站" class="fr">查看官方网站(网页版）</a>
+				</div>
+				<div class="copyright">© 2010-2019 {:C('site_name')} 版权所有<br/>{:C('case_number')}</div>
+			</div>
+
+<!-- 返回顶部 start -->
+<a href="javascript:;" class="back-top" style="display: none;">
+    <img src="__IMG__/back_top.png" alt="">
+</a>
+
+<script>
+    $(function(){
+        //返回顶部
+        $(window).scroll(function(){
+              if($(document).scrollTop() + $(window).height() >= $(document).height()){
+                 $('.back-top').fadeIn();
+              }else{
+                 $('.back-top').hide();
+              }
+        });
+        $('.back-top').bind('click', function(){
+            $('body,html').animate({scrollTop : 0},400);
+        });
+    });
+</script>
+<!-- 返回顶部 end -->
+
+
+        </section>
+    </section>
+
+    <script>
+
+        //注册资金
+        var arr1 = ['<input type="hidden" name="funds" value="1" />20-50万','<input type="hidden" name="funds" value="2" />50-100万','<input type="hidden" name="funds" value="3" />100-500万','<input type="hidden" name="funds" value="4" />500-1000万','<input type="hidden" name="funds" value="5" />1000万以上'];
+        var mobileSelect1 = new MobileSelect({
+        trigger: '#reg-rmb',
+        title: '请选择注册资金',
+        wheels: [
+                    {data: arr1}
+                ],
+        position:[0] //初始化定位
+        });
+		
+		//分销地区
+		var arr3 = ['请选择'];
+		mobileSelect3 = new MobileSelect({
+		trigger: '#diqu',
+		title: '请选择地区',
+		wheels: [ 
+					{data: arr3}
+				],
+		position:[0] //初始化定位
+		});
+		
+        //分销城市
+        var arr2 = [{$provinceArr}];
+        var mobileSelect2 = new MobileSelect({
+			trigger: '#chengshi',
+			title: '请选择城市',
+			wheels: [
+						{data: arr2}
+					],
+			position:[0], //初始化定位
+			callback: function(indexArr, data){
+				var provinceKey = parseInt(indexArr);
+				//indexArr为所得数组的下标
+				$.ajax({
+					url: "{:U('/User/loadcity')}",
+					type: 'post',
+					data: {'provinceKey':provinceKey},
+					success: function (result) {
+						$("#diqu").html("请选择");
+						arr4 = result.data;
+						mobileSelect3.updateWheel(0, arr4);
+					}
+				});
+			}	
+        });
+		$(document).ready(function () {
+			// 确定预约
+			$('#confirmSubmit').click(function () {
+				$.ajax({
+					url: "{:U('/User/traderAdd')}",
+					type: 'post',
+					dataType: 'json',
+					data: $('#myform').serialize(),
+					success: function (result) {
+						if (result.success==true) {
+							layer.msg(result.msg,{
+								shift:6,
+							});
+							setTimeout('window.location.href="'+result.url+'"',800);
+						}else{
+							layer.msg(result.msg,{
+								shift:6,
+							});
+						}
+					}
+				});
+			});
+		})
+    </script>
+</body>
+</html>

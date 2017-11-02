@@ -1,0 +1,30 @@
+<extend name=".:Base:Index:index" />
+<block name="header">
+    <include file="Public:header" />
+</block>
+<block name="body">
+<div class="wrap"> 
+	<div class="index">
+		<div class="indexLeft"><include file=".:Base:Public:cat" /></div>
+		<div class="indexRight">
+			<div class="search">
+			  <form action="{:U('/Home/Search/goodsList')}" method="get">
+				<input type="text" value="" name="keyword">
+				<input id="go" type="submit" value="搜索">
+			  </form>
+			  <ul>
+				<li><span>搜索热词:</span></li>
+				<volist name="hot_search" id="vo">
+			    <li><a href="{:U('/Home/Search/goodsList',array('keyword' => $vo))}">{$vo}</a></li>
+				</volist> 
+				<div class="clear"></div>
+			  </ul>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+</block>
+<block name="footer">
+    <include file="Public:footer" />
+</block>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>模板管理</title>
+</head>
+<script type="text/javascript">
+$(function(){
+	$('.templateInfo').click(function(){
+		str = '切换模板后需要配置自己的模板广告位（广告）。<br/>还需配置模板对应的模块显示<br/>是否切换';
+		href = $(this).attr('href');
+		layer.confirm(str, {btn: ['切换','取消']}, function(){
+		    $.get(href,function(data){
+		    	if(data.status){
+		    		location.reload();
+		    		layer.msg('切换成功', {icon: 1});
+		    	}else{
+		    		layer.msg('切换失败', {shift: 6});
+		    	}
+		    })
+		    return true;
+		}, function(){return true;});
+		return false;
+	})
+})
+</script>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：模板管理</h3>
+        <ul>
+            <li><a href="{:U('Admin/System/templateManage?template_type=1')}">电脑板模板</a></li>
+            <li><a href="{:U('Admin/System/templateManage?template_type=2')}">手机版模板</a></li>
+			<li><a href="{:U('Admin/System/templateManage?template_type=3')}">APP版模板</a></li>
+        </ul>
+    </div>
+    <div class="template">
+    	<ul>
+    		<volist name="TmpList" id="vo" mod="2">
+    		<li class="<eq name="vo.template_status" value="1">active</eq>">
+    			<div class="img <eq name="vo.template_type" value="2">phone</eq>"><img src="/Public/{$vo.template_img|str_replace="./Uploads/","",###}" width="80%"></div>
+    			<div class="info">
+    				<span>{$vo.template_name}</span>
+    				<eq name="vo.template_status" value="1">
+    					<span>(正在使用)</span>
+    				<else />
+    					<if condition="$vo['status'] == 1">
+    						<a href="{:U('Admin/System/templateInfo?template_type='.$vo['template_type'].'&template_id='.$vo['template_id'])}" class="templateInfo">使用</a>
+    					<else />
+    						<span class="red">(暂时不可用)</span>
+    					</if>
+    				</eq>
+    				<if condition="$vo['template_color'] and $vo['template_status'] == 1">
+                        <if condition="$vo['template_type'] == 1">
+    					   <a href="{:U('Admin/System/templateSys?template_id='.$vo['template_id'])}">颜色配置</a>
+                        </if>
+                        <if condition="$vo['template_type'] == 2">
+							<eq name="vo['template_id']" value="10">
+								<a href="{:U('Admin/System/templateSysMobileB2C?template_id='.$vo['template_id'])}">颜色配置</a>
+							<else />
+								<a href="{:U('Admin/System/templateSysMobile?template_id='.$vo['template_id'])}">颜色配置</a>
+							</eq>
+                        </if>
+						
+						<if condition="$vo['template_type'] == 3">
+                           <a href="{:U('Admin/System/appSys?template_id='.$vo['template_id'])}">品牌风格配置</a>
+                        </if>
+						<if condition="$vo['is_new'] == 1">
+                           <a href="{:U('Admin/System/templateSetting?template_id='.$vo['template_id'])}">模板设置</a>
+                        </if>
+    				</if>
+    				<if condition="$vo['template_status'] == 1">
+						<!--a href="{:U('Admin/System/templateLayoutSys?template_id='.$vo['template_id'])}">模块管理</a-->
+					</if>
+    			</div>
+    		</li>
+    		</volist>
+    		<div class="clear"></div>
+    	</ul>
+    </div>
+</div>
+</body>
+</html>

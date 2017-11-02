@@ -1,0 +1,29 @@
+<tr data-id="{$SJID}" class="list">
+    <td>
+    	<if condition="is_array($info)">
+    		{$info.goods_sn}
+    		<input type="hidden" class="goods_sn3" value="{$info.goods_sn}" name="consignment[{$SJID}][goods_sn]"/>
+    	<else />
+    		<input type="text" style="width:150px" name="consignment[{$SJID}][goods_sn]" class="goods_sn3">
+    	</if>
+    </td>
+    <td><input type="text" style="width: 100px;" value="" name="consignment[{$SJID}][goods_price]" class="goods_price3"></td>
+    <td class="c4">
+    	<select name="material">
+    		<option value="0">选择材质</option>	
+    		<volist name="info.materialList" id="vo">
+    		<option value="{$vo.material_id}">{$vo.material_name}</option>
+    		</volist>
+    	</select>
+    	<select name="deputystone">
+    		<option value="0">选择副石</option>
+    		<volist name="info.deputystoneList" id="vo">
+    		<option value="{$vo.gad_id}">{$vo.deputystone_name}</option>
+    		</volist>
+    	</select>
+    </td>
+    <td>
+    	<input style="width: 60px; text-align: center;" type="text" value="1" name="consignment[{$SJID}][goods_num]" class="goods_num3">
+    </td>
+    <td><a href="#" class="orderDelGoodsConsignment" data-id="{$SJID}">删除</a></td>
+</tr>

@@ -1,0 +1,59 @@
+<include file="Public:header" />
+<!--搜索-->
+<!-- <include file="Public:search" /> -->
+<!-- 导航-->
+<!-- Header -->
+	<header data-am-widget="header" class="am-header am-serch cat">
+		<div class="am-header-left am-header-nav">
+			<a href="{:U('/Index/index')}" class="">
+				<img class="am-header-icon-custom" src="__ASS__/Img/search_01.png" alt=""/>
+			</a>
+		</div>
+		<h1 class="am-header-title">
+			会员中心
+		</h1>
+	</header>
+<!-- 内容-->
+<div class="wrap">
+	<div class="user">
+		<ul>
+			<li class="">
+				<a href="{:U('User/orderList')}"><img src="__IMG__/hu-bg_03.png" height="88" alt="我的订单"></a>
+				<a href="{:U('User/orderList')}">我的订单</a></li>
+			<li>
+				<a href="{:U('User/addressList')}"><img src="__IMG__/hu-bg_05.png" height="88" alt="收货地址"></a>
+				<a href="{:U('User/addressList')}">收货地址</a>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="{:U('User/UserInfo?uid='.$uid)}"><img src="__IMG__/hu-bg_09.png" height="88" alt="个人信息"></a>
+				<a href="{:U('User/UserInfo?uid='.$uid)}">个人信息</a>
+			</li>
+			<li>
+				<a href="{:U('User/traderAdd')}"><img src="__IMG__/hu-bg_11.png" height="88" alt="加入分销商"></a>
+				<a href="{:U('User/traderAdd')}">加入分销商</a>
+			</li>
+		</ul>
+	</div>
+	<div>
+		<!--<button type="button" class="am-btn am-btn-blue am-radius">取消</button>-->
+		<form onsubmit=" return func_sign_out()" method="post" action="/Public/setSignOut">
+		<button type="submit" class="am-btn am-btn-blue am-radius">退出登录</button>
+		</form>
+		<script >
+			var func_sign_out = function(){
+				if(confirm('您确定要退出登录吗?')) {
+					return true;
+				}else{
+					return false;
+				}
+			}
+		</script>
+	</div>
+	<br />
+	<br />
+
+</div>
+<!--底部-->
+<include file="Public:footer" />

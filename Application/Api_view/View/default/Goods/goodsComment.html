@@ -1,0 +1,60 @@
+<include file="Public:header" />
+<style>
+*{padding:0;margin:0;}
+ img {    max-width: 100%;    vertical-align: middle;	}
+ #evaluation { background: #F6F6F6;}
+.evaluation-lsit { background: #FFF; padding: 10px; margin: 10px 0;}
+.evaluation-lsit .evahead { border-bottom: 1px solid #E0E0E0; padding-bottom: 8px;}
+ .evahead .tx { width: 40px; height: 40px; margin-right: 5px; vertical-align: middle; display: inline-block; text-align: center; border-radius: 50%; -webkit-border-radius: 50%; overflow: hidden;}
+ .evahead .pf { height: 40px; line-height: 40px; text-align: right; vertical-align: middle;}
+.evaluation-lsit small { color: #999;}
+.evaluation-lsit .content p { padding: 5px 0; margin: 0; color: #666; font-size: 15px;}
+.evaluation-lsit .username { font-size: 15px;}
+</style>  
+<body class="wrap-bg" style="margin-bottom: 50px;">
+          <div role="tabpanel" class="tab-pane" id="evaluation">		</div>
+</body>
+<script>
+ 
+  
+  
+getAjaxComment=function(){
+  $.post("/Goods/getAjaxComment",{Action:'post',gid:'<?php echo $_GET['goods_id']?>'},function(data){
+    if(data){
+      var html = "";
+      $.each(data ,function(k ,e) {
+        html += "<div class='evaluation-lsit'>";
+        html += "<div class='evahead'>";
+        html += "<div class='pull-left'>";
+		if(e.userimage){
+			if(e.userimage.substr(0, 1)=='.'){
+				html += "<span class='tx'><img src='"+e.userimage.substring(1)+"' alt=''></span>";
+			}else{
+				html += "<span class='tx'><img src='"+e.userimage+"' alt=''></span>";
+			}
+		}else{
+			html += "<span class='tx'><img src='https://avatars2.githubusercontent.com/u/12794637?v=3&s=45' alt=''></span>";
+		}
+        html += "<span class='username'>"+e.username+"</span>";
+        html += "</div>";
+        html += "<div class='pull-right'>";
+        html += "<span class='pf'>";
+        for(var i = 0;i < e.start ; i++){
+          html += "<img width='12' height='12'  src='__IMG__/xingxing.png' />";
+        }       
+        html += "</span>";
+        html += "</div>";
+        html += "<div class='clearfix'></div>";
+        html += "</div>";
+        html += "<div class='content'>";
+        html += "<p>"+e.control+"</p>";
+        html += "<small>"+e.createtime+"</small>";        
+        html += "</div></div>";
+      });
+      $("#evaluation").html(html);
+    }
+  });
+}();
+  
+  </script>
+</html>

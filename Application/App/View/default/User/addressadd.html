@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>添加新地址</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/user.css">
+	<link rel="stylesheet" href="__CSS__/titatoggle-dist-min.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script type="text/javascript" src="__JS__/common.js"></script>
+	<script src="__JS__/layer-mobile/layer.js"></script> 
+</head>
+<body class="wrap-bg">
+	<!-- Header -->
+	<header class="header text-center">
+		<a href="/user/address/" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    	添加新地址
+    </header>
+    <!-- Header END //-->
+	
+	<!-- Main -->
+    <div class="container-fluid user-edit-address user-info">
+		<form id="form_1">
+		<div class="panel panel-default border-radius-none">
+			<div class="panel-body username usbox fxs">
+				<ul>
+					<li>
+						收货人
+						<span class="una"><input type="text" id="name" name="name" placeholder="收件人的姓名"></span>
+					</li>
+					<li>
+						手机号码
+						<span class="una"><input type="text" id="phone" name="phone" placeholder="具体联系手机号码"></span>
+					</li>
+					<li>
+						所在地
+						<span class="select-box">
+							<select id="province_id" name="province_id" class="select-form">
+							<option value="0">请选择</option>
+							<volist name="province" id="vo">
+							<option value="{$vo.region_id}">{$vo.region_name}</option>
+							</volist>
+							</select>
+							<select id="city_id" name="city_id" class="select-form">
+							<option value="0">请选择</option>
+							</select>
+							<select id="district_id" name="district_id" class="select-form">
+							<option value="0">请选择</option>
+							</select>
+							<div class="clear"></div>
+						</span>
+						<div class="clear"></div>
+					</li>
+					<li>
+						详细地址
+						<span class="una"><input type="text" id="address" name="address" placeholder="详细地址描叙">
+					</li>
+					<li>
+						邮政编码
+						<span class="una"><input type="text" id="code" name="code" placeholder="邮编，选填" >
+					</li>
+					<li>
+						地址标注
+						<span class="una"><input type="text" id="title" name="title" class="bz" placeholder="例如家、公司等">
+					</li>
+					<li>
+						设为默认地址
+						<span class="una">
+							<div class="checkbox checkbox-slider-lg checkbox-slider--b-flat  checkbox-slider-info una-checkbox">
+								<label>
+									<input type="checkbox" name="is_default" value="1" ><span></span>
+								</label>
+							</div>
+						</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="container">
+			<button type="button" id="btn_save" class="btn btn-primary exit-button">保存</button>
+		</div>
+		</form>
+    </div>
+    <!-- Main END //-->			
+	
+<script type="text/javascript">
+$(document).ready(function () {
+    function address(sel, hl) {
+        var parent_id = $(sel).children('option:selected').val(), html, i;
+        if (parent_id !== 0) {
+            $.get("{:U('/Public/getRegion')}", {'parent_id': parent_id}, function (data) {
+                for (i = 0; i < data.length; i++) {
+                    html += '<option value="' + data[i].region_id + '">' + data[i].region_name + '</option>';
+                }
+                $(hl).html(html);
+            });
+        }
+		return true;
+    }
+	//省份变化
+    $('#province_id').change(function() {
+		address('#province_id', '#city_id');
+		setTimeout(function(){address('#city_id', '#district_id')},200);
+	});
+	//城市变化
+    $('#city_id').change(function(){ address('#city_id', '#district_id'); });
+
+	//保存地址
+	$("#btn_save").click(function(){
+		if($('#name').val()==''){
+ 			layer.open({
+				content: '请输入正确的姓名',
+				time: 2
+			});
+			$('#name').focus();
+			return false;
+		}
+		if(!check_mobilephone($('#phone').val())){
+			layer.open({
+				content: '请输入正确的手机号码',
+				time: 2
+			});
+			$('#phone').focus();
+			return false;
+		}
+		if($('#district_id').val()<=0){
+			layer.open({
+				content: '请选择正确的城市地区',
+				time: 2
+			});
+			$('#province_id').focus();
+			return false;
+		}
+		if($('#address').val()==''){
+			layer.open({
+				content: '请输入正确的收货地址',
+				time: 2
+			});
+			$('#address').focus();
+			return false;
+		}
+		if($('#title').val()==''){
+			layer.open({
+				content: '请输入正确的标注',
+				time: 2
+			});
+			$('#title').focus();
+			return false;
+		}
+		$.ajax({
+			url:"/user/addressadd.html",
+			type: 'POST',
+			data: $('#form_1').serialize(),
+			success: function(d){
+				//console.log(d);
+				if(d.ret==100){
+					layer.open({
+						content: d.msg,
+						time: 2
+					});
+					setTimeout("window.location.href='/user/address/'",2000);
+				}else{
+					layer.open({
+						content: d.msg,
+						time: 2
+					});
+				}
+			}
+		});
+	});
+});
+</script>
+</body>
+</html>

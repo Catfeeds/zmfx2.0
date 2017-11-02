@@ -1,0 +1,438 @@
+<include file="Public:header" />
+<!--导航-->
+<div class="am-g ">
+<!-- Header -->
+<header data-am-widget="header" class="am-header am-serch cat">
+    <div class="am-header-left am-header-nav">
+        <a href="{:U('/User/orderList')}" class="">
+            <img class="am-header-icon-custom" src="__ASS__/Img/search_01.png" alt=""/>
+        </a>
+    </div>
+    <h1 class="am-header-title">
+        订单详情
+    </h1>
+</header>
+<!--订单-->
+ <div class="wrap">
+     <div class="find"><span>订单号 : <big>{$order.order_sn}</big></span></div>
+     <if condition="$product">
+         <div class="item">
+             <span>珠宝产品</span>
+             <span class="item-lf"></span>
+         </div>
+         <table class="am-table  table-item">
+             <thead>
+             <tr>
+                 <th>图</th><th>商品</th><th width="15%">本店价</th><th width="8%">数量</th><th width="15%">小计</th>
+             </tr>
+             </thead>
+             <tbody>
+             <volist name="product" id="vo">
+                 <tr>
+                     <td>
+                         <div class="tbl_cart_left">
+                         <a href="javascript:void(0);" target="_blank">
+                             <if condition="$vo['goods']['thumb']">
+                                 <img style="width: 40px;height: 40px;" src="{$vo.goods.thumb}" />
+                                 <else />
+                                 <img style="width: 40px;height: 40px;" src="/Public/Uploads/product/nopic.png" />
+                             </if>
+                         </a>
+                         </div>
+                     </td>
+                     <td>
+                         <div class="tbl_cart_right">
+                             <a href="javascript:void(0);" target="_blank">{$vo.goods.goods_name}</a>
+							 <if condition="$vo['goods']['associateInfo']">
+								{$vo.goods.associateInfo.material_name}
+								金重：{$vo.goods.associateInfo.weights_name}g 
+								主石：{$vo.goods.luozuanInfo.weights_name} CT {$vo.goods.luozuanInfo.shape_name}, {$vo.goods.deputystone_name},
+								手寸：{$vo.goods.hand},<br>
+								刻字：{$vo.goods.word}
+                                <if condition="$vo['goods']['sd_images']">
+                                    刻字个性符号：<img src="{$vo.goods.sd_images}" style="width: 50px;"  />
+                                </if>
+                                <if condition="$vo['goods']['hand1']">
+                                    手寸1：{$vo.goods.hand1}  
+                                </if>
+                                <if condition="$vo['goods']['word1']">
+                                    刻字1：{$vo.goods.word1}
+                                </if>
+                                <if condition="$vo['goods']['sd_images1']">
+                                    刻字个性符号1：<img src="{$vo.goods.sd_images1} " style="width: 50px;" />
+                                </if>
+							<elseif condition="$vo['specification']" />
+                                <p>{$vo.specification}</p>
+                            <else />
+                                {$vo.goods.category_name}
+                            </if>
+							 <br>
+                             款号：{$vo.goods.goods_sn}
+                         </div>
+                     </td>
+                     <td>
+						<in name="vo['activity_status']" value="0,1">
+							{$vo['activity_price']}
+						<else/>
+							{$vo['goods']['goods_price']}
+						</in>
+					</td>
+                     <td>{$vo.product_number}</td>
+                     <td>{$vo.product_price}</td>
+                 </tr>
+             </volist>
+             </tbody>
+             <tfoot>
+                <tr class="bottom">
+                    <td colspan="4" align="right" class="tdRight">合计</td>
+                    <td colspan="2" ><label class="lblMoney">{$dataList.product_total_amount}</label> 元</td>
+                </tr>
+             </tfoot>
+         </table>
+         <if condition="$periods['product']">
+             <div class="periods">
+                 <span>做{$periods.product.period_num}期支付 应支付总金额￥{$dataList.product_total_amount} 逾期利率：{$periods.product.period_overdue}‰ </span>
+                 <ul>
+                     <volist name="receivables['product']" id="vo">
+                         <li>第{$vo.period_current}期 {$vo.period_day}天内 应支付:￥{$vo.receivables_price}元 已支付：{$vo.payment_price}</li>
+                     </volist>
+                 </ul>
+             </div>
+         <elseif condition="$order['order_status'] gt 0" />
+             <div class="periods">
+                 <span>
+                     全款支付 应支付总金额￥{$dataList.product_total_amount}
+                 </span>
+             </div>
+         </if>
+     </if>
+     <if condition="$zmProduct neq null && $zmProduct neq ''">
+         <div class="item">
+             <span>定制产品详情</span>
+             <span class="item-lf"></span>
+         </div>
+         <table border="1" class="am-table  table-item">
+             <thead>
+                <tr class="top"><th>图</th><th>商品</th><th>款号</th><th>本店价</th><th>数量</th><th>小计</th></tr>
+             </thead>
+             <tbody>
+             <volist name="zmProduct" id="vo">
+                 <tr>
+                     <td>
+                         <div class="tbl_cart_left">
+                             <a href="javascript:void(0);" target="_blank">
+                                 <if condition="$vo['goods']['thumb']">
+                                     <img style="width: 40px;height: 40px;" src="{$vo.goods.thumb}" />
+                                 <else />
+                                     <img style="width: 40px;height: 40px;" src="/Public/Uploads/product/nopic.png" />
+                                 </if>
+                             </a>
+                         </div>
+                     </td>
+                     <td>
+                         <div class="tbl_cart_right" style="text-align:left;"><a href="javascript:void(0);" target="_blank">{$vo.goods.goods_name}</a>
+                             <br>
+                             <if condition="$vo['goods']['associateInfo']">
+                                 {$vo.goods.associateInfo.material_name} 金重：{$vo.goods.associateInfo.weights_name} 主石：{$vo.goods.luozuanInfo.weights_name}CT 手寸：{$vo.goods.hand}
+                             <elseif condition="$vo['specification']" />
+                                 {$vo.specification}
+                             </if>
+                         </div>
+                     </td>
+                     <td>{$vo.goods.goods_sn}</td>
+                     <td>{$vo.goods.goods_price}</td>
+                     <td>{$vo.product_number}</td>
+                     <td>{$vo.product_price}</td>
+                 </tr>
+             </volist>
+             </tbody>
+             <tfoot>
+             <tr class="bottom">
+                 <td colspan="3" class="tdLeft">定制货品以付定金日实际金价为准</td>
+                 <td colspan="3"  align="tdLeft" >合计 &nbsp;&nbsp;&nbsp;<label class="lblMoney">{$dataList.zmProduct_total_amount}</label> 元</td>
+             </tr>
+             </tfoot>
+         </table>
+         <if condition="$periods['zmProduct']">
+             <div class="periods">
+                 <span>做{$periods.zmProduct.period_num}期支付 应支付总金额￥{$dataList.zmProduct_total_amount} 逾期利率：{$periods.zmProduct.period_overdue}‰ </span>
+                 <ul>
+                     <volist name="receivables['zmProduct']" id="vo">
+                         <dd>第{$vo.period_current}期 {$vo.period_day}天内 应支付:￥{$vo.receivables_price}元 已支付：{$vo.payment_price}</dd>
+                     </volist>
+                 </ul>
+             </div>
+         <elseif condition="$order['order_status'] gt 0" />
+            <div class="periods">
+                <ul>
+                    <li>全款支付 应支付总金额￥{$dataList.zmProduct_total_amount} </li>
+                </ul>
+            </div>
+         </if>
+     </if>
+
+     <if condition="$sanhuo neq null && $sanhuo neq ''">
+         <div class="item">
+             <span>散货列表</span>
+             <span class="item-lf"></span>
+         </div>
+         <table class="am-table  table-item">
+             <thead>
+             <tr>
+                 <th>去向</th><th>分类</th><th>货号</th><th>重量（CT）</th><th>颜色</th><th>净度</th><th>切工</th><th>每卡单价</th><th>小计</th>
+             </tr>
+             </thead>
+             <tbody>
+             <volist name="sanhuo" id="vo">
+                 <tr><td>{$vo.goods.location}</td>
+                     <td>{$vo.goods.goods_type}</td>
+                     <td>{$vo.goods.goods_sn}</td>
+                     <td>{$vo.sanhuo_number}</td>
+                     <td>{$vo.goods.color}</td>
+                     <td>{$vo.goods.clarity}</td>
+                     <td>{$vo.goods.cut}</td>
+                     <td>{$vo.goods.goods_price}</td>
+                     <td>{$vo.sanhuo_price}</td>
+                 </tr>
+             </volist>
+             </tbody>
+             <tfoot>
+             <tr>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 <td colspan="4">
+                     <i>总价：</i>
+                     <i><label class="lblMoney">{$dataList.sanhuo_total_amount}</label> 元</i>
+                 </td>
+             </tr>
+             </tfoot>
+         </table>
+         <if condition="$periods['sanhuo']">
+             <div class="periods">
+                 <span>
+                     做{$periods.sanhuo.period_num}期支付 应支付总金额￥{$dataList.sanhuo_total_amount} 逾期利率：{$periods.sanhuo.period_overdue}‰
+                 </span>
+                 <ul>
+                     <volist name="receivables['sanhuo']" id="vo">
+                         <li>第{$vo.period_current}期 {$vo.period_day}天内 应支付:￥{$vo.receivables_price}元 已支付：{$vo.payment_price}</li>
+                     </volist>
+                 </ul>
+             </div>
+         <elseif condition="$order['order_status'] gt 0" />
+             <div class="periods">
+                <span>全款支付 应支付总金额￥{$dataList.sanhuo_total_amount} </span>
+             </div>
+         </if>
+     </if>
+
+     <if condition="$diamond neq null || $diamond neq ''">
+         <div class="am-container">&nbsp;</div>
+         <div class="item">
+             <span>证书货列表</span>
+             <span class="item-lf"></span>
+         </div>
+         <table class="am-table  table-item">
+             <thead>
+             <tr>
+                 <th>去向</th><th>形状</th><th>证书编号</th><th>钻重</th><th>颜色</th><th>净度</th><th>切工</th><th>国际报价</th><th>每粒单价</th><th>小计</th>
+             </tr>
+             </thead>
+             <tbody>
+             <volist name="diamond" id="vo">
+                 <if condition="$vo.goods_type eq 1">
+                     <tr><td>{$vo.goods.location}</td>
+                         <td><img src="/Public/images/diamondShape/{$vo.goods.shape}.gif" /></td>
+                         <td>
+							<eq name="vo['goods']['luozuan_type']" value="1">
+								彩钻
+							</eq>
+							{$vo.goods.certificate_type}_{$vo.goods.certificate_number}
+						</td>
+                         <td>{$vo.goods.weight}</td>
+                         <td>{$vo.goods.color}</td>
+                         <td>{$vo.goods.clarity}</td>
+                         <td>
+							<eq name="vo['goods']['luozuan_type']" value="0">
+								{$vo.goods.cut}
+							</eq>
+						 </td>
+                         <td>
+							<eq name="vo['goods']['luozuan_type']" value="0">
+								{$vo.goods.dia_global_price}
+							</eq>
+						</td>
+                         <td>{$vo.diamond_price}</td>
+                         <td>{$vo.diamond_price}</td>
+                     </tr>
+                 </if>
+             </volist>
+             </tbody>
+             <tfoot>
+             <tr>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 <td colspan="5">
+                     <i>总价：</i>
+                     <i>{$dataList.diamond_total_amount}</i>
+                 </td>
+             </tr>
+             </tfoot>
+         </table>
+         <if condition="$periods['luozuan']">
+         <div class="periods">
+             <span>做{$periods.luozuan.period_num}期支付 应支付总金额￥{$dataList.diamond_total_amount} 逾期利率：{$periods.luozuan.period_overdue}‰ </span>
+             <ul>
+                 <volist name="receivables['luozuan']" id="vo">
+                     <li>第{$vo.period_current}期 {$vo.period_day}天内 应支付:￥{$vo.receivables_price}元 已支付：{$vo.payment_price}</li>
+                 </volist>
+             </ul>
+         </div>
+         <elseif condition="$order['order_status'] gt 0" />
+             <div class="periods">
+                <span>全款支付 应支付总金额￥{$dataList.diamond_total_amount} </span>
+             </div>
+         </if>
+     </if>
+     <div class="am-container">总金额 :<i> {$total_amount} 元</i></div>
+     <div class="am-container">&nbsp;</div>
+     <div class="item">
+         <span>订单支付详情</span>
+         <span class="item-lf"></span>
+     </div>
+     <table class="am-table  table-item">
+         <thead>
+         <tr><th>订单编号</th><th>订单总金额</th><th>支付金额</th><th>未支付金额</th><th>支付时间</th><th>支付备注</th></tr>
+         </thead>
+         <tbody>
+         <if condition="$payList != null && $payList != ''">
+             <volist name="payList" id="vo">
+                 <tr>
+                     <td>{$order.order_sn}</td>
+                     <td>{$order.order_price_up}</td>
+                     <td>{$vo.payment_price}</td>
+                     <td>{$vo.no_payment}</td>
+                     <td>{$vo.create_time|date="Y-m-d",###}</td>
+                     <td>{$vo.payment_note}</td>
+                 </tr>
+             </volist>
+         <else />
+             <tr><td colspan="6">暂无支付信息</td></tr>
+         </if>
+         </tbody>
+     </table>
+
+     <if condition="$orderReceivables">
+         <div class="am-container">&nbsp;</div>
+         <div class="item">
+             <span>订单补差价</span>
+             <span class="item-lf"></span>
+         </div>
+         <table class="am-table  table-item">
+             <tr><th>应支付金额</th><th>已支付金额</th><th>创建时间</th><th>支付时间</th><th>备注</th></tr>
+             <volist name="orderReceivables" id="vo">
+                 <tr>
+                     <td>{$vo.receivables_price} 元</td>
+                     <td>{$vo.payment_price}</td>
+                     <td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+                     <td><if condition="$vo['payment_time'] eq 0">未支付<else/>{$vo.payment_time|date="Y-m-d H:i:s",###}</if></td>
+                     <td>{$vo.receivables_note}</td>
+                 </tr>
+             </volist>
+         </table>
+     </if>
+     <if condition="$orderDeliverys">
+         <div class="am-container">&nbsp;</div>
+         <div class="item">
+             <span>发货单列表</span>
+             <span class="item-lf"></span>
+         </div>
+         <table class="am-table  table-item" >
+             <tr class="top"><th>发货单ID</th><th>货品信息</th><th width="15%">发货时间</th><th width="10%">状态</th><th width="10%">操作</th></tr>
+             <volist name="orderDeliverys" id="vo">
+                 <tr>
+                     <td>{$vo.delivery_id}</td>
+                     <td class="tdLeft" style="padding-left:10px;"><volist name="vo['deliveryGoods']" id="v">
+                         {$v.goods_name_str} 数量：{$v.goods_number} 金额：{$v.goods_price}<br>
+                     </volist>
+                     </td>
+                     <td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+                     <td>{$vo.confirm_type_txt}</td>
+                     <td>
+                         <if condition="$vo['confirm_type'] eq 0 && $vo['confirm'] neq 1">
+                             <a href="javascript:void(0)" onclick="if(confirm('确定收货吗?')){ confirmReceiptGoods({$vo['order_id']}); }">确认收货</a>
+                         </if>
+                         <if condition=" $vo['confirm'] eq 1">
+                             <a href="javascript:void(0)" >已退</a>
+                         </if>
+                     </td>
+                 </tr>
+             </volist>
+         </table>
+     </if>
+     <if condition="$returnOrders">
+         <div class="item">
+             <span>退货单列表</span>
+             <span class="item-lf"></span>
+         </div>
+         <table class="am-table  table-item" >
+             <tr class="top"><th>发货单ID</th><th>产品名称</th><th width="20%">产品编号</th><th width="18%">退货时间</th><th width="10%">退货数量</th><th width="15%">退货金额</th></tr>
+             <volist name="returnOrders" id="vo">
+                 <tr>
+                     <td>{$vo.delivery_id}</td>
+                     <td>{$vo.attrs.goods_name}</td>
+                     <td>{$vo.certificate_no}</td>
+                     <td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+                     <td>{$vo.goods_number}</td>
+                     <td>{$vo.goods_price}</td>
+                 </tr>
+             </volist>
+         </table>
+     </if>
+     <if condition="$returnFunds">
+         <div class="item">
+             <span>退款单列表</span>
+             <span class="item-lf"></span>
+         </div>
+         <table class="am-table table-item" >
+             <tr class="top"><th>退款账号</th><th>收款账号</th><th width="20%">退款金额</th><th width="18%">退款时间</th><th width="10%">退款备注</th></tr>
+             <volist name="returnFunds" id="vo">
+                 <tr>
+                     <td>{$vo.refund_user}</td>
+                     <td>{$vo.receivables_user}</td>
+                     <td>{$vo.refund_price}</td>
+                     <td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+                     <td>{$vo.refund_note}</td>
+                 </tr>
+             </volist>
+         </table>
+     </if>
+     <div class="am-container">
+         <h3 class="payment mt10"><span>现金或汇款</span></h3>
+         <p>目前可提供线下汇款，如需账户信息，请及时跟{:C('site_name')}财务部门取得联系，联系电话：<span style="color:red;font-size:15px;">0755-26826866-70</span></p>
+     </div>
+     <div class="am-container">
+        <button type="button" onclick="history.go(-1);" class="am-btn am-btn-blue am-radius " style="margin: auto;">返　回</button>
+     </div>
+     <br>
+  </div>
+  	<script>
+		var confirmReceiptGoods = function(id){
+			$.ajax({
+				url:"/User/confirmReceive.html",
+				type: 'POST',
+				data: {'order_id':id},
+				success: function(d){
+					alert(d.msg);
+					window.location.href = d.backUrl;
+				}
+			});
+		}
+	</script>
+  
+    <include file="Public:footer" />

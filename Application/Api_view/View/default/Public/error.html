@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>错误提示页</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script src="__JS__/common.js"></script>
+	<script src="__JS__/public.js"></script> 	
+</head>
+<body>
+ 
+	
+	<!-- Main -->
+	<div class="container">
+		<div class="row error">
+			<div class="col-xs-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading"><img src="__IMG__/error.png" style="width: 2em; margin-right: 3px;" alt=""><strong>{$error_tilte}！</strong></div>
+				  <div class="panel-body">
+				     抱歉！{$error_msg}
+				  </div>
+				  <div class="panel-body text-center">
+				  	<a href="#" onclick="window.history.back(-1);" class="btn btn-default">返回上一页</a>
+				  	<a  onclick="ai_mutual('1');" class="btn btn-default">返回首页</a>
+				  </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Main NED //-->
+
+
+</body>
+</html>

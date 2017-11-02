@@ -1,0 +1,37 @@
+<include file="Public:header" />
+<!--导航-->
+<include file="Public:product-search" />
+<!--内容-->
+<div class="wrap">
+    <div class="next-wrap">
+		<div class="product-list">
+		  <volist name="goodsList" id="vo" mod="2">
+					<eq name="mod" value="0">
+						<span>
+						<ul>
+						<li>
+							<a href="{:U('Goods/goodsInfo?goods_id='.$vo['goods_id'].'&type='.$vo['goods_type'])}"><img src="{$vo.thumb}" alt="" width="140" height="140"></a>
+							<p class="center"></p>
+							<p>{$vo.goods_name}</p>
+							<big>&yen;{$vo.goods_price}</big>
+						</li>
+					</eq>
+					<neq name="mod" value="0">
+						<li>
+							<a href="{:U('Goods/goodsInfo?goods_id='.$vo['goods_id'].'&type='.$vo['goods_type'])}"><img src="{$vo.thumb}" alt="" width="140" height="140"></a>
+							<p class="center"></p>
+							<p>{$vo.goods_name}</p>
+							<big>&yen;{$vo.goods_price}</big>
+						</li>
+						</ul>
+						</span>
+					</neq>
+				</volist>
+		</div>
+		<!--更多在底部-->
+		<div class="am-list-news-ft ">
+			<button type="button" class="am-btn am-radius am-list-news-more mond-btn" data-page="1" data-href="goodsIndex" data-type="product-list" data-More="1">更多</button>
+		</div>
+	</div>
+</div>
+<include file="Public:footer" />

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/information.css">
+<link rel="stylesheet" href="__CSS__/touchSwipe.css">
+<link rel="stylesheet" href="__CSS__/owl.carousel.css">
+<link rel="stylesheet" href="__CSS__/owl.theme.css">
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/m_back.js"></script>
+<script src="__JS__/common.js"></script>
+<!-- <script src="__JS__/jquery.touchSwipe.min.js"></script> -->
+<script src="__JS__/public.js"></script> 
+<script src="__JS__/layer-mobile/layer.js"></script> 
+<script src="__JS__/owl.carousel.js"></script> 
+<title>行业资讯</title>
+</head>
+<style>
+	#owl-demo .item{
+	  background: #EDEDF3;
+	  margin: 10px 0;
+	  color: #FFF;
+	  text-align: center;
+    padding: 5px 0;
+	}
+	.owl-pagination { display: none;}
+	.item.active {
+	    background: #DDDDE1 !important;
+	}
+	.owl-item { height: 46px; overflow: hidden;}
+	.m_list li.media { margin-top: 5px; border-bottom: 1px dashed #eee;}
+	.m_list li.media:first-child { border-bottom: none;}
+	.medialist { border-bottom: 1px solid #f1f1f1;}
+</style>
+<script type="text/javascript">
+  //导航切换
+  $(document).ready(function() {
+	  $("#owl-demo").owlCarousel({
+	      autoPlay: false,
+	      items : 4,
+	      itemsDesktop : [1199,3],
+	      itemsDesktopSmall : [979,3],
+	      responsive: false,
+		  responsiveRefreshRate : 200,
+		  responsiveBaseWidth: window,
+	  });	 
+  });  
+</script> 
+<body>
+
+	<!--头部-->
+    <header class="header text-center">
+       	珠宝资讯
+    </header>
+    <!--内容-->
+<div class="container wrap">
+    <div class="row inform">
+        <div class="box_163css">
+ 
+		    <div id="owl-demo">
+				<if condition="$categorys">
+					<volist name="categorys" id="vo" key='k'>
+						<if condition="$cid eq '' ">
+						<div data-cid="{$vo['cid']}" class="item <eq name="k" value="1"> active </eq> " >
+							<a href="#{$vo['cid']}"  class="tips" data-toggle="tab" >{$vo['catname']}</a>
+						</div>
+						<else/>
+						<div data-cid="{$vo['cid']}" class="item <if condition="$vo['cid'] eq $cid " > active </if> " ><a href="#{$vo['cid']}" class="tips" data-toggle="tab">{$vo['catname']}</a></li>
+						</div>
+						</if>
+					</volist>
+				</if>
+			</div>
+			<div id="myTabContent" class="tab-content">
+				
+				<div class="">
+					<ul class="media-list m_list">
+					<if condition="$articleList">
+						<li class="media">
+							<if condition="$articleList[0]['thumb']">
+							<a class="pull-right" href="{:U('News/detail/',array('id'=>$articleList[0]['aid']))}">
+								<img class="media-object" src="/Public/Uploads/article/{$articleList[0]['thumb']}" alt="{$articleList[0]['title']}" width="180">
+							</a>
+							</if>
+							<div class="media-body muted">
+								<h4 class="media-heading"><b>{$articleList[0]['title']|msubstr=0,15,'utf-8',true}</b></h4>
+								<a href="{:U('News/detail/',array('id'=>$articleList[0]['aid']))}" class="text-muted">{$articleList[0]['description']|msubstr=0,30,'utf-8',true}</a>
+								<p class="text-muted">{$articleList[0]['addtime']|date='m-d',###}</p>
+							</div>
+						</li>
+						<hr>
+						<volist name="articleList"  id="vo" offset="2" key="key">
+						<li class="media">
+							<a class="pull-right" href="{:U('News/detail/',array('id'=>$vo['aid']))}">{$vo['addtime']|date='m-d',###}
+							</a>
+							<div class="media-body have">
+								<a href="{:U('News/detail/',array('id'=>$vo['aid']))}">{$vo['title']|msubstr=0,15,'utf-8',true}</a>
+							</div>
+						</li>
+						</volist>
+					</if> 
+					</ul>
+				</div>
+				
+			</div>
+			<div  id="pullUp" style="text-align:center">
+				<if condition="$countArticle == 10 ">
+					<span>下拉加载更多...</span>
+				</if>
+			</div>
+   		</div>
+	</div>
+</div>
+<!--底部-->
+{:W('Frame/footer', array('news'))}
+
+</body>
+
+<style>
+.media-body a { display: inline-block; text-overflow: ellipsis; white-space: nowrap; overflow:hidden;}
+#owl-demo .item a{height:100%,display:inline-block;width:100%;}
+.have { width: 80%; height: 32px; overflow: hidden; display: inline-block;}
+</style>
+						
+<script>
+var intdata = {
+	page:1,
+	cid:"{$cid}",
+}
+//获取文章列表
+function getAticleList(cid,page){
+	$.post("/News/index",{Action:"POST",page:page,cat_id:cid},function(data){
+		var html='',tiphtml='';
+
+		if(data && data!= ''){
+			//如果为第一页，则第一篇文章展示图片
+			if(intdata.page == '1'){
+				tiphtml += '<li class="media">';
+				if(data[0].thumb){
+					tiphtml += '<a class="pull-right" href="/News/detail/id/'+data[0].aid+'" >';
+					tiphtml += '<img class="media-object" src="/Public/Uploads/article/'+data[0].thumb+'" alt="'+data[0].title+'" width="180">';
+					tiphtml += '</a>';
+				}
+				tiphtml += '<div class="media-body muted">';
+				tiphtml += '<h4 class="media-heading" style="margin-bottom: 12px"><b>'+data[0].title.substring(0,20)+'</b></h4>';
+				tiphtml += '<a href="/News/detail/id/'+data[0].aid+'" class="text-muted">'+data[0].description.substring(0,30)+'</a>';
+				tiphtml += '<p class="text-muted">'+trans_time(data[0].addtime)+'</p>';
+				tiphtml += '</div></li>';
+			}
+				
+			$.each(data ,function(k , item) {
+				if(!(intdata.page == '1' && k == '0')){
+					html += '<li class="media">';
+					html += '<a class="pull-right" href="/News/detail/id/'+item.aid+'" >'+trans_time(item.addtime)+'</a>';
+					html += '<div class="media-body have">';
+					html += '<a href="/News/detail/id/'+item.aid+'" >'+item.title.substring(0,20)+'</a>';
+					html += "</div></li>";
+				}
+				
+			});
+			
+			if(intdata.page == '1'){					//第一次。
+				var content = tiphtml+html;
+				$(".m_list").html(content);
+			}else{
+				$(".m_list").append(html); 
+			}
+
+			if(data[19]==''||data[19]==null||data[19]==undefined){
+				var notice = ' <span>没有更多数据了...</span>';
+			}else{
+				var notice = ' <span>下拉加载更多...</span>';
+			}
+			intdata.page += 1;
+			$("#pullUp").html(notice);
+		}else{
+			if(page=='1'){
+				$(".media-list").html(html); 	
+			}
+			html+=" <span>没有更多数据了...</span>"
+			$("#pullUp").html(html); 
+		}
+	});
+}
+
+		
+$(function(){
+	$('#owl-demo .item').bind('click', function(){
+		page='1';
+		$('#owl-demo .item').removeClass('active');
+		$(this).addClass('active');
+		var cid = $(this).attr('data-cid');
+		//点击文章分类的时候初始化page，获取文章列表
+		intdata.page 	= 1;
+		intdata.cid		= cid;
+		getAticleList(intdata.cid,intdata.page);
+	});
+})
+
+
+function trans_time(tip_time){															//JS截取时间
+	var dates = new Date(tip_time * 1000);
+	M = (dates.getMonth()+1 < 10 ? '0'+(dates.getMonth()+1) : dates.getMonth()+1) + '-';
+	if(dates.getDate()<10){
+		D = '0'+dates.getDate();
+	}else{
+		D =dates.getDate()+'';
+	}
+	return (M+D);   
+}
+
+
+window.onscroll = function () {
+		var scrollTop	= $(this).scrollTop();            //滚动条距离顶部的高度
+		var scrollHeight= $(document).height();           //当前页面的总高度
+		var windowHeight= $(this).height();               //当前可视的页面高度
+		var notice 		= $('#pullUp').children('span').html();
+		if(notice == '下拉加载更多...'){
+			//判断滚动条是否滚到底部
+			if(scrollTop + windowHeight == scrollHeight){
+				getAticleList(intdata.cid,intdata.page);
+			}
+		}			
+}
+</script>
+</html>

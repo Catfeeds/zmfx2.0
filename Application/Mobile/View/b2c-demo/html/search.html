@@ -1,0 +1,131 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-swiper.css" /> <!-- tab -->
+    <link rel="stylesheet" type="text/css" href="../css/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="../css/style-layer.css" /> <!-- 提示 -->
+
+    <script src="../js/jquery-1.12.3.js"></script>
+    <script src="../js/swiper.min.js"></script> <!-- tab -->
+    <script src="../js/mobileSelect.js"></script> <!-- ios下弹式菜单选择 -->
+    <script src="../js/layer.js"></script> <!-- 提示 -->
+</head>
+
+
+<body>
+
+    <section class="search">
+        <!-- 首页搜索 start -->
+        <div class="index-search-open">
+            <form action="" class="top-search">
+                <div class="top-bar-btn">
+                    <img src="../img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <div class="top-bar">
+                    <input type="text" class="s-input" name="" value="" placeholder="商品名称、证书号、系列名称">
+                    <input type="submit" class="search-btn" name="" value=" ">
+                </div>
+            </form>
+        </div>
+        <!-- 首页搜索 end -->
+
+        <section class="wrapper">
+            <div class="item-box search-list">
+                <div class="goods-list clearfix">
+                    <ul>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                        <li class="col-2">
+                            <a href="商品详情.html">
+                                <p><img src="../img/Product01.jpg" alt=""></p>
+                                <p class="good-name">唯爱钻石戒指</p>
+                                <small>纯手工定制的进口钻石</small>
+                                <p class="rmb">￥3368.00</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- loading -->
+<div class="loading" style="display: none"><img src="../img/loading.gif" alt=""></div>
+<script>
+    $(function(){
+        $(window).scroll(function(){
+            if($(document).scrollTop() + $(window).height() >= $(document).height()){
+                $('.loading').show();
+            }
+        });
+    });
+</script>
+<!-- loading end -->
+
+        </section>
+    </section>
+</body>
+</html>

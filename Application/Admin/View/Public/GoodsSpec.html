@@ -1,0 +1,60 @@
+<div class="specDiv">
+	<volist name="list" id="vo" key="key">
+	<div class="ainfo">
+		<div class="atitle">{$vo.attr_name}:</div>
+		<eq name="vo.input_type" value="2">
+			<div class="acontent specOneDiv" data-id="{$vo.attr_id}" data-name="{$vo.attr_name}" data-type="{$vo.input_type}">
+				<volist name="vo.sub" id="io">
+					<label>
+						<input class="specOneDivinput" type="checkbox" data-name="{$io.attr_value_name}" value='{$io.attr_value_id}' <eq name="io.active" value="1">checked=""</eq> />
+						<span>{$io.attr_value_name}</span>
+					</label>
+				</volist>
+		    </div>
+	    </eq>
+	    <eq name="vo.input_type" value="3">
+	    	<div class="acontent specOneDiv" data-id="{$vo.attr_id}" data-name="{$vo.attr_name}" data-type="{$vo.input_type}">
+				<volist name="vo.sub" id="io">
+					<div class="atiao">
+						<input type="text" class="fl specOneDivinput" placeholder="{$vo.input_mode}" value="{$io.attr_value_name}" />
+						<div class="clear"></div>
+					</div>
+		    	</volist>
+				<div class="atiao">
+					<!-- <input type="text" class="fl specOneDivinput" placeholder="<eq name="vo.input_mode" value="1">只能填数字</eq><eq name="vo.input_mode" value="2">只能填字母</eq><eq name="vo.input_mode" value="3">可填文字/字母/数字</eq>" /> -->
+					<input type="text" class="fl specOneDivinput" />
+					<div class="clear"></div>
+				</div>
+			</div>
+		</eq>
+	    <div class="clear"></div>
+	</div>
+	</volist>
+</div>
+<div class="specDivTable">
+
+<if condition="$sku">
+<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+	<tr>
+		<volist name="skuTop" id="vo">
+		<th width="15%">{$vo.attr_name}</th>
+		</volist>
+		<th width="20">价格</th>
+		<th width="20">库存</th>
+		<th width="20">产品编号</th>
+		<th width="20">防伪码</th>
+	</tr>
+	<volist name="sku" id="vo">
+		<tr data-sku="{$vo.attributes}">
+			<volist name="vo.attr_name" id="io">
+				<td>{$io.attr_name}</td>
+			</volist>
+            <td><input type="text" class="goods_price"  value="{$vo.goods_price}"  name="sku[{$vo.attributes}][goods_price]" ></td>
+			<td><input type="text" class="goods_number" value="{$vo.goods_number}" name="sku[{$vo.attributes}][goods_number]" ></td>
+			<td><input type="text" class="sku_sn" 		value="{$vo.sku_sn}" 	   name="sku[{$vo.attributes}][sku_sn]" ></td>
+			<td><input type="text" class="unforgecode"  value="{$vo.unforgecode}"  name="sku[{$vo.attributes}][unforgecode]" ></td>			
+		</tr>
+	</volist>
+</table>
+</if>
+</div>

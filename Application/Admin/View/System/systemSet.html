@@ -1,0 +1,367 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>系统设置</title>
+    <script type="text/javascript">
+        $(function(){
+            $('input:radio[name="luozuan_advantage_fangshi"]').click(function(){
+                var val=$('input:radio[name="luozuan_advantage_fangshi"]:checked').val();
+                $('.all, .zidingyi').css("display", "none");
+                $('.' + val).css("display", "block");           
+            });
+
+            $('a#addTiao').live('click',function(){ 
+                var prve_weight = 0;
+                html = '<div class="atiao"><div class="title">&nbsp;</div> 重量 <= <input name="upline[]" type="text" value="" style="width:50px;"> CT 加点 <input name="jiadian[]" type="text" value="" style="width:50px;"><a class="btn_common ml10" id="delTiao">删除</a>  <br><br></div>';
+                $(this).parents('.acontent').append(html);
+            })
+            
+            $('a#delTiao').live('click',function(){
+                $(this).parent('.atiao').remove();
+            })
+            
+        });
+        
+        function online_consult_img_origin(){
+            if(confirm("是否恢复默认图片（该操作会清空当前在线咨询图片，前台使用默认图片，且无需保存）？")){
+                $.post('/Admin/System/del_online_consult_img_origin',{},function(data){
+                    if(data){
+                            if(data.code=='1')	{
+                                $(".online_consult_img_title").remove();     	
+                            }
+                            alert(data.msg);
+                    }else{
+                            alert('网络错误！');
+                    }
+                });  
+            }
+            else return false;
+        }
+    </script>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：系统设置</h3>
+        <ul id="subMenu">
+            <volist name="menuList[7]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+        <eq name="parent_type" value="2">
+            <script>
+                $("#subMenu li").removeClass("active");
+                $("#subMenu li:eq(3)").addClass("active");
+            </script>
+        </eq>
+    </div>
+	<form action"{:U('Admin/System/systemSet?parent_type='.$parent_type)}" method="post" enctype="multipart/form-data">
+    	<div style="padding:10px 50px;">
+        	<volist name="configList" id="vo" key='t_key'>
+                <eq name="vo['config_type']" value="1">
+                    <if condition="$vo.config_key neq 'luozuan_advantage' and $vo.config_key neq 'sanhuo_advantage' and $vo.config_key neq 'consignment_advantage' and $vo.config_key neq 'caizuan_advantage' ">
+                        <if condition="$vo.config_key eq 'contact_img'">
+                            <div class="red">建议上传图片尺寸46*46px，格式PNG/JPG</div> <!-- 前端联系图片 -->
+                        </if>
+                        <div class="info" id="{$vo.config_key}" >
+                            <div class="title">{$vo.config_key_name}:</div>
+                            <eq name="vo['config_key']" value="expected_delivery_time">
+                                <input onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" name="{$vo.config_key}" type="text" value="{$vo.config_value}" style="width:50px;">
+                                <span>天</span>
+                            <else />
+                                <input name="{$vo.config_key}" type="text" value="{$vo.config_value}" style="width:300px;">
+                            </eq>
+
+                            <eq name="vo['config_key']" value="dollar_huilv">
+                                <span>系统基准汇率:{$dollar_huilv}</span>
+                            </eq>
+							<eq name="vo['config_key']" value="compare_max_number">
+                                <span>请设置允许加入钻石对比最大值（大于2整数）</span>
+                            </eq>
+
+                        </div>
+                    <else />
+                        <script>
+                            $(function(){
+                                $('input[name="{$vo.config_key}"]').val('{$vo.config_value}');
+                            });
+                        </script>
+                    </if>
+                </eq>
+                <eq name="vo['config_type']" value="2">
+                    <div class="info">
+                        <div class="title">{$vo.config_key_name}:</div>
+                        <volist name="vo['config_option']" id="id">
+                            <input type="radio" 
+                            onchange='
+                                <eq name="vo['config_key']" value="dollar_huilv_type">
+                                    var code = $(this).val();
+                                    if( code == 0 ){
+                                        $("#dollar_huilv input").attr("disabled",true);
+                                        $("#dollar_huilv input").val("{$dollar_huilv}");
+                                    }else{
+                                        $("#dollar_huilv input").attr("disabled",false);
+                                    }
+                                </eq>' name="{$vo.config_key}" value="{$id.key}" <eq name="vo['config_value']" value="$id['key']">checked</eq>>{$id.val}
+                        </volist>
+                        <eq name="vo['config_key']" value="dollar_huilv_type">
+                            <if condition=" !$vo.config_value ">
+                                <script>
+                                    $(function(){
+                                        $('#dollar_huilv input').attr('disabled',true);
+                                        $('#dollar_huilv input').val('{$dollar_huilv}');
+                                    });
+                                </script>
+                            </if>
+                        </eq> 
+                    </div>
+                </eq>
+                <eq name="vo['config_type']" value="3">
+                    <div class="info">
+                        <div class="title">{$vo.config_key_name}:</div>
+                        <volist name="vo['config_option']" id="id">
+                        <input type="checkbox" name="{$vo.config_key}[]" value="{$id.key}" <if condition="in_array($id['key'],$vo['config_value'])">checked</if>>{$id.val}
+                        </volist>
+                    </div>
+                </eq>
+                <eq name="vo['config_type']" value="4">
+                    <div class="info">
+                        <div class="title">{$vo.config_key_name}:</div>
+                        <select name="{$vo.config_key}" style="width:120px;">
+                            <option value="1" <if condition="$vo['config_value'] eq '1'"> selected</if>>是</option>
+                            <option value="0" <if condition="$vo['config_value'] eq '0'"> selected</if>>否</option>
+                        </select>
+                    </div>
+                </eq>
+                <eq name="vo['config_type']" value="5">
+                    <div class="info">
+                        <div class="title">{$vo.config_key_name}:</div>
+                        <textarea name="{$vo.config_key}"></textarea>
+                    </div>
+                </eq>
+                <eq name="vo['config_type']" value="6">
+                    <div class="info">
+                        <div class="title">{$vo.config_key_name}:</div>
+                        <input name="{$vo.config_key}" type="file" value="" />
+                        <if condition="$vo.config_key eq 'online_consult_img'">
+                            <button type="button" onClick="online_consult_img_origin();" >恢复默认图片</button>
+                        </if>
+                    </div>
+                    
+                    <div class="info">
+                        <div class="title">&nbsp;</div>
+                        <if condition="$vo.config_key eq 'contact_img'">
+                            <div class="red">建议上传图片尺寸46*46px，格式PNG/JPG</div> <!-- 前端联系图片 -->
+                        </if>
+                        <if condition="$vo.config_key eq 'favicon'">
+                            <div class="red">参考尺寸大小48*48px,格式PNG</div> <!-- icon图标上传要求 -->
+                        </if>
+                        <if condition="$vo.config_key eq 'admin_logo'">
+                            <div class="red">图片要求：尺寸大小80*80px，格式png/jpg</div> <!-- 后端LOGO -->
+                        </if>
+                        <if condition="$vo.config_key eq 'web_logo'">
+                            <div class="red">图片要求：尺寸大小 建议图片高度不超过86px</div> <!-- 前端logo -->
+                        </if>
+                        <if condition="$vo.config_key eq 'online_consult_img'">
+                            <div class="red">图片要求：尺寸大小40*133px，竖向，格式png/jpg</div> <!-- 前端logo -->
+                        </if>
+                    </div>
+                    <if condition="$vo['config_value']">
+                        <div class="info <?php if($vo['config_key'] == 'online_consult_img') echo 'online_consult_img_title';?>"><div class="title">展示:</div><img src="/Public/{$vo.config_value}" 
+                            <if condition="$vo.config_key eq 'online_consult_img'">
+                                    style="max-width: 250px; border: 1px solid #d9d9d9; padding: 3px; background: #ffffff;">
+                            <else />
+                                style="max-width: 250px; border: 1px solid #d9d9d9; padding: 3px; background: #ffffff;">
+                            </if>
+                        </div>
+                    </if>
+                </eq>
+                <eq name="vo['config_type']" value="7">
+                    <input name="{$vo.config_key}" type="hidden" value="{$vo.config_value}" > 
+                </eq>
+                <eq name="vo['config_type']" value="8" >
+                    
+                    <div class="info all" id="{$vo.config_key}" <neq name="luozuan_advantage_fangshi" value="all" >style="display:none;"</neq> >
+                        <div class="title">{$vo.config_key_name}:</div>                    
+                        <input name="{$vo.config_key}" type="text" value="{$vo.config_value}" style="width:300px;">
+                    </div>   
+
+                    <div class="info zidingyi" id="{$vo.config_key}" <neq name="luozuan_advantage_fangshi" value="zidingyi">style="display:none;"</neq> >
+                        <div class="title">{$vo.config_key_name}:</div> 
+                        <div class="acontent">
+                            <empty name="luozuan_jiadian">
+                                0 < 重量 <=  
+                                <input name="upline[]" type="text" value="" style="width:30px;">
+                                CT 加点
+                                <input name="jiadian[]" type="text" value="" style="width:30px;"> 
+                                <a class="btn_common ml10" id="addTiao">添加</a>
+                                <br><br>
+                            <else /> 
+                                <volist name="luozuan_jiadian" id="jiadian">
+                                    <div class="atiao">  
+                                        <neq name="i" value="1">
+                                            <div class="title">&nbsp;</div>   
+                                        </neq>
+                                        重量 <=  
+                                        <input name="upline[]" type="text" value="{$jiadian.upline}" style="width:50px;">
+                                        CT 加点
+                                        <input name="jiadian[]" type="text" value="{$jiadian.jiadian}" style="width:50px;"> 
+                                        <eq name="i" value="1">
+                                            <a class="btn_common ml10" id="addTiao">添加</a>
+                                        <else />
+                                            <a class="btn_common ml10" id="delTiao">删除</a>                               
+                                        </eq>
+                                        <br><br>
+                                    </div>
+                                </volist>
+                            </empty>
+                        </div>
+                    </div>
+                </eq> 
+                <eq name="vo['config_type']" value="9">
+                    <div class="info">
+                        <div class="title">{$vo.config_key_name}:</div>
+                        <textarea name="{$vo.config_key}" type="text" style="width:300px;heigth:150px;">{$vo.config_value}</textarea>
+                    </div>
+                </eq>
+                <eq name="vo['config_type']" value="10">
+                    <div class="info">
+                        <div class="title">{$vo.config_key_name}:</div>
+                        <select name="{$vo.config_key}[]" style="width:120px;">
+                            <volist name="vo['config_option']['activity_star_time']" id="v">
+                                <option value="{$v}" <eq name="vo['config_value'][0]" value="$v">selected</eq> >{$v}:00</option>
+                            </volist>
+							
+                            <volist name="vo['config_option']['fservice_star_time']" id="v">
+                                <option value="{$v}" <eq name="vo['config_value'][0]" value="$v">selected</eq> >{$v}:00</option>
+                            </volist>							
+                        </select>
+                        --
+                        <select name="{$vo.config_key}[]" style="width:120px;">
+                            <volist name="vo['config_option']['activity_end_time']" id="v">
+                                <option value="{$v}" <eq name="vo['config_value'][1]" value="$v">selected</eq> >{$v}:00</option>
+                            </volist>
+				
+                            <volist name="vo['config_option']['fservice_end_time']" id="v">
+                                <option value="{$v}" <eq name="vo['config_value'][1]" value="$v">selected</eq> >{$v}:00</option>
+                            </volist>				
+                        </select>
+                    </div>
+                </eq>
+
+
+                <eq name="vo['config_type']" value="11">
+					<if condition="$vo.config_key eq 'luozuan_advantage_type' && in_array('admin/costprofit/index',$AuthList)">
+	                	<div class="info">
+		                    <div class="title">加点模式设置:</div>
+		                    <button type="button" class="tab-jiadian" style="cursor: pointer;">点击显示</button>
+		                </div>
+                	</if>
+                    <div class="jiadian" style="margin-left: 110px; display: none;">
+                    	<div class="info">
+	                        <div class="title">{$vo.config_key_name}:</div>
+	                        <select name="{$vo.config_key}" style="width:120px;">
+	                            <volist name="vo['config_option']" id="id">
+	                                <option value="{$id['key']}" <eq name="vo['config_value']" value="$id['key']">selected</eq> >{$id.val}</option>
+	                            </volist>
+	                        </select>
+	                        <if condition="$vo.config_key eq 'luozuan_advantage_type'">
+	                            <input name="luozuan_advantage" class="{$vo.config_key}1" type="text" value="" style="width:50px;<neq name='vo["config_value"]' value='0'>display:none;</neq>" >
+	                        </if>
+	                        <if condition="$vo.config_key eq 'sanhuo_advantage_type'">
+	                            <input name="sanhuo_advantage" class="{$vo.config_key}1" type="text" value="" style="width:50px;<neq name='vo["config_value"]' value='0'>display:none;</neq>">
+	                        </if>
+	                        <if condition="$vo.config_key eq 'consignment_advantage_type'">
+	                            <input name="consignment_advantage" class="{$vo.config_key}1" type="text" value="" style="width:50px;<neq name='vo["config_value"]' value='0'>display:none;</neq>">
+	                        </if>
+	                        <if condition="$vo.config_key eq 'caizuan_advantage_type'">
+	                            <input name="caizuan_advantage" type="text" class="{$vo.config_key}1" style="width:50px;<neq name='vo["config_value"]' value='0'>display:none;</neq>">
+	                        </if>               
+	                    </div>
+	                    <script>
+	                        $(function(){
+	                            $('select[name="{$vo.config_key}"]').change(function(){
+	                                var code = $(this).val();
+	                                if( code == '0' ){
+	                                    $('.{$vo.config_key}1').css('display','');
+	                                    $('.{$vo.config_key}2').css('display','none');
+	                                }
+	                                if( code == '1' ){
+	                                    $('.{$vo.config_key}1').css('display','none');
+	                                    $('.{$vo.config_key}2').css('display','');
+	                                }
+	                                if( code == '2' ){
+	                                    $('.{$vo.config_key}1').css('display','none');
+	                                    $('.{$vo.config_key}2').css('display','');
+	                                }
+	                            });
+	                            $('.{$vo.config_key}_add').click(function(){
+	                                var html  = '';
+	                                html     += '   <tr>';
+	                                html     += '       <input name="point[{$vo.config_key}][id][]" type="hidden" placeholder="最小值">';
+	                                html     += '       <td><input name="point[{$vo.config_key}][min_value][]" type="text" style="width:50px;" placeholder="最小值"></td>';
+	                                html     += '       <td> ~ <input name="point[{$vo.config_key}][max_value][]" type="text" style="width:50px;" placeholder="最大值"></td>';
+	                                html     += '       <td><input name="point[{$vo.config_key}][point][]" type="text" style="width:50px;" placeholder="点数"></td>';
+	                                html     += '       <td>&nbsp; <img src="__IMG__/remove_u26.png" width="25" height="25" style="cursor: pointer;" onClick="$(this).closest(\'tr\').remove();" alt="删除"></td>';
+	                                html     += '   </tr>';   
+	                                $('#{$vo.config_key}_table').append(html);                                 
+	                            });
+	                        });
+	                    </script>
+	                    <div class="info {$vo.config_key}2" style="<eq name='vo["config_value"]' value='0'>display:none;</eq>">
+	                        <div class="title">&nbsp;</div>
+	                        <table id="{$vo.config_key}_table">
+	                            <if condition=" $vo['config_goods_point_list'] ">
+	                                <volist name="vo['config_goods_point_list']" id="id" key="k">
+	                                    <tr>
+	                                        <input name="point[{$vo.config_key}][id][]" type="hidden" value="{$id.id}">
+	                                        <td> <input name="point[{$vo.config_key}][min_value][]" type="text" style="width:50px;" value="{$id.min_value}" placeholder="最小值"> </td>
+	                                        <td> ~ <input name="point[{$vo.config_key}][max_value][]" type="text" style="width:50px;" value="{$id.max_value}" placeholder="最大值"> </td>
+	                                        <td> <input name="point[{$vo.config_key}][point][]" type="text" style="width:50px;" value="{$id.point}" placeholder="点数"> </td>
+	                                        <if condition=" $k eq 1 ">
+	                                            <td> <!-- <input type="button" class="{$vo.config_key}_add" style="width:50px;height: 28px;" value="添加" /> -->&nbsp; <img src="__IMG__/add_u28.png" width="25" height="25" style="cursor: pointer;" class="{$vo.config_key}_add" alt="添加"> </td>
+	                                        <else />
+	                                            <td><!--  <input type="button" onClick="$(this).closest('tr').remove();" style="width:50px;height: 28px;" value="删除" /> -->&nbsp; <img src="__IMG__/remove_u26.png" width="25" height="25" style="cursor: pointer;" onClick="$(this).closest('tr').remove();" alt="删除"> </td>
+	                                        </if>
+	                                    </tr>
+	                                </volist>
+	                            <else />
+	                                <tr>
+	                                    <input name="point[{$vo.config_key}][id][]" type="hidden" value="">
+	                                    <td><input name="point[{$vo.config_key}][min_value][]" type="text" style="width:50px;" placeholder="最小值"> </td>
+	                                    <td> ~ <input name="point[{$vo.config_key}][max_value][]" type="text" style="width:50px;" placeholder="最大值"></td>
+	                                    <td><input name="point[{$vo.config_key}][point][]" type="text" style="width:50px;" placeholder="点数"></td>
+	                                    <td><!-- <input type="button" class="{$vo.config_key}_add" style="width:50px;height: 28px;" value="添加1" />  -->&nbsp;
+										<img src="__IMG__/add_u28.png" width="25" height="25" style="cursor: pointer;" class="{$vo.config_key}_add" alt="添加">
+	                                    </td>
+	                                </tr>
+	                            </if>
+	                        </table>
+	                    </div>
+                    </div>
+                </eq>
+			</volist>
+			<script>
+				$(function(){
+					$('.tab-jiadian').bind('click', function(){
+                		$('.jiadian').toggle();
+                		if($(this).html() == "点击显示"){
+                			$(this).html("点击隐藏");
+                		}else{
+                			$(this).html("点击显示");
+                		}
+                	});
+				});
+			</script>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="保存">
+                <input type="reset" class="button fl ml10" value="重置">
+                <div class="clear" ></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

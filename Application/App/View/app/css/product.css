@@ -1,0 +1,20 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*分类*/
+.sort-head a{ margin:0 15%;}
+/*产品系列*/
+.product-list{ }
+.product-list img{width:100%; margin-bottom:-38px;}
+.product-list .panel{}
+.product-list .panel-heading{background: #919ecd;opacity:0.8;filter:Alpha(opacity=80); color:#fff;}
+.product-list .panel-heading a{ display:block; margin-left:10px;}
+.product-list .panel-body{ clear:both;}
+.product-list .panel-body li a{float:left; width:21%; text-align:center; margin:2%; color:#21232f;}
+.product-list .panel+.panel{margin-top:0;}
+
+/*品牌系列*/
+.brand{ background:#fff;overflow: hidden;min-height: 510px;}
+.brand ul{ margin-left:6px;}
+.brand ul li{ }
+.brand ul li a{float:left; border:1px solid #dedee2; background:#f0f0f7; width:31%; height:100px;margin: 1%; text-align:center;line-height: 90px;color:#303030;font-weight: bold;}

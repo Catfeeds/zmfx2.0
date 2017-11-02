@@ -1,0 +1,97 @@
+<include file="Public:header" />
+<body>
+    <section class="cart cart-listing after-sale aftersale-progress">
+
+        <!-- top -->
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="location='/User/index'" class="back-img" alt="">
+                </div>
+                <h2>售后进度</h2>
+            </div>
+        </header>
+        <!-- top end -->
+
+        <section class="cart-list wrapper">
+
+            <div class="classify-tab">
+                <a href="/User/AfterSer" >申请售后</a>
+                <a href="/User/Schedule" class="active">售后进度</a>
+            </div>
+
+			<div class="ajax_sc_list">
+			
+			
+ 
+				<div class="empty-cart empty-msg" style="display: none;">
+					<p><img src="__IMG__/msg_img.png" alt="" class="empty-img"></p>
+					<p>
+						<h2 class="c666">您还没有售后进度的订单哦~~</h2>
+					</p>
+				</div>
+			
+			</div>
+			<div class="loading" style="display: none"><img src="__IMG__/loading.gif" alt=""></div>
+        </section>
+    </section>
+	
+	
+	<script>
+				var ASCondition = {
+					'page'			: 0,
+					'page_len'		: 5,
+				}
+
+				BringAjax.IntendData.ChangeHtml 				= '.ajax_sc_list';
+				BringAjax.IntendData.NullHtml					= '.empty-msg';
+				EasyTransition(ASCondition,function(){
+						$.each(BringAjax.CacheData[BringAjax.IntendData.CacheHtmlKey].data ,function(k ,v) {
+							if(v){
+								BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="goods-item">';
+								BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="head">订单编号：'+v.order_sn+'</div>';
+								BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="good-content">';
+								$.each(v.goods_list ,function(k1 ,v1) {
+										BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="goods-layout clearfix">';
+										BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="goods-img">';
+										BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<a href="/Goods/detail/gid/'+v1.goods_id+'/goods_type/'+v1.goods_type+'"><img src="'+v1.thumb+'" alt=""></a>';
+										BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+										BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="goods-right">';
+										BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<h2><a href="/Goods/detail/gid/'+v1.goods_id+'/goods_type/'+v1.goods_type+'">'+v1.goods_name+'</a></h2>';
+										BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="goods-fangshi clearfix">';
+										BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<span class="fl c9">数量 x'+v1.goods_number+'</span>';
+										BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<span class="fr"><a href="/User/SCInfo/id/'+v1.order_service_id+'" class="apply-for-btn">查看详情</a></span>';
+										BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<span class="fr">';
+										if(v1.status=='0'){
+											BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '待审核';
+										}else if(v1.status=='1'){
+											BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '已审核';
+										}else if(v1.status=='2'){
+											BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '完成';
+										}
+										BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '&nbsp</span>';
+										BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+										BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+										BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+								})
+								BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div>';
+								BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="foot">';
+								BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<span class="fl">'+v.create_time+'</span>';
+			 	
+								BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '<div class="clearfix"></div>';
+								BringAjax.CacheHtml[BringAjax.IntendData.CacheHtmlKey] += '</div></div>';
+								}
+						})
+				});
+
+				$(window).scroll(function(){ 
+					 if($(document).scrollTop() + $(window).height() >= $(document).height()){  
+						$('.loading').show();
+						BringAjax.IntendData.StopgapPage +=1 ;
+						BringAjax.Interactive[0].page  = BringAjax.Interactive[0].page_len * BringAjax.IntendData.StopgapPage;
+						BringAjax.Send();  
+					  }
+				});
+	</script>
+</body>
+</html>

@@ -1,0 +1,807 @@
+<style>
+  .tooltip.bottom .tooltip-arrow { border-bottom-color: #e4e4e4;}
+  .tooltip-inner { color: #000; background-color: #e4e4e4;}
+</style>
+<!-- cart -->
+<div class="cart check-cart">
+	<div class="steps">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<img src="__IMG__/cart-order_03.png" style="margin-top: 8px;" alt="">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<h4 class="ortitle">填写并核对订单信息</h4>
+		<div class="check-order">
+			<div class="txlist">
+				<div><strong>收货地址</strong></div>
+
+				<div class="shxs">
+					<p><span><strong>收货人信息</strong></span> <span class="red addaddress" style="margin-left:3em; cursor:pointer;"><i style="margin-left:0;" class="glyphicon glyphicon-plus add"></i>添加新地址</span></p>
+					<volist name="user_address" id="vo">
+						<p><input name="status" class="status default_dz" value="{$vo['address_id']}" type="radio" <eq name="vo['is_default']" value="1"> checked </eq> > {$vo['title']} {$vo['province_name']} {$vo['city_name']} {$vo['district_name']} {$vo['address']} {$vo['name']} {$vo['phone']}
+							<a href="javascript:;" onclick="edit({$vo['address_id']})" class="btn-link">编辑</a>
+						</p>
+					</volist>
+					<p>
+						<if condition="$templateSetting['store_show'] eq 1">
+						<script>
+							$(document).ready(function() {
+								laydate.skin('molv'); //加载皮肤，参数lib为皮肤名 
+								laydate({
+									elem: '#time_booked',
+									start: laydate.now(+1), //开始日期
+									min: laydate.now(+1), //设定最小日期为当前日期
+								});
+							})
+						</script>
+						<input name="status" class="status" value="booked" class="daodian" type="radio" > 体验中心自取  <span class="address-data"></span></p>
+
+						<div class="tiyang" style="display: none">
+							<form class="form-horizontal tiyanbox" role="form">
+							  <div class="form-group">
+							    <label class="col-sm-2 control-label">体验中心：</label>
+							    <div class="col-sm-3">
+									<select name="store_id_booked" id="store_booked" class="form-control tyinput tydianpu">
+										<option value="">请选择最近体验店</option>
+										<volist name="onlineStoreList" id="vo">
+										<option value="{$vo['id']}" data-province="{$vo['province_name']}" data-city="{$vo['city_name']}" data-district="{$vo['district_name']}" data-address="{$vo['address']}">{$vo['name']}</option>
+										</volist>
+									</select>
+							    </div>
+								
+							    <div class="col-sm-7">
+							    	<input type="test" name="store_address" readonly class="form-control typzhidu tydizhi" value="">
+							    </div>
+							  </div>
+							  <div class="form-group">
+							    <label class="col-sm-2 control-label">预约时间：</label>
+							    <div class="col-sm-10">
+							      <input type="text" id="time_booked" class="form-control" name="time_booked" placeholder="请选择预约时间">
+							    </div>
+							  </div>
+							  <div class="form-group">
+							    <label class="col-sm-2 control-label">收货人员：</label>
+							    <div class="col-sm-10">
+							      <input type="text" name="name_booked" class="form-control" placeholder="请输入收货人姓名">
+							    </div>
+							  </div>
+							  <div class="form-group">
+							    <label class="col-sm-2 control-label">联系电话：</label>
+							    <div class="col-sm-10">
+							      <input type="text" name="phone_booked" class="form-control" placeholder="请输入收货人电话">
+							    </div>
+							  </div>
+							  <div class="form-group">
+							    <label class="col-sm-2 control-label">留言：</label>
+							    <div class="col-sm-10">
+							      <textarea name="content_booked" maxlength="200" id="" cols="30" rows="5" placeholder="最多输入两百字符" class="form-control"></textarea>
+							    </div>
+							  </div>
+							  <div class="form-group">
+							    <div class="col-sm-offset-2 col-sm-10">
+							      <button type="button" id="booked_submit" class="btn btn-default submit-data">保存</button>
+							      <button type="button" class="btn btn-default quxiao">取消</button>
+							    </div>
+							  </div>
+								<input type="hidden" name="store_id_submit" />
+								<input type="hidden" name="time_submit" />
+								<input type="hidden" name="name_submit" />
+								<input type="hidden" name="type_submit" value="1" />
+								<input type="hidden" name="phone_submit" />
+								<input type="hidden" name="content_submit" />
+							</form>
+							
+						</div>
+						<script>
+						$(function() {
+							/*判断是否选中
+							//if($('.status:checked').hasClass('default_dz')){
+                //$('.ziqu-type-two input[type="radio"]').prop('checked', true);
+								//$('.tiyang').slideDown();
+								//$('.ziqu-type-one input[type="radio"]').prop('checked', true);
+
+								//$('.ziqu-type-one i').addClass('glyphicon-ok');
+							}else{
+								$('.ziqu-type-one input[type="radio"]').removeAttr("checked")
+								$('.ziqu-type-two input[type="radio"]').prop('checked', true);
+								//$('.ziqu-type-two i').addClass('glyphicon-ok');
+							}*/
+              
+							//选择
+							$('.status').click(function(){
+								//$('.distribution i').removeClass('glyphicon-ok');
+								if($(this).hasClass('default_dz')){
+									$('.tiyang').slideUp();
+									$('.ziqu-type-two input[type="radio"]').prop('checked', true);
+									$('.ziqu-type-one input[type="radio"]').removeAttr("checked");
+									//$('.ziqu-type-one i').addClass('glyphicon-ok');
+								}else{
+									$('.tiyang').slideDown();
+                  $('#addre').slideUp();
+                  $('.ziqu-type-one input[type="radio"]').prop('checked', true);
+									$('.ziqu-type-two input[type="radio"]').removeAttr("checked");
+									//$('.ziqu-type-two i').addClass('glyphicon-ok');
+								}
+							});
+							//取消
+							$('.quxiao').bind('click', function(){
+								$('.tiyang').slideUp();
+							});
+
+              //支付方式
+              $('.zffs').bind('click', function(){
+                if($(this).val() == "0"){
+                  $('.xxzz-data').slideDown();
+                }else{
+                  $('.xxzz-data').slideUp();
+                }
+              });
+
+              
+            	//配送方式提示
+              /*$('.fss').hover(function(){
+             		var eq0 = $('.fss').eq(0).prop('checked');
+             		var eq1 = $('.fss').eq(1).prop('checked');
+	            	if(eq0 == true || eq1 == true){
+	            		$(this).attr('title', '');
+	            	}else{
+	            		$(this).attr('title', '请先选择收货地址');
+	            	}
+              });*/
+
+              //禁止配送方式选择
+              $('.fss').bind('click', function(){
+              	return false;
+              });
+
+              $('.massg').hover(function(){
+                $(this).tooltip('show');
+              },function(){
+                $(this).tooltip('hide');
+              });
+
+              $(document).delegate('.shxs .btn-link','click', function() {
+
+                $(this).parent('p').find('.status').prop('checked', true);
+
+              });
+
+
+							//保存
+							$('#booked_submit').click(function() {
+								var content_booked	= $('textarea[name="content_booked"]').val();
+								if(checkeselect('store_id_booked', '请选择门店') == false) {
+									return false;
+								}
+								if(checkeinput_length('time_booked', '', '', '预约时间不能为空') == false) {
+									return false;
+								}
+								if(checkeinput_length('name_booked', '', '', '收货人不能为空') == false) {
+									return false;
+								}
+								if(checkeinput('phone', 'phone_booked') == false) {
+									return false;
+								}
+								if(content_booked){
+									if(checketextarea_length('content_booked', '', '200', '留言不能超过两百个字符') == false) {
+										return false;
+									}
+								}
+								var store_booked= $('#store_booked').val();
+								var time_booked = $('#time_booked').val();
+								var name_booked = $('input[name="name_booked"]').val();
+								var phone_booked= $('input[name="phone_booked"]').val();
+								var content_submit= $('textarea[name="content_booked"]').val();
+								
+								var selectStore	= $('select[name="store_id_booked"] option:selected');
+								//获取需要展示的预约门店名称
+								var store_name	= selectStore.html();
+				
+								//赋值需要提交的预约数据到隐藏框
+								$('input[name="store_id_submit"]').val(store_booked);
+								$('input[name="time_submit"]').val(time_booked);
+								$('input[name="name_submit"]').val(name_booked);
+								$('input[name="phone_submit"]').val(phone_booked);
+								$('input[name="content_submit"]').val(content_submit);
+								
+								$('.address-data').html(store_name +"&nbsp;&nbsp;"+ $('.tydizhi').val());
+								
+								$('.tiyang').hide();
+							})
+
+              
+				
+						});
+						</script>
+						</if>
+				</div>
+
+				<div id="addre" class="add-address" style="display:none;">
+					<form id="theForm" method="post" action="">
+						<p><span>地址标注</span> <input name="title" type="text">&nbsp;例如家里、公司、最多8个字符</p>
+						<p><span>配送地址</span>
+							<select id="province" name="province_id">
+								<option value="" selected="selected">请选择省份</option>
+								<volist name="province" id="val">
+									<option value="{$val['region_id']}" <if condition="$info['province'] eq $val['region_name']">selected="selected"</if> >{$val['region_name']}</option>
+								</volist>
+							</select>
+							<select id="city" name="city_id">
+								<option value="" selected="selected">请选择城市</option>
+							</select>
+							<select id="district" name="district_id">
+								<option value="" selected="selected">请选择县区</option>
+							</select>
+						</p>
+						<p><span>详情地址</span> <input name="address" type="text"></p>
+						<p><span>邮政编码</span> <input name="code" type="text"></p>
+						<p><span>收货人姓名</span> <input name="name" type="text"></p>
+						<p><span>联系电话</span> <input name="phone" type="text"></p>
+						<p><span>设为默认</span> <input name="is_default" type="radio" value="1">是 &nbsp;<input name="is_default" type="radio" value="2" checked="checked">否</p>
+						<input type="hidden" value="" name="address_id">
+						<p><span class="hidden-xs"></span>
+							<a class="btn btn-zdy save">确定</a> &nbsp;
+							<a class="btn btn-default cancel">取消</a>
+						</p>
+					</form>
+				</div>
+
+				<div class="fanshi">
+					<h5><strong>支付配送方式</strong></h5>
+					<p>支付方式
+						<input type="radio" value="0" name="zffs" class="zffs">线下转账
+						<input type="radio" <eq name="alipay" value="0"> disabled </eq> value="1" name="zffs" class="zffs">在线支付
+						<eq name="ipspay" value="1">
+							<input type="radio" value="2" name="zffs" class="zffs">网银支付
+							<input type="radio" value="3" name="zffs" class="zffs">微信扫码
+							<input type="radio" value="4" name="zffs" class="zffs">支付宝扫码
+						</eq>
+					</p>
+					<div>
+						<if condition="$LinePayMode">
+							<div class="alert alert-warning xxzz-data" style="display: none;">
+								<p>账户名称：{$LinePayMode.aname}</p>
+								<p>账号： {$LinePayMode.abank}</p>
+								<p>开户行： {$LinePayMode.tback}</p>
+							</div>
+						</if>
+					</div>
+					<p>配送方式
+						<span class="ziqu-type-one massg" data-toggle="tooltip" data-placement="bottom" title="选择收货方式决定配送方式" style="margin-left: 2em;"><!-- <i class="glyphicon"></i> --> 
+							<input type="radio" name="fs" class="fss" value="0" style="cursor: no-drop; margin-left: 0;"> 上门自取
+							
+						</span>
+						<span class="ziqu-type-two massg" data-toggle="tooltip" data-placement="bottom" title="选择收货方式决定配送方式" style="margin-left: 1.7em;">
+							<input type="radio"  name="fs" class="fss" value="0" style="cursor: no-drop; margin-left: 0;"> 第三方物流
+							<!-- <i class="glyphicon"></i> 
+							<select name="psfs">
+								<volist name="deliModeList" id="vo">
+								<option value="{$vo['mode_id']}">{$vo['mode_name']}</option>
+								</volist>
+							</select>-->
+						</span>
+					</p>
+					
+					<p><div style="width:90px; float:left;">订单备注</div>
+						<div style="margin-left: 2em; width:400px;">
+							<textarea style="width:250px; height:80px;" id="note" name="note"></textarea>
+						</div>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="table-box">
+			<div class="">
+				<div class="cart-list table-responsive">
+					<h4>您选购了以下商品：</h4>
+					<table class="table" style="margin-bottom:0px;">
+						<thead>
+							<tr>
+								<th width="45%">商品名称</th>
+								<th width="25%">货品编号/货号</th>
+								<th width="10%">单价</th>
+								<th width="10%">数量/购买重量</th>
+								<th width="10%">小计</th>
+							</tr>
+						</thead>
+					</table>	
+					
+					
+					
+					
+					<if condition="$dingzhi_list">
+						<volist name="dingzhi_list" id="vv">
+						
+							<table class="table">
+							<tbody>
+								<volist name="vv" id="vo">
+								<if condition="$key eq 'product'">	
+
+
+									<tr>
+										<td width="45%"><img src="{$vo['goods_attrs']['thumb']}" alt="{$vo['goods_attrs']['goods_name']}" width="80" title="{$vo['goods_attrs']['goods_name']}"> <br> {$vo['goods_attrs']['goods_name']}
+
+						<?php echo !empty($vo['goods_attrs']['associateInfo']['material_name']) 	? '材质:'.$vo['goods_attrs']['associateInfo']['material_name']		 	: '';?>
+						
+						<?php echo !empty($vo['goods_attrs']['hand']) 				? '手寸:'.$vo['goods_attrs']['hand']		 			: '';?>
+						<?php echo !empty($vo['goods_attrs']['word']) 				? '刻字:'.$vo['goods_attrs']['word']		 			: '';?>
+						
+						<?php echo !empty($vo['goods_attrs']['hand1']) 				? '手寸（女戒）:'.$vo['goods_attrs']['hand1']		 	: '';?>
+						<?php echo !empty($vo['goods_attrs']['word1']) 				? '刻字:'.$vo['goods_attrs']['word1']		 			: '';?>
+
+										</td>
+										<td width="25%">{$vo['goods_attrs']['goods_sn']}</td>
+										<td width="10%">￥
+											<in name="vo['goods_attrs']['activity_status']" value="0,1">
+												{$vo['goods_attrs']['activity_price']}
+												<else/> {$vo['goods_attrs']['goods_price']}
+											</in>
+										</td>
+										<td width="10%">×{$vo['goods_number']|intval}</td>
+										<td width="10%"><span class="red">￥{$vo['goods_attrs']['goods_price2']}</span></td>
+									</tr>
+
+									
+
+								<else if condition="$key eq 'luozuan'" />		
+								<?php $vo = $vv["luozuan"]; ?>
+
+									
+									<tr>
+										<td width="45%">{$vo['goods_attrs']['certificate_type']} <if condition="$yn_certificate_num_cv neq 1">_{$vo['goods_attrs']['certificate_number']}</if> {$vo['goods_attrs']['shape_name']} {$vo['goods_attrs']['weight']}ct 颜色:{$vo['goods_attrs']['color']} 净度:{$vo['goods_attrs']['clarity']} 切工:{$vo['goods_attrs']['cut']} 抛光:{$vo['goods_attrs']['polish']} 荧光:{$vo['goods_attrs']['fluor']} 对称:{$vo['goods_attrs']['symmetry']} </td>
+										<td width="25%">
+											<eq name="vo['goods_attrs']['luozuan_type']" value="1">
+												彩钻&nbsp;
+											</eq>
+											{$vo['goods_attrs']['goods_name']}
+										</td>
+										<td width="10%">￥{$vo['goods_attrs']['price']}</td>
+										<td width="10%">×1</td>
+										<td width="10%"><span class="red">￥{$vo['goods_attrs']['price']}</span></td>
+									</tr>		
+							
+								
+								</if>
+								</volist>
+							</tbody>	
+							</table>			
+						</volist>
+							
+					</if>
+					
+					
+					
+					
+					
+					<table class="table">	
+						<tbody>
+							<if condition="$product['data']">
+								<volist name="product['data']" id="vo">
+									<tr>
+										<td width="45%"><img src="{$vo['goods_attrs']['thumb']}" alt="{$vo['goods_attrs']['goods_name']}" width="80" title="{$vo['goods_attrs']['goods_name']}"> <br> {$vo['goods_attrs']['goods_name']}
+
+						<?php echo !empty($vo['goods_attrs']['associateInfo']['material_name']) 	? '材质:'.$vo['goods_attrs']['associateInfo']['material_name']		 	: '';?>
+						
+						<?php
+							if($vo['goods_type'] == 16){ //szzmzb 板房数据
+								if(dingzhi_szzmzb_jewelry_name($vo['goods_attrs']['jewelry_name'])){
+									echo dingzhi_szzmzb_jewelry_name($vo['goods_attrs']['jewelry_name']).':'.$vo['goods_attrs']['hand'];
+								}
+							}else{
+								echo !empty($vo['goods_attrs']['hand'])?'手寸:'.$vo['goods_attrs']['hand']: '';
+							}
+						?>
+
+						<?php echo !empty($vo['goods_attrs']['word']) 				? '刻字:'.$vo['goods_attrs']['word']		 			: '';?>
+						
+						<?php echo !empty($vo['goods_attrs']['hand1']) 				? '手寸（女戒）:'.$vo['goods_attrs']['hand1']		 	: '';?>
+						<?php echo !empty($vo['goods_attrs']['word1']) 				? '刻字:'.$vo['goods_attrs']['word1']		 			: '';?>
+
+										</td>
+										<td width="25%">{$vo['goods_attrs']['goods_sn']}</td>
+										<td width="10%">￥
+											<in name="vo['goods_attrs']['activity_status']" value="0,1">
+												{$vo['goods_attrs']['activity_price']}
+												<else/> {$vo['goods_attrs']['goods_price']}
+											</in>
+										</td>
+										<td width="10%">×{$vo['goods_number']|intval}</td>
+										<td width="10%"><span class="red">￥{$vo['goods_attrs']['goods_price2']}</span></td>
+									</tr>
+								</volist>
+							</if>
+						</tbody>
+					</table>	
+							
+					<table class="table">	
+						<tbody>		
+							<if condition="$luozuan['data']">
+								<volist name="luozuan['data']" id="vo">
+									<tr>
+										<td width="45%">{$vo['goods_attrs']['certificate_type']} <if condition="$yn_certificate_num_cv neq 1">_{$vo['goods_attrs']['certificate_number']}</if> {$vo['goods_attrs']['shape_name']} {$vo['goods_attrs']['weight']}ct 颜色:{$vo['goods_attrs']['color']} 净度:{$vo['goods_attrs']['clarity']} 切工:{$vo['goods_attrs']['cut']} 抛光:{$vo['goods_attrs']['polish']} 荧光:{$vo['goods_attrs']['fluor']} 对称:{$vo['goods_attrs']['symmetry']} </td>
+										<td width="25%">
+											<eq name="vo['goods_attrs']['luozuan_type']" value="1">
+												彩钻&nbsp;
+											</eq>
+											{$vo['goods_attrs']['goods_name']}
+										</td>
+										<td width="10%">￥{$vo['goods_attrs']['price']}</td>
+										<td width="10%">×1</td>
+										<td width="10%"><span class="red">￥{$vo['goods_attrs']['price']}</span></td>
+									</tr>	
+								</volist>
+							</if>
+						</tbody>
+					</table>
+					<table class="table">	
+						<tbody>
+							<if condition="$sanhuo['data']">
+								<volist name="sanhuo['data']" id="vo" >
+									<tr>
+										<td width="45%">{$vo['goods_attrs']['goods_sn']} 分类:{$vo['goods_attrs']['type_name']} 颜色:{$vo['goods_attrs']['color']}  净度:{$vo['goods_attrs']['clarity']}  切工:{$vo['goods_attrs']['cut']}  库存重量:{$vo['goods_attrs']['goods_weight']} CT</td>
+										<td width="25%">
+											{$vo['goods_attrs']['goods_sn']}<if condition="$vo['have_goods'] lt 1">【<span style="color:red;">无货</span>】 </if>
+										</td>
+										<td width="10%">￥{$vo['goods_attrs']['goods_price']}</td>
+										<td width="10%">×{$vo.goods_number} CT</span></td>
+										<td width="10%"><span class="red">￥{$vo['goods_attrs']['goods_price2']}</span></td>
+									</tr>
+								</volist>
+							</if>
+						</tbody>
+					</table>
+				</div>
+				<div class="row js">
+					<div class="col-md-6"></div>
+					<div class="col-md-6 text-right">
+						共 {$count}件商品<br> 订单总金额：
+						<strong class="red">￥{$total}</strong><br>
+						<button class="btn btn-danger cart-sub">提交</button>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- cart end //-->
+<script>
+//获取下级城市或者县区，id: 作为父级ID查询，type：1 查询出城市，2 查询出县区，select_id：选中id，a 当前点击的对象
+function getaddress(parent_id,type,select_id,a){
+	$.ajax({
+		type: "get",
+		url : "{:U('Home/Public/getRegion/parent_id/"+parent_id+"')}", 
+		dataType:'json', 
+		success: function(res){
+			if(res){
+				switch(type){
+					case 1:
+						var content = '<option value="" selected="selected">请选择城市</option>';
+						break;
+					case 2:
+						var content = '<option value="" selected="selected">请选择县/区</option>';
+						break;
+				}
+				$.each( res, function(index,item){
+					if(select_id && select_id == item.region_id){
+						content +='<option selected value="'+item.region_id+'" >'+item.region_name+'</option>';
+					}else{
+						content +='<option value="'+item.region_id+'" >'+item.region_name+'</option>';
+					}
+					
+				});
+				var thisDom	= a.next('select');
+				thisDom.html(content);
+				
+			}else{
+				layer.msg('网络错误',{
+					shift :6,
+					icon: 5
+				});
+				return false;
+			}
+		},
+	});
+}
+// 编辑收货地址 -->
+function edit(address_id) {
+	$.ajax({
+		type: "post",
+		url: "{:U('Home/User/getaddress')}",
+		data: {
+			'address_id': address_id
+		},
+		dataType: 'json',
+		success: function(res) {
+			if(res.status == 100) {
+        
+        //var srcollT = $('#addre').offset().top;
+        //$('html,body').animate({srcollTop: srcollT});
+        //location.href = "#addre";
+        $('.tiyang').slideUp();
+				$('.add-address').slideDown(1000);
+				
+				//获取城市列表
+				if(res.data['province_id']) {
+					var a = $('#province');
+					getaddress(res.data['province_id'], 1, res.data['city_id'], a);
+				}
+				//获取县区列表
+				if(res.data['city_id']) {
+					var a = $('#city');
+					getaddress(res.data['city_id'], 2, res.data['district_id'], a);
+				}
+				<!-- 省份选中 -->
+				$('select[name="province_id"]').val(res.data['province_id']);
+				$('#addre input').each(function(i, item) {
+						var val = res.data[item.name];
+						switch(item['type']) {
+							case 'text':
+								$('input[name="' + item["name"] + '"]').val(val);
+								break;
+							case 'radio':
+								$('input[name="' + item["name"] + '"][value="' + val + '"]').prop('checked', true);
+								break;
+						}
+					})
+					<!-- 设置隐藏框input值 -->
+				$('input[name="address_id"]').val(res.data['address_id']);
+			} else {
+				layer.msg(res.msg, {
+					shift: 6,
+					icon: 5
+				});
+				return false;
+			}
+		},
+	});
+}
+
+
+$(document).ready(function() {
+	//判断是否选中
+	if($('.status:checked').hasClass('default_dz')){
+		$('.ziqu-type-two input[type="radio"]').prop('checked', true);
+	}
+	// 选择省份ajax返回城市地址
+	$('#province').change(function(){
+		var a 		= $(this);
+		var city	= a.next('select');
+		var district= a.next('select').next('select');
+		var id 		= a.find ("option:selected").val();
+
+		if(!id){
+			city.html('<option value="" selected="selected">请选择城市</option>');
+			district.html('<option value="" selected="selected">请选择县/区</option>');
+			return false;
+		}
+		getaddress(id,1,'',a);
+		
+	})
+	// 选择城市ajax返回县区地址
+	$('#city').change(function(){
+		var a 			= $(this);
+		var district_content	= a.next('select');
+		var id 			= a.find ("option:selected").val();
+
+		if(!id){
+			district_content.html('<option value="" selected="selected">请选择县/区</option>');
+			return false;
+		}
+		getaddress(id,2,'',a);
+		
+	})
+
+
+	//选择门店，拼接地址赋值给后面input框
+	$('#store_booked').change(function() {
+		var selectStore	= $('select[name="store_id_booked"] option:selected');
+		//获取需要展示的预约门店地址
+		if(selectStore.val()){
+			var province	= selectStore.attr('data-province');
+			var city		= selectStore.attr('data-city');
+			var district	= selectStore.attr('data-district');
+			var address		= selectStore.attr('data-address');
+			var store_address = province + '' + city + '市' + district + address;
+			$('.tydizhi').val(store_address);
+		}
+		
+	})
+
+	$('.addaddress').click(function() {
+			if($('.add-address').css('display') == "none") {
+				//清空form表单
+				$('#addre input[type="text"]').val('');
+				$('#addre select').val('');
+				$('.add-address').slideDown(1000);
+				location.href = "#addre";
+			} else {
+				$('input[name="address_id"]').val('');
+				$('.add-address').slideUp();
+			}
+		})
+		// 取消 -->
+	$('.cancel').click(function() {
+		$('input[name="address_id"]').val('');
+		$('.add-address').slideUp();
+
+	})
+
+	// ajax添加收货地址 -->
+	$('.save').click(function() {
+		if(checkeinput_length('title', '', '8', '地址标注不能为空且不能超过8个字符') == false) {
+			return false;
+		}
+		if(checkeselect('province_id', '请选择省份') == false) {
+			return false;
+		}
+		if(checkeselect('city_id', '请选择城市') == false) {
+			return false;
+		}
+		if(checkeselect('district_id', '请选择县区') == false) {
+			return false;
+		}
+		if(checkeinput_length('address', '', '200', '详细地址不能为空且不能超过200个字符') == false) {
+			return false;
+		}
+		if(checkeinput_length('name', '', '', '收货人姓名不能为空') == false) {
+			return false;
+		}
+		if(checkeinput_length('phone', '', '', '联系电话不能为空') == false) {
+			return false;
+		}
+		if(checkeinput('phone', 'phone', '联系电话格式错误') == false && checkeinput('tel', 'phone', '联系电话格式错误') == false) {
+			return false;
+		}
+		var title = $('input[name="title"]').val();
+		var province_id = $('select[name="province_id"]').val();
+		var city_id = $('select[name="city_id"]').val();
+		var district_id = $('select[name="district_id"]').val();
+		var address = $('input[name="address"]').val();
+		var name = $('input[name="name"]').val();
+		var code = $('input[name="code"]').val();
+		var phone = $('input[name="phone"]').val();
+		var is_default = $('input[name="is_default"]:checked').val();
+		var address_id = $('input[name="address_id"]').val();
+		$.ajax({
+			url: '/Home/User/shopAddress',
+			type: 'POST',
+			data: {
+				'title': title,
+				'country_id': 1,
+				'province_id': province_id,
+				'city_id': city_id,
+				'district_id': district_id,
+				'address': address,
+				'name': name,
+				'code': code,
+				'phone': phone,
+				'is_default': is_default,
+				'address_id': address_id
+			},
+			dataType: 'json',
+			success: function(res) {
+				if(res.error == 'no') {
+					layer.msg(res.msg, {
+						offset: ['260px'],
+						shift: 6,
+						icon: 6
+					});
+					setTimeout(function() {
+						location.reload();
+					}, 1500)
+
+				} else {
+					layer.msg(res.msg, {
+						offset: ['260px'],
+						shift: 6,
+						icon: 5
+					});
+				}
+			}
+		});
+	})
+
+	// 订单提交 -->
+	$('.cart-sub').click(function() {
+		var data = {};
+		var address_id = $('input[name="status"]:checked').val();
+		var zffs = $('input[name="zffs"]:checked').val();
+		var psfs = $('input[name="fs"]:checked').val();
+		var note = $('#note').val();
+		var cart_id = '{$cart_id}';
+		if(!address_id && address_id != 'booked') {
+			layer.msg('请选择收货地址', {
+				shift: 6,
+			});
+			return false;
+		}
+		
+		if(!zffs) {
+			layer.msg('请选择支付方式', {
+				shift: 6,
+			});
+			return false;
+		}
+		
+		if(!psfs) {
+			layer.msg('请选择配送方式', {
+				shift: 6,
+			});
+			return false;
+		}
+		psfs = 0;
+		data = {
+			'cart_id': cart_id,
+			'zffs': zffs,
+			'psfs': psfs,
+			'note': note,
+			'address_id': address_id
+		};
+		if(address_id == 'booked') {
+			var store_id= $('input[name="store_id_submit"]').val();
+			var time	= $('input[name="time_submit"]').val();
+			var name	= $('input[name="name_submit"]').val();
+			var phone	= $('input[name="phone_submit"]').val();
+			var type	= $('input[name="type_submit"]').val();
+			var content	= $('input[name="content_submit"]').val();
+			data = {
+				'cart_id'	: cart_id,
+				'zffs'		: zffs,
+				'psfs'		: psfs,
+				'note'		: note,
+				'address_id': address_id,
+				'store_id'	: store_id,
+				'time'		: time,
+				'name'		: name,
+				'phone'		: phone,
+				'type'		: type,
+				'content'	: content,
+			};
+		}
+		var index = layer.load(2, {
+			shade: false
+		}); //0代表加载的风格，支持0-2
+		$.ajax({
+			type: "post",
+			url: "{:U('Home/Order/orderSubmit')}",
+			data: data,
+			dataType: 'json',
+			success: function(res) {
+				if(res.status == 100) {
+					layer.close(index);
+					var order_id = res.data;
+					if(zffs == 1) {
+						window.location.href="/Home/Pay/online/order_id/"+order_id;
+					}else if(zffs == 2){
+					    //环迅支付
+                        window.location.href="/Home/Pay/ipsPay/order_id/"+order_id;
+					}else if(zffs == 3){
+					    //环迅支付微信扫码
+                        window.location.href="/Home/Pay/ipsPayCode?order_id="+order_id+"&gatewayType=10";
+					}else if(zffs == 4){
+					    //环迅支付支付宝扫码
+                        window.location.href="/Home/Pay/ipsPayCode?order_id="+order_id+"&gatewayType=11";
+					}
+					else{
+						window.location.href = "{:U('/Home/Order/orderSuccess')}?order_id=" + order_id;
+					}
+				} else {
+					layer.close(index);
+					layer.msg(res.info, {
+						shift: 6,
+						icon: 5
+					});
+					return false;
+				}
+			},
+		});
+		return false;
+	})
+})
+</script>

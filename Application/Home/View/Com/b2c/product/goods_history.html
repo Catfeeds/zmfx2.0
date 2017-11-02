@@ -1,0 +1,53 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h5><strong>浏览记录</strong> <span class="pull-right"><a href="{:U('Goods/getHistoryLists')}" target="_blank">更多</a></span></h5>
+    </div>
+    <div class="panel-body">
+        <volist name="goodsHistorys" id="vo">
+            <if condition="in_array($vo['goods_type'],array(0,1,2))">
+                <!--<div class="textda text-center">
+                    <div class="dbox">
+                        <p>GIA_624249755</p>
+                        <P>形状：圆形</P>
+                        <p>重量：10.00ct</p>
+                        <p>颜色：N</p>
+                        <p>净度：SI1</p>
+                        <p>切工：EX</p>
+                    </div>
+                    <p>
+                        <a href="#">
+                            钻石钻石钻石
+                        </a>
+                    </p>
+                    <p>
+                        <strong>￥ 999999
+                        </strong>
+                    </p>
+                </div>-->
+                <else />
+                <div class="textda text-center">
+                    <p>
+                        <a href="{:U('Home/Goods/goodsDetails/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}">
+                            <img src="{$vo.thumb}">
+                        </a>
+                    </p>
+                    <p>
+                        <a href="#{:U('Home/Goods/goodsDetails/goods_type/'.$vo['goods_type'].'/gid/'.$vo['goods_id'])}">
+                            {$vo.goods_name}
+                        </a>
+                    </p>
+                    <p>
+                        <strong>￥
+                            <in name="vo['activity_status']" value="0,1">
+                                {$vo.activity_price}
+                                <else/>
+                                {$vo.goods_price}
+                            </in>
+                        </strong>
+                    </p>
+                </div>
+            </if>
+
+        </volist>
+    </div>
+</div>

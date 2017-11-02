@@ -1,0 +1,1035 @@
+ 
+<script src="/Application/App/View/default/js/layer-mobile/layer.js"></script> 
+<script src="__JS__/common.js"></script>
+
+<include file="Public:header" />
+<script src="__JS__/public.js"></script> 
+  <style>
+    body { background: #f0f0f0;}
+    #associateMaterial dd { width: 73px; height: 26px; overflow: hidden; text-align: center;}
+    .zl dd { float: left; padding: 2px; margin: 2px;}
+    #deputystone dd { width: 115px; height: 26px; overflow: hidden; text-align: center; padding: 0;}
+    #owl-demo .item img{  display: block; max-width: 100%;}
+  </style>
+  <style>
+    .icon-head,.icon-head1{
+        background: #fff;
+        display: inline-block;
+        border: 1px solid #E4E4E4;
+        margin: 0;
+        margin-left: -1px;
+        text-align: center;
+        border-radius: 0;
+        -webkit-border-radius: 0;
+        /* width: 160px; */
+        height: 28px;
+        overflow: hidden;
+        line-height: 31px;
+        padding: 0px 2px;
+        margin-left: 5px;
+        padding-left: 5px;
+        position: relative;
+        cursor: pointer;
+    }
+    .icon-head .fh,.icon-head1 .fh {
+        height: 25px;
+        font-size: 12px !important;
+        padding: 0 !important;
+    }
+    .symbols-select span {
+    		width: 150px;
+        height: 32px;
+        line-height: 32px !important;
+        margin-left: 0;
+    }
+    .icon-head .fh img,.icon-head1 .fh img  {
+        max-height: 100%;
+    }
+    .caret {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        margin-left: 2px;
+        vertical-align: middle;
+        border-top: 4px dashed;
+        border-top: 4px solid\9;
+        border-right: 4px solid transparent;
+        border-left: 4px solid transparent;
+        margin-right: 2px;
+        margin-top: 11px;
+        float: right;
+    }
+    .symbols-name {
+        float: left; 
+        margin-top: 5px;
+    }
+    .symbols-select {
+        position: relative;
+    }
+    .symbols-select-ul,.symbols-select-ul1 {
+        width: 150px;
+        height: 130px;
+        border: 1px solid #C1C1C1;
+        overflow: auto;
+        padding: 1px;
+        margin: 0;
+        text-align: left;
+        background: #fff;
+        position: absolute;
+        top: 29px;
+        left: 0;
+        z-index: 999;
+        border-radius: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        overflow: auto;
+    }
+    .symbols-select-ul li,.symbols-select-ul1 li {
+        width: 35px;
+        height: 35px;
+        float: left;
+        margin-right: 1px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+    }
+    .symbols-select-ul li img,.symbols-select-ul1 li img {
+        height: 100%;
+    }
+    .list-default { margin: 1em;}
+    .symbols-box { display: inline-block;}
+    .cart-num { position: absolute; right: 31px; top: 8px; padding: 2px; font-size: 9px; color: #FFF; background: red; border-radius: 50%; -webkit-border-radius: 50%; min-width: 20px; height: 20px; text-align: center; line-height: 16px; border: 1px solid #FFF;}
+    .pricebar { margin-top: 8px;}
+    .goods-info .itprice { padding: 0px;}
+    .goods-dl .nav-tabs>li>a { color: #555;}
+    .goods-dl .nav-tabs>li.active>a, 
+    .goods-dl .nav-tabs>li.active>a:focus, 
+    .goods-dl .nav-tabs>li.active>a:hover { border: none; border-bottom: 2px solid #3073ff; color: #2f73ff;}
+    .goods-info .hanwrap .sc { height: 35px; line-height: 33px; border-color: #eeeff1; border-width: 2px; font-weight: 500;}
+    .form-kezi { border: 1px solid #e4e4e4; padding: 5px;}
+    .goods-info .zm-sku li h2 { min-width: 18%;}
+    .goods-info .picm, .goods-info .details { padding: 5px 0;}
+</style>
+<body class="wrap-bg" style="margin-bottom: 50px;">
+ 
+ 
+    <!--内容-->
+    <div class="goods-info">
+      <section>
+        <div class="product-info">
+       <if condition="$goodsInfo['images']">
+       <?php if (count($goodsInfo['images'])==1):   ?>
+       <?php $goodsInfo_bigpath=$goodsInfo['images'][0]['big_path'];?>
+        <div class='item'>   
+          <img src=<?php echo "$goodsInfo_bigpath";?>>
+        </div>
+       <?php else: ?>
+            <div id="owl-demo" class="owl-carousel owl-theme">
+            <volist name="goodsInfo['images']" id="vo">
+              <div class="item">
+                <img src="{$vo.big_path}">
+              </div>
+            </volist>
+            </div> 
+       <?php endif; ?> 
+       </if>
+        </div>
+      </section>
+    
+      <input type="hidden" class="count_page_input" data_num="{$goodsInfo.goods_id}" />     
+      <section class="itname">
+        <div class="ititle">
+          <h1>{$goodsInfo.goods_name} <br> 商品编号：{$goodsInfo.goods_sn}
+            <div class="itprice">
+              <div class="pricebar">
+                <!-- <h4 id="activity"></h4> -->
+                <i class="rmb red">¥</i>     
+                <span class="integer" id='prc' raf="{$goodsInfo.market_price}" >
+                  <in name="goodsInfo['activity_status']" value="0,1">
+                    {$goodsInfo['activity_price']}
+                  <else/>
+                    {$goodsInfo['goods_price']}
+                  </in>
+                </span>
+                <span class="decimal" id="saleprice">¥{$goodsInfo.marketPrice}</span>
+				
+				<!-- <?php if ($goodsInfo['goods_type']=='3'): ?> -->
+					<!-- <span  style="float: right;">销量 ：	<?php echo  substr(bcdiv(time(),$goodsInfo['goods_id'],2),6,4)*100;?>件</span> -->
+				<!-- <?php endif; ?> -->
+				
+              </div>
+            </div>
+          </h1>
+        </d
+		iv>
+      </section> 
+
+	  
+ 
+      <section class="picm">
+        <ul class="zm-sku buy-wrap">
+			<?php if ($goodsInfo['similar_16']): ?>	
+              <li class="spec matil">
+                <h2>材质:</h2>
+                <div class="items item-select item_select1">
+					<?php foreach($goodsInfo['similar_16'] as $key=>$vo) :?>
+						<label class="spec_val spec_value OptionValves <if condition="$key eq 0"> cur</if> "  onclick="changeprice(this,1)"><?php echo $vo?></label>
+                    <?php endforeach;?>
+                </div>
+              </li>
+			<?php endif; ?>
+			
+			<?php if ($goodsInfo['similar_18']): ?>				
+              <li class="spec matil">
+                <h2>金重:</h2>
+                <div class="items item-select item_select2">
+					<?php foreach($goodsInfo['similar_18'] as $key=>$vo) :?>
+						<label class="spec_val spec_value OptionValves <if condition="$key eq 0"> cur</if> "  onclick="changeprice(this,2)"><?php echo $vo?></label>
+                    <?php endforeach;?>
+                </div>
+              </li>			  
+			<?php endif; ?>
+
+			
+			<?php if ($goodsInfo['similar_19']): ?>							
+              <li class="spec matil">
+                <h2>尺寸:</h2>
+                <div class="items item-select item_select3">
+					<?php foreach($goodsInfo['similar_19'] as $key=>$vo) :?>
+						<label class="spec_val spec_value OptionValves <if condition="$key eq 0"> cur</if> "  onclick="changeprice(this,3)"><?php echo $vo?></label>
+                    <?php endforeach;?>
+                </div>
+              </li>
+			<?php endif; ?>
+			
+			<!-- <?php print_r($goodsInfo['similar']);?> -->
+			
+			<?php if ($goodsInfo['similar']): ?>				
+				<?php foreach($goodsInfo['similar'] as $key=>$vo) :?>
+					<input type="hidden" class="OptionValves_array" data-price=" <in name="goodsInfo['activity_status']" value="0,1" >  {$vo.activity_price} <else/>{$vo.goods_price} </in> " 	 ref_marketPrice={$vo.marketPrice} data-content="{$v.gal_id}" ref="{$vo.sku_sn}"     data-attrs="<?php echo  isset($vo['attrs']) ? $vo['attrs'] : '';?>   " /> 
+                 <?php endforeach;?> 
+			<?php endif; ?>
+			  
+ 
+ 
+		<input type="hidden" class="OptionValves_sku" value="" /> 
+ 
+              <!-- 只显示主要属性，详细的在"商品参数"显示 -->
+ 
+		<?php if (!empty($goodsInfo['attributes']['22']['attr_value']) && !empty($goodsInfo['attributes']['22']['attr_value_name'])): ?>		  
+			<li class="spec matil">
+				<h2>主石:</h2>
+					<div class="items zl">
+						<label>      
+				<?php foreach($goodsInfo['attributes'] as $key=>$vo) :?>
+					<?php if ($vo['attr_id'] == 22 || $vo['attr_id'] == 23 || $vo['attr_id'] == 24 || $vo['attr_id'] == 25): ?>
+								<?php if ($vo['attr_value']): ?>
+										<?php if ($key == 22): ?>
+											<?php echo ($vo['attr_value']);?>
+										<?php else: ?>
+											<?php echo ('/'.$vo['attr_value']);?>
+										<?php endif; ?> 
+								<?php elseif($vo['attr_value_name']): ?>
+										<?php if ($key == 22): ?>
+											<?php echo ($vo['attr_value_name']);?>
+										<?php else: ?>
+											<?php echo ('/'.$vo['attr_value_name']);?>
+										<?php endif; ?> 
+								<?php endif; ?>
+					<?php endif; ?>
+ 
+				<?php endforeach;?> 
+ 
+						</label>
+					</div>    
+			</li>
+		<?php endif; ?>
+	  
+	  
+	  
+		<?php if (!empty($goodsInfo['attributes']['26']['attr_value']) && !empty($goodsInfo['attributes']['26']['attr_value_name'])): ?>		  
+			<li class="spec matil">
+				<h2>副石:</h2>
+					<div class="items zl">
+						<label>      
+				<?php foreach($goodsInfo['attributes'] as $key=>$vo) :?>
+					<?php if ($vo['attr_id'] == 26 || $vo['attr_id'] == 27 || $vo['attr_id'] == 28): ?>
+								<?php if ($vo['attr_value']): ?>
+										<?php if ($key == 26): ?>
+											<?php echo ($vo['attr_value']);?>
+										<?php else: ?>
+											<?php echo ('/'.$vo['attr_value']);?>
+										<?php endif; ?> 
+								<?php elseif($vo['attr_value_name']): ?>
+										<?php if ($key == 26): ?>
+											<?php echo ($vo['attr_value_name']);?>
+										<?php else: ?>
+											<?php echo ('/'.$vo['attr_value_name']);?>
+										<?php endif; ?> 
+								<?php endif; ?>
+					<?php endif; ?>
+ 
+				<?php endforeach;?> 
+ 
+						</label>
+					</div>    
+			</li>
+		<?php endif; ?>	  
+ 
+	
+      <if condition="$goodsInfo['associate_info']">  
+        <li class="spec matil">
+            <h2>材质:</h2>
+            <div class="items item-select border" id="associateMaterial">
+              <volist name="goodsInfo['associate_info']" id="vo">
+                <label  onclick="set_material(this,{$goodsInfo.goods_id},{$vo.material_id})" class="spec_val spec_value <if condition="$key eq 0"> cur</if>" ref="{$vo.material_id}">{$vo.material_name}</label>
+              </volist>                
+            </div>
+        </li>
+
+        <if condition=" $goodsInfo['goods_type'] eq 4  ">
+            <li class="spec matil">
+              <h2>副石:</h2>
+              <div class="items item-select border" id="deputystone">
+                <?php if($goodsInfo['associate_deputystone']) :?>
+                  <volist name="goodsInfo['associate_deputystone']" id="vo">
+                    <label id='active' class="spec_val m_spec_val spec_value <if condition="$key eq 0">cur</if>" goodsid="{$goodsInfo.goods_id}" mastid="{$vo.gad_id}"  gad_id="{$vo.gad_id}" onclick="set_price(this,{$goodsInfo.goods_id},'2',{$vo.gad_id})">{$vo.deputystone_name}</label>
+                  </volist>
+                <?php else: ?>
+                    <label>无</label>
+                <?php endif;?>
+              </div>
+            </li>
+
+            <li class="spec matil" id="material">
+              <h2>主石:</h2>
+              <div class="items item-select border" id="associateLuozuan">
+                <volist name="goodsInfo['associate_luozuan']" id="v">
+                  <label class="spec_val spec_value <if condition="$key eq 0"> cur </if>" onclick="set_price(this,{$goodsInfo.goods_id},'1',{$v.gal_id})" a_id="{$v.gal_id}"  ref="{$v.weights_name}" >{$v.shape_name} {$v.weights_name}CT</label>
+                </volist>       
+              </div>
+            </li>
+        </if>
+
+		
+
+		
+		
+		
+		
+        <!-- <li class="spec matil">
+          <h2>重量:</h2>
+          <div class="items zl">
+            <volist name="goodsInfo['associate_info']" id="vo">
+              <label class="spec_val spec_value">{$vo.weights_name}g</label>
+            </volist>                 
+          </div>
+        </li>
+        
+        <neq name="goodsInfo['price_model']" value="1" >
+          <li class="spec matil">
+            <h2>损耗:</h2>
+            <div class="items zl">
+              <volist name="goodsInfo['associate_info']" id="vo">
+                <label>{$vo.loss_name}%</label>
+              </volist>
+            </div>
+          </li>
+        
+          <li class="spec matil ">
+            <h2>工费:</h2>
+            <div class="items zl">
+              <volist name="goodsInfo['associate_info']" id="vo">
+                <label>{$vo.basic_cost}</label>
+              </volist>
+            </div>
+          </li> -->
+ 
+        <input type="hidden" id="price_model" name="price_model" value="{$goodsInfo['price_model']}">
+        <if condition="!$goodsInfo['price_model'] && $goodsInfo['goods_type'] eq 4 ">
+          <?php if($goodsInfo['is_show_hand']=='1'):?>
+            <li class="spec matil">
+              <h2>手寸:</h2>
+              <div class="inline">
+                <span class="hanwrap">
+                <label class="handsz sc"><em><?php echo $hand[0]?></em></label>
+                <select name="hand" class="attr_val attr-val-select" id="hand">
+                  <option value=""> </option>
+                  <volist name="hand" id="vo">
+                    <option value="{$vo}">{$vo}</option>
+                  </volist>
+                </select>
+                </span>
+              </div>
+            </li>
+          <?php endif;?>
+            <li class="spec goldwt kezi">
+                <h2>刻字:</h2>
+                <div class="inline">
+                  <input class="form-kezi" onkeyup="words_deal()" id="word" type="text" placeholder="最多可写10个字" style="width: 180px; border-radius: 0;">
+                </div>
+                
+            </li>  
+
+			<?php if($sd_list):?>
+            <li class="spec goldwt kezi" style="overflow: visible;">
+              <h2>&nbsp;</h2>
+
+                <!-- 个性符号 -->
+                <input type="hidden" name="sd_id" value='0' >
+                  <div class="symbols-box">
+                      <div class="symbols-select" style="width: 150px; height: 34px;">
+                          <span class="icon-head" style="margin-left: 0;">
+                              <span class="fh">定制符号</span> 
+                              <i class="caret"></i>
+                          </span>
+                          <ul class="symbols-select-ul" style="display: none; left: 0;">
+                              <volist name="sd_list" id="vo">
+                                  <li><img src="{$vo.images_path}" value="{$vo.sd_id}"/></li>
+                              </volist>
+                              <div class="clear"></div>
+                          </ul>
+                      </div>
+                  </div> 
+			</li>
+		   <?php endif;?>
+        </if>
+        <if condition="$goodsInfo['price_model'] && (InStringByLikeSearch($category_name,array('钻戒','戒指','手链','项链')))" >
+            <li class="spec matil">
+              <h2>
+                  手寸/尺寸
+              </h2>
+              <div class="inline">
+                <span class="hanwrap">
+                <label class="handsz sc"><em><?php echo $goodsInfo['hands'][0]?></em></label>
+                <select name="hand" class="attr_val attr-val-select" id="hand">
+                  <option value=""> </option>
+                  <volist name="goodsInfo.hands" id="vo">
+                      <option value="{$vo}">{$vo}</option>
+                  </volist>
+                </select>
+                </span>
+              </div>
+            </li>
+            <li class="spec goldwt kezi">
+                <h2>刻字:</h2>
+                <div class="inline">
+                  <input class="form-kezi" onkeyup="words_deal()" id="word" type="text" placeholder="最多能写10个字" style="width: 180px;">
+                </div>
+            </li>
+            <li class="spec goldwt kezi" style="overflow: inherit;">
+              <h2>&nbsp;</h2>
+              <?php if($sd_list):?>
+                  <!-- 个性符号 -->
+                  <input type="hidden" name="sd_id" value='0' >
+                  <div class="symbols-box">
+                      <div class="symbols-select">
+                          <span class="icon-head">
+                              <span class="fh">定制符号</span> 
+                              <i class="caret"></i>
+                          </span>
+                          <ul class="symbols-select-ul" style="display: none;">
+                              <volist name="sd_list" id="vo">
+                                  <li><img src="{$vo.images_path}" value="{$vo.sd_id}"/></li>
+                              </volist>
+                              <div class="clear"></div>
+                          </ul>
+                      </div>
+                    </div>
+              <?php endif;?>
+            </li>
+        </if>
+        
+        
+        <if condition="$goodsInfo['price_model'] && (InStringByLikeSearch($category_name,array('对戒')))">
+            <li class="spec matil">
+              <h2>
+                  手寸(男):
+              </h2>
+              <div class="inline">
+                <span class="hanwrap">
+                <label class="handsz sc"><em><?php echo $goodsInfo['hands1'][0]?></em></label>
+                <select name="hand" class="attr_val attr-val-select" id="hand">
+                  <option value=""> </option>
+                  <volist name="goodsInfo.hands" id="vo">
+                      <option value="{$vo}">{$vo}</option>
+                  </volist>
+                </select>
+                </span>
+              </div>
+            </li>
+            <li class="spec goldwt kezi">
+                <h2>刻字:</h2>
+                <div class="inline">
+                  <input class="form-kezi" onkeyup="words_deal()" id="word" type="text" placeholder="最多能写10个字" style="width: 180px;">
+                </div>
+            </li>  
+			
+			<?php if($sd_list):?>
+            <li class="spec goldwt kezi" style="overflow: inherit;">
+              <h2>&nbsp;</h2>
+
+                <!-- 个性符号 -->
+                <input type="hidden" name="sd_id" value='0' >
+                <div class="symbols-box">
+                    <div class="symbols-select">
+                        <span class="icon-head">
+                            <span class="fh">定制符号</span> 
+                            <i class="caret"></i>
+                        </span>
+                        <ul class="symbols-select-ul" style="display: none;">
+                            <volist name="sd_list" id="vo">
+                                <li><img src="{$vo.images_path}" value="{$vo.sd_id}"/></li>
+                            </volist>
+                            <div class="clear"></div>
+                        </ul>
+                    </div>
+                </div>
+              
+            </li>
+			<?php endif;?>
+            <li class="spec matil">
+              <h2>
+                  手寸(女):
+              </h2>
+              <div class="inline">
+                <span class="hanwrap">
+                <label class="handsz1 sc"><em><?php echo $goodsInfo['hands2'][0]?></em></label>
+                <select name="hand1" class="attr_val attr-val-select1" id="hand1">
+                  <option value=""> </option>
+                  <volist name="goodsInfo.hands" id="vo">
+                      <option value="{$vo}">{$vo}</option>
+                  </volist>
+                </select>
+                </span>
+              </div>
+            </li>
+            <li class="spec goldwt kezi">
+                <h2>刻字:</h2>
+                <div class="inline">
+                  <input class="form-kezi" onkeyup="words_deal()" id="word1" type="text" placeholder="最多能写10个字">
+                </div>
+            </li> 
+            <li class="spec goldwt kezi" style="overflow: visible;">
+            	<h2>&nbsp;</h2>
+            	<?php if($sd_list):?>
+                  <!-- 个性符号 -->
+                  <input type="hidden" name="sd_id1" value='0' >
+                  <div class="symbols-box">
+                      <div class="symbols-select">
+                          <span class="icon-head1">
+                              <span class="fh">定制符号</span> 
+                              <i class="caret"></i>
+                          </span>
+                          <ul class="symbols-select-ul1 form-control" style="display: none;">
+                              <volist name="sd_list" id="vo">
+                                  <li><img src="{$vo.images_path}" value="{$vo.sd_id}"/></li>
+                              </volist>
+                              <div class="clear"></div>
+                          </ul>
+                      </div>
+                  </div>
+              <?php endif;?>
+            </li> 
+        </if>
+        
+    </if>
+    
+
+        </ul>
+
+        
+      </section>
+    
+	
+        <section class="picm">
+          <p style="color: #333;">预计交货时间：15个工作日</p>
+          <p style="color: #333;">特别说明：  售价不含主钻价格，主钻另行选配，详细报价以出货清单为准。</p>
+        </section>	
+	
+	
+      <!-- <if condition="$goodsInfo['associate_info']">   -->
+        <!-- <section class="picm"> -->
+          <!-- <if condition="$goodsInfo['goods_type'] eq 4 && !$goodsInfo['price_model']"> -->
+              <!-- <p id="luozuanPriceText">附加工费：￥ {$goodsInfo['associate_luozuan'][0].price}</p> -->
+          <!-- </if> -->
+          <!-- <p style="color: #333;">预计交货时间：15个工作日</p> -->
+          <!-- <p style="color: #333;">特别说明：  售价不含主钻价格，主钻另行选配，详细报价以出货清单为准。</p> -->
+        <!-- </section> -->
+      <!-- </if>  -->
+
+
+      <section class="picm goods-dl">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs goods-info-navtab" role="tablist">
+          <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">商品详情</a></li>
+          <li role="presentation"><a href="#profile" role="tab" data-toggle="tab">详细参数</a></li>
+          <li role="presentation"><a href="#evaluation" role="tab" data-toggle="tab">评价</a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="home">
+            {$goodsInfo.content}
+          </div>
+          <div role="tabpanel" class="tab-pane" id="profile">
+            <div class="sumparam">
+              <ul>
+                <if condition="$goodsInfo['attributes']">
+                  <volist name="goodsInfo['attributes']" id="vo">
+                    <if condition="!empty(trim($vo['attr_value_name']))">
+                      <li><label>{$vo.attr_name}</label><span>{$vo.attr_value_name}</span></li>
+                      <elseif condition="!empty(trim($vo['attr_value']))"/>
+                      <li><label>{$vo.attr_name}</label><span>{$vo.attr_value}</span></li>      
+                    </if>
+                  </volist>
+                </if>
+              </ul>
+            </div>
+          </div>
+
+          <div role="tabpanel" class="tab-pane" id="evaluation">
+
+            <!-- <div class="evaluation-lsit"> -->
+              <!-- <div class="evahead"> -->
+                <!-- <div class="pull-left"> -->
+                  <!-- <span class="tx"><img src="https://avatars2.githubusercontent.com/u/12794637?v=3&s=45" alt=""></span> -->
+                  <!-- <span class="username">安吉鱼儿</span> -->
+                <!-- </div> -->
+                <!-- <div class="pull-right"> -->
+                  <!-- <span class="pf"> -->
+                    <!-- <img width="12" height="12" src="__IMG__/xingxing.png" alt=""> -->
+                    <!-- <img width="12" height="12" src="__IMG__/xingxing.png" alt=""> -->
+                    <!-- <img width="12" height="12" src="__IMG__/xingxing.png" alt=""> -->
+                    <!-- <img width="12" height="12" src="__IMG__/xingxing.png" alt=""> -->
+                    <!-- <img width="12" height="12" src="__IMG__/xingxing.png" alt=""> -->
+                  <!-- </span> -->
+                <!-- </div> -->
+                <!-- <div class="clearfix"></div> -->
+              <!-- </div> -->
+              <!-- <div class="content"> -->
+                <!-- <p>货品好，造型漂亮，手工制造精细，很好看！货品好，造型漂亮，手工制造精细，很好看！</p> -->
+                <!-- <small>2016-11-08</small> -->
+              <!-- </div> -->
+            <!-- </div> -->
+          </div>
+        </div>
+      </section>
+
+    
+      <section class="goods-info-custom">
+	  <div class="cell" onclick="zhyaddCart(1,null,null)">
+        <!-- <div class="cell" onclick="zhyaddCart({$goodsInfo.goods_type},{$goodsInfo.goods_id},1)" style="color: #969696; background: #f6f6f6;"> -->
+          <div style="margin-top: 6px;text-align: right; margin-right: 10px;">
+            <span stle="position: relative;">
+              <small class="cart-num">{$CartGoodsNumber}</small>
+              <img src="__IMG__/cart_icon.png" alt="" style="height: 37px; border: 1px solid #d8d8d8; border-radius: 3px; -webkit-border-radius: 3px;">
+            </span>
+          </div>
+        </div>
+      <if condition="$goodsInfo['goods_type'] eq 4">
+        <button  class="tocart cell btn-addToCart" onclick="zhyaddCart({$goodsInfo.goods_type},{$goodsInfo.goods_id},3)">匹配钻石</button>
+      </if>
+
+	  
+	  
+		<?php if (isset($_GET['tip'])): ?>
+				<button  class="buynow cell btn-buy" onclick="zhyaddCart({$goodsInfo.goods_type},{$goodsInfo.goods_id},4)">确认匹配</button>
+		<?php else: ?>
+				<button  class="buynow cell btn-buy" onclick="zhyaddCart({$goodsInfo.goods_type},{$goodsInfo.goods_id},1)">加入购物车</button>
+		<?php endif; ?> 
+	  
+
+      <if condition="$goodsInfo['goods_type'] eq 3">
+				<button  class="tocart cell btn-addToCart" onclick="zhyaddCart({$goodsInfo.goods_type},{$goodsInfo.goods_id},2)">立即购买</button>
+      </if>	  
+
+	  
+        
+      </section>
+    
+    </div>
+
+    <script>
+  
+  var price_model= $("#price_model").val();
+    $(function(){
+      //选项
+    $(document).delegate('.item-select label','click', function() {
+        $(this).parent('.item-select').find('label').removeClass('cur');
+        $(this).addClass('cur');
+      });
+    
+      //下拉
+    $('.attr-val-select').bind('change', function(){ 
+        $('.handsz').html($(this).find('option:selected').val());
+    if(price_model=='1'){
+      set_price(null,null,'3');
+    }
+  });
+  $('.attr-val-select1').bind('change', function(){
+        $('.handsz1').html($(this).find('option:selected').val());
+    if(price_model=='1'){
+      set_price(null,null,'4');
+    }
+  });
+  
+ 
+ 
+    //个性符号
+    $('.icon-head').bind('click', function(){
+      $('.symbols-select-ul').toggle();
+    });
+    $('.symbols-select-ul li').bind('click', function(){
+      $('.icon-head .fh').html('').append("<img src="+$(this).find('img').attr('src')+">");
+      //1.id 2.内容
+      Insert("word","*");
+      $('.symbols-select-ul').hide();
+      var v = $(this).find('img').attr('value');
+      $("input[name='sd_id']").val(v);
+    });
+    $('.icon-head1').bind('click', function(){
+      $('.symbols-select-ul1').toggle();
+    });
+    $('.symbols-select-ul1 li').bind('click', function(){
+      $('.icon-head1 .fh').html('').append("<img src="+$(this).find('img').attr('src')+">");
+      //1.id 2.内容  
+      Insert("word1","*");
+      $('.symbols-select-ul1').hide();
+      var v = $(this).find('img').attr('value');
+      $("input[name='sd_id1']").val(v);
+    });
+
+    function Insert(id,str) {
+      var obj = document.getElementById(id); 
+      if(document.selection) { 
+        obj.focus(); 
+        var sel=document.selection.createRange(); 
+        document.selection.empty(); 
+        sel.text = str; 
+      } else { 
+        var prefix, main, suffix; 
+        prefix = obj.value.substring(0, obj.selectionStart).replace(str,""); 
+        main = obj.value.substring(obj.selectionStart, obj.selectionEnd); 
+        suffix = obj.value.substring(obj.selectionEnd).replace(str,""); 
+        obj.value = prefix + str + suffix;
+      } 
+      obj.focus(); 
+    }
+    });
+  
+    </script>
+
+
+</body>
+<script>
+  var AndroidSession ='<?php echo empty(C('AndroidSession'))  ? 0 : C('AndroidSession')?>';
+  var i_type =<?php echo empty(I('get.type'))?0:I('get.type'); ?>;
+  var souce_price=$(".ddBorder.active").attr('data-price');
+  var hand='';
+  var hand1='';
+  var tips='';
+  var tips_mid='';
+  var uid  ='<?php echo empty(C('uid'))     ? 0 : C('uid')?>';
+  var token='<?php echo empty(C('token'))   ? 0 : C('token')?>';
+  var agent_id='<?php echo empty(C('agent_id'))  ? 0 : C('agent_id')?>'; 
+  var sku_sn = '';
+
+  
+  
+	<?php if ($goodsInfo['goods_type']=='4'): ?>
+		set_price();
+	<?php else: ?>
+		var price_array = [];
+		$(".OptionValves_array").each(function(i){			 
+			price_array[i] = [$(this).attr("data-attrs"),$(this).attr('data-price'),$(this).attr('ref_marketPrice'),$(this).attr('ref')];
+		});
+	<?php endif; ?> 
+  
+
+
+  
+  
+  if(i_type==3 && souce_price){
+    $("#prc").html('价格：<em>&yen; '+(souce_price));
+  }
+  var tip_id=$(".count_page_input").attr('data_num');
+  if(tip_id && getCookie('last_save_data_attr_id')){
+    if(tip_id==getCookie('last_save_data_attr_id')){
+        var exp = new Date();
+      exp.setTime(exp.getTime() + 6000);
+      document.cookie = 'back_tip' + "=" + escape('111') + ";expires=" + exp.toGMTString()+";path=/;";
+    }
+  }
+
+    $(document).ready(function() {
+        $("#owl-demo").owlCarousel({
+          autoPlay : 3000,
+          stopOnHover : true,
+          navigation:false,
+          paginationSpeed : 1000,
+          goToFirstSpeed : 2000,
+          singleItem : true,
+          autoHeight : true,
+          transitionStyle:"fade"
+        });
+    });
+
+ 
+  //条件选项切换
+  $(document).delegate('.border dd','click', function() {
+      $(this).parent(".border").find("dd").removeClass("active");
+    $(this).addClass('active');
+  });
+
+ 
+  
+  //mid为1，是点击事件，开始。mid为2，为更改材质时候，mid为3 男戒 ，mid为4 女戒 
+  function set_price(obj,gid,mid,tid){
+		var getHand_html   = "";
+		var getHand_htmls  = "";  
+    if(mid=='1'){
+      mid= $("#deputystone .cur").attr("gad_id"); 
+    }else if(mid=='2'){
+      mid=tid;
+      tid=($("#associateLuozuan .cur").attr("a_id") ); //副石
+      
+    }else{
+      gid=<?php echo (I('get.goods_id'));?>;
+      hand =$(".handsz").text();
+    }
+
+    if(document.getElementById("hand1")){
+      hand1 =$(".handsz1").text();        
+    }else{
+      hand1 ='';        
+    }
+    
+    cid=($("#associateMaterial .cur").attr("ref"));
+    if(price_model=='1'){
+        $.post("/Goods/getHand",{Action:"post",gid:gid,materialId:cid},function(data){
+          if(data.status == 1){
+		  
+			//男戒尺寸
+			if(data.data.length){
+				getHand_html = "<option value=''></option>";
+				for( var i in data.data){
+					getHand_html += "<option value='"+data.data[i]+"'>"+data.data[i]+"</option>";
+				}
+				$("#hand").html(getHand_html);
+				if(hand ==""){	
+					$(".handsz").html(data.data[0]);
+					hand=data.data[0];
+				}
+			}else{
+				$("#hand").html('');
+				$(".handsz").html('');
+				hand=null;
+			}
+			//女戒尺寸
+			if(data.data1.length){
+				getHand_htmls = "<option value=''></option>";
+				for( var i in data.data1){
+					getHand_htmls += "<option value='"+data.data1[i]+"'>"+data.data1[i]+"</option>";
+				}
+				$("#hand1").html(getHand_htmls);
+				if(mid==undefined){
+					$(".handsz1").html(data.data1[0]);
+					hand1=data.data1[0];
+				}
+			}else{
+				$("#hand1").html('');
+				$(".handsz1").html('');
+				hand1=null;
+			}
+            
+            $.post("/Goods/get_prince",{Action:"post",goodsid:gid,material_id:tid,tid:cid,deputystoneId:mid,hand:hand,hand1:hand1,uid:uid,token:token,agent_id:agent_id},function(data){
+                var html = "";
+                if(data && data != ''){
+                  if(data.status == '1'){
+					if(data.price!='0.00'){
+						$("#prc").html(data.price+' ');
+					}
+                    $("#saleprice").html('¥'+data.marketPrice);
+                    $("#luozuanPriceText").html('附加工费：￥ '+data.luozuan_price+'</em>');
+                    
+                  }
+                }
+            });
+          }
+        });
+    }else{
+        $.post("/Goods/get_prince",{Action:"post",goodsid:gid,material_id:tid,tid:cid,deputystoneId:mid,uid:uid,token:token,agent_id:agent_id},function(data){
+            var html = "";
+            if(data && data != ''){
+              if(data.status == '1'){
+                if(data.price!='0.00'){
+				    $("#prc").html(data.price+' ');
+                }
+                $("#saleprice").html('¥'+data.marketPrice);
+                $("#luozuanPriceText").html('附加工费：￥ '+data.luozuan_price+'</em>');
+                
+              }
+            } 
+        });
+    }
+  }
+
+  
+  
+//成品替换价格
+  function changeprice(obj,tip){ 
+  		var click_val = '';
+		if(tip=='1'){
+			click_val=$(obj).text()+' '+$(".item_select2 .cur").html()+' '+$(".item_select3 .cur").html();
+		}else if(tip=='2'){
+			click_val=$(".item_select1 .cur").html()+' '+$(obj).text()+' '+$(".item_select3 .cur").html();
+		}else{
+			click_val=$(".item_select1 .cur").html()+' '+$(".item_select2 .cur").html()+' '+$(obj).text();
+		}
+		
+		if(click_val.indexOf("undefined") > 0 ){
+			click_val=click_val.replace("undefined","  ");
+		}
+		if(price_array && click_val){
+			$.each(price_array ,function(k ,v) {
+				$.each(v ,function(ke ,ve) {
+					if(ve.indexOf(click_val)==0){
+						$("#prc").html(v[1]);
+						$("#saleprice").html('¥'+v[2]);
+						sku_sn=v[3];
+						<!-- $(".OptionValves_sku").val('11111'); -->
+						
+					}
+				})
+			})
+		}
+  }
+  
+  
+  
+  function set_material(obj,gid,mid){
+    hand='';
+    hand1='';
+    var html='';
+    $.post("/Goods/get_material",{Action:"post",goodsid:gid,material_id:mid},function(data){
+      if(data.status == 1){
+        data.data.forEach(function(e,i){
+          if(i == 0){
+            html += "<label class='spec_val spec_value  cur'  ref='"+e.weights_name+"' a_id='"+e.gal_id+"' onclick='set_price(this,"+gid+",1,"+e.gal_id+")'>"+e.shape_name+" "+e.weights_name+"CT</label>";
+          }else{
+            html += "<label class='spec_val spec_value'  data-content='"+e.gal_id+"' ref='"+e.weights_name+"' a_id='"+e.gal_id+"' onclick='set_price(this,"+gid+",1,"+e.gal_id+")'>"+e.shape_name+" "+e.weights_name+"CT</label>";
+          }
+        });
+        $(".m_spec_val").removeClass('cur');
+        $("#active").addClass('cur');;
+        $("#associateLuozuan").html(html);
+        //$("#luozuanPriceText").html(luozuanPric);
+        set_price(obj,gid,'2');
+      }
+    });
+  }
+  
+  /*添加到成品、订制到购物车 
+    tips:标识，1代表加入购物车，2代表立即购买，3代表立即定制
+  */
+  function zhyaddCart(type,gid,tips){
+	  if(type=='1'){
+			ai_mutual('4');
+			return false;
+	  }else if(type=='4'){
+        var materialId    	= $("#associateMaterial .cur").attr("ref");     //材质
+        var deputystoneId   = $("#deputystone .cur").attr("mastid");      //副石
+        var diamondWeight   = $("#associateLuozuan .cur").attr("ref");      //主石规格
+        var diamondId     	= $("#associateLuozuan .cur").attr("a_id");     //shape_id主石
+        hand      			= $(".handsz").text();
+        hand1       		= $(".handsz1").text();       
+        var word      		= $("#word").val();
+        var word1      		= $("#word1").val();        
+        var sd_id     		= $("input[name=sd_id]").val();
+        var sd_id1      	= $("input[name=sd_id1]").val();
+      }else if(type=='3'){
+		if(sku_sn =="" || sku_sn ==undefined || sku_sn ==null){
+			sku_sn = $(".OptionValves_array").attr("ref");
+		}
+      }
+    $.post("/Cart/addCart",{Action:"post",goodId:gid,tips:tips,type:type,AndroidSession:AndroidSession,sku_sn:sku_sn,hand:hand,hand1:hand1,word:word,word1:word1,sd_id:sd_id,sd_id1:sd_id1,materialId:materialId,diamondId:diamondId,deputystoneId:deputystoneId,uid:uid,token:token,agent_id:agent_id},function(data){
+      tan(data.info);
+      if(data.status == 100){
+        if(data.url){
+          if(tips == 2){
+            url_id='41,'+data.url;
+          }else if(tips == 3){
+            url_id='44,'+data.url+','+diamondId+','+materialId+','+deputystoneId;
+          }else if(tips == 4){
+			url_id='8,'+data.url+','+diamondId+','+materialId+','+deputystoneId;
+          }else{
+			url_id='4';
+		  }
+        }
+      }else if(data.status == 2){
+        url_id='59';
+      }else{
+        return false;
+      }
+	  
+	  
+	  
+	 if(tips!='1'){
+		setTimeout("ai_mutual(url_id)",2000);
+	 }else{
+		$(".cart-num").text(data.num);
+	 }
+    });
+  }
+  
+ 
+  function words_deal(){
+    var curLength=$("#word").val().length;
+    if(curLength>10){
+          var num=$("#word").val().substr(0,10);
+          $("#word").val(num);
+          tan("超过字数限制！");
+      } 
+  } 
+  
+  
+  
+getAjaxComment=function(){
+  $.post("/Goods/getAjaxComment",{Action:'post',gid:'<?php echo $_GET['goods_id']?>'},function(data){
+    if(data){
+      var html = "";
+      $.each(data ,function(k ,e) {
+        html += "<div class='evaluation-lsit'>";
+        html += "<div class='evahead'>";
+        html += "<div class='pull-left'>";
+		if(e.userimage){
+			if(e.userimage.substr(0, 1)=='.'){
+				html += "<span class='tx'><img src='"+e.userimage.substring(1)+"' alt=''></span>";
+			}else{
+				html += "<span class='tx'><img src='"+e.userimage+"' alt=''></span>";
+			}
+		}else{
+			html += "<span class='tx'><img src='https://avatars2.githubusercontent.com/u/12794637?v=3&s=45' alt=''></span>";
+		}
+        html += "<span class='username'>"+e.username+"</span>";
+        html += "</div>";
+        html += "<div class='pull-right'>";
+        html += "<span class='pf'>";
+        for(var i = 0;i < e.start ; i++){
+          html += "<img width='12' height='12'  src='__IMG__/xingxing.png' />";
+        }       
+        html += "</span>";
+        html += "</div>";
+        html += "<div class='clearfix'></div>";
+        html += "</div>";
+        html += "<div class='content'>";
+        html += "<p>"+e.control+"</p>";
+        html += "<small>"+e.createtime+"</small>";        
+        html += "</div></div>";
+      });
+      $("#evaluation").html(html);
+    }
+  });
+}();
+  
+  </script>
+</html>

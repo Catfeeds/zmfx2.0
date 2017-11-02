@@ -1,0 +1,12 @@
+<div class="tiao">
+	<select name="material[luozuan][{$material_id}][{$uuid}][shape_id]" class="luozuan_shape">
+        <volist name="goodsLuozuanShape" id="vo">
+        <option value="{$vo.shape_id}">{$vo.shape_name}</option>
+        </volist>
+    </select>
+    <input type="text" value="" name="material[luozuan][{$material_id}][{$uuid}][weights_name]" placeholder="单位CT">
+	<if condition=" !$price_model ">
+		<input type="text" value="" name="material[luozuan][{$material_id}][{$uuid}][price]" placeholder="主石保险费">
+	</if>
+	<button type="button" class="luozuan_button del">删除</button>
+</div>

@@ -1,0 +1,197 @@
+	<!-- header -->
+	<div class="header">
+		<div class="container">
+			<div class="shortcut hidden-xs">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-6 col-md-6">
+						<p class="text-left hi"><span class="hidden-xs">您好，欢迎来到{:C('site_name')} </span>
+							<if condition="$Think.session.web.uid eq ''">
+								[<a href="{:U('Home/Public/login')}" style="color: #A68F7D;" target="_blank">登录</a>] 
+								[<a href="{:U('Home/Public/regist')}" style="color: #A68F7D;" target="_blank">注册</a>]
+							<else/>
+								<a href="{:U('/Home/User/index')}" style="color: #A68F7D;">[{$Think.session.web.username}]</a>
+								<a href="javascript:void(0)" onClick="loginout();">退出</a>
+							</if>
+						</p>
+						</div>
+						<div class="col-sm-6 col-md-6">
+							<div class="shortcut-right">
+								<ul class="list-inline text-right">
+									<li class=""><a href="{:U('/Home/Order/orderCart')}" target="_blank">购物车(<span class="cat-c">{$cartNumber}件</span>) <i class="glyphicon glyphicon-shopping-cart"></i> </a></li>
+									<li class="hidden-xs">|</li>
+									<li class=""><a href="{:U('/Home/User/olist')}" target="_blank"> 我的订单 <i class="glyphicon glyphicon-list-alt"></i></a></li>
+									<li class="hidden-xs">|</li>
+									<li class="hidden-xs"><a href="{:U('/Home/Article/help')}" target="_blank">帮助中心</a></li>
+								</ul>   
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="top hidden-xs">
+				<div class="logo">
+						<div class="col-xs-12 col-sm-6 col-md-7 text-right">
+							<a href="/"><img src="__PUBLIC__/{:C('web_logo')}" class="logo" alt="logo"></a>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-5">
+							<form class="navbar-left pull-right" action="{:U('/Home/Goods/goodsList')}" method="get">
+								<div class="form-group">
+									<div class="input-group">
+							      <input type="text" class="form-control search-text radius" name="keyword" />
+							      <span class="input-group-btn">
+							        <button type="submit" class="btn btn-default search-btn radius"><i class="glyphicon glyphicon-search"></i></button>
+							      </span>
+									</div>
+									<div class="tag">
+										热搜：
+										<volist name="hot_search" id="vo">
+											<a href="{:U('/Home/Goods/goodsList',array('keyword' => $vo))}">{$vo}</a>
+										</volist>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+		<div class="nav">
+			<nav class="navbar navbar-default border-radiusno">
+				<div class="container">
+			    <!-- Brand and toggle get grouped for better mobile display -->
+				    <div class="navbar-header">
+				      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				        <span class="sr-only">Toggle navigation</span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				      </button>
+				      <a class="navbar-brand visible-xs logo-xs" href="#"><img src="__PUBLIC__/{:C('web_logo')}" class="logo" alt="logo"></a>
+
+				      <div class="index-user visible-xs">
+				      	<span class="index-userimg"><img src="__IMG__/user_circle_96px_1170609_easyicon.net.png" alt=""></span>
+								<ul>
+									<li>
+										<if condition="$Think.session.web.uid eq ''">
+											[<a href="{:U('Home/Public/login')}" style="color: #A68F7D;" target="_blank">登录</a>] 
+											[<a href="{:U('Home/Public/regist')}" style="color: #A68F7D;" target="_blank">注册</a>]
+										<else/>
+											<a href="{:U('/Home/User/index')}" style="color: #A68F7D;">[{$Think.session.web.username}]</a>
+											<a href="javascript:void(0)" onClick="loginout();">退出</a>
+										</if>
+									</li>
+									<li>购物车(<span class="cat-c">{$cartNumber}件</span>) <i class="glyphicon glyphicon-shopping-cart"></i> </a></li>
+									<li><a href="{:U('/Home/User/olist')}" target="_blank"> 我的订单 <i class="glyphicon glyphicon-list-alt"></i></a></li>
+									<li><a href="{:U('/Home/Article/help')}" target="_blank">帮助中心</a></li>
+								</ul>
+							</div>
+							<script>
+								$(function(){
+									$('.index-userimg').bind('click', function(){
+										$('.index-user ul').toggle();
+									});
+								});
+							</script>
+				    </div>
+
+				    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				    <ul class="nav navbar-nav">
+							<li class="homepage"><a href="/" target="_blank"> 首页 <span class="sr-only">(current)</span></a></li>
+							<if condition="$nav">
+								<volist name="nav" id="vo">
+								<li class="openNav <if condition="$vo['sub']">dropdown</if>">
+									<a href="{$vo.nav_url}"  target="_blank"> {$vo.nav_name} <if condition="$vo['sub']"> <span class="caret"></span> </if></a>
+									<if condition="$vo['sub']">
+									<ul class="dropdown-menu">
+										<volist name="vo['sub']" id="v">
+											<li>
+												<a href="{$v.nav_url}" target="_blank">{$v.nav_name}</a>
+											</li>
+										</volist>
+									</ul>
+									</if>
+								</li>
+							</volist>
+						</if>
+					</ul>
+					
+					<form class="navbar-form navbar-right visible-xs" action="{:U('/Home/Goods/goodsList')}" method="get">
+							<div class="form-group">
+								<div class="input-group">
+						      <div class="inbox">
+						      	<input type="text" class="form-control search-text radius" placeholder="产品搜索" name="keyword" />
+							      <span class="input-group-btn">
+							        <button type="submit" class="btn btn-default search-btn radius"><i class="glyphicon glyphicon-search"></i></button>
+							      </span>
+						      </div>
+								</div>
+								<div class="tag">
+									热搜：
+									<volist name="hot_search" id="vo">
+										<a href="{:U('/Home/Goods/goodsList',array('keyword' => $vo))}">{$vo}</a>
+									</volist>
+								</div>
+							</div>
+						</form>
+
+					<script>
+						$('.navbar-nav li').hover(function(){
+							if($(this).find('ul').hasClass('dropdown-menu') == true){
+								$(this).addClass('open');
+							}
+						},function(){	
+							$(this).removeClass('open');
+						});
+					</script>
+				    </div>
+				</div>
+			</nav>
+		</div>
+	</div>
+	<!-- header end //-->
+<script>
+// 用户退出 --> ken
+function loginout() {
+    $.ajax({
+        url: '/Home/Public/loginout',
+        type: 'get',
+        dataType: 'json',
+        success: function (result) {
+            if (result.success) {
+                layer.msg(result.msg,{
+					shift:6,
+				});
+				delCookie('password');
+				delCookie('autologin');
+				setTimeout(function(){
+					window.location.href="/Home/Public/login.html";
+				},1500);
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+}
+$(document).ready(function(){ 
+	$(function(){
+		var url= '__SELF__';
+		if(url == '/'){
+			$('.homepage').addClass('active');
+		}else{
+			$('a[href="'+url+'"]').parent('.openNav').addClass('active');
+		}
+		
+	})
+	$(".openNav").mousemove(function(e){
+		$(this).find("ul:first").css("display","block");
+	}).mouseout(function(e){
+		$(this).find("ul:first").css("display","none");
+	});
+	$(".nav_zi").mouseout(function(e){
+	   $(this).css("display","none");
+	});
+});
+
+</script>

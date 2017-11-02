@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>客户管理</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" />
+<script>
+ 
+</script>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：交易记录</h3>
+    </div>
+    
+	<div style="padding:40px;">
+		<div class="info">
+			<div class="title">用户名：	&nbsp;<span>{$username}</span></div>
+		</div>
+		<br/>
+		<div class="info">
+			<div class="title">订单总金额：&nbsp;<span style="color:red">{$userTrecordListSumPrice}</span></div>
+		</div>
+		<br/>
+		<div class="info">
+			<div class="title">历史交易记录：&nbsp;</div>
+		</div>
+	 </div>
+   
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+        <tr class="top">
+            <th>下单时间</th>
+            <th>订单编号</th>
+            <th>订单金额</th>
+            <th>订单详情</th>
+        </tr>
+        <volist name="userTrecordList" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+            <td>{$vo.create_time|date="Y-m-d",###}</td>
+            <td>{$vo.order_sn}</td>
+            <td>{$vo.order_price}</td>
+            <td>
+                <a href="{:U('Admin/Order/orderInfo/order_id/'.$vo['order_id'])}" >查看</a>
+            </td>
+        </tr>
+        </volist>
+    </table>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>

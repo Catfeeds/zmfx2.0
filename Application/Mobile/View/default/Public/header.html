@@ -1,0 +1,116 @@
+<!doctype html>
+<html class="no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>{:C('site_name')}</title>
+	<meta name="description" content="{:C('seo_keywords')}">
+	<meta name="keywords" content="{:C('seo_description')}">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />          
+  	<!-- Add to homescreen for Chrome on Android -->
+  	<meta name="mobile-web-app-capable" content="yes">
+  	<link rel="icon" sizes="192x192" href="/Public/{:C('favicon')}">
+  	<!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="{:C('site_name')}"/>
+    <link rel="apple-touch-icon-precomposed" href="/Public/{:C('favicon')}">
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="/Public/{:C('favicon')}">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+	<link rel="icon" type="image/png" href="/Public/{:C('favicon')}">
+	<link rel="stylesheet" href="__ASS__/css/amazeui.min.css">
+	<link rel="stylesheet" href="__ASS__/css/app.css">
+	<link rel="stylesheet" href="__ASS__/css/admin.css">
+	<link rel="stylesheet" href="__CSS__/m.css">
+	
+	<link rel="stylesheet" href="__CSS__/color/{:C('agent_id')}.css">
+	<script src="__ASS__/js/jquery.min.js" type="text/javascript"></script>
+	<script src="__ASS__/js/amazeui.js" type="text/javascript"></script>
+	<script src="__JS__/public.js" type="text/javascript"></script>
+	<!--<script src="__PUBLIC__/assets/js/app.js" type="text/javascript"></script>-->
+	<script type="text/javascript">
+		$.getGoodsPrice = "{:U('Goods/getGoodsPrice')}";//获取产品价格
+		$.orderCart = "{:U('Order/cart')}";//购物车页面
+		$.cartAddGoods = "{:U('Order/cartAddGoods')}";//添加珠宝产品到购物车
+		$.goodsDiy = "{:U('Goods/goodsDiy')}";//产品定制
+		$.goodsIndex = "{:U('Goods/index')}";//产品首页
+		$.goodsSearch = "{:U('Goods/search')}";//产品搜索		
+		$.index = "{:U('Index/index')}";//首页
+		$.goodsCat = "{:U('Goods/goodsCat')}";//产品分类
+		$.DiyToCart = "{:U('Order/DiyToCart')}";//把定制产品添加到购物车
+		
+		$(function(){
+			//购物车跳转
+			$('#orderCart').click(function(){
+				window.location.href = $(this).attr('href');
+			})
+			//更多产品
+			$('button[data-More]').click(function(){
+				p = $(this).attr('data-page');
+				p = parseInt(p)+1;
+				$.class = $(this).attr('data-type');
+				href = $(this).attr('data-href');
+				par = $(this).attr('data-par');
+				if(par){
+					href = eval('$.'+href)+'?p='+p+par;
+				}else{
+					href = eval('$.'+href)+'?p='+p;
+				}
+				_this = this;
+				$.get(href,function(data){
+					if(data){
+						$(_this).attr('data-page',p);
+						$('.'+$.class).append(data);
+					}
+					
+				})
+				$(this).blur();
+			})
+		})
+	</script>
+</head>
+<body>
+<header data-am-widget="header" class="am-header am-header-default">
+		<h1 class="am-header-title"><a href="{:U('Index/index')}"><img src="/Public/{:C('web_logo')}" /></a></h1>
+	</header>
+<nav data-am-widget="menu" class="am-menu  am-menu-offcanvas1" data-am-menu-offcanvas>
+  <a href="{:U('Order/cart')}"  id="orderCart" class="am-menu-toggle cart">
+    <i class=""></i>
+  </a>
+  <a style="float:left;" class="am-menu-toggle menu_left">
+    <i class=""></i>
+  </a>
+  <div class="am-offcanvas">
+    <div class="am-offcanvas-bar">
+      <ul class="am-menu-nav sm-block-grid-1">
+        <li class="user">
+          <a href="##">
+			<i></i>
+			<b>用户名</b>
+		  </a>
+        </li>
+        <li class="parent">
+          <a href="/User/UserInfo.html">个人信息</a>
+        </li>
+        <li class="parent">
+          <a href="{:U('User/orderList')}">我的订单</a>
+        </li>
+        <li class="parent">
+          <a href="{:U('User/addressList')}">收货地址</a>
+        </li>
+        <li class="out">
+			<?php if ($_SESSION['m'] == true): ?>
+					  <form onsubmit="return func_sign_out()"method="post"action="/Public/setSignOut">
+						<input type="submit" value="退出">
+					  </form>
+			<?php else: ?>
+					  <input type="submit" value="登录" onclick="location.href='/Public/login.html'">
+			<?php endif; ?> 
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

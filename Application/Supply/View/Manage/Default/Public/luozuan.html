@@ -1,0 +1,110 @@
+ 
+<div class="row" id="luozuan_list_content"></div>
+
+<script type="text/template" id="luozuan_list_content_tpl" style="display: none">
+    <div class="col-xs-12 text-left">
+            <p class="panel-body">{$L['heading_product_GIA']}：</p>
+    </div>
+    <div class="col-xs-12">
+        <div class="panel-default">
+            <div class="table-responsive">
+                    <table class="table table-bordered ">
+                        <thead>
+                            <tr>
+                                <th>{$L['text_product_sn']}</th>
+                                <th>{$L['text_certificate_sn']}</th>
+                                <th>{$L['text_unit_price']}</th>
+                                <th>{$L['text_product_dia_global_price']}（$）</th>
+                                <th>{$L['text_product_shape']}</th>
+                                <th>{$L['text_weight']}</th>
+                                <th>{$L['text_product_color']}</th>
+                                <th>{$L['text_product_clarity']}</th>
+                                <th>{$L['text_product_cut']}</th>
+                                <th>{$L['text_product_polish']}</th>
+                                <th>{$L['text_product_symmetry']}</th>
+                                <th>{$L['text_product_fluor']}</th>
+                                <th>{$L['text_product_milk']}</th>
+                                <th>{$L['text_product_coffee']}</th>
+								<th>{$L['text_product_discount_sales']}</th>
+                                <!--<th>{$L['text_product_original_discount']}</th>-->
+                                <!--<th>{$L['text_product_dia_discount']}</th>-->
+                                <th><input name="all_have_goods" onclick="invertSelect('have_goods', 'all_have_goods')" type="checkbox">{$L['text_has_product_notice']}</th>
+                                <th><!--<input type="text" value="" size="12" class="laydate-icon luozuan_fahuo_time" onclick="laydate()" placeholder="{$L['text_order_fahuo_time']}">--> {$L['text_order_fahuo_time']}</th>
+                                <th>{$L['number']}</th>
+                                <th>{$L['price']}</th>
+                            </tr>
+                        </thead>
+                                                                           
+                        <%  _.each(datas.order_goods_list.luozuan, function (item) { %>   
+
+                            <tr>
+                                <td><%= item.attribute.goods_name %></td>
+                                <td><%= item.attribute.certificate_type %><%= item.certificate_no %></td>
+                                <td><%= item.goods_price_true %></td>
+                                <td><%= item.attribute.dia_global_price %></td>
+                                <td><%= item.attribute.shape %></td>
+                                <td><%= item.attribute.weight %></td>
+                                <td><%= item.attribute.color %></td>
+                                <td><%= item.attribute.clarity %></td>
+                                <td><%= item.attribute.cut %></td>
+                                <td><%= item.attribute.polish %></td>
+                                <td><%= item.attribute.symmetry %></td>
+                                <td><%= item.attribute.fluor %></td>
+                                <td><%= item.attribute.milk %></td>
+                                <td><%= item.attribute.coffee %></td> 
+                                <td><%= item.xian_advantage %></td>
+                                <!--<td><% // = item.attribute.dia_discount %></td>-->
+                                <!--<td>
+                                <input type="text" data-id="<%= item.og_id %>" data-sn="<%= item.certificate_no %>" data-default="<%= item.now_dia_discount %>" class="discount" value="<%= item.now_dia_discount %>" style="width: 40px;" />
+                                </td>-->
+                                <td>
+                                    <% if(item.to_supply == 1){ %>
+                                        <% if(item.have_goods == 1){ %>
+                                        {$L["text_have_goods"]}
+                                        <% } %>
+                                        <% if(item.have_goods == 2){ %>
+                                        {$L["text_no_goods"]}
+                                        <% } %>   
+                                    <% }else{ %>
+                                        <input value="1" class="have_goods" name="goodsLuozuan[<%= item.og_id %>][have_goods]" type="radio" 
+                                        <% if(item.have_goods == 1){ %>
+                                            checked="checked"
+                                        <% } %>
+                                        >{$L["text_have_goods"]}
+
+                                        <input value="2" class="have_goods" name="goodsLuozuan[<%= item.og_id %>][have_goods]" type="radio" 
+                                        <% if(item.have_goods == 2){ %>
+                                            checked="checked"
+                                        <% } %>
+                                        >{$L["text_no_goods"]}
+                                                                     
+                                    <% }%>
+
+                                </td>
+                                <td>
+                                    <% if(item.to_supply == 1){ %>
+                                        <%= item.fahuo_time_str %>                                        
+                                    <% }else{ %>
+                                        <input type="text" value="<%= item.fahuo_time_str %>" size="12" class="laydate-icon sub_luozuan_fahuo_time" name="goodsLuozuan[<%= item.og_id %>][fahuo_time]" onclick="laydate()" placeholder="{$L['text_order_fahuo_time']}">
+                                    <% } %>
+                                </td>
+                                <td><%= item.goods_number_true %></td>
+                                <td>
+                                <!--<input type="text" data-id="<%= item.og_id %>" data-default="<%= item.goods_price_true %>" class="luozuan_price" value="<%= item.goods_price_true %>" style="width: 80px;" name="goodsLuozuan[<%= item.og_id %>][price]" />-->
+                                <%= item.goods_price_true %>
+                                </td>
+                            </tr>
+                        <% }); %>
+                        <tr><td colspan="18" style="text-align: right;">{$L['text_order_total']}</td><td id="luozuanTotal"><%= datas.order_goods_list.all_luozuan_price %><td></tr>
+                    </table>
+                </div>
+            
+        </div>
+        
+    </div>
+
+</script>
+
+
+
+

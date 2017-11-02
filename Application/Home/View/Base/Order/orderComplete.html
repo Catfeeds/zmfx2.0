@@ -1,0 +1,44 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<style type="text/css">
+#cart_step3{ height:53px; line-height:53px;}
+#cart_step3 div{ float:left;color:#000;font-size:18px; height:33px; line-height:33px; margin-top:10px;}
+#cart_step3 div.step_1{ width:398px;padding-left:155px;}
+#cart_step3 div.step_2{ margin-top:12px; width:383px;padding-left:10px;}
+#cart_step3 div.step_3{ margin-top:12px; color:#FFF; }
+a {color:red;}
+</style>
+<div id="main">
+<div class="gou_wrap"><div class="gou_complete"></div></div>
+<div class="flowBox" style="margin:30px auto 70px auto;">
+<div class="cleanDiv" style="height:250px;background:#e7e7e7;border-top:1px solid #09174F;padding-top:10px;">
+	<div style="width:140px;height:140px;float:left;margin:20px 20px 20px 30px;background:url(__IMG__/cart_ok.jpg) no-repeat;"></div>
+	<div style="width:400px;height:140px;float:left;margin:10px 0px 20px 0px;">
+		<table width="400" align="center" cellpadding="5" border="1" class="info">
+		<tbody><tr class="top"><th colspan="2" style="color:#6b0103;">{$Think.lang.L277}!</th></tr>
+		<tr bgcolor="#ffffff"><td width="120" align="center">订单号</td><td style="text-align:left;padding-left:20px;"><font style="color:red"> {$order.order_sn} &nbsp;</font></td></tr>
+		<tr bgcolor="#ffffff"><td width="120" align="center">配送方式</td><td style="text-align:left;padding-left:20px;">{$order.mode_name}&nbsp;</td></tr>
+		<tr bgcolor="#ffffff"><td width="120" align="center">支付方式</td><td style="text-align:left;padding-left:20px;">
+		<if condition="$order.order_payment eq 0">线下转账<else/>在线支付</if>
+		</td></tr>
+		<if condition="$LinePayMode AND ($order.order_payment eq 0)">
+		<tr><td width="120" align="center">账户名称</td> <td style="text-align:left;padding-left:20px; color:red;">{$LinePayMode.aname}</td></tr>
+		<tr><td width="120" align="center">账号</td> <td style="text-align:left;padding-left:20px; color:red;">{$LinePayMode.abank}</td></tr>
+		<tr><td width="120" align="center">开户行</td> <td style="text-align:left;padding-left:20px; color:red;">{$LinePayMode.tback}</td></tr>
+		</if>
+		<tr bgcolor="#ffffff"><td width="120" align="center">订单金额</td><td style="text-align:left;padding-left:20px;"> {$order.order_price} RMB&nbsp;</td></tr>
+		</tbody></table>
+	</div>
+	<div style="width:250px;height:140px;float:left;margin:20px 20px 20px 60px;">
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果您在交易过程中遇到任何问题, 请拨打{:C('system_site_name')} 客服电话或是直接在用户中心给我们留言.<br><span style="color:#6b0103;font-size:14px;font-weight:bold;margin-top:10px;height:30px;line-height:30px;">服务热线：{:C('site_contact')}</span></p>
+	</div>
+</div>
+<p style="text-align:center; margin:20px 0px;"><a href="{:U('/Home/Goods/goodsDiy')}">继续挑选裸钻</a> 或去 <a href="{:U('/Home/User/orderInfo/order_id/'.$order['order_id'])}">查看订单</a></p>
+</div>
+</div>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

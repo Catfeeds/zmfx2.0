@@ -1,0 +1,80 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>资讯详情</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-swiper.css" /> <!-- tab -->
+    <link rel="stylesheet" type="text/css" href="../css/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="../css/style-layer.css" /> <!-- 提示 -->
+
+    <script src="../js/jquery-1.12.3.js"></script>
+    <script src="../js/swiper.min.js"></script> <!-- tab -->
+    <script src="../js/mobileSelect.js"></script> <!-- ios下弹式菜单选择 -->
+    <script src="../js/layer.js"></script> <!-- 提示 -->
+</head>
+
+
+<body>
+    <section class="news-details">
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="../img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>资讯详情</h2>
+            </div>
+        </header>
+        <section class="wrapper">
+            <div class="details-content">
+                <h1>北京珠宝国际展，见证速易宝的辉煌 2016会展国际大牌云集</h1>
+                <small class="time">06-22</small>
+                <div class="cont">
+                    <p>亚心网讯（记着）由中国珠宝玉石首饰行业协会与国土资源部珠宝玉石首饰管理中心联合主办的，2016中国国际珠宝展将于11月10日- 14日在北京中国国际展览中心隆重举行。据统计，本次展览的展览面积60000平方米，近3000个展位，有来自斯里兰卡、泰国、韩国、波兰、日本、德国、意大利、香港、台湾等24个国家和地区的1167家参展商参展。</p>
+                    <p><img src="../img/20177181635_03.jpg" alt=""></p>
+                    <p>亚心网讯（记着）由中国珠宝玉石首饰行业协会与国土资源部珠宝玉石首饰管理中心联合主办的，2016中国国际珠宝展将于11月10日- 14日在北京中国国际展览中心隆重举行。据统计，本次展览的展览面积60000平方米，近3000个展位，有来自斯里兰卡、泰国、韩国、波兰、日本、德国、意大利、香港、台湾等24个国家和地区的1167家参展商参展。</p>
+                </div>
+            </div>
+            <div class="index-bottom">
+    <div class="phone clearfix">
+        <a href="tel:10010" class="fl"><img src="../img/phone_icon.png" alt=""> 400-111-6826</a>
+        <a href="#" class="fr">查看官方网站(网页版）</a>
+    </div>
+    <div class="copyright">© 2010-2017 钻明珠宝交易平台 版权所有</div>
+</div>
+
+<!-- 返回顶部 start -->
+<a href="javascript:;" class="back-top" style="display: none;">
+    <img src="../img/back_top.png" alt="">
+</a>
+
+<script>
+    $(function(){
+        //返回顶部
+        $(window).scroll(function(){
+              if($(document).scrollTop() + $(window).height() >= $(document).height()){
+                 $('.back-top').fadeIn();
+              }else{
+                 $('.back-top').hide();
+              }
+        });
+        $('.back-top').bind('click', function(){
+            $('body,html').animate({scrollTop : 0},400);
+        });
+    });
+</script>
+<!-- 返回顶部 end -->
+
+
+        </section>
+    </section>
+</body>
+</html>

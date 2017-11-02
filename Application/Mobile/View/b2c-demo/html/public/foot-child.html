@@ -1,0 +1,30 @@
+<div class="index-bottom">
+    <div class="phone clearfix">
+        <a href="tel:10010" class="fl"><img src="../img/phone_icon.png" alt=""> 400-111-6826</a>
+        <a href="#" class="fr">查看官方网站(网页版）</a>
+    </div>
+    <div class="copyright">© 2010-2017 钻明珠宝交易平台 版权所有</div>
+</div>
+
+<!-- 返回顶部 start -->
+<a href="javascript:;" class="back-top" style="display: none;">
+    <img src="../img/back_top.png" alt="">
+</a>
+
+<script>
+    $(function(){
+        //返回顶部
+        $(window).scroll(function(){
+              if($(document).scrollTop() + $(window).height() >= $(document).height()){
+                 $('.back-top').fadeIn();
+              }else{
+                 $('.back-top').hide();
+              }
+        });
+        $('.back-top').bind('click', function(){
+            $('body,html').animate({scrollTop : 0},400);
+        });
+    });
+</script>
+<!-- 返回顶部 end -->
+

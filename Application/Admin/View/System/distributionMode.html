@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>配送方式</title>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：配送方式</h3>
+        <ul>
+            <volist name="menuList[7]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+    </div>
+    哪个表呢？
+   <!--  <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+        <tr class="top">
+            <th>日志id</th>
+            <th>用户</th>
+            <th>日志类型</th>
+            <th>操作内容</th>
+            <th>操作内容(英文)</th>
+            <th>操作时间</th>
+            <th>操作</th>
+        </tr>
+        <volist name="list" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+            <td>{$vo.log_id}</td>
+            <td>{$vo.user_name}</td>
+            <td>{$vo.log_type}</td>
+            <td>{$vo.log_content_zh}</td>
+            <td>{$vo.log_content_en}</td>
+            <td>{$vo.create_time|date="Y-m-d H:i",###}</td>
+            <td>
+                <a href="{:U('Admin/System/delLog?id='.$vo['log_id'])}" id="isDel" >删除</a>
+            </td>
+        </tr>
+        </volist>
+    </table> -->
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<div class="row" id="sanhuo_pay_content"></div>
+<script type="text/template" id="sanhuo_pay_content_tpl" style="display: none">
+    <div class="col-xs-1 text-right" ><label><span class="fl">{$L['text_sanhuo_settlement']}:</span></label></div>
+
+    <div class="col-xs-11">
+        <div class="info period">           
+            <label>
+                <input type="radio" name="sanhuoPay" value="1" class="fl" checked/>
+                <span class="fl">{$L['text_order_repayment']}</span>
+            </label>
+            <select name="sanhuo_period_num" id="sanhuo_period_num" class="fl">
+                <option value="1">{$L['orderinfo_msg_006']}</option>
+                <option value="2">{$L['orderinfo_msg_007']}</option>
+                <option value="3">{$L['orderinfo_msg_008']}</option>
+                <option value="4">{$L['orderinfo_msg_009']}</option>
+                <option value="5">{$L['orderinfo_msg_0010']}</option>
+            </select>
+            <span class="fl">{$L['text_overdue_interest_rates']}({$L['orderinfo_msg_011']})：</span>
+            <input type="text" name="sanhuo_period_overdue" class="fl mr30 overdue" />
+            <label>
+                <input type="radio" name="sanhuoPay" value="2" class="fl">
+                <span class="fl mr10">{$L['text_order_allpay']}</span>
+            </label>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <div class="col-xs-1"></div>
+    <div class="col-xs-11">
+        <div class="info period_list" id="sanhuo_period_list"></div>
+    </div>
+
+</script>

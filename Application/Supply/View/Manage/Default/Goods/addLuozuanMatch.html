@@ -1,0 +1,10 @@
+<div class="tiao">
+	<select name="material[luozuan][{$material_id}][{$uuid}][shape_id]" class="luozuan_shape">
+        <volist name="goodsLuozuanShape" id="vo">
+        <option value="{$vo.shape_id}">{$vo.shape_name}</option>
+        </volist>
+    </select>
+    <input type="text" value="" name="material[luozuan][{$material_id}][{$uuid}][weights_name]" placeholder="{$L['unit']}CT">
+	<input type="text" value="" name="material[luozuan][{$material_id}][{$uuid}][price]" placeholder="{$L['text_product_fee']}">
+	<button type="button" class="luozuan_button del">{$L['delete']}</button>
+</div>

@@ -1,0 +1,302 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$title}</title>
+</head>
+<!-- start -->
+<style type="text/css">
+	 .contbox { width: 100%; height: 100%; min-height: 600px; overflow: hidden;}
+	 .preview { width: 10%; min-width: 360px; margin-right: 10px; float: left; background: #FFF; padding: 10px; margin-bottom: 5px;}
+ 	 .preview p { line-height: 25px;}
+	 .set { width: 100%; background: #FFF; min-width: 360px; float: left; padding: 10px 50px; min-height: 628px;}
+     .set h4 { padding-left: 10px; font-weight: 500; font-size: 16px;}
+     .settop { margin: 10px 0;}
+	 .contbox .colorList { padding: 5px; padding-left: 90px;}
+	 .contbox .colorList button { width: 55px; height: 55px; margin: 5px; border: none; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px;}
+	 .contbox .colorList button:hover { cursor: pointer;}
+	 .contbox .blue { background: #39ADEA;}
+	 .contbox .green { background: #2AB467;}
+	 .contbox .orange { background: #E2AA13;}
+	 .contbox .pink { background: #FD75C7;}
+	 .contbox .purple { background: #9171EE;}
+	 .contbox .red { background: #FD544F;}
+	 .contbox .save { border: 1px solid #ccc; padding: 5px 10px;height:30px;}
+     .edit .info ul { border: none; background: #FFF;}	 
+     .edit .info ul li { width: auto; height: auto; float: none; margin: 15px; 0;}
+     .edit .coti { display: inline-block; min-width: 100px; color: #000;}
+     .edit .colorList dt { float: left; border-right: 1px solid #999; padding-right: 20px; margin-right: 20px;}
+     .edit .info .nav-icon-list { margin-top: 30px;}
+     .edit .info .nav-icon-list li { float: left; width: 110px; text-align: center; margin: 0 30px;}
+     .edit .info .nav-icon-list li input[type="file"] { width: 100%;}
+     .edit .info .subbtns { width: 500px; text-align: center; margin: 20px; margin-left: 300px;}
+     .edit .info .subbtns .save { margin: 0 30px; cursor: pointer;}
+</style>
+
+	<div class="page-main edit">
+		<div class="subMenu">
+			<h3>当前操作：手机版模板颜色配置</h3>
+			<ul>
+				<li><a href="{:U('Admin/System/templateManage')}">返回模板管理</a></li>
+			</ul>
+		</div>
+
+		<div class="template">
+			<form id="myForm" name="cssForm" onsubmit="return createCss()" action="" method="post" enctype="multipart/form-data">			
+				
+				<div class="info">
+					<div class="contbox">
+			            <div class="set">
+			                <div class="settop">
+			                    <h4>使用系统默认颜色</h4>
+			                    <div class="colorList color-btn">
+			                        <button type="button" class="blue"></button>
+			                        <button type="button" class="green"></button>
+			                        <button type="button" class="orange"></button>
+			                        <button type="button" class="pink"></button>
+			                        <button type="button" class="purple"></button>
+			                        <button type="button" class="red"></button>
+			                    </div>
+			                </div>
+			                <div class="settop">
+			                    <h4>1）导航栏</h4>
+			                    <div class="colorList" style="padding-left: 60px;">
+			                       <ul>
+                                        <li><span class="coti">1.背景色</span> <input id="nav-bgcolor" name="nav_bgcolor" value="{$appStyle['nav_bgcolor']}" type="text" ></li>         
+                                        <li><span class="coti">2.文字颜色</span> <input id="nav-colors" name="nav_colors" value="{$appStyle['colors']}" type="text" ></li>         
+                                        <li><span class="coti">3.icon颜色选择</span> 
+                                            <select name="ico_chose" id="" style="display: inline-block;">
+                                                <option <eq name="appStyle['ico_chose']" value="#FFF">selected</eq> value="#FFF">默认(黑色)</option>
+                                                <option <eq name="appStyle['ico_chose']" value="#000">selected</eq>  value="#000">白色</option>
+                                            </select>
+                                        </li>         
+                                   </ul>
+			                    </div>
+			                </div>
+
+                            <div class="settop">
+                                <h4>2）底部标签栏</h4>
+                                <div class="colorList" style="padding-left: 60px;">
+                                   <ul>
+                                        <li><span class="coti">1.背景色</span> <input id="foot-bgcolor" name="foot_bgcolor" value="{$appStyle['foot_bgcolor']}" type="text" ></li>         
+                                        <li><span class="coti">2.图标颜色</span> <input id="foot-colors" name="foot_colors" value="{$appStyle['foot_colors']}" type="text" ></li>         
+                                        <li>
+                                            <dl>
+                                                <dt><div class="coti">自定义图标风格</div></dt>
+                                                <dd>
+                                                    <ul class="nav-icon-list">
+                                                        <li>
+                                                            <p>
+																<if condition="$appStyle['ico_image_index']">
+																<img src="/Public{$appStyle['ico_image_index']}" height="100" width="100" alt="">
+																<else />
+																<img src="__IMG__/ico_image_index.png" height="100" width="100" alt="">
+																</if>
+															</p>
+                                                            <h5>首页</h5>
+                                                            <input type="file" name="ico_image_index">
+                                                        </li>
+                                                        <li>
+                                                            <p>
+																<if condition="$appStyle['ico_image_category']">
+																<img src="/Public{$appStyle['ico_image_category']}" height="100" width="100" alt="">
+																<else />
+																<img src="__IMG__/ico_image_category.png" height="100" width="100" alt="">
+																</if>
+															</p>
+                                                            <h5>分类</h5>
+                                                            <input type="file" name="ico_image_category">
+                                                        </li>
+                                                        <li>
+                                                            <p>
+																<if condition="$appStyle['ico_image_new']">
+																<img src="/Public{$appStyle['ico_image_new']}" height="100" width="100" alt="">
+																<else />
+																<img src="__IMG__/ico_image_new.png" height="100" width="100" alt="">
+																</if>
+															</p>
+                                                            <h5>资讯</h5>
+                                                            <input type="file" name="ico_image_new">
+                                                        </li>
+                                                        <li>
+                                                            <p>
+																<if condition="$appStyle['ico_image_cart']">
+																<img src="/Public{$appStyle['ico_image_cart']}" height="100" width="100" alt="">
+																<else />
+																<img src="__IMG__/ico_image_cart.png" height="100" width="100" alt="">
+																</if>
+															</p>
+                                                            <h5>购物车</h5>
+                                                            <input type="file" name="ico_image_cart">
+                                                        </li>
+                                                        <li>
+                                                            <p>
+																<if condition="$appStyle['ico_image_my']">
+																<img src="/Public{$appStyle['ico_image_my']}" height="100" width="100" alt="">
+																<else />
+																<img src="__IMG__/ico_image_my.png" height="100" width="100" alt="">
+																</if>
+															</p>
+                                                            <h5>我的</h5>
+                                                            <input type="file" name="ico_image_my">
+                                                        </li>
+														<div class="clear"></div>
+                                                    </ul>
+                                                </dd>
+                                            </dl>
+                                        </li>
+										<li style="color:red;"><span class="coti"></span>最佳上传尺寸为28*28，格式为png</li>
+                                   </ul>
+                                </div>
+                            </div>
+
+
+			                <div class="settop">
+			                	<div class="colorList subbtns">
+                                    <input type="button" name="save" class="save" value="保存并使用">
+                                    <input type="button" name="prev" class="save" value="使用上次配置">
+			                		<input type="button" name="default" class="save" value="恢复默认">
+			                	</div>
+			                </div>			                
+			            </div>
+			            
+			            <div class="clear"></div>
+			        </div>	
+				</div>
+				
+			</form>
+		</div>
+	</div>
+
+
+
+<script type="text/javascript">
+
+/*
+*传入一个字符串
+*用css属性来风格
+*用分号来分割
+*/
+
+function createCss(){
+
+	var css = '';
+	css = css + '@utf-8;' + "\r\n" ;
+	//文字颜色
+	css = css + 'footer p{color:' + $("#fontcolor").val() + '}' + "\r\n" ;
+	css = css + '.subnav .sub ul li b {color:' + $("#fontcolor").val() + ' ;}' + "\r\n" ;	
+	css = css + 'footer #foot_tel {color:' + $("#fontcolor").val() + ' ;}' + "\r\n" ;
+	css = css + '.subnav .sub ul li{border-color:' + $("#fontcolor").val() + ' ;}' + "\r\n" ;
+	//背景颜色
+	css = css + 'body{background-color:'   + $("#bgcolor").val() +'}' + "\r\n" ;
+	css = css + 'footer{background-color:' + $("#bgcolor").val() +'}' + "\r\n" ;
+	css = css + '.screen{background-color:'+ $("#bgcolor").val() +'}' + "\r\n" ;
+	css = css + '.am-header-default{background-color:' + $("#bgcolor").val() + '}' + "\r\n" ;
+	css = css + '.subnav .sub ul li{background-color:' + $("#bgcolor").val() + '}' + "\r\n" ;
+
+	//按钮颜色
+	css = css + '.am-btn-blue, .search-but, .relogin .but button{background-color:' + $("#buttoncolor").val() + '}' + "\r\n" ;
+	if($("#cssFile").val()!=''){
+		css = css + "\r\n /*@@@@*/ \r\n" ;
+		css = css +  $("#cssFile").val();
+	}
+		
+	$("#cssFile").val(css);
+	return true;
+}
+
+
+$(function(){
+	var intBase = {
+		//初始化颜色选择器 - 设置颜色
+		ico_chose	 : "{$appStyle['ico_chose']}",
+		nav_bgcolor  : "{$appStyle['nav_bgcolor']?$appStyle['nav_bgcolor']:'#97d3f0'}",
+		nav_colors   : "{$appStyle['nav_colors']?$appStyle['nav_colors']:'#FFF'}",
+		foot_bgcolor : "{$appStyle['foot_bgcolor']?$appStyle['foot_bgcolor']:'#bab2b2'}",
+		foot_colors  : "{$appStyle['foot_colors']?$appStyle['foot_colors']:'#0f0f0f'}",
+		
+		intSet	: function(){				//初始化颜色选择器 - 设置颜色  
+			$("#nav-bgcolor").spectrum({color: this.nav_bgcolor, preferredFormat: "rgb", showInput: true,});
+			$("#nav-bgcolor").val(this.nav_bgcolor);
+
+			$("#nav-colors").spectrum({color: this.nav_colors, preferredFormat: "rgb", showInput: true,});
+			$("#nav-colors").val(this.nav_colors);
+
+			$("#foot-bgcolor").spectrum({color: this.foot_bgcolor, preferredFormat: "rgb", showInput: true,});
+			$("#foot-bgcolor").val(this.foot_bgcolor);
+
+			$("#foot-colors").spectrum({color: this.foot_colors, preferredFormat: "rgb", showInput: true,});
+			$("#foot-colors").val(this.foot_colors);
+		
+		}
+	}
+    
+
+    intBase.intSet();
+
+	//背景颜色
+ 	$("#bgcolor").change(function(){
+	 	$("#frameid").contents().find('body').css('background-color', $("#bgcolor").val());
+	 	$("#frameid").contents().find('footer').css('background-color',$("#bgcolor").val());
+	 	$("#frameid").contents().find('.screen').css('background-color',$("#bgcolor").val());
+	 	$("#frameid").contents().find('.am-header-default').css('background-color',$("#bgcolor").val());
+	 	$("#frameid").contents().find('.subnav .sub ul li').css('background-color',$("#bgcolor").val());		
+ 	});
+
+
+    //系统默认颜色：选中
+    $('.color-btn button').bind('click', function(){
+	      $("#nav-bgcolor, #foot-bgcolor").spectrum({color: $(this).css('background-color'), preferredFormat: "rgb", showInput: true,});
+    		$("#nav-bgcolor, #foot-bgcolor").val($(this).css('background-color'));
+    });
+	
+	//保存
+	$('input[name="save"]').click(function(){
+		var nav_bgcolor = $("#nav-bgcolor").spectrum("get").toHexString();
+		var nav_colors 	= $("#nav-colors").spectrum("get").toHexString();
+		//var ico_chose	= $("select[name='ico_chose'] option:checked ").val();
+		var foot_bgcolor= $("#foot-bgcolor").spectrum("get").toHexString();
+		var foot_colors = $("#foot-colors").spectrum("get").toHexString();
+		$('input[name="nav_bgcolor"]').val(nav_bgcolor);
+		$('input[name="nav_colors"]').val(nav_colors);
+		$('input[name="foot_bgcolor"]').val(foot_bgcolor);
+		$('input[name="foot_colors"]').val(foot_colors);
+		
+		
+		$('#myForm').submit();
+	})
+	
+	//恢复上次使用值
+	$('input[name="prev"]').click(function(){
+		
+		$('select[name="ico_chose"] option').each(function(){
+			if($(this).val() == intBase.ico_chose){
+				$(this).prop('selected',true);
+			}
+		})
+		intBase.nav_bgcolor = "{$appStyle['nav_bgcolor']?$appStyle['nav_bgcolor']:'#97d3f0'}";
+		intBase.nav_colors 	= "{$appStyle['nav_colors']?$appStyle['nav_colors']:'#FFF'}";
+		intBase.foot_bgcolor= "{$appStyle['foot_bgcolor']?$appStyle['foot_bgcolor']:'#bab2b2'}";
+		intBase.foot_colors = "{$appStyle['foot_colors']?$appStyle['foot_colors']:'#0f0f0f'}";
+		intBase.intSet();
+		
+	})
+	
+	//恢复默认
+	$('input[name="default"]').click(function(){
+		$('select[name="ico_chose"] option:eq(0)').prop('selected',true);
+		intBase.nav_bgcolor = '#97d3f0';
+		intBase.nav_colors 	= '#FFF';
+		intBase.foot_bgcolor= '#bab2b2';
+		intBase.foot_colors = '#0f0f0f';
+		intBase.intSet();
+		
+	})
+	
+});
+
+</script>
+<script src='__JS__/spectrum.js'></script>
+<link rel='stylesheet' href='__CSS__/spectrum.css' />
+
+<!-- end -->

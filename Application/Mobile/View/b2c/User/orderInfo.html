@@ -1,0 +1,227 @@
+
+
+<include file="Public:header" /><body>
+    <section class="orders-status">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onClick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>{$orderInfo.status}</h2>
+            </div>
+        </header>
+
+        <section class="wrapper">
+            <!-- 用户订单信息 -->
+            <div class="user-order">
+                <p class="borderb">订单状态：{$orderInfo.status}</p>
+                <p class="borderb">订单编号：{$orderInfo.order_sn}</p>
+                <div class="userdata">
+                    <p class="clearfix">
+                        <span class="fl">{$addressInfo.name}</span>
+                        <span class="fr">{$addressInfo.phone}</span>
+                    </p>
+                    <p>{$addressInfo.addressInfo}</p>
+                </div>
+            </div>
+			
+			<volist name="goodsList['dingzhi']" id="vv">			
+				<volist name="vv" id="vo">	
+					<if condition="$key eq 'product'">
+						<div class="goods-item" style="margin-bottom:0px;">
+							<div class="goods-layout clearfix" style="margin-bottom:0px;">
+									<div class="goods-img">
+										<if condition="$vo.attribute.thumb">
+											<a href="{:U('/Goods/detail/gid/'.$vo['goods_id'].'/goods_type/'.$vo['goods_type'].'')}">
+												<img  src="{$vo.attribute.thumb}" alt="...">       
+											</a>
+										</if>
+									</div>
+									
+									<div class="goods-right">
+										<h2><a href="{:U('/Goods/detail/gid/'.$vo['goods_id'].'/goods_type/'.$vo['goods_type'].'')}">{$vo.goods_name}</a></h2>
+										<p class="goods-title">颜色:{$vo.attribute.associateInfo.material_name}+{$vo.attribute.luozuanInfo.shape_name}</p>
+										<div class="goods-fangshi clearfix">
+											<span class="fl c9 rmb">￥<span class="price">
+												<eq name="orderInfo.order_status" value="0">
+												{$vo.goods_price}
+												<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+												{$vo.goods_price}
+												<else />
+												{$vo.goods_price_up}
+												</eq> 
+											</span></span>
+											<span class="fr">
+												<small>
+											<eq name="orderInfo.order_status" value="0">
+											x<?php echo intval($vo['goods_number']);?>
+											<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+											x<?php echo intval($vo['goods_number']);?>
+											<else />
+											x<?php echo intval($vo['goods_number_up']);?>
+											</eq>
+												</small>
+											</span>
+										</div>
+									</div>
+								</div>
+						</div>					
+					</else if condition="$key eq 'luozuan'">
+						<div class="item-box" style="margin-top:0; border-top:1px solid #eee;" >
+							<p>证书号:{$vo.goods_sn_a}</p>
+							<p>4G属性:{$vo.4c}{$vo.attribute.milk}--{$vo.attribute.coffee}</p>
+							<p class="clearfix">
+								<span class="fl rmb">￥ <eq name="orderInfo.order_status" value="0">{$vo.goods_price}<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />{$vo.goods_price}<else />{$vo.goods_price_up}</eq></span>
+								<span class="fr"><range name="orderInfo.order_status" value="-1,-2,0" type="in">x<?php echo intval($vo['goods_number']);?><else />x<?php echo intval($vo['goods_number_up']);?></range></span>
+							</p>
+						</div>
+					</if>
+				</volist>
+			</volist>
+				
+				<!--订单代销货产品-->
+				<notempty name="goodsList['consignment']"> 
+					<volist name="goodsList['consignment']" id="vo">
+							<div class="goods-item">
+								<div class="goods-layout clearfix">
+									<div class="goods-img">
+										<if condition="$vo.attribute.thumb">
+											<a href="{:U('/Goods/detail/gid/'.$vo['goods_id'].'/goods_type/'.$vo['goods_type'].'')}">
+												<img  src="{$vo.attribute.thumb}" alt="...">       
+											</a>
+										</if>
+									</div>
+									
+									<div class="goods-right">
+										<h2><a href="{:U('/Goods/detail/gid/'.$vo['goods_id'].'/goods_type/'.$vo['goods_type'].'')}">{$vo.goods_name}</a></h2>
+										<p class="goods-title">颜色:{$vo.attribute.associateInfo.material_name}+{$vo.attribute.luozuanInfo.shape_name}</p>
+										<div class="goods-fangshi clearfix">
+											<span class="fl c9 rmb">￥<span class="price">
+												<eq name="orderInfo.order_status" value="0">
+												{$vo.goods_price}
+												<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+												{$vo.goods_price}
+												<else />
+												{$vo.goods_price_up}
+												</eq> 
+											</span></span>
+											<span class="fr">
+												<small>
+											<eq name="orderInfo.order_status" value="0">
+											x<?php echo intval($vo['goods_number']);?>
+											<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+											x<?php echo intval($vo['goods_number']);?>
+											<else />
+											x<?php echo intval($vo['goods_number_up']);?>
+											</eq>
+												</small>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+					</volist>
+				</notempty>			
+ 
+ 
+ 
+				<!--裸钻订单-->
+				<notempty name="goodsList['luozuan']">
+					<volist name="goodsList['luozuan']" id="vo" >
+						<div class="item-box">
+							<p>证书号:{$vo.goods_sn_a}</p>
+							<p>4G属性:{$vo.4c}{$vo.attribute.milk}--{$vo.attribute.coffee}</p>
+							<p class="clearfix">
+								<span class="fl rmb">￥ <eq name="orderInfo.order_status" value="0">{$vo.goods_price}<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />{$vo.goods_price}<else />{$vo.goods_price_up}</eq></span>
+								<span class="fr"><range name="orderInfo.order_status" value="-1,-2,0" type="in">x<?php echo intval($vo['goods_number']);?><else />x<?php echo intval($vo['goods_number_up']);?></range></span>
+							</p>
+						</div>
+					</volist>
+				</notempty>
+            <!-- 支付方式与配送方式 -->
+            <div class="item-box">
+                <p class="borderb clearfix">
+                    <span class="fl">支付方式</span>
+                    <span class="fr">线下转账</span>
+                </p>
+                <p class="borderb clearfix">
+                    <span class="fl">配送方式</span>
+                    <span class="fr">{$addressInfo.mode_name}</span>
+                </p>
+                <p class="clearfix">
+                    <span class="fl">订单备注</span>
+                    <span class="fr">{$orderInfo.note}</span>
+                </p>
+            </div>
+            <!-- 支付方式与配送方式 end -->
+
+            <!-- 价格 -->
+            <div class="item-box">
+                <p class="clearfix">
+                    <span class="fl">总金额</span>
+                    <span class="fr">￥{$orderInfo.order_price}</span>
+                </p>
+				
+                <!-- <p class="clearfix"> -->
+                    <!-- <span class="fl">保险费</span> -->
+                    <!-- <span class="fr">￥25</span> -->
+                <!-- </p> -->
+                <!-- <p class="clearfix"> -->
+                    <!-- <span class="fl">运费</span> -->
+                    <!-- <span class="fr">￥10</span> -->
+                <!-- </p> -->
+            </div>
+            <!-- 价格 end -->
+
+            <!-- 下单时间 -->
+            <div class="item-box">
+                <p>下单时间：{$orderInfo.create_time|date="Y-m-d H:i:s",###}</p>
+            </div>
+            <!-- 下单时间 end -->
+
+            <!-- 订单操作 -->
+            <div class="operation">
+					<if condition="$orderInfo['order_status'] eq 0">
+						<button type="button"  class="operation-btn" onclick='update_order(this,{$orderInfo.order_id},0)'>取消订单</button>            
+					<elseif condition="$orderInfo['order_status'] eq -1" />
+						<button type="button"  class="operation-btn" onclick='update_order(this,{$orderInfo.order_id},-1)'>删除订单</button> 
+					<elseif condition="$orderInfo['order_status'] eq 4" />
+						<button type="button"  class="operation-btn" onclick='update_order(this,{$orderInfo.order_id},4)'>确认收货</button> 
+					</if>
+						
+				 
+					<if condition="$orderInfo['order_status'] eq 0 || $orderInfo['order_status'] eq 1">
+						<a href="#" onClick="window.location.href='/User/payment/order_id/{$orderInfo.order_id}'" class="operation-btn">去付款</a>
+					</if>
+            </div>
+            <!-- 订单操作 end -->
+            
+        </section>
+
+    </section>
+	<include file="Public:foot" />	
+<script>
+	function update_order(obj,order_id,order_status){
+	if(order_status=='0'){			var strs='你确定取消吗？';}
+	if(order_status=='-1'){			var strs='你确定删除吗？';}
+	if(order_status=='4'){			var strs='你确认收货吗？';}
+		layer.open({
+			content: strs,
+			btn: ['确认', '取消'],
+			shadeClose: false,
+			yes: function(){
+				$.post('/User/update_order',{Action:"POST",order_id:order_id,order_status:order_status},function(data){
+				 if(data.status!='0'){
+					setTimeout(function () {   window.location.reload();   }, 3000);
+				 }
+				layer.open({ content:data.msg,  time: 2});return false;
+				});
+			}, no: function(){
+				//layer.open({content: '你选择了取消', time: 1});
+			}
+		});
+	}
+</script>
+</body>
+</html>

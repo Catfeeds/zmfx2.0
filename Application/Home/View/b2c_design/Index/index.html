@@ -1,0 +1,339 @@
+{__NOLAYOUT__}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <link rel="stylesheet" type="text/css" href="__Public__/b2c_design/css/lib.css">
+    <link rel="stylesheet" type="text/css" href="__Public__/b2c_design/css/style.css?v1.0">
+    <link rel="stylesheet" type="text/css" href="__Public__/b2c_design/css/4093.css?v1.0">
+    <script type="text/javascript" src="__Public__/b2c_design/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="__Public__/b2c_design/js/public.js"></script>
+    <title></title>
+    <script type="text/javascript">
+        document.domain = 'http://zmfx.com';
+    </script>
+</head>
+
+<body>
+    <div id="header" class="index_nav">
+        <div class="content"><a href="#" id="logo"><img src="__Public__/b2c_design/img/cart-logo.png" height="40" /></a>
+            <ul id="nav">
+                <li class="navitem"><a class="nav-a  active" href="../../moban/mo4/index.html" target="_self"><span  data-title="首页">首页</span></a></li>
+                <li class="navitem"><a class="nav-a " href="../../b2c/diamond.html" target="_self"><span data-title="裸钻查询">裸钻查询</span></a></li>
+                <li class="navitem"><a class="nav-a " href="#" target="_self"><span data-title="散货查询">散货查询</span></a></li>
+                <li class="navitem"><a class="nav-a " href="#" target="_self"><span data-title="品牌系列街">品牌系列街</span></a></li>
+                <li class="navitem"><a class="nav-a " href="#" target="_self"><span data-title="成品珠宝">成品珠宝</span></a></li>
+                <li class="navitem"><a class="nav-a " href="#" target="_self"><span data-title="产品定制">产品定制</span></a></li>
+                <li class="navitem"><a class="nav-a " href="#" target=""><span data-title="门店预约">门店预约 </span><i class="fa fa-angle-down"></i></a>
+                    <ul class="subnav">
+                        <li><a href="#" target="_self"><span data-title="湛江珠宝分店">湛江珠宝分店</span><i class="fa fa-angle-right"></i></a></li>
+                        <li><a href="#" target="_self"><span data-title="草铺珠宝分店">草铺珠宝分店</span><i class="fa fa-angle-right"></i></a></li>
+                        <li><a href="#" target="_self"><span data-title="天津珠宝分店">天津珠宝分店</span><i class="fa fa-angle-right"></i></a></li>
+                        <li><a href="#" target="_self"><span data-title="水贝珠宝分店">水贝珠宝分店</span><i class="fa fa-angle-right"></i></a></li>
+                    </ul>
+                </li>
+                <li class="navitem">
+                    <a class="nav-a " href="#" target="_self"><span data-title="登录">登录</span></a>
+                    <a class="nav-a " href="#" target="_self" style="padding-left: 5px"><span data-title="注册">注册</span></a>
+                </li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+        <a id="headSHBtn" href="#"><i class="fa fa-bars"></i></a></div>
+    <div id="sitecontent">
+        <div id="indexPage">
+            <div id="mslider" class="module">
+                <script type="text/javascript">
+                    $(function() {
+                        $("#mslider li video").each(function(index, element) {
+                            element.play();
+                        });
+                    })
+                </script>
+                <ul class="slider" data-options-height="0" data-options-auto="0" data-options-mode="0" data-options-pause="4" data-options-ease="ease-out">
+                    <li style="background-image:url(__Public__/b2c_design/img/banner1.jpg)" class="active"></li>
+                    <li style="background-image:url(__Public__/b2c_design/img/banner2.jpg)"></li>
+                    <li style="background-image:url(__Public__/b2c_design/img/banner3.jpg)"></li>
+                </ul>
+            </div>
+            <div id="mindex" data-options-ease="Expo.easeInOut" data-options-speed="1" data-options-sscreen="0"></div>
+            <div id="mproject" class="module">
+                <div class="bgmask"></div>
+                <div class="content layoutnone">
+                    <div class="header wow">
+                        <p class="title">商城热卖</p>
+                        <p class="subtitle">Course training</p>
+                    </div>
+                    <div id="category" class="hide wow">
+                        <a href="{:U('/Home/Goods/hotGoodsList')}" class="theme-hover">新品热销</a>
+                         <volist name="hot_list" id="vo">
+                        <a href="{:U('/Home/Goods/hotGoodsList',array('cid'=>$vo['category_id']))}" class="theme-hover"  target="_blank">{$vo['name_alias']}</a>                   
+                        </volist>
+                        
+                    </div>
+                    <!--yyLayout masonry-->
+                    <div class="module-content" id="projectlist">
+                        <div class="projectSubList" id="projectSubList_">
+                            <div class="projectSubHeader">
+                                <p class="title"></p>
+                                <p class="subtitle"></p>
+                            </div>
+                            <div class="wrapper">
+                                <ul class="content_list" data-options-sliders="8" data-options-margin="30" data-options-ease="1" data-options-speed="1">
+                                    <volist name="hot_list_goods" id="vo" key="k" >
+                                    <li id="projectitem_{$k-1}" class="projectitem wow">
+                                        <a href="#" class="projectitem_content" target="_blank">
+                                            <div class="projectitem_wrapper">
+                                                <div class="project_img"><img src="{$vo.thumb}" alt="" width="650" height="385" /></div>
+                                                <div class="project_info">
+                                                    <div>
+                                                        <p class="title">{$vo.goods_name}</p>
+                                                        <p class="subtitle">¥ {$vo.goods_price}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    </volist>  
+                                </ul>
+                            </div>
+                            <!--wrapper-->
+                        </div>
+                        <!--projectSubList-->
+                        <a href="{:U('/Home/Goods/hotGoodsList')}" class="more wow theme-hover">MORE<i class="fa fa-angle-right"></i></a>
+                    </div>
+                    <!--projectlist-->
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <!--project-->
+            <div id="mservice" class="module">
+                <div class="bgmask"></div>
+                <div class="content layoutnone">
+                    <div class="header wow fw" data-wow-delay=".1s">
+                        <p class="title">品牌系列</p>
+                        <p class="subtitle">SERVICE</p>
+                    </div>
+                    <div class="module-content fw" id="servicelist">
+                        <div class="wrapper">
+                            <ul class="content_list" data-options-sliders="3" data-options-margin="30" data-options-ease="1" data-options-speed="1">
+                                <volist name="series_list" id="vo"  key="k">
+                                <li id="serviceitem_{$k-1}" class="serviceitem wow">
+                                    <a href="{:U('/Home/Goods/goodsCat',array('goods_series_id'=>$vo['goods_series_id']))}" target="_blank">
+                                        <p class="service_img"><img src="{$vo['images_path']}" width="320" height="120" alt="{$vo['series_name']}" /></p>
+                                        <div class="service_info">
+                                            <p class="title">{$vo['series_name']}</p>
+                                            <p class="description">商品描述</p>
+                                        </div>
+                                    </a>
+                                    <a href="#" target="_blank" class="details">more<i class="fa fa-angle-right"></i></a>
+                                </li>
+                                </volist>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <a href="#" class="more wow theme-hover">MORE<i class="fa fa-angle-right"></i></a></div>
+            </div>
+            <div id="mpage" class="module">
+                <div class="bgmask"></div>
+                <div class="content">
+                    <div class="module-content">
+                        <div class="wrapper">
+                            <ul class="slider one">
+                                <li>
+                                    <div class="header wow" data-wow-delay=".2s">
+                                        <p class="title">关于我们</p>
+                                        <p class="subtitle">About us</p>
+                                    </div>
+                                    <div class="des-wrap">
+                                        <p class="description wow" data-wow-delay=".3s">专为热爱界面设计的你而倾力打造。这里拥有最无敌的创意、最精美的视觉、最具国际化的意识和前瞻性思维！在你最需要灵感的也许在不知不觉中，它将成为你设计路上的一位好伙伴，在你最需要灵感的时候给予你帮助...</p>
+                                    </div>
+                                    <a href="#" class="more wow theme-hover" data-wow-delay=".5s">MORE<i class="fa fa-angle-right"></i></a>
+                                    <div class="fimg wow" style="background-image:url(__Public__/b2c_design/img/about.jpg)"></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="mnews" class="module bgShow" style="background-image:url(__Public__/b2c_design/img/news_center.jpg);">
+                <div class="bgmask"></div>
+                <div class="content layoutnone">
+                    <div class="header wow">
+                        <p class="title">企业动态</p>
+                        <p class="subtitle">News Center</p>
+                    </div>
+                    <div class="module-content" id="newslist">
+                        <div class="wrapper">
+                            <ul class="content_list" data-options-sliders="4" data-options-margin="40" data-options-ease="1" data-options-speed="0.5" data-options-mode="horizontal" data-options-wheel="0">
+                               <volist name="article_list" id="vo"  key="k">	                               
+	                                <li id="newsitem_{$k-1}" class="wow newstitem left">
+	                                    <a class="newscontent" target="_blank" href="{:U('Home/Article/detail?aid='.$v['aid'])}">
+	                                        <div class="news_wrapper">
+	                                            <div class="newsbody">
+	                                                <p class="date theme-bg"><span class="md">{$vo.addtime|date='m-d',###}<span>-</span></span><span class="year">{$vo.addtime|date='Y',###}</span></p>
+	                                                <p class="title">{$vo['title']|msubstr=0,18,'utf-8'}</p>
+	                                                <div class="separator"></div>
+	                                                <p class="description">{$vo.description}
+	                                                </p>
+	                                            </div>
+	                                        </div>
+	                                        <div class="newsimg" style="background-image:url(__Public__/b2c_design/img/150476828158.png)"></div>
+	                                    </a>
+	                                    <a href="#" target="_blank" class="details">more<i class="fa fa-angle-right"></i></a>
+	                                </li>	                                
+                                </volist>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <a href="{:U('Home/Article')}" class="more wow theme-hover">MORE<i class="fa fa-angle-right"></i></a>
+                    <div style="height:0">&nbsp;</div>
+                </div>
+            </div>
+            <div id="mpartner" class="module">
+                <div class="bgmask"></div>
+                <div class="content layoutslider">
+                    <div class="header wow fw" data-wow-delay=".1s">
+                        <p class="title">合作伙伴</p>
+                        <p class="subtitle">partner</p>
+                    </div>
+                    <div class="module-content fw">
+                        <div class="wrapper">
+                            <ul class="content_list" data-options-ease="1" data-options-speed="1">
+                                <li id="partneritem_0" class="wow">
+                                    <a href="#" title="WEB1" target="_blank">
+
+                                        <p class="par_img"><img src="__Public__/b2c_design/img/1460532929454.png" width="160" height="80" alt="WEB1" /></p>
+                                        <p class="par_title">WEB1</p>
+
+                                    </a>
+                                    <a href="#" title="合作伙伴logo1" target="_blank">
+
+                                        <p class="par_img"><img src="__Public__/b2c_design/img/1451038650682.png" width="160" height="80" alt="合作伙伴logo1" /></p>
+                                        <p class="par_title">合作伙伴logo1</p>
+
+                                    </a>
+                                    <a href="#" title="合作伙伴logo4" target="_blank">
+
+                                        <p class="par_img"><img src="__Public__/b2c_design/img/1451039311523.png" width="160" height="80" alt="合作伙伴logo4" /></p>
+                                        <p class="par_title">合作伙伴logo4</p>
+
+                                    </a>
+                                    <a href="#" title="合作伙伴logo2" target="_blank">
+
+                                        <p class="par_img"><img src="__Public__/b2c_design/img/1451038889783.png" width="160" height="80" alt="合作伙伴logo2" /></p>
+                                        <p class="par_title">合作伙伴logo2</p>
+
+                                    </a>
+                                    <a href="#" title="合作伙伴logo3" target="_blank">
+
+                                        <p class="par_img"><img src="__Public__/b2c_design/img/1451038998591.png" width="160" height="80" alt="合作伙伴logo3" /></p>
+                                        <p class="par_title">合作伙伴logo3</p>
+
+                                    </a>
+                                    <a href="#" title="Google" target="_blank">
+
+                                        <p class="par_img"><img src="__Public__/b2c_design/img/1451039355850.png" width="160" height="80" alt="Google" /></p>
+                                        <p class="par_title">Google</p>
+
+                                    </a>
+                                    <a href="#" title="合作伙伴logo" target="_blank">
+
+                                        <p class="par_img"><img src="__Public__/b2c_design/img/1451037714851.png" width="160" height="80" alt="合作伙伴logo" /></p>
+                                        <p class="par_title">合作伙伴logo</p>
+
+                                    </a>
+                                    <a href="#" title="合作伙伴logo5" target="_blank">
+
+                                        <p class="par_img"><img src="__Public__/b2c_design/img/1451039609622.png" width="160" height="80" alt="合作伙伴logo5" /></p>
+                                        <p class="par_title">合作伙伴logo5</p>
+
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="mcontact" class="module">
+                <div class="bgmask"></div>
+                <div class="content">
+                    <div class="header wow fadeInUp fw" data-wow-delay=".1s">
+                        <p class="title">联系</p>
+                        <p class="subtitle">Contact</p>
+                    </div>
+                    <div id="contactlist" class="fw">
+                        <div id="contactinfo" class="fl wow" data-wow-delay=".2s">
+
+                            <h3 class="ellipsis name">xxx珠宝有限公司</h3>
+                            <p class="ellipsis add"><span>地点：</span>中国地区XX分区5A写字楼8-88室</p>
+                            <p class="ellipsis zip"><span>邮编：</span>100000</p>
+                            <p class="ellipsis tel"><span>电话：</span>400-888-8888</p>
+                            <p class="ellipsis mobile"><span>手机：</span>188-6666-5188</p>
+                            <p class="ellipsis fax"><span>传真：</span>000-66668888</p>
+                            <p class="ellipsis email"><span>邮箱：</span>demo@qq.com</p>
+                            <div><a class="fl" target="_blank" href="#"><i class="fa fa-weibo"></i></a><a class="fl" target="_blank" href="#"><i class="fa fa-qq"></i></a> <a id="mpbtn" class="fl" href="#"><i class="fa fa-weixin"></i></a></div>
+                        </div>
+                        <div id="contactform" class="fr wow" data-wow-delay=".2s">
+                            <form action="" method="post">
+                                <p>
+                                    <input type="text" class="inputtxt name" name="name" placeholder="姓名" autocomplete="off" />
+                                </p>
+                                <p>
+                                    <input type="text" class="inputtxt email" name="email" placeholder="邮箱" autocomplete="off" />
+                                </p>
+                                <p>
+                                    <input type="text" class="inputtxt tel" name="tel" placeholder="电话" autocomplete="off" />
+                                </p>
+                                <p>
+                                    <textarea class="inputtxt cont" name="content" placeholder="内容" autocomplete="off"></textarea>
+                                </p>
+                                <p>
+                                    <input class="inputsub" type="submit" value="提交" />
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <p>COPYRIGHT (©) 2017 珠宝集团定制. <a class="beian" href="#" style="display:inline; width:auto; color:#8e8e8e" target="_blank"></a></p>
+    </div>
+    <div id="shares">
+        <a id="sshare" class="theme-hover"><i class="fa fa-share-alt"></i></a>
+        <a href="#" class="theme-hover" target="_blank" id="sweibo"><i class="fa fa-weibo"></i></a>
+        <a href="#" class="theme-hover" id="sweixin"><i class="fa fa-weixin"></i></a>
+        <a href="#" id="gotop" class="theme-bg"><i class="fa fa-angle-up"></i></a>
+    </div>
+    <div class="fixed" id="fixed_weixin">
+        <div class="fixed-container">
+            <div id="qrcode"></div>
+            <p>扫描二维码分享到微信</p>
+        </div>
+    </div>
+    <div id="online_open"><i class="fa fa-comments-o"></i></div>
+    <div id="online_lx">
+        <div id="olx_head" class="theme-bg">在线咨询<i class="fa fa-times fr" id="online_close"></i></div>
+        <ul id="olx_qq">
+            <li><a href="#"><i class="fa fa-qq"></i>40080000</a></li>
+        </ul>
+        <div id="olx_tel">
+            <div><i class="fa fa-phone"></i>联系电话</div>
+            <p>400-888-8888<br /></p>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<include file="Public:header" />
+<body>
+    <section class="brand-series">
+	
+	
+		<include file="Public:localHeader"/>
+
+		<!-- 搜索 -->
+		<include file="Public:search" />		
+		
+        <!-- content -->
+        <section class="wrapper">
+            <div class="classify-tab">
+                <a href="/Goods/category" >产品分类</a>
+                <a href="/Goods/brand" class="active">品牌系列</a>
+            </div>			
+
+            <div class="brand-list">
+                <ul>
+					<?php if ($publicdataList): ?>
+						<?php foreach($publicdataList as $key=>$val):?>
+								<li class="ripple">
+									<a href="<?php echo !empty($val['goods_series_id']) ? '/Goods/cbList/goods_series_id/'.$val['goods_series_id'] : '#'; ?>">
+										<img src="<?php echo !empty($val['images_path']) ? '/Public/'.$val['images_path'] : "__IMG__".'/brand_01.png';?>" alt="">
+										<p class="brand-title"><?php echo !empty($val['series_name']) ? $val['series_name'] : '邂逅系列';?></p>
+									</a>
+								</li>
+						<?php endforeach;?>
+					<?php endif; ?>
+                </ul>
+            </div>
+
+        </section>
+        <!-- content end -->
+    </section>
+
+	<include file="Public:foot" />
+</body>
+</html>

@@ -1,0 +1,36 @@
+                        <div class="row" id="order_log_content"></div>
+
+                         <script type="text/template" id="order_log_content_tpl" style="display: none">
+
+                                <div class="col-xs-12 text-left"><p class="panel-body">{$L['text_log_operation']}：</p></div>
+                                <div class="col-xs-12">
+                                    <div class="panel-default">
+                                        <div class="table-responsive">
+                                                <table class="table table-bordered product-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>{$L['text_log_sn']}</th>
+                                                            <th>{$L['text_user_operation']}</th>
+                                                            <th>{$L['text_log_time']}</th>
+                                                            <th>{$L['text_log_content']}</th>
+                                                            <th>{$L['operation']}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <%  _.each(datas.order_log, function (item) { %>   
+                                                        <tr>
+                                                            <td><%= item.ol_id %></td>
+                                                            <td><%= item.user_name %></td>
+                                                            <td><%= item.create_time_str %></td>
+                                                            <td><%= item.note %></td>
+                                                            <td></td>
+                                                        </tr>                                                    
+                                                    <% }); %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+                        </script>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>文章列表</title>
+<js file="__PUBLIC__/ueditor/ueditor.config.js" /> 
+<js file="__PUBLIC__/ueditor/ueditor.all.min.js" /> 
+<script type="text/javascript">
+window.onload=function(){ 
+	window.UEDITOR_CONFIG.initialFrameHeight=300;//编辑器的高度
+	window.UEDITOR_CONFIG.initialFrameWidth=900;//编辑器的高度
+	UE.getEditor('content');
+}
+</script>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：添加文章</h3>
+    </div>
+    <form enctype="multipart/form-data" action="" method="POST">
+    	<div style="padding-top:10px;">
+        <div class="info">
+            <div class="title">文章标题:</div>
+            <input type="text" name="title" value="{$helpArticleInfo.title}" />
+        </div>
+        <div class="info">
+            <div class="title">文章分类:</div>
+            <select name="cat_id" class="select">
+                <option value="0">顶级分类</option>
+                    <volist name="categoryList" id="vo">
+                    <option <if condition="$helpArticleInfo['cat_id'] eq $vo['cid']">selected</if> value="{$vo.cid}">
+                    {$vo.catname}</option>
+                    </volist>
+            </select>
+        </div>
+        <div class="info">
+            <div class="title">缩略图:</div>
+            <input type="file" name="thumb" />
+            <span>*建议最佳尺寸 280*170</span>
+        </div>
+        <if condition="$helpArticleInfo['thumb'] neq '' ">
+    	<div class="info">
+            <div class="title">缩略图:</div>
+            <img style="width: 280px;" src="__PUBLIC__/Uploads/article/{$helpArticleInfo.thumb}">
+        </div>
+        </if>
+        <div class="info">
+            <div class="title">前端是否显示:</div>
+            <label>
+                <input type="radio" <if condition="$helpArticleInfo['is_show'] eq 1">checked</if> name="is_show" value="1"/>
+                <span>显示</span>
+            </label>
+            <label>
+            	<input type="radio" name="is_show" value="0" <if condition="$helpArticleInfo['is_show'] eq 0">checked</if> />
+                <span>不显示</span>
+            </label>
+        </div>
+		<div class="info">
+            <div class="title">文章模式:</div>
+            <label>
+                <input type="radio" <if condition="$helpArticleInfo['art_mode'] neq 1">checked</if> name="art_mode" value="0"/>
+                <span>普通模式</span>
+            </label>
+            <label>
+            	<input type="radio" name="art_mode" value="1" <if condition="$helpArticleInfo['art_mode'] eq 1">checked</if> />
+                <span>单页面模式</span>
+            </label>
+        </div>
+        <div class="info">
+            <div class="title">关键字:</div>
+            <input type="text" name="keywords" value="{$helpArticleInfo.keywords}" /><span>关键字以，分开</span>
+        </div>
+        <div class="info">
+            <div class="title">摘要:</div>
+            <textarea name="description" cols="140" rows="5">{$helpArticleInfo.description}</textarea>
+        </div>
+        <div class="info">
+            <div class="title">文章内容:</div>
+            <div class="fl">
+            <textarea nmae="content" id="content">{$helpArticleInfo.content}</textarea>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="info">
+            <div class="title">&nbsp;</div>
+            <input type="hidden" name="thumb" value="{$helpArticleInfo.thumb}" />
+            <input type="hidden" name="aid" value="{$helpArticleInfo.aid}" />
+            <input type="submit" class="button fl" value="保存">
+            <input type="reset" class="button fl ml10" value="重置">
+            <div class="clear"></div>
+        </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+

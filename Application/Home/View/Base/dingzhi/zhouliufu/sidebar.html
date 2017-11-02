@@ -1,0 +1,21 @@
+<div class="sidebar" id="cebianlan">
+    <h2><img src="__IMG_DZ__/fl_03.png" alt="">&nbsp;&nbsp;产品分类</h2>
+    <volist name="left_cates" id="voa" key="vea">
+        <dl <if condition="$voa['id'] eq $_GET['rank_two']">class="active"</if> data_id="{$voa.id}">
+        <dt>{$voa.na_name}</dt>
+        <volist name="voa.sub" id="vob" key="veb">
+            <dd><a href="javascript:;" onclick="search_goods(0,{$voa['id']},{$vob['id']},0,'');" <if condition="$vob['id'] eq $_GET['rank_three']">class="active"</if> data_id="{$vob.ca_id}">{$vob.na_name}</a></dd>
+        </volist>
+        </dl>
+    </volist>
+</div>
+<script>
+    $(function(){
+        //侧边栏
+        var dt = $('.sidebar dl dt');
+        dt.bind('click', function(){
+            dt.parents('dl').removeClass('active');
+            $(this).parents('dl').addClass('active');
+        });
+    });
+</script>

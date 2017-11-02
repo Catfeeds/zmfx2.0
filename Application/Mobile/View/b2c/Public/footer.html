@@ -1,0 +1,36 @@
+<!-- 返回顶部 start -->
+<a href="javascript:;" class="back-top" style="display: none;">
+    <img src="__IMG__/back_top.png" alt="">
+</a>
+
+<div class="phone clearfix">
+    <a href="tel:{:C('site_contact')}" class="fl"><img src="__IMG__/phone_icon.png" alt="">{:C('site_contact')}</a>
+    <?php
+        $DEFAULT_AGENT_DOMAIN = C('DEFAULT_AGENT_DOMAIN');
+        if(substr_count($DEFAULT_AGENT_DOMAIN,'.')==1){
+            $defaultDomain = 'www.'.$DEFAULT_AGENT_DOMAIN.'?is_inside_callback=1';
+        }else{
+            $defaultDomain = $DEFAULT_AGENT_DOMAIN.'?is_inside_callback=1';
+        }
+    ?>
+    <a href="http://<?php echo $defaultDomain;?>" title="官方网站" class="fr">查看官方网站(网页版）</a>
+</div>
+
+<div class="copyright">© 2010-2019 {:C('site_name')} 版权所有<br/>{:C('case_number')}</div>
+
+<script>
+    $(function(){
+        //返回顶部
+        $(window).scroll(function(){
+            if($(document).scrollTop() + $(window).height() >= $(document).height()){
+                $('.back-top').fadeIn();
+            }else{
+                $('.back-top').hide();
+            }
+        });
+        $('.back-top').bind('click', function(){
+            $('body,html').animate({scrollTop : 0},400);
+        });
+    });
+</script>
+<!-- 返回顶部 end -->

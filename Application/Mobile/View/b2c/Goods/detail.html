@@ -1,0 +1,770 @@
+
+<include file="Public:header" /><body>
+<input type="hidden" id="goodsId" name="goods_id" value="{$goodsInfo['goods_id']}">
+<input type="hidden" name="goods_type" value="{$goodsInfo['goods_type']}">
+<!--匹配信息-->
+<input type="hidden" id="thumb" value="{$goodsInfo['thumb']}">
+<input type="hidden" id="goodsName" value="{$goodsInfo['goods_name']}">
+<input type="hidden" id="goodsPrice" value="{$goodsPrice}">
+<section class="goods-details">
+
+	<include file="Public:localHeader"/>
+
+    <!-- content -->
+    <section class="wrapper">
+
+    <include file="Goods:param" />
+
+        <!-- 加入购物车 -->
+        <style>
+            body { margin-bottom: 2.5rem;}
+        </style>
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <span class="toolbar-collection"><img src="<if condition='$goodsInfo.collection_id gt 0'>__IMG__/toolbar_collection_success.png<else/>__IMG__/toolbar_collection.png</if>" data-goods-id="{$goodsInfo['goods_id']}" data-goods-type="{$goodsInfo['goods_type']}" collection_id="{$goodsInfo.collection_id}" alt=""></span>
+                <a href="{:U('Order/orderCart')}" class="toolbar-cart">
+                    <img src="__IMG__/toolbar_cart.png" class="" alt="">
+                    <div class="number">{$cartNumber}</div>
+                </a>
+            </div>
+
+
+
+            <div class="toolbar-right">
+                <span class="to-cart">加入购物车</span>
+                <a href="javascript:;" class="to-match-up"
+					<?php if($goodsInfo['goods_type'] =='3'): ?>
+						 onClick="addToCart(2, goods.id, 3, 'Confirm');"
+					<?php else: ?>
+						onClick="confirmMatching()"
+					<?php endif; ?>>
+					<?php if($goodsInfo['goods_type'] =='3'): ?>
+						 立即购买
+					<?php else: ?>
+						<?php if(empty($luozuanInfo)){ ?>去配祼钻<?php }else{ ?>确认匹配<?php } ?>
+					<?php endif; ?>
+				</a>
+            </div>
+        </div>
+        <!-- 加入购物车 end -->
+
+        <!-- 商品详情 -->
+        <div class="goods-describe">
+            <div id="goods-describe-tab">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide active">商品详情</div>
+                    <div class="swiper-slide">详情参数</div>
+                    <div class="swiper-slide">商品评价</div>
+                </div>
+            </div>
+            <div id="goods-describe-container" class="swiper-container">
+                <div class="swiper-wrapper">
+                    <!-- 详细描述 -->
+                    <div class="swiper-slide">
+                        <div class="content-slide">
+                        {$goodsInfo.content}
+                        {$publicContent|htmlspecialchars_decode}
+                        </div>
+                    </div>
+                    <!-- 详细描述 end -->
+
+                    <!-- 详细参数 -->
+                    <div class="swiper-slide">
+                        <div class="content-slide">
+                            <table class="describe-table">
+                                <tbody>
+
+                                <if condition="$goodsInfo['attributes']">
+                                    <volist name="goodsInfo['attributes']" id="vo">
+                                        <tr>
+                                        <if condition="!empty(trim($vo['attr_value_name']))">
+                                            <th>{$vo.attr_name}</th>
+                                            <td>{$vo.attr_value_name}</td>
+                                        <elseif condition="!empty(trim($vo['attr_value']))"/>
+                                            <th>{$vo.attr_name}</th>
+                                            <td>{$vo.attr_value}</td>
+                                        </if>
+                                        </tr>
+                                    </volist>
+                                </if>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- 详细参数 end -->
+
+                    <!-- 评论 -->
+                    <div class="swiper-slide">
+                        <div class="content-slide">
+                            <ul class="message-list" id="msg"></ul>
+                        </div>
+                    </div>
+
+                    <script>
+                        var func_msg = function(){
+                            $.post("/Goods/getAjaxComment",{Action:'post',gid:'{$goodsInfo["goods_id"]}'},function(data){
+                                if(data.data && data.data != ''){
+                                    var html = "";
+                                    data.data.forEach(function(e){
+                                        var createtime = new Date(parseInt(e.createtime) * 1000).toLocaleString();
+
+                                        html += "<li>";
+                                        html += "<div class='head'>";
+                                        html += "   <div class='fl'><img src='__IMG__/25151659.jpg' class='head-img' alt=''> "+e.username+"</div>";
+                                        html += "   <div class='fr star'>";
+                                        for(var i = 0;i < e.start ; i++){
+                                            html += '<img src="__IMG__/star.png" alt="">';
+                                        }
+                                        html += "   </div>";
+                                        html += "   <div class='clearfix'></div>";
+                                        html += "</div>";
+                                        html += "<div class='cont'>"+e.control+"</div>";
+                                        html += "<small class='time'>"+createtime+"</small>";
+                                        html += "</li>";
+                                    });
+                                    $("#msg_count").html(data.count);
+                                    $("#msg").html(html);
+                                }else{
+                                    $("#msg").html('');
+                                }
+                            });
+                        }
+                        func_msg();
+                    </script>
+
+                    <!-- 评论 end -->
+                </div>
+            </div>
+        </div>
+
+        <if condition="!$goodsInfo['price_model']">
+        <script>
+            // 设置材质
+            function setMaterial(obj, gid, material_id, goods_type){
+                goods.diyGoods.materialId = material_id;
+                $.post("/Goods/getAssociateLuozuanByMaterialId", {
+                    goods_type:goods_type,
+                    gid:gid,
+                    material_id:material_id
+                },function(data){
+                    if(data.status == 1){
+                        html  = "";
+                        var _weight;
+                        data.data.forEach(function(e,i){
+                            if(e.weights_name){
+                                _weight = parseFloat((parseFloat(e.weights_name)*1000/1000).toFixed(3))+'CT';
+                            }else{
+                                _weight = '';
+                            }
+
+                            if(i == 0){
+                                html += "<span class='checks active' data-content='"+e.gal_id+"' title='"+e.shape_name+"' ref='"+e.weights_name+"' onclick='setDiamond(this,"+gid+","+e.gal_id+","+goods_type+")'>"+e.shape_name+" "+_weight+"</span>";
+                            }else{
+                                html += "<span class='checks' data-content='"+e.gal_id+"' title='"+e.shape_name+"' ref='"+e.weights_name+"' onclick='setDiamond(this,"+gid+","+e.gal_id+","+goods_type+")'>"+e.shape_name+" "+_weight+"</span>";
+                            }
+                        });
+                        $("#associateLuozuan").html(html);
+                        changePrice(gid,goods_type);
+                    }
+                });
+            }
+        </script>
+        <else />
+        <script>
+            //切换材质改变一口价或者尺寸属性
+            function setMaterial(obj, gid, material_id, goods_type){
+                goods.diyGoods.materialId = material_id;
+                $.post("/Goods/getAssociateLuozuanByMaterialId",{
+                    goods_type:goods_type,
+                    gid:gid,
+                    material_id:material_id
+                },function(data){
+                    if(data.status == 1){
+                        var _weight;
+
+                        html  = "";
+                        data.data.forEach(function(e,i){
+                            if(e.weights_name){
+                                _weight = parseFloat((parseFloat(e.weights_name)*1000/1000).toFixed(3))+'CT';
+                            }else{
+                                _weight = '';
+                            }
+                            if(i == 0){
+                                html += "<span class='checks active' data-content='"+e.gal_id+"' title='"+e.shape_name+"' ref='"+e.weights_name+"' onclick='setDiamond(this,"+gid+","+e.gal_id+","+goods_type+")'>"+e.shape_name+" "+_weight+"</span>";
+                            }else{
+                                html += "<span class='checks' data-content='"+e.gal_id+"' title='"+e.shape_name+"' ref='"+e.weights_name+"' onclick='setDiamond(this,"+gid+","+e.gal_id+","+goods_type+")'>"+e.shape_name+" "+_weight+"</span>";
+                            }
+                        });
+                        $("#associateLuozuan").html(html);
+                        $.post("/Goods/getHand",{
+                            gid:gid,
+                            materialId:material_id
+                        },function(data){
+                            if(data.status == 1){
+                                var html  = "";
+                                for( var i in data.data){
+                                    html += "<option value='"+data.data[i]+"'>"+data.data[i]+"</option>";
+                                }
+                                $("select[name='hand']").html(html);
+                                if(data.data1){
+                                    var html  = "";
+                                    for( var i in data.data1){
+                                        html += "<option value='"+data.data1[i]+"'>"+data.data1[i]+"</option>";
+                                    }
+                                    $("select[name='hand1']").html(html);
+                                }
+                                changePrice(gid,goods_type);
+                            }
+                        });
+                    }
+                });
+            }
+        </script>
+        </if>
+
+
+        <script>
+            //详情导航跟随
+            var _top = $('.goods-describe').offset().top;
+            $(window).scroll(function(){
+                if($(this).scrollTop() >= _top) {
+                    $('#goods-describe-tab').css({
+                        'position': 'fixed',
+                        'top': 0,
+                        'left': 0,
+                        'right': 0,
+                        'z-index': 999,
+                        'background': '#FFF',
+                        'border-top': 'none'
+                    });
+                }else{
+                    $('#goods-describe-tab').attr('style', '');
+                }
+            });
+
+            //新闻标题滑动
+            var mySwiper1 = new Swiper('#goods-describe-tab', {
+                freeMode: true,
+                slidesPerView: 'auto'
+            });
+
+            //新闻列表滑动
+            var tabsSwiper = new Swiper('#goods-describe-container', {
+                speed: 500,
+                autoHeight: true,
+                onSlideChangeStart: function() {
+                    $("#goods-describe-tab .active").removeClass('active');
+                    $("#goods-describe-tab .swiper-slide").eq(tabsSwiper.activeIndex).addClass('active');
+                }
+            });
+
+            $("#goods-describe-tab .swiper-slide").on('touchstart mousedown', function(e) {
+                e.preventDefault()
+                $("#goods-describe-tab .active").removeClass('active')
+                $(this).addClass('active')
+                tabsSwiper.slideTo($(this).index())
+            })
+            $("#goods-describe-tab .swiper-slide").click(function(e) {
+                e.preventDefault()
+            });
+
+            //添加收藏
+            $(document).delegate('.toolbar-collection','click', function(){
+                var current = $(this).find('img');
+                goods.addToCollection(current, "");
+            });
+
+            function addToCollectionSuccess(collection_id){
+                var _this = $('.toolbar-collection');
+                _this.find('img').attr('src', '__IMG__/toolbar_collection_success.png');
+                _this.find('img').attr('collection_id', collection_id);
+                _this.attr('data-lock', 'true');
+                layer.open({
+                    content: '收藏成功'
+                    ,btn: '确定'
+                });
+            }
+
+            function deleteCollectionSuccess(){
+                var _this = $('.toolbar-collection');
+                _this.find('img').attr('src', '__IMG__/toolbar_collection.png');
+                _this.find('img').attr('collection_id', 0);
+                _this.attr('data-lock', 'false');
+                layer.open({
+                    content: '取消收藏成功'
+                    ,btn: '确定'
+                });
+            }
+
+            var goods = {
+                id: $("input[name='goods_id']").val(),
+                type: $("input[name='goods_type']").val(),
+                diyGoods: {
+                    diamondWeight: $("#associateLuozuan .active").attr("ref"),
+                    diamondId: $("#associateLuozuan .active").attr("data-content"),
+                    materialId: $("#associateMaterial .active").attr("ref"),
+                    deputystoneId: $("#deputystone .active").attr("ref"),
+                    hand: $("#hand").html(),
+                    hand1: $("#hand1").html(),
+                    word: $("#word").val(),
+                    word1: $("#word1").val(),
+                    symbolId: $("input[name='symbolDesignId']").val(),
+                    symbolId1: $("input[name='symbolDesignId1']").val()
+                },
+                normalGoods: {
+                    skuSn: ''
+                },
+                addToCollection:function(current, type){
+                    var goods_id = current.attr('data-goods-id');
+                    var goods_type = current.attr('data-goods-type');
+                    var goods_number = $("#goodsnumber").val();
+                    var collection_id = current.attr('collection_id');
+
+                    var data = {};
+                    if(collection_id > 0){
+                        layer.open({
+                            content: '确定要删除该收藏吗?'
+                            ,btn: ['确定', '不要']
+                            ,yes: function(index){
+                                delCollection(collection_id);
+                                layer.close(index);
+                            }
+                        });
+                    }else{
+                        if(goods_type == '3'){
+                            data.sku_id = $("#sku .active").attr("data-goods-sku-id");
+                            addToCollection(current, goods_id, goods_type, data, goods_number, type);
+                        } else {
+                            data.weights_name = goods.diyGoods.diamondWeight;
+                            data.gal_id       = goods.diyGoods.diamondId;
+                            data.material_id  = goods.diyGoods.materialId;
+                            data.gad_id       = goods.diyGoods.deputystoneId;
+                            data.hand         = parseInt($("#hand").html()) > 0 ? parseInt($("#hand").html()) : '';
+                            data.word         = $("#word").val();
+                            data.sd_id        = $("input[name='symbolDesignId']").val();
+                            data.hand1        = parseInt($("#hand1").html()) > 0 ? parseInt($("#hand1").html()) : '';
+                            data.word1        = $("#word1").val() ? $("#word1").val() : '';
+                            data.sd_id1       = $("input[name='symbolDesignId1']").val();
+                            addToCollection(current, goods_id, goods_type, data, goods_number, type);
+                        }
+                    }
+                }
+            };
+
+            /**
+             * 添加到收藏
+             * @param current
+             * @param goods_id
+             * @param goods_type
+             * @param data
+             * @param goods_number
+             * @param id_type
+             */
+            function addToCollection(current, goods_id, goods_type, data, goods_number, id_type){
+                if(goods_type == 3){
+                    // 成品
+                    var sku_sn = 0;
+                    sku_sn = data.sku_id;
+                    $.post("/Goods/addToCollection",{
+                        type_from:3,
+                        goods_type:goods_type,
+                        gid:goods_id,
+                        sku_sn:sku_sn,
+                        goods_number:goods_number,
+                        id_type:id_type
+                    },function(data){
+                        console.log(data);
+                        var _status = data.status;
+                        var _msg = data.msg;
+                        var _id = data.id;
+                        // 未登录
+                        if(data.status == -100){
+                            window.location.href = "{:U('Public/login')}";
+                        }else{
+                            addToCollectionSuccess(_id);
+                        }
+                    });
+                }else if(goods_type == 4){
+                    // 	戒
+                    var diamondWeight = data.weights_name;
+                    var diamondId     = data.gal_id;
+                    var materialId    = data.material_id;
+                    var deputystoneId = data.gad_id;
+                    var hand          = data.hand;
+                    var word          = data.word;
+                    var sd_id         = data.sd_id;
+                    var hand1         = data.hand1;
+                    var word1         = data.word1;
+                    var sd_id1        = data.sd_id1;
+                    $.post("/Goods/addToCollection",{
+                        type_from: 4,
+                        gid: goods_id,
+                        goods_type: 4,
+                        deputystoneId: deputystoneId,
+                        materialId: materialId,
+                        diamondId: diamondId,
+                        hand: hand,
+                        word: word,
+                        sd_id: sd_id,
+                        hand1: hand1,
+                        word1: word1,
+                        sd_id1: sd_id1,
+                        goods_number: goods_number,
+                        id_type: id_type
+                    },function(data){
+                        var _status = data.status;
+                        var _msg = data.msg;
+                        var _id = data.id;
+                        // 未登录
+                        if(data.status == -100){
+                            window.location.href = "{:U('Public/login')}";
+                        }else{
+                            addToCollectionSuccess(_id);
+                        }
+                    });
+                }
+            }
+
+            function delCollection(collection_id){
+                $.post("/Goods/deleteCollection",{
+                    id: collection_id
+                },function(data){
+                    console.log(data);
+                    var _status = data.status;
+                    var _msg = data.msg;
+                    // 删除收藏成功
+                    if(data.status == 100){
+                        deleteCollectionSuccess();
+                    }
+                });
+            }
+
+            //加入购物车
+            $(document).delegate('.to-cart','click', function(){
+                // 添加到购物车
+                addToCart(2, goods.id, goods.type, 'cart');
+            });
+
+            // 设置副石
+            function setDeputystone(obj, gid, deputystone_id, goods_type){
+                goods.diyGoods.deputystoneId = deputystone_id;
+                changePrice(gid, goods_type);
+            }
+
+            // 设置主石
+            function setDiamond(obj, gid, luozuan_id, goods_type){
+                goods.diyGoods.diamondId = luozuan_id;
+                changePrice(gid, goods_type);
+            }
+
+            // 更新购物车数量
+            function setCart(num){
+                var number = $('.toolbar-cart .number');
+                var num = parseInt(num);
+                if(num >= 1){
+                    number.html(parseInt(number.html())+num);
+                }else{
+                    number.html(parseInt(number.html())+1);
+                }
+            }
+
+            // 选择属性时实时更新价格
+            function changePrice(gid, goods_type){
+                var deputystoneId  = goods.diyGoods.deputystoneId;
+                var materialId     = goods.diyGoods.materialId;
+                var luozuan_id     = goods.diyGoods.diamondId;
+                var hand           = $("#hand").html();
+                var hand1          = $("#hand1").html();
+                $.post("/Goods/getAssociateLuozuanPriceByGalid",{
+                    goods_type: goods_type,
+                    gid: gid,
+                    deputystoneId: deputystoneId,
+                    galid: luozuan_id,
+                    materialId: materialId,
+                    hand: hand,
+                    hand1: hand1
+                },function(data){
+                    if(data.status == 1){
+                        $("#price").html('￥'+data.price);
+                    }
+                });
+            }
+
+            // 成品规格选择
+            function setPrice(obj, goods_id, goods_sku){
+                var data_goods_number = $(obj).attr('data-goods-number');
+                if(!$(obj).hasClass("active")){
+                    $("#price").html('￥'+$(obj).attr('data-price'));
+                    $("#goods_number").html(data_goods_number);
+                    $(".kc").html('库存: '+data_goods_number);
+                    $("#goodsnumber").attr('max',data_goods_number);
+                }
+            }
+
+            function addToCart(type,goods_id,goods_type,id_type){
+                if(goods_type == 3){
+                    var goods_number = $("#goodsnumber").val();
+                    var realy_goods_number=$("#goodsnumber").attr('max');
+
+                    if(goods_number<0){
+                        layer.open({
+                            content: '选填数量不能为负数'
+                            ,time: 3
+                        });
+                        return false;
+                    }
+                    if(goods_number==0){
+                        layer.open({
+                            content: '选填数量不能为0'
+                            ,time: 3
+                        });
+                        return false;
+                    }
+                    var number_this = realy_goods_number - goods_number;
+                    if(number_this<0){
+                        layer.open({
+                            content: '选择的商品数量已经超过该商品库存'
+                            ,time: 3
+                        });
+
+                        return false;
+                    }
+
+                    var sku_sn;
+                    sku_sn = $("#sku .active").attr("data-goods-sku-id");
+                    if(sku_sn.length > 10){
+                        $.post("/Order/add2cart",{
+                            goods_type: goods_type,
+                            gid: goods_id,
+                            sku_sn: sku_sn,
+                            id_type: id_type,
+                            goods_number: goods_number
+                        },function(res){
+                            if(res.status == 100){
+
+								if(id_type=='Confirm'){
+									layer.open({
+										content: '立即购买成功，3秒后跳转至确认购买页。'
+										,time: 3
+									});
+									CommonFunction.Link.Href('/Order/orderConfirm?id='+ThreeAjax.JsB64(res.id));
+								}else{
+									layer.open({
+										content: res.msg
+										,time: 3
+									});
+								}
+
+                                // 更新购物车数量
+                                setCart(goods_number);
+                            }else{
+                                layer.open({
+                                    content: res.msg
+                                    ,time: 3
+                                });
+                                return false;
+                            }
+                        });
+                    }
+                }else if(goods_type == 4){
+                    var diamondWeight = goods.diyGoods.diamondWeight;
+                    var diamondId     = goods.diyGoods.diamondId;
+                    var materialId    = goods.diyGoods.materialId;
+                    var deputystoneId = goods.diyGoods.deputystoneId;
+                    var hand = $("#hand").html();
+                    var hand1 = $("#hand1").html();
+                    var word = goods.diyGoods.word;
+                    var word1 = goods.diyGoods.word1;
+                    var symbolId = goods.diyGoods.symbolId;
+                    var symbolId1 = goods.diyGoods.symbolId1;
+                    var goodsNumber = $("#goodsnumber").val();
+                    var param = goods_id+"_"+materialId+"_"+diamondId+"_"+diamondWeight+"_"+hand+"_"+word+'_'+symbolId;
+                    if(type == 1){
+                        diyStep(2, goods_id, param);
+                        window.location.href="/Goods/goodsDiy";
+                    }else{
+                        $.post("/Order/addZMGoods2cart",{
+                            gid: goods.id,
+                            goods_type: 4,
+                            deputystoneId: deputystoneId,
+                            materialId: materialId,
+                            diamondId: diamondId,
+                            hand: hand,
+                            hand1: hand1,
+                            word: word,
+                            word1: word1,
+                            id_type: id_type,
+                            symbolId: symbolId,
+                            symbolId1: symbolId1,
+                            goodsNumber: goodsNumber
+                        },function(res){
+                            if(res.status == 100){
+                                layer.open({
+                                    content: res.msg
+                                    ,time: 3
+                                });
+                                // 更新购物车数量
+                                setCart(goodsNumber);
+                            }else{
+                                layer.open({
+                                    content: res.msg
+                                    ,time: 3
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+
+            // 定制流程处理
+            // todo
+            function diyStep(step,goods_id,param){
+                if(step==1){setCookie('step1',goods_id);}
+                if(step==2){setCookie('step2',goods_id);}
+                if(step == 2){
+                    var materialId    = $("#associateMaterial .active").attr("ref");
+                    var diamondId     = $("#associateLuozuan .active").attr("data-content");
+                    var deputystoneId = $("#deputystone .active").attr("ref");
+                    var diamondWeight = $("#associateLuozuan .active").attr("ref");
+                    var hand   = $("#hand").html();
+                    if(hand == undefined){
+                        hand = '';
+                    }
+                    var word   = $("#word").val();
+                    var sd_id  = $("input[name='sd_id']").val();
+                    var param   = materialId+"_"+diamondId+"_"+deputystoneId+"_"+diamondWeight+"_"+hand+"_"+word+'_'+sd_id;
+                    var param1 = goods_id+"_"+materialId+"_"+diamondId+"_"+deputystoneId+"_"+diamondWeight+"_"+hand+"_"+word+'_'+sd_id;
+                    setCookie('goods_id_'+goods_id,param);
+                    setCookie('Gid_Material_Diamond',param1);
+                }
+                if(getCookie('step1')==null || getCookie('step1')=='' ){
+                    window.location.href='/Goods/goodsDiy';	//跳转到裸钻页面
+                    return true;
+                }
+
+                if(getCookie('step2')==null || getCookie('step2')=='' ){
+                    window.location.href='/Goods/diy/';	//跳转到钻托页面
+                    return true;
+                }
+
+                window.location.href='/Goods/goodsDiy';	//跳转到裸钻页面
+                return true;
+            }
+        </script>
+
+        <script>
+            $(function(){
+                //参数选择:单选
+                $('.goods-spec .checks').bind('click', function(){
+                    $(this).parents('.spec-box').find('.checks').removeClass('active');
+                    $(this).addClass('active');
+                });
+
+                //可选图案符号
+                $('.show-tuan').bind('click', function(){
+                    $('.tuan').toggle();
+                });
+
+                //商品数量选择
+                $('.customize-box').each(function(){
+                    var _this = $(this);
+                    var str = _this.find('.number-cust');
+                    //加
+                    $(this).find('.add').bind('click', function(){
+                        str.val( parseInt(str.val())+1 );
+                    });
+                    //减
+                    $(this).find('.reduction').bind('click', function(){
+                        if(str.val() > 1){
+                            str.val( parseInt(str.val())-1 );
+                        }
+                    });
+                });
+
+                $('.tuan ul li').bind('click', function(){
+                    $('.tuan-btn').html($(this).html());
+                    var symbolId = $(this).attr('data-sd-id');
+                    var symbolIndex = $(this).attr('data-index');
+                    if(symbolIndex == 2){
+                        $("input[name='symbolDesignId1']").val(symbolId);
+                        goods.diyGoods.symbolId1 = symbolId;
+                    }else{
+                        $("input[name='symbolDesignId']").val(symbolId);
+                        goods.diyGoods.symbolId = symbolId;
+                    }
+
+                    $('.tuan').toggle();
+                });
+
+            });
+        </script>
+
+        <!-- 商品详情 end -->
+
+    </section>
+    <!-- content end -->
+
+</section>
+
+<include file="Public:search" />
+
+<script>
+    //快捷搜索
+    quickSearch.show('.search-icon');
+    quickSearch.hide('.top-bar-btn'); //关闭搜索
+</script>
+
+<script type="text/javascript">
+	function confirmMatching(){
+		//获取gal_id
+		var gal_id = $("#associateLuozuan .active").attr('data-content');
+		var dingzhiData = getCookieOfObject("dingzhi");
+		var dingzhi = {};
+		dingzhi.luozuan_info = {};
+		if( !$.isEmptyObject(dingzhiData) ){
+			if( !$.isEmptyObject(dingzhiData.luozuan_info) ){
+				dingzhi.luozuan_info = dingzhiData.luozuan_info;
+			}
+		}
+		dingzhi.jietuo_info  = {};
+		dingzhi.jietuo_info.goods_id 	= $("#goodsId").val();
+		dingzhi.jietuo_info.gal_id 		= gal_id;
+		dingzhi.jietuo_info.thumb 		= $("#thumb").val().toString();
+		dingzhi.jietuo_info.goods_name 	= $("#goodsName").val().toString();
+		dingzhi.jietuo_info.goods_price = $("#goodsPrice").val().toString();
+		dingzhi.jietuo_info.material 	= {};
+		dingzhi.jietuo_info.material.material_id 	= $('#associateMaterial span.active').attr('data-content');
+		dingzhi.jietuo_info.material.material_name	= $('#associateMaterial span.active').attr('ref');
+		dingzhi.jietuo_info.luozuan  	= {};
+		dingzhi.jietuo_info.luozuan.gal_id  		= $('#associateLuozuan span.active').attr('data-content');
+		dingzhi.jietuo_info.luozuan.shape_name 		= $('#associateLuozuan span.active').attr('title');
+		
+		
+		
+		dingzhi.jietuo_info.luozuan.weights_name 	= $('#associateLuozuan span.active').attr('ref');
+		dingzhi.jietuo_info.deputystone = {};
+		dingzhi.jietuo_info.deputystone.gad_id 		= $('#deputystone span.active').attr('ref');
+		var newDingzhi = JSON.stringify(dingzhi);
+		SetCookie("dingzhi", newDingzhi, 1000);
+		if( !$.isEmptyObject( dingzhi.luozuan_info ) ){
+			layer.open({
+				   content: '尊敬的客户，您的钻戒匹配成功。'
+				   ,btn: '确定'
+				   ,yes: function(index){
+					  location.href="{:U('/Goods/goodsDiy')}?gcid=60";
+				   }
+			});
+		}else{
+			layer.open({
+				   content: '戒托选择成功，是否去挑选钻石？'
+				   ,btn: '确定'
+				   ,yes: function(index){
+					  location.href="{:U('/Diamond/goodsDiy')}";
+				   }
+			});
+		}
+	}
+</script>
+<include file="Public:foot" />
+</body>
+</html>

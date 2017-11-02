@@ -1,0 +1,491 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+	<!-- user -->
+	<div class="user">
+		<div class="container">
+			<div class="path">
+				<ol class="breadcrumb">
+					当前位置：
+				  <li><a href="#">首页</a></li>
+				  <li class="active"><a href="#">我的订单</a></li>
+				</ol>
+			</div>
+
+			<div class="userdata">
+				<div class="row">
+					<include file=".:Base:User:menu" />
+					<div class="col-md-9">
+						<div class="cart user-order-details user-order">
+
+							<nav class="user-order-nav">
+								<ul>
+									<li class="active"><a onclick="javascript:show_list('0',this,'-2')">全部订单</a></li>
+									<li>|</li>
+									<li><a onclick="javascript:show_list('0',this,'0,1')">待支付</a></li>
+									<li>|</li>
+									<li><a onclick="javascript:show_list('0',this,'2,3')">待发货</a></li>
+									<li>|</li>
+									<li><a onclick="javascript:show_list('0',this,'4')">待收货</a></li>
+									<li>|</li>
+									<li><a onclick="javascript:show_list('0',this,'5,6')">己完成</a></li>
+									<li>|</li>
+									<li><a onclick="javascript:show_list('0',this,'-1')">己取消</a></li>
+									<li style="width: 27%"> &nbsp; </li>
+									<div class="clearfix"></div>
+								</ul>
+							</nav>
+
+							<div class="table-box">
+								<div class="cart-list table-responsive">
+									<table class="table">
+										<thead>
+									        <tr>
+									          <th>商品名称</th>
+									          <th>类型</th>
+									          <th>货品编号</th>
+									          <th>单价</th>
+									          <th>数量</th>
+									          <th>小计</th>
+									        </tr>
+									    </thead>
+									</table>
+
+								<div class="order-state"></div>
+									<!--
+									<div class="order-state">
+										<table class="table">
+										    <tbody>
+										    	<tr>
+									    			<td colspan="3" class="text-left"><strong>2016-05-07</strong> 订单：20160513837264</td>
+									    			<td colspan="3" style="text-align: right">状态：待支付</td>
+										    	</tr>
+										        <tr>
+										          <td>
+										          	<img src="images/cart_11.png" alt="">
+													天籁-白18K金对戒(男) <br>
+										            天籁-白18K金钻石对戒(女)
+										          </td>
+										          <td>现货</td>
+										          <td>2016MJ001SJ012</td>
+										          <td>¥5199.00</td>
+										          <td>1</td>
+										          <td><span class="red">¥5199.00</span></td>
+										        </tr>
+										        <tr>
+										          <td><img src="images/cart_11.png" alt=""> 天籁-白18K金对戒(男) <br> 天籁-白18K金钻石对戒(女) </td>
+										          <td>定制戒托</td>
+										          <td>2016MJ001SJ012</td>
+										          <td>¥5199.00</td>
+										          <td>1</td>
+										          <td><span class="red">¥5199.00</span></td>
+										        </tr>
+
+										       <tr>
+										          <td>GIA_7196541097  圆形   0.5ct  颜色:I  净度:VS1  切工:F  抛光:VG  荧光:F 对称:VG  </td>
+										          <td>定制裸钻证书货</td>
+										          <td>2016MJ001SJ012</td>
+										          <td>¥5199.00</td>
+										          <td>1</td>
+										          <td><span class="red">¥5199.00</span></td>
+										        </tr>
+										        <tr>
+										        	<td colspan="3">总额：<strong class="red">¥15398.00</strong> </td>
+										        	<td colspan="3" style="text-align: right;"> <button class="btn btn-xs btn-warning">去支付</button> <a href="#" class="btn-link hs">查看</a> <a href="#" class="btn-link hs">取消</a></td>
+										        </tr>
+									      </tbody>
+									    </table>
+									</div>
+
+									-->
+
+
+
+							</div>
+
+
+							<div id="page"></div>
+							<!--
+							<div class="mallhot mallhot-type diamond diamond-select">
+								<div class="pages text-right">
+									<nav>
+										<ul class="pagination">
+											<li>
+											  <a href="#">
+											    «
+											  </a>
+											</li>
+											<li class="active"><a href="#">1</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">5</a></li>
+											<li class="disabled"><a href="#">...</a></li>
+											<li>
+												<a href="#">
+													»
+												</a>
+											</li>
+											<strong>跳至</strong> <input type="text" style="width: 50px;" class="pageinput" value="10"> <button class="btn btn-default subto">GO</button>
+										</ul>
+									</nav>
+								</div>
+							</div>
+							-->
+
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h5 class="modal-title" id="gridSystemModalLabel">订单支付</h5>
+	      </div>
+	      <div class="container-fluid">
+	      	<div class="row">
+	      		<div class="col-md-12">
+					<h5>订单总额: <span class="red total_price">￥12500.00</span></h5>
+					<p >支付方式：线下支付</p>
+					<p>您可以联系公司财务，完成线下转账支付电话：{:C('site_contact')} <br></p>
+	      		</div>
+	      	</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- user end //-->
+ 									<!--
+									<div class="order-state">
+										<table class="table">
+										    <tbody>
+										    	<tr>
+									    			<td colspan="3" class="text-left"><strong>2016-05-07</strong> 订单：20160513837264</td>
+									    			<td colspan="3" style="text-align: right">状态：待支付</td>
+										    	</tr>
+										        <tr>
+										          <td>
+										          	<img src="images/cart_11.png" alt="">
+													天籁-白18K金对戒(男) <br>
+										            天籁-白18K金钻石对戒(女)
+										          </td>
+										          <td>现货</td>
+										          <td>2016MJ001SJ012</td>
+										          <td>¥5199.00</td>
+										          <td>1</td>
+										          <td><span class="red">¥5199.00</span></td>
+										        </tr>
+										        <tr>
+										          <td><img src="images/cart_11.png" alt="">
+												  天籁-白18K金对戒(男) <br>
+												  天籁-白18K金钻石对戒(女) </td>
+										          <td>定制戒托</td>
+										          <td>2016MJ001SJ012</td>
+										          <td>¥5199.00</td>
+										          <td>1</td>
+										          <td><span class="red">¥5199.00</span></td>
+										        </tr>
+
+										       <tr>
+										          <td>GIA_7196541097  圆形   0.5ct  颜色:I  净度:VS1  切工:F  抛光:VG  荧光:F 对称:VG  </td>
+										          <td>定制裸钻证书货</td>
+										          <td>2016MJ001SJ012</td>
+										          <td>¥5199.00</td>
+										          <td>1</td>
+										          <td><span class="red">¥5199.00</span></td>
+										        </tr>
+										        <tr>
+										        	<td colspan="3">总额：<strong class="red">¥15398.00</strong> </td>
+										        	<td colspan="3" style="text-align: right;"> <button class="btn btn-xs btn-warning">去支付</button> <a href="#" class="btn-link hs">查看</a> <a href="#" class="btn-link hs">取消</a></td>
+										        </tr>
+									      </tbody>
+									    </table>
+									</div>
+
+									-->
+<script>
+show_list('','0','-2');
+$(".user-order-nav ul li:eq(0)").addClass("active");  //选中
+/* 我的订单列表 */
+function show_list(page,obj,status){
+	$(".user-order-nav ul li").removeClass("active");
+	if($(obj).parent('li').hasClass("active") == true){
+		$(obj).parent('li').removeClass("active");
+	}else{
+		$(obj).parent('li').addClass("active");
+	}
+	  if (status) setCookie('my_order_list_status',status);
+	else status=getCookie('my_order_list_status');
+	  if(status=='-2')  $(".user-order-nav ul li").eq(0).addClass("active");
+ else if(status=='0,1') $(".user-order-nav ul li").eq(2).addClass("active");
+ else if(status=='2,3') $(".user-order-nav ul li").eq(4).addClass("active");
+ else if(status=='4')   $(".user-order-nav ul li").eq(6).addClass("active");
+ else if(status=='5,6') $(".user-order-nav ul li").eq(8).addClass("active");
+ else if(status=='-1')  $(".user-order-nav ul li").eq(10).addClass("active");
+
+var html='';
+var total_price='';
+var attr_id=[];
+var attr_id_len='';
+var attr_id_sam='';
+var attr_id_end='';
+		$.post("{:U('Home/User/olist')}",{Action:"POST",page:page,order_status:status},function(data){
+			if(data[0]){
+				$(".order-state").html(html);
+					 $.each(data ,function(k ,e) {
+						if(k=='page'){	return false;}
+						if(k=='order_status'){	return false;}
+						html += "<table class='table table_romove'>";
+						html += "<tbody><tr>";
+						html += "<tr>";
+						html += "<td colspan='3' class='text-left'><strong>"+getLocalTime(e[0].create_time)+"</strong> 订单："+e[0].order_sn+"</td>";
+						html += "<td colspan='3' style='text-align: right'>状态："+e[0].status_txt+"</td>";
+						html += "</tr>";
+			$.each(e ,function(c ,b) {
+						if(b.goods_data){
+							html += "<tr>";
+							html += "<td>";
+
+							if(b.goods_type==3 || b.goods_type==4){
+								html +="<a href='/Home/Goods/goodsDetails/goods_type/"+b.goods_type+"/gid/"+b.goods_id+"'>";
+							}
+
+							if(b.goods_data.thumb){
+								html += "<img src='"+b.goods_data.thumb+"' alt=''  width='79' height='78' >";
+							}else if(b.goods_type==1){
+								html += "<img src='__PUBLIC__/images/diamondShape/"+b.goods_data.shape+".gif' />";
+							}else if(b.goods_type==2){
+								html += "";
+							}else{
+								html +="<img src='__PUBLIC__/Uploads/product/nopic.png' />";
+							}
+							if(b.goods_type==1){
+									html += ""+b.goods_data.certificate_type+"__"+b.goods_data.certificate_number+"<br/>颜色："+b.goods_data.color+"  钻重："+b.goods_data.weight+" 净度："+b.goods_data.clarity+" 切工："+b.goods_data.cut+"  ";
+							}else if(b.goods_type==2){
+									html += ""+b.goods_data.goods_sn+"";
+							}else{
+								html +=""+b.goods_data.goods_name+"";
+							}
+
+
+							if(b.goods_type==3 || b.goods_type==4){
+								html +="</a>";
+							}
+
+
+							html += "</td>";
+								if(b.goods_type==1){
+									html += "<td>证书货</td>";
+								}else if(b.goods_type==2){
+									html += "<td>散货</td>";
+								}else if(b.goods_type==3){
+									html += "<td>成品</td>";
+								}else{
+									html += "<td>戒托</td>";
+								}
+								if(b.goods_data.goods_sn==undefined || b.goods_data.goods_sn==''){
+									if(b.goods_data.luozuan_type == 1){
+										html +="<td>彩钻<br/>"+b.goods_data.goods_name+"</td>";
+									}else{
+										html +="<td>"+b.goods_data.goods_name+"</td>";
+									}
+									//html +="<td>"+b.goods_data.location+""+b.goods_data.color+""+b.goods_data.clarity+""+b.goods_data.cut+"</td>";
+								}else{
+									if(b.goods_type==2){
+											html += "<td></td>";
+									}else{
+											html += "<td>"+b.goods_data.goods_sn+"</td>";
+									}
+								}
+
+
+
+
+								if(b.goods_type==3 ||b.goods_type==4){
+
+								html += "<td>¥"+b.goods_give_price+"</td>";
+
+								}else{
+									html += "<td>¥"+b.goods_price+"</td>";
+								}
+								if(b.goods_type==1){
+									html += "<td>"+b.goods_data.weight+"</td>";
+								}else {
+									if(b.goods_number_up>0){
+										html += "<td>"+b.goods_number_up+"</td>";
+									}else{
+										html += "<td>"+b.goods_number+"</td>";
+									}
+								}
+
+
+								if(b.goods_price_up>0){
+									html += "<td><span class='red'>¥"+b.goods_price_up+"</span></td>";
+								}else{
+									html += "<td><span class='red'>¥"+b.goods_price+"</span></td>";
+								}
+
+							html += "</tr>";
+							/*
+							if(b.goods_data.price==undefined){
+								html += "<td>¥"+b.goods_price+"</td>";
+							}else{
+								html += "<td>¥"+b.price+"</td>";
+							}
+							html += "<td>1</td>";
+							if(b.goods_data.price==undefined){
+								html += "<td><span class='red'>¥"+b.goods_price+"</span></td>";
+							}else{
+								html += "<td><span class='red'>¥"+b.goods_data.price+"</span></td>";
+							}
+							html += "</tr>";
+							*/
+
+
+					}
+/*
+						if(b.goods_data){
+								if(b.goods_data.associateInfo!=undefined){
+							html += "<tr>";
+							html += "<td>";
+							html += "<img src='' alt=''> "+b.goods_data.associateInfo.material_name+"";
+							html += "</td>";
+							html += "<td>珠宝产品</td>";
+							html += "<td>	</td>";
+							html += "<td>¥"+b.goods_data.associateInfo.gold_price+"</td>";
+							html += "<td>金重"+b.goods_data.associateInfo.weights_name+"g</td>";
+							html += "<td><span class='red'>¥"+b.goods_data.associateInfo.gold_price+"</span></td>";
+							html += "</tr>";
+							}
+						}
+						if(b.goods_data){
+							if(b.goods_data.deputystone!=undefined){
+							html += "<tr>";
+							html += "<td>";
+							html += "<img src='' alt=''> ";
+							html += "</td>";
+							html += "<td>副石</td>";
+							html += "<td>"+b.goods_data.deputystone.deputystone_name+"</td>";
+							html += "<td>¥"+b.goods_data.deputystone.deputystone_price+"</td>";
+							html += "<td>1</td>";
+							html += "<td><span class='red'>¥"+b.goods_data.deputystone.deputystone_price+"</span></td>";
+							html += "</tr>";
+							}
+						}
+					if(b.goods_data.luozuanInfo){
+							html += "<tr>";
+							html += "<td>";
+							html += "<img src='' alt=''> ";
+							html += "</td>";
+							html += "<td>主石</td>";
+							html += "<td> </td>";
+							html += "<td>¥"+b.goods_data.luozuanInfo.price+"</td>";
+							html += "<td>"+b.goods_data.luozuanInfo.weights_name+"CT</td>";
+							html += "<td><span class='red'>¥"+b.goods_data.luozuanInfo.price+"</span></td>";
+							html += "</tr>";
+					}
+
+					alert
+*/
+				attr_id.push(b.oeval);
+		attr_id_len=attr_id.length;
+		attr_id_sam=eval(attr_id.join('+'));
+
+			});
+						html += "<tr>";
+						html += "<td colspan='3'>总额：<strong class='red'>¥";
+							if(e[0].order_price_up>0){
+								total_price=e[0].order_price_up
+							}else{
+								total_price=e[0].order_price
+							}
+						html += total_price;
+						html += "</strong> </td>";
+						html += "<td colspan='3' style='text-align: right;'> ";
+						if(e[0].order_status==1){
+							html +=" <button type='button'  data-toggle='modal'  data-target='.bs-example-modal-lg'  class='btn btn-xs btn-warning ' onclick='pay_it("+total_price+")'   >去支付</button>";
+						}
+							html +="<a href='/Home/User/odeta/orderid/"+e[0].order_id+"' class='btn-link hs'>"
+						if(e[0].order_status==4){
+							html +="确认收货";
+						}else{
+							html +="查看";
+						}
+							html +="</a> ";
+
+						if(e[0].order_status==0 ){
+							html +="<a   onclick='updateOrder("+e[0].order_id+",0)'  class='btn-link hs'>取消</a></td>";
+						}else if(e[0].order_status=='-1'){
+							html +="<a href='#' onclick='updateOrder("+e[0].order_id+",-1)'  class='btn-link hs'>删除</a></td>";
+						}else if(e[0].order_status==5 || e[0].order_status==6){
+							attr_id_end=attr_id_sam-attr_id_len;
+								if(attr_id_end==attr_id_len){
+									html +="<a class='btn-link hs'>已评价</a></td>";
+								}else{
+									html +="<a href='/Home/User/oeval/oid/"+e[0].order_id+"' class='btn-link hs'>评价</a></td>";
+								}
+						}
+						html += "</tr>";
+						html += "</tbody></table>";
+
+					attr_id=[];			//置空，重用
+					});
+					$(".order-state").html(html);
+					$("#page").html(data.page);
+			}else{
+					html = "<p>暂无订单</p>";
+					$(".order-state").html(html);
+					$("#page").html('');
+			}
+		});
+
+}
+
+
+function getLocalTime(nS) {
+   date_str=new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
+   return (date_str.substring(-0,10));
+}
+
+function isArray(obj){
+return (typeof obj=='object')&&obj.constructor==Array;
+}
+
+
+	function updateOrder(order_id,order_status){
+		if(order_status==-1){
+			var cofirm_val="确定删除订单吗？";
+		}else{
+			var cofirm_val="确定取消订单吗？";
+		}
+		layer.confirm(cofirm_val, {
+			  btn: ['确定','再想想'] //按钮
+			}, function(){
+				$.post('/Home/User/updateOrder',{order_id:order_id,order_status:order_status,href:window.location.href},function(data){
+					layer.msg(data.msg,{
+						shift :2,
+					});
+					setTimeout(function(){
+						window.location.reload();
+					},1500)
+				});
+			}
+		);
+	}
+
+
+
+function pay_it(total_price){
+	$(".total_price").text('￥'+total_price);
+}
+
+</script>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

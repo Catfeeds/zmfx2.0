@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>消息回复</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" /> 
+</head>
+<body>
+<div class="page-main" id='genjin'>
+    <div class="subMenu">
+        <h3>当前操作：消息回复</h3>
+    </div>
+  <div class="followInfo" aling='center'>
+    	<form action="{:U('/Admin/User/answer?fid='.$followInfo['fid'])}" method="post">
+    		<div style='margin-top:10px;'>客户名称：{$followInfo.username}</div>
+    		<div style='margin-top:10px;'>业 务 人：{$followInfo.user_name}</div>
+    		<div  style='margin-top:10px;'>跟进内容：</div>
+    		<div  style='margin-top:10px'>{$followInfo.content}</div>
+	    	 <div>回复内容:</div>
+	    	 <div><textarea name="content" cols="100" rows="7"></textarea></div>
+	    	 <div style='margin-top:10px;margin-left:600px'><input type="submit" value="提交" class="button" /></div>
+	    	 <div style='margin-top:10px;'>回复信息记录：</div>
+    		<div  style='margin-top:10px;'></div>
+    			<volist name='followList' id='vo'>
+	    	 			<div style='border-bottom:1px solid red;margin-top:15px;'>
+	    	 				<td>{$au.user_name}：回复：{$followInfo.user_name}:{$vo.content}。。。。。。。。。。。。{$vo.addtime|date="Y-m-d H:i:s",###}<br /></td>
+	    	 			</div>
+	    	 	</volist>
+    	 </form>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>消息中心</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" />
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：消息中心</h3>
+    </div>
+        <form action="{:U('Admin/User/replyMsg')}" method="post">
+            <div style="padding:10px;">
+                <div class="info">
+                    <div class="title">标题:</div>
+                    <if condition="$replyRec.title neq ''">
+                        <span>{$replyRec.title}</span>
+                    <esle/>
+                        <span>系统消息</span>
+                    </if>
+                </div>
+                <div class="info">
+                    <div class="title">消息内容:</div>
+                    <textarea name="content" readonly="true">{$replyRec.content}</textarea>
+                </div>
+                <div class="info">
+                    <div class="title">回复内容:</div>
+                    <textarea name="replyContent">{$replyRec.replyContent}</textarea>
+                </div>
+                <div class="info">
+                    <div class="title">&nbsp;</div>
+                    <input type="hidden" name="msg_id" value="{$replyRec.msg_id}" />
+                    <input type="submit" class="button fl" value="保存">
+                    <input type="reset" class="button fl ml10" value="重置">
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </form>
+</div>
+</body>
+</html>

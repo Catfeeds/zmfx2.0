@@ -1,0 +1,230 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$seo_title}</title>
+</head>
+<style>
+.fl { margin: 0 10px; padding-left: 0;}
+.filter div.fl { padding-left: 0px;}
+.container{
+	width:80%;
+	margin:20px auto;
+}
+.container .span4{
+	height:26px;
+}
+#opinion{
+	height: 30px;
+    margin-left: 150px;
+    margin-top: 20px;
+    width: 150px;
+	cursor:pointer;
+}
+</style>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：客户预约</h3>
+    </div>
+    <div class="filter">
+		<form action="{:U('/Admin/Store/booked/')}" method="get">
+			<select name="store_id" class="fl" style="width:150px;">
+			  <option value="" selected="">请选择预约门店</option>
+			  <volist name="storeList" id="val">
+			  <option value="{$val['id']}" <eq name="store_id" value="$val['id']" > selected</eq> >{$val['name']}</option>
+			  </volist>
+			</select>
+			<select name="type" class="fl">
+			  <option value="" selected="">预约类型</option>
+			  <option value="0" <eq name="type" value="0" > selected</eq> >在线预约</option>
+			  <option value="1" <eq name="type" value="1" > selected</eq> >下单预约</option>
+			  <option value="3" <eq name="type" value="1" > selected</eq> >电话预约</option>
+			</select>
+			<input class="input" type="text" style="width:130px" name="keyword" placeholder="输入姓名、手机号" value="{$keyword}">
+			<div class="fl">预约时间：</div>
+			<input type="text" name="startTime" id="startTime" style="width:100px"  value="{$starTime}">
+			<div class="fl">~</div>
+			<input type="text" name="endTime" id="endTime" style="width:100px"   value="{$endTime}">
+			<input class="button fl" type="submit" value="查询">
+		</form>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+		<tbody>
+			<tr class="top">
+				<th>ID</th>
+				<th>姓名</th>
+				<th>手机号</th>
+				<th>提交时间</th>
+				<th>预约时间</th>
+				<th>预约门店</th>
+				<th>所在城市</th>
+				<th>预约类型</th>
+				<th>性别</th>
+				<th>状态</th>
+				<th>回访记录</th>
+			</tr>
+			<volist name="bookedList" id="vo">
+
+			<tr class="bg1">
+				<td>
+					{$vo['id']}
+					<eq name="vo['is_visit']" value="0">
+						 <span class="new red">新</span>
+
+					</eq>
+				</td>
+				<td>{$vo['name']}</td>
+				<td>{$vo['phone']}</td>
+				<td>{$vo['addtime']|date="Y-m-d H:i:s",###}</td>
+				<td>
+					<if condition="$vo['time']">
+					{$vo['time']|date="Y-m-d",###}
+					</if>
+				</td>
+				<td>{$vo['store_name']}</td>
+				<td>{$vo['city_name']}</td>
+				<td>
+					<switch name="vo['type']">
+						<case value="0">在线预约</case>
+						<case value="1">下单预约</case>
+						<case value="3">电话预约</case>
+					</switch>
+				</td>
+				<td>
+
+					<if condition="$vo['sex'] eq 1">
+						男
+					<elseif condition="$vo['sex'] eq 2" />
+						女
+					<else/>
+
+					</if>
+				</td>
+				<td>
+					<eq name="vo['is_visit']" value="1">
+						已回访
+					<else />
+						<span style="color:blue">待回访</span>
+					</eq>
+				</td>
+				<td>
+					<a class="visit" href="javascript:;">详情</a>
+					<input name="visit_record" class="visit_record" type="text" style="display:none;" size="30" value="{$vo['visit_record']}" />
+					<input name="message" class="message" type="text" style="display:none;" size="30" value="{$vo['content']}" />
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+    </table>
+	<div class="page">{$page}</div>
+</div>
+<div class="tab-pane" id="feedback" style="display:none;">
+	<div class="container">
+		<dl style="margin-top:10px;">
+			<dl>
+				<dt>客户留言：</dt>
+				<dd id="message"></dd>
+			</dl>
+			<dt>回访记录：</dt>
+			<br />
+			<dd><textarea id="content" maxlength="1000" name="content" rows="22" cols="78" style="resize:none;"></textarea></dd>
+		</dl>
+		<dl class="text-right">
+			<dd><input id="opinion"  class="btn btn-warning " value="保存" type="submit"></dd>
+		</dl>
+		<input type="hidden" name="id" />
+	</div>
+</div>
+<!-- end -->
+
+<script>
+var start = {
+  elem: '#startTime',
+  format: 'YYYY-MM-DD',
+  istoday: false,
+  choose: function(datas){
+     end.min = datas; //开始日选好后，重置结束日的最小日期
+     end.start = datas //将结束日的初始值设定为开始日
+  }
+};
+var end = {
+  elem: '#endTime',
+  format: 'YYYY-MM-DD',
+  istoday: false,
+  choose: function(datas){
+    start.max = datas; //结束日选好后，重置开始日的最大日期
+  }
+};
+laydate.skin('molv');  //加载皮肤，参数lib为皮肤名 
+laydate(start);
+laydate(end);
+$(document).ready(function(){
+	/**$('.visit').click(function(){
+		$(this).children('.visit_record').hide();
+		$(this).children('input[name="visit_record"]').show();
+		$(this).children('input[name="visit_record"]').focus();
+	}); **/
+	<!-- 填写回访记录-弹出内容填写页面 -->
+	$('.visit').click(function(){
+		var content	=  $(this).next('.visit_record').val();
+		var message	=  $(this).next().next('.message').val();
+		console.log(message);
+		if(!content){
+			content = '';
+		}
+		if(!message){
+			message = '';
+		}
+		$('#content').val(content);
+		$('#message').html(message);
+		var id	= $(this).parents('tr').find('td:first').text();
+		$('input[name="id"]').val(id);
+		
+		layer.open({
+			type: 1,
+			title:'回访记录',
+			area: ['700px', '550px'], //宽高
+			//maxmin: true,			  //最大化
+			content: $('#feedback'),
+		})
+		
+	
+	})
+	
+	$('#opinion').live('click',function(){
+		var id		= $('input[name="id"]').val();
+		var content	= $('#content').val(); 
+		if(checkeinput_length('id','','','操作错误') == false){
+			return false;
+		}
+		if(checketextarea_length('content','','1000','回访内容不能为空且不能超过1000个字符') == false){
+			return false;
+		}
+		$.ajax({
+			type: "post",
+			url : "{:U('Admin/Store/bookedSave/')}",
+			data: {visit_record:content,id:id},
+			dataType:'json', 
+			success: function(res){
+				layer.closeAll();
+				if(res){
+					if(res.status == 100){
+						location.reload();
+					}
+				}else{
+					layer.msg('网络错误',{
+						shift :6,
+						icon: 5
+					});
+					return false;
+				}
+			},
+		});
+	
+
+	})
+
+
+})
+
+</script>

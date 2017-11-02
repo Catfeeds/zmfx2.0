@@ -1,0 +1,357 @@
+<include file="Public:header" />
+<script src="__JS__/cart.js"></script> 
+
+<!--导航-->
+<div class="am-g ">
+	<!--搜索-->
+<!-- 	<include file="Public:search" /> -->
+<!-- Header -->
+	<header data-am-widget="header" class="am-header am-serch cat">
+		<div class="am-header-left am-header-nav">
+			<a href="javascript:;" onclick="javascript:history.go(-1);" class="">
+				<img class="am-header-icon-custom" src="__ASS__/Img/search_01.png" alt=""/>
+			</a>
+		</div>
+		<h1 class="am-header-title">
+			填写订单
+		</h1>
+	</header>
+	<form action="{:U('Order/orderDone')}" method="get">
+	<div class="wrap">
+		<div class="sign">
+			<p>配送方式</p>
+			<a href="#"></a>
+		</div>
+		<div class="date" >
+			<p>
+				<if condition="$user_delivery_mode">
+					<volist name="user_delivery_mode" id="vo">
+						<a href="#"  style="padding: 0.7rem 2rem; 
+						<if condition="$i eq 1">
+						 	border-color: #ca0101;" class="hasborder"  
+						<else />
+							border-color: #eeeae9;" 
+						</if>
+						attr_id="{$vo.mode_id}">{$vo.mode_name}</a>&nbsp; &nbsp;&nbsp;
+					</volist>
+				</if>
+			</p>
+			<script>
+			$(function(){
+				$('.date a').bind('click', function(){
+					$('.date a').css('border-color', '#eeeae9').removeClass('hasborder');
+					$(this).css('border-color', '#ca0101').addClass('hasborder');
+				});
+			});
+			</script>
+			<p>配货时间：工作日、双休日节假日均可送货</p>
+		</div>
+		<div class="cartAddUserAddrss">
+		<section data-am-widget="accordion" class="am-accordion am-accordion-basic address" data-am-accordion='{  }'>
+			<foreach name="user_address" item="vo" key="k">
+				<dl class="am-accordion-item
+					<if condition="$vo.is_default eq '1'">am-active</if>
+				" onclick="changeAddress({$vo.address_id})">
+					<dt class="am-accordion-title">{$vo.title}&nbsp;&nbsp;{$vo.name}&nbsp;&nbsp;{$vo.phone}
+						<span>
+
+							<label for="is_default_{$k}" >
+								<if condition="$vo.is_default neq '1'">
+									<!--<input id="is_default_{$k}" name="is_default" onchange="setDefaultAddress({$vo.address_id});" onchange="return false" type="radio" value="1" >-->
+								<else />
+									<input id="is_default_{$k}" name="address_id" onchange="setDefaultAddress({$vo.address_id});" onchange="return false" type="radio" value="1" checked> &nbsp;默认地址
+								</if>
+							</label>
+						</span>
+					</dt>
+					<dd class="am-accordion-bd am-collapse address-in
+							<if condition="$vo.is_default eq '1'">am-in<else /></if>
+					">
+						<div class="am-accordion-content">
+							<input name="address_id" id="address_id_{$vo.address_id}" value="{$vo.address_id}"  <if condition="$vo.is_default eq '1'">checked="checked"</if> type="radio"  style="display: none">
+							收货人：{$vo.name}
+							<if condition="$vo.is_default neq '1'">
+								<span class="address-del">
+									<input type="button" onClick="if(confirm('你确认要删除该收货地址吗？')){deleteAdd({$vo.address_id});}" value="删除">
+									&nbsp;&nbsp;
+									<input type="button" onClick="if(confirm('确定地址为默认地址吗？')){setDefaultAddress({$vo.address_id});}" value="标记默认">
+								</span>
+							</if>
+							<br/>联系电话：{$vo.phone}
+							<br/>收货地址：{$vo.country_id|getRegion}&nbsp;{$vo.province_id|getRegion}&nbsp;{$vo.city_id|getRegion}&nbsp;{$vo.district_id|getRegion}&nbsp;{$vo.address}
+							<br/>邮政编码：{$vo.code}
+						</div>
+					</dd>
+				</dl>
+			</foreach>
+			<dl class="am-accordion-item">
+				<dt class="am-accordion-title newly"><b>新增收货地址</b></dt>
+				<dd class="am-accordion-bd am-collapse " id="add_address_dd">
+					<div class="am-accordion-content">
+						<form id="addressdata" method="post">
+							<label>地址标注</label>
+							<input type="text" name="title" placeholder="例：公司">
+							<br/>
+							配送区域
+							<select name="country_id" id="selCountries">
+								<option value="1">中国</option>
+							</select>
+							<select name="province_id" id="selProvinces">
+								<option value="0">请选择</option>
+							</select>
+							<select name="city_id" id="selCities">
+								<option value="0">请选择</option>
+							</select>
+							<select name="district_id" id="selDistricts">
+								<option value="0">请选择</option>
+							</select>
+							<br>
+							<label>地址详情</label>
+							<input type="text" name="address">
+							<br>
+							<label>邮政编码</label>
+							<input type="text" name="code">
+							<br>
+							<label>收货姓名</label>
+							<input type="text" name="name">
+							<br>
+							<label>联系电话</label>
+							<input type="text" name="phone">
+							<br/>设为默认
+							<select name="is_default" class="address-in">
+								<option value="1">是</option>
+								<option value="0">否</option>
+							</select>
+							<span class="am-pace">
+							<button type="button" class="am-btn am-btn-blue am-radius" id="cancle_add_address">取消</button>
+							<button id="save_address" type="button" class="am-btn am-btn-blue am-radius">确认地址</button>
+							</span>
+						</form>
+					</div>
+				</dd>
+			</dl>
+		</section>
+		</div>
+		<div class="sign"><p>商品清单</p></div>
+		<!--选购的商品-->
+	<if condition="$data">
+	<form action="{:U('Order/orderSubmit')}" method="get">
+	<input name="id" value="{$id}" type="hidden" />
+	<div class="am-list-news-bd shop">
+		<ul class="am-list cartList">             
+			<if condition="$data['luozuan']">
+			<volist name="data['luozuan']['data']" id="vo">
+			<li class="am-g am-list-item-dated">
+				<div class="content">
+					<b>{$vo.goods_attrs.goods_name} {$vo.goods_attrs.certificate_type} {$vo.goods_attrs.certificate_number} <span color="red">[裸钻]</span></b><br>
+					{$vo.goods_attrs.weight}克拉，{$vo.goods_attrs.color}色，{$vo.goods_attrs.clarity}净度，{$vo.goods_attrs.cut}切工<br>
+					<big>单粒价格：&yen;{$vo.goods_attrs.price}</big>
+				</div>                                                                                              
+			</li>
+			</volist>
+			</if>
+			<if condition="$data['sanhuo']">
+			<volist name="data['sanhuo']['data']" id="vo">
+			<li class="am-g am-list-item-dated">
+				<div class="content">
+					<b>{$vo.goods_attrs.goods_sn} {$vo.goods_attrs.type_name} 库存：{$vo.goods_attrs.goods_weight}CT <span color="red">[散货]</span></b><br>
+					颜色：{$vo.goods_attrs.color}净度，{$vo.goods_attrs.clarity} 切工：{$vo.goods_attrs.cut}<br>
+					每卡单价：&yen;{$vo.goods_attrs.goods_price}<br>
+					<big>购买重量：{$vo.goods_number} CT </big>
+					<big>现金小计：&yen;{$vo.goods_attrs.goods_price2}</big>
+				</div>                                                                                              
+			</li>      
+			</volist>
+			</if> 
+			<if condition="$data['product']">
+			<volist name="data['product']['data']" id="vo">
+			<li class="am-g am-list-item-dated">
+				<div class="content">
+					<div class="cartImg"><img src="{$vo.goods_attrs.thumb}" /></div>          
+					<div class="cartAttrs">
+						<b>{$vo.goods_attrs.goods_name}</b><br>
+						<if condition="$vo['goods_attrs']['associateInfo']">{$vo.goods_attrs.associateInfo.material_name} 金重：{$vo.goods_attrs.associateInfo.weights_name}g <br>
+							主石：{$vo.goods_attrs.luozuanInfo.weights_name}CT 
+							{$vo.goods_attrs.luozuanInfo.shape_name} 
+							副石：{$vo.goods_attrs.deputystone.deputystone_name} 
+							手寸：{$vo.goods_attrs.hand}  
+							刻字：{$vo.goods_attrs.word}
+							<if condition="$vo['goods_attrs']['sd_images']">
+								刻字个性符号：<img src="{$vo.goods_attrs.sd_images}" style="width: 50px;" />
+							</if>
+							<if condition="$vo['goods_attrs']['hand1']">
+								手寸1：{$vo.goods_attrs.hand1}  
+							</if>
+							<if condition="$vo['goods_attrs']['word1']">
+								刻字1：{$vo.goods_attrs.word1}
+							</if>
+							<if condition="$vo['goods_attrs']['sd_images1']">
+								刻字个性符号1：<img src="{$vo.goods_attrs.sd_images1} " style="width: 50px;" />
+							</if>
+						<elseif condition="$vo['specification']" />
+						{$vo.specification}
+						<else />
+						{$vo.goods_attrs.category_name}
+						</if>
+						<br>
+						<big>单价：&yen;
+							<in name="vo['goods_attrs']['activity_status']" value="0,1">
+								{$vo.goods_attrs.activity_price}
+							<else/>
+								{$vo.goods_attrs.goods_price}
+							</in>
+						</big>
+					</div>
+				</div>                                                                                             
+			</li>
+			</volist>
+			</if>  
+		</ul>
+	</div>
+	<div class="sign"><p>订单总金额：<span>￥<big id="total">{$data.total}</big></span></p></div>
+	<div class="am-pace">
+		<button type="button" class="am-btn am-btn-blue am-radius" ><a href="/Order/cart">返回购物车</a></button>
+		<button type="button" class="am-btn am-btn-blue am-radius" onclick="submitOrder()">提交订单</button>
+	</div>
+	</form>
+	<else />
+	<div class="">暂无数据</div>
+	</if>
+</div>
+		<script>
+			var getLength = function (str) {
+				///<summary>获得字符串实际长度，中文2，英文1</summary>
+				///<param name="str">要获得长度的字符串</param>
+				var realLength = 0, len = str.length, charCode = -1;
+				for (var i = 0; i < len; i++) {
+					charCode = str.charCodeAt(i);
+					if (charCode >= 0 && charCode <= 128) realLength += 1;
+					else realLength += 2;
+				}
+				return realLength;
+			};
+			function check_num(str){
+				return str.match(/\D/) == null;
+			}
+			var check_email = function(str){
+				if (str.match(/[A-Za-z0-9_-]+[@](\S*)(net|com|cn|org|cc|tv|[0-9]{1,3})(\S*)/g) == null) {
+					return false;
+				}
+				else {
+					return true;
+				}
+			};
+			function check_mobilephone(str){
+				if (str.match(/^(?:13\d|15[89]|1[\d][\d])-?\d{5}(\d{3}|\*{3})$/) == null) {
+					return false;
+				}
+				else {
+					return true;
+				}
+			}
+			var check_telephone = function(str){
+				if (str.match(/^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/) == null) {
+					return false;
+				}
+				else {
+					return true;
+				}
+			};
+			$(function() {
+				$("#save_address").click(function(){
+					var selProvinces = $("#selProvinces").val();
+					var selCities = $("#selCities").val();
+					var selDistricts = $("#selDistricts").val();
+					var title = $('input[name="title"]').val();
+					if(title == 0 || !title){
+						alert("请填写地址标注");
+						return false;
+					}
+					if(selProvinces == 0 || !selProvinces){
+						alert("请选择省份");
+						return false;
+					}
+					if(selCities == 0 || !selCities){
+						alert("请选择城市");
+						return false;
+					}
+					if(selDistricts == 0 || !selDistricts){
+						alert("请选择区");
+						return false;
+					}
+					
+					if(getLength($('form input[name="address"]').val())<2){
+						alert("请填写准确地址");
+						return false;
+					}
+					var codeLen = $('form input[name="code"]').val().trim().length;
+					if(codeLen != 6  || check_num($('form input[name="code"]').val())===false){
+						alert("请填写正确的邮政编码");
+						return false;
+					}
+					if(getLength($('form input[name="name"]').val())<2){
+						alert("长度不够,请填写准确的收货姓名");
+						return false;
+					}
+					if(check_mobilephone($('form input[name="phone"]').val())==false && check_telephone($('form input[name="phone"]').val())==false ){
+						alert("请填写准确的联系电话");
+						return false;
+					}
+					$.ajax({
+						url:"/User/addressList",
+						type: 'POST',
+						data: $('form').serialize(),
+						success: function(d){
+							alert(d.msg);
+							window.location.reload();
+						}
+					});
+				});
+			});
+			var deleteAdd = function(id){
+				$.ajax({
+					url:"/User/deleteAddress",
+					type: 'POST',
+					data: {'id':id},
+					success: function(d){
+						alert(d.msg);
+						window.location.reload();
+					}
+				});
+			};
+			var setDefaultAddress = function(id){
+				$.ajax({
+					url:"/User/setDefaultAddress",
+					type: 'POST',
+					data: {'id':id},
+					success: function(d){
+						window.location.reload();
+					}
+				});
+			}
+			function address(sel, hl) {
+				var parent_id = $(sel).children('option:selected').val(), html, i;
+				if (parent_id !== 0) {
+					$.get("/Public/getRegion",{'parent_id': parent_id}, function (data) {
+						html = '<option value="0">请选择</option>';
+						for (i = 0; i < data.length; i++) {
+							html += '<option value="' + data[i].region_id + '">' + data[i].region_name + '</option>';
+						}
+						$(hl).html(html);
+					});
+				}
+			}
+			$('#selCountries').change(function () { address('#selCountries', '#selProvinces'); });
+			$('#selProvinces').change(function () { address('#selProvinces', '#selCities'); });
+			$('#selCities').change(function () { address('#selCities', '#selDistricts'); });
+			address('#selCountries', '#selProvinces');
+			$('#cancle_add_address').click(function(){
+				$('#add_address_dd').removeClass('am-in');
+			});
+
+			function changeAddress(address_val){				
+				$("input[type=radio][name=address_id][value="+address_val+"]").attr("checked",true)
+	
+			}
+		</script>
+<include file="Public:footer" />

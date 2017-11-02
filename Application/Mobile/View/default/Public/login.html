@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>登录</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="alternate icon" type="image/png" href="assets/i/favicon.png">
+  <link rel="stylesheet" href="__ASS__/css/amazeui.min.css"/>  
+  <link rel="stylesheet" href="__CSS__/m.css">
+  <link rel="stylesheet" href="__ASS__/css/app.css">
+  <script src="__ASS__/js/jquery.min.js"></script> 
+  <script src="__PUBLIC__/Js/jquery.validator.js"></script>
+  <script src="__JS__/Jquery.Cookie.js"></script> 
+  <link rel="stylesheet" href="__CSS__/color/{:C('agent_id')}.css"> 
+</head>  
+<body> 
+<div class="header">
+  <div class="am-g">
+    <h1><img  src="/Public/{:C('web_logo')}"></h1>
+    <p><img src="__IMG__/logo_07.png" ></p>
+  </div>
+</div>
+<div class="am-g">
+  <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered map">
+    <form id="regist" method="get" class="am-form relogin"> 
+    <fieldset>  
+		<div class="am-form-group">                               
+     		<label for="username" class="user input">    
+      		<input type="text" name="username" autocomplete="off" id="username" value="" minlength="3" placeholder="输入用户名（至少3位字符）"  required /></label> 
+      	</div>
+      	<div class="am-form-group">                                   
+      		<label for="password" class="paw input">
+      		<input type="password" name="password" minlength="6" data-foolish-msg="请输入账号密码（至少6个字符）" required id="password" autocomplete="off" value="" placeholder="请输入你的密码"></label>  
+      	</div>
+      	<!-- <span class="rememberPwd"><input class="check" type="checkbox" id="rememberPwd"><label for="rememberPwd">记住密码</label></span> --> 
+		<span class="rememberPwd">
+			<input type="checkbox" id="rememberuser" value="1" name='rememberuser'><label>{$Think.lang.L9099}</label>
+			<a class="" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 300, height: 125}">忘记密码？</a>
+		</span>
+      	<span class="but"><button type="submit">登录</button></span>
+      	<div class="am-cf">
+	  	<!--<input type="button" onclick="window.location.href='/Public/regist.html';" value="免费注册" class="am-btn am-btn-bg am-btn-sm ">
+        <input type="button" value="忘记密码 " id="forgetpad" class="am-btn-right am-btn am-btn-bg am-btn-sm ">-->
+		<a href="/Public/regist.html">免费注册>></a>
+	  </div>   
+      </fieldset>
+    </form>
+  </div> 
+</div>
+<!--弹出框-->
+<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-1">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd">
+      <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+    </div>
+    <div class="am-modal-bd login-alert">
+      为了账户安全请联系客服帮助修改，电话<a href="tel://{:C('site_contact')}">{:C('site_contact')}</a>
+    </div>
+	<a href="javascript: void(0)" class="login-close"  data-am-modal-close>知道了</a>
+  </div>
+</div>
+<script src="__JS__/layer.js"></script> 
+<script src="__JS__/login.js"></script>  
+<script src="__ASS__/js/amazeui.js" type="text/javascript"></script>
+</body>
+</html>
+<script>
+$(document).ready(function(){
+	jQuery.fn.center = function () {
+            this.css("position","fixed");
+            this.css("bottom", ( $(window).height() - this.height() ) / 2+$(window).scrollTop() + "px");
+            this.css("left", ( $(window).width() - this.width() ) / 2+$(window).scrollLeft() + "px");
+            return this;
+        };
+	// cookie 记录
+    $('#rememberuser').click(function () {
+        var name = $('#username').val();
+        if ($(this).is(':checked')) {
+            if (!name) {
+                alert('{$Think.lang.L9096}');
+                $(this).attr('checked', false);
+            } else {
+                $.cookie('username', name, { expires: 7});
+                $.cookie('rememberuser', 1);
+            }
+        } else {
+            $.cookie('rememberuser', null);
+            $.cookie('username', null);
+        }
+    });
+	    // 记住用户名
+    if ($.cookie('rememberuser')) {
+        $('#rememberuser').attr('checked', true);
+        $('#username').val($.cookie('username'));
+    }
+    // 自动登陆
+    if ($.cookie('autologin')) {
+        $('#username').val($.cookie('username'));
+        $('#password').val($.cookie('password'));
+        $('#autologin').attr('checked', true);
+        $('#rememberuser').attr('checked', true);
+        $('#loginSubmit').trigger('click');
+    }
+})
+</script>

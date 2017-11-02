@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/main.css">
+<script src="__JS__/layer-mobile/layer.js"></script>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/public.js"></script>
+<script src="__JS__/common.js"></script>
+<title>匹配祼钻</title>
+</head>
+<style>
+.active_select {background:#dce3fe;}
+.load { width: 100%;height:0px; color: #333; opacity: 0.8; text-align: center; line-height: 50px;overflow:hidden;}
+.load {margin-bottom:100px;}
+</style>
+<body class="wrap-bg">
+	<!--头部-->
+    <header class=" header text-center">
+    	<a href="{:U('Cart/index')}" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+       	匹配祼钻
+    </header>
+    <!--内容-->
+    <div class="container">
+    	<div class="row area">
+            <div id="myTabContent" class="tab-content">
+               <div class="tab-pane fade in active" id="naked">
+                  <div class="rank">
+                  	<p class="">今日美元汇率：{$data['dollar_huilv']}</p>
+                    <p class="right">共找到<span id="count">{$data['luozuan_count']}</span>颗钻
+					<button  type="button" class='btn btn-primary _dataSort'><span id="sortPrice" class="asc">价格排序<if condition="$_GET['sort'] eq 'DESC'">↓<else />↑</if></span></button></p>
+                  </div>
+                  <p class="rank">选中的钻石将用于匹配戒托（{$weights}CT,{$shape_name}）</p>
+				  <div id="luozuan">
+				  
+		 
+				  <?php if ($data['data'] == true): ?>
+					<volist name="data['data']" id="vo" >
+						<table class='table  text-center'>
+							<tbody id='chk_{$vo.gid}' onclick='tbSelectedId({$vo.gid})' class='color' >
+								<tr class='head'>
+									<td>{$vo.shape}</td>
+									<td colspan='3'>{$vo.certificate_type}:{$vo.certificate_number}</td>
+									
+									<td>
+										<if condition="$data['price_display_type'] neq '1' ">国际: {$vo.dia_global_price}</if>
+									</td>
+									
+								</tr>
+								<tr>
+									<td><b>{$vo.weight}</b></td>
+									<td>{$vo.color}</td>
+									<td>{$vo.clarity}</td>
+									<td>{$vo.certificate_type}</td>
+									
+									<td class='red'> 
+										<if condition="$data['price_display_type'] neq '1' ">折扣: <b>{$vo.dia_discount}</b></if>
+									</td>
+									
+								</tr>
+								<tr>
+									<td>{$vo.location}</td>
+									<td>{$vo.cut}</td>
+									<td>{$vo.polish}</td>
+									<td>{$vo.symmetry}</td>
+									
+									<td>
+										<if condition="$data['price_display_type'] neq '1' ">每卡: <b>{$vo.meikadanjia}</b></if>
+									</td>
+									
+								</tr>
+								<tr>
+									<td>{$vo.goods_name}</td>
+									<td>{$vo.milk}</td>
+									<td>{$vo.coffee}</td>
+									<td>{$vo.fluor}</td>
+									<td class='red'>每粒: <b>{$vo.price}</b></td>
+								</tr>
+							</tbody>
+						</table>
+					</volist>
+					<?php else: ?>
+					<br/>
+					<br/>
+					<br/>
+					<br/>
+					<br/>
+					<br/>
+					<br/>
+					<br/>					
+					<p style="text-align: center; color:red">没有符合匹配条件的裸钻，请返回！</p>
+					
+					<?php endif; ?> 
+				  </div>
+               </div>
+			   <!--更多在底部-->
+				<div class="load"></div>
+            </div>
+            <!--底部-->
+            <div class="navbar-fixed-bottom area-bottom">
+                <button type="button" id="lzppAddCart" class="btn">确定</button>
+            </div>
+   		</div>
+	</div>
+	
+</body>
+</html>
+
+<script>
+$(document).ready(function(){
+	<!-- 价格排序 -->
+	$("._dataSort").click(function(){
+		var cart_id = "{$data['cart_id']}";
+		var thisData = "{$_GET['sort']}";	//数据属性存放排序方式
+		switch(thisData){
+			case 'ASC':
+				var sort = 'DESC';
+				break;
+			case 'DESC':
+				var sort = 'ASC';
+				break;
+			default:
+				var sort = 'DESC';
+				break;
+		}
+		var content = "?cart_id="+cart_id+"&sort="+sort;
+		window.location.href="{:U('Cart/cartMatch')}"+content;
+	});
+	
+	<!-- 选择裸钻添加购物车（用以匹配裸钻） -->
+	$('#lzppAddCart').click(function(){
+		var cart_id = "{$data['cart_id']}";
+		if(thisIDsData==''){
+			tan('请选择商品');
+			return false;
+		}
+		var data = thisIDsData.split(',');
+		$.ajax({
+			type: 'POST',
+			url	: '{:U("Cart/lzppAddCart")}' ,
+			dataType:'json',
+			data: {'cart_id':cart_id,'goodId':data},
+			success: function (ref) {
+				if(ref.status == 100){
+					tan(ref.msg);
+					setTimeout("window.location.href='{:U('Cart/index')}'",2000);
+				}else{
+					tan(ref.msg);
+				}
+			}
+		})
+	})
+
+})
+</script>
+<script> 
+//$(window).scrollTop()这个方法是当前滚动条滚动的距离
+//$(window).height()获取当前窗体的高度
+//$(document).height()获取当前文档的高度
+/*  获取匹配的裸钻列表
+	page：			当前页数
+	n：				每页数量
+	type：			1：刷新，2：加载更多
+*/
+//鼠标滑动初始位置,滚动方向,当前页数，每页数量
+var page=1,n=10;
+function get_list(type){
+	var cart_id = "{$_GET['cart_id']}";
+	var sort = "{$_GET['sort']}";
+	if(type == 1){
+		page = 1;
+	}else{
+		page += 1;
+	}
+	$.ajax({
+		type: "post",
+		url : "{:U('LuoZuan/ajax_cartMatch')}", 
+		data: {page:page,n:n,cart_id:cart_id,sort:sort},
+		dataType:'json', 
+		success: function(res){
+			if(res.status == 100 ){
+				if(res.data){
+					var html = "";
+					if(res.data.data != '' ){
+						var html = "",dia_global_price="",dia_discount="",meika="";
+						$.each(res.data.data,function(i,item){
+							if(res.data.price_display_type != 1){
+								dia_global_price = "国际: "+item.dia_global_price;
+								dia_discount = "折扣: <b>"+item.dia_discount+"</b>";
+								meika = "每卡: <b>"+item.meika+"</b>";
+							}
+							html += "<table class='table  text-center'><tbody id='chk_"+item.gid+"' onclick='tbSelectedId("+item.gid+")' class='color' >";
+							html +="<tr class='head'><td>"+item.shape+"</td><td colspan='3'>"+item.certificate_type+":"+item.certificate_number+"</td><td>"+dia_global_price+"</td></tr>";
+							html +="<tr><td><b>"+item.weight+"</b></td><td>"+item.color+"</td><td>"+item.clarity+"</td><td>"+item.certificate_type+"</td><td class='red'>"+dia_discount+"</td></tr>";
+							html +="<tr><td>"+item.location+"</td><td>"+item.cut+"</td><td>"+item.polish+"</td><td>"+item.symmetry+"</td><td>"+meika+"</td></tr>";
+							html +="<tr><td>"+item.goods_name+"</td><td>"+item.milk+"</td><td>"+item.coffee+"</td><td>"+item.fluor+"</td><td class='red'>每粒: <b>"+item.price+"</b></td></tr>";
+							html +="</tbody></table>";
+						});
+					}else{
+						html = "<table class='table  text-center'><tbody><tr class='head' id='nodata'><td>暂无数据...</td></tr></tbody></table>"
+					}
+					
+					if(type == 1){
+						$('#luozuan').html(html);
+					}else{
+						$('#luozuan').append(html);
+					}
+				}
+			}
+		},
+		error:	function(){
+		
+		}
+	});
+
+}
+
+$(window).scroll(function() {
+	var condition = $('#nodata td').html();
+	if(condition != "暂无数据..."){
+		var scrollTop = $(this).scrollTop();               //滚动条距离顶部的高度
+		var scrollHeight = $(document).height();           //当前页面的总高度
+		var windowHeight = $(this).height();               //当前可视的页面高度
+		//判断滚动条是否滚到底部
+		if(scrollTop + windowHeight == scrollHeight){
+			<!-- $('.load').css('height',40).html('<img src="http://img.lanrentuku.com/img/allimg/1212/5-121204193R5-50.gif" alt="">'); -->
+			get_list(2);
+			//setTimeout(function(){
+			//	$('.load').css('height','0').text('')
+			//},1200);
+		}
+	}
+}); 
+</script> 

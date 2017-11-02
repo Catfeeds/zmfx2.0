@@ -1,0 +1,260 @@
+<include file="Public:header" /><body>
+    <section class="login">
+        <header>
+            <div class="web-top">
+                <h2>登录</h2>
+            </div>
+        </header>
+
+        <section class="wrapper">
+            <form class="form-box">
+                <ul>
+                    <li>
+                        <span class="user-icon">
+                            <img
+                            src="__IMG__/user.png"
+                            data-src="__IMG__/user.png"
+                            data-active="__IMG__/user_active.png"
+                            alt="" class="icon">
+                        </span>
+                        <input type="text" id="username" name="username" class="text-input username" placeholder="手机号/邮箱/用户名">
+                        <img src="__IMG__/login_close.png" class="login-close" alt="" style="display: none;">
+                    </li>
+                    <li>
+                        <span class="pass-icon">
+                            <img
+                            src="__IMG__/pass_icon.png"
+                            data-src="__IMG__/pass_icon.png"
+                            data-active="__IMG__/pass_icon_active.png"
+                            alt="" class="icon">
+                        </span>
+                        <input type="password" id="password" name="password" class="text-input password" placeholder="请输入登录密码">
+                        <img src="__IMG__/hide_pass.png" alt="" class="pass-start" style="display: none;">
+                        <img src="__IMG__/login_close.png" class="login-close" alt="" style="display: none;">
+                    </li>
+                </ul>
+
+                <div class="pass-help">
+                    <div class="fl"><input type="checkbox" id="rememberuser" name="rememberuser" value="1"> 记住密码</div>
+                    <div class="fr"><a class="pwd" href="/Public/passwordSave.html">忘记密码？</a></div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="login-btn-box">
+                    <button type="button" class="ripple login-btn" id='loginSubmit'>登录</button>
+                </div>
+
+                <div class="toreg">
+                    还没有账户？现在<a href="{:U('/Public/regist')}">去注册</a>
+                </div>
+
+                <div class="login-mode">
+                    <h4>其他登录方式</h4>
+                    <p>
+                        <a href="#"><img src="__IMG__/qq_icon.png" alt="" /> QQ登录</a>
+                        <a href="#"><img src="__IMG__/weixing_icon.png" alt="" /> QQ登录</a>
+                    </p>
+                </div>
+            </form>
+            <script>
+                $(function(){
+
+                    //获取焦点
+                    $('.text-input').focus(function(){
+                        var img = $(this).parents('li').find('.icon');
+                        img.attr('src', img.attr('data-active'));
+                    });
+
+                    //失去焦点
+                    $('.text-input').blur(function(){
+                        var img = $(this).parents('li').find('.icon');
+                        img.attr('src', img.attr('data-src'));
+                    });
+
+                    //显示清空文本按钮
+                    $('.form-box li').mouseenter(function(){
+                        $(this).find('.login-close, .pass-start').show();
+                    });
+
+                    //隐藏清空文本按钮
+                    $('.form-box li').mouseleave(function(){
+                        $(this).find('.login-close, .pass-start').hide();
+                    });
+
+                    //清空文本框
+                    $('.login-close').bind('click', function(){
+                        $(this).parents('li').find('.text-input').val('');
+                    });
+
+                    //显示隐藏密码切换
+                    $('.pass-start').bind('click', function(){
+                        if($(this).attr('data-show') == 'show'){
+                            $(this).attr('src', '__IMG__/hide_pass.png');
+                            $(this).parents('li').find('.password').attr('type', 'password');
+                            $(this).attr('data-show', 'hide');
+                        }else{
+                            $(this).attr('src', '__IMG__/show_pass.png');
+                            $(this).parents('li').find('.password').attr('type', 'text');
+                            $(this).attr('data-show', 'show');
+                        }
+                    });
+                })
+            </script>
+        </section>
+    </section>
+    <include file="Public:foot" />
+</body>
+<script type="text/javascript">
+	/* 判断值是否为空 */
+	function isEmpty(val) {
+		var result = true;
+		switch (typeof val) {
+			case 'string':
+				if (val === '0') {
+				result = true;
+				} else {
+				result = val.trim().length === 0 ? true : false;
+				}
+				break;
+			case 'number':
+				result = val === 0;
+				break;
+			case 'object':
+				result = val === null;
+				break;
+			case 'array':
+				result = val.length === 0;
+				break;
+			default:
+				result = true;
+		}
+		return result;
+	}
+	// 检查用户名长度
+	function checkuser() {
+		var user = $('#username');
+		if (user.val().length <= 2) {
+			return false;
+		}else{
+			return true;
+		}
+	}
+	// 检查密码长度
+	function checkpas() {
+		var ps = $('#password');
+		if (ps.val().length < 6) {
+			return false;
+		}else{
+			return true;
+		}
+	}
+	function ASCToStr(arr){
+		var temp = '';
+		if(arr){
+			for(var i = 0 ; i < arr.length ; i++)
+				temp += String.fromCharCode(arr[i]-8);
+		}
+		return temp;
+	}
+
+	function strToASC(plain){
+		var arr = new Array();
+		for(var i = 0 ; i < plain.length ; i++)
+			arr[i] = plain.charCodeAt(i)+8; 	//每个ascii码加8以加密
+		return JSON.stringify(arr);
+	}
+	//加密后才存cookie
+	function setEncodeCookie(key, plain){
+		var code = strToASC(plain);
+		$.cookie(key, code, { expires: 7, path:'/'});
+	}
+	function getEncodeCookie(key){
+		var arr = JSON.parse($.cookie(key));
+		return ASCToStr(arr);
+	}
+	function init(){
+		// 记住用户名
+		if ($.cookie('rememberuser')) {
+			$('#rememberuser').attr('checked', true);
+			$('#username').val(getEncodeCookie('username'));
+		}
+		//如果cookie同时有用户名和密码，则勾上"自动登录","记住用户名"
+		if($.cookie('username') && $.cookie('password')){
+			$('#username').val(getEncodeCookie('username'));
+			$('#password').val(getEncodeCookie('password'));
+		}
+	}
+	$(document).ready(function () {
+		// cookie 记录
+		$('#rememberuser').click(function () {
+			var name = $('#username'), pass = $('#password');
+			if ($(this).is(':checked')) {
+				//alert(name.val());
+				if (isEmpty(name.val())) {
+					layer.open({
+						   content: '请输入用户名!'
+						   ,btn: '确定'
+					});
+					$(this).attr('checked', false);
+				}else if (isEmpty(pass.val())) {
+					layer.open({
+						   content: '请输入密码!'
+						   ,btn: '确定'
+					});
+					$(this).attr('checked', false);
+				}  else {
+					setEncodeCookie('username',name.val());
+					setEncodeCookie('password',pass.val());
+					$.cookie('rememberuser', 1, {expires: 30,path:'/'});
+				}
+			} else {
+				$.cookie('rememberuser', null, {path:'/'});
+				$.cookie('username', null, {path:'/'});
+				$.cookie('password', null, {path:'/'});
+			}
+		});
+		// 登陆
+		$('#loginSubmit').click(function () {
+			var name = $('#username'), pass = $('#password');
+			if($('#rememberuser').is(':checked')){
+				$.cookie('rememberuser', 1, {expires: 30,path:'/'});
+				setEncodeCookie('username',name.val());
+				setEncodeCookie('password',pass.val());
+			}
+			if (!isEmpty(name.val()) && !isEmpty(pass.val())) {
+				if (checkuser() && checkpas()) {
+					$.ajax({
+						url: "{:U('/Public/login')}",
+						type: 'post',
+						dataType: 'json',
+						data: {'username': name.val(), 'password': pass.val()},
+						success: function (result) {
+							if (result.success) {
+								window.location.href = result.url;
+							} else {
+								layer.open({
+									   content: result.msg
+									   ,btn: '确定'
+								});
+							}
+						},
+					});
+				} else {
+					layer.open({
+						   content: '用户名和密码没有通过验证！'
+						   ,btn: '确定'
+					});
+					$('#password').focus();
+				}
+			} else {
+				layer.open({
+					   content: '用户名或密码不能为空，请检查！'
+					   ,btn: '确定'
+				});
+				$('#username').focus();
+			}
+		});
+		init();
+	});
+</script>
+</html>

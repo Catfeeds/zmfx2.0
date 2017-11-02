@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>订单跟踪</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+  <script src="__JS__/jquery.min.js"></script>
+  <script src="__JS__/bootstrap.min.js"></script>
+</head>
+<style>
+  body { background: #F2F2F2;}
+  .logistics { max-width: 960px; margin: 0 auto;}
+  .logistics .bianhao { background: #FFF; margin: 0; padding: 20px 10px;}
+  .logistics .wuliu-list { padding: 20px 15px;}
+  .logistics .wuliu-list ul { padding-left: 12px; list-style: none; border-left: 1px solid #999;}
+  .logistics .wuliu-list p { margin-bottom: 5px;}
+  .wuliu-list ul li { position: relative; margin-bottom: 25px;}
+  .wuliu-list .circ { position: absolute; display: inline-block; top: 0px; left: -12px; z-index: 200; width: 20px; height: 20px; margin-left: -11px; border: 4px solid #f5f7fa; border-radius: 50%; background: #787979; -webkit-border-radius: 50%; -moz-border-radius: 50%;}
+  .wuliu-list .circ-bg { background-color: #FD341C;}
+  .wuliu-list .ydh { color: #0066FF;}
+</style>
+<body>
+  <div class="logistics">
+    <section>
+      <h4 class="bianhao">订单编号：<?php  echo(isset($order_express['order_sn']) ?  ($order_express['order_sn']) :  '暂无'); ?></h4>
+    </section>
+    <section>
+      <div class="wuliu-list">
+        <ul>
+		<?php if ($order_express == true): ?>
+			<?php if ($order_express['type'] == '0'): ?>
+				<?php if ($order_express['data'] ==true): ?>
+					<?php foreach ((array)$order_express['data'] as $k=>$v):?>
+					  <li>
+						<p>&nbsp;<?php 	 echo  $v['context'];?></p>
+						<small>  <?php   echo  $v['time'];   ?></small>
+						<span class="circ <?php	if($k=='0'){ echo 'circ-bg';	}?>"></span>
+					  </li>			
+					<?php endforeach;?>
+				<?php else: ?>
+				  <li>
+					<p>&nbsp;暂无物流信息、</p>
+					<small>  </small>
+					<span class="circ circ-bg"></span>
+				  </li>
+				<?php endif; ?>
+				<li>
+					<p>&nbsp;您的订单已经配货完毕，并已出库交付<?php echo $order_express['company'];?>，运单号为<?php echo $order_express['number'];?></p>
+					<small>  <?php echo (date("Y-m-d H:i:s", $order_express['ctime']));?></small>
+					<span class="circ "></span>
+				</li>	
+				
+			<?php else: ?>
+					  <li>
+						<p>&nbsp;您的订单已经配货完毕并已出库，将由<?php echo  $order_express['name'];?>为您送货上门，联系电话：<?php 	echo  $order_express['phone'];?></p>
+						<small>  <?php echo (date("Y-m-d H:i:s", $order_express['ctime']));?></small>
+						<span class="circ circ-bg"></span>
+					  </li>
+			<?php endif; ?>
+		<?php else: ?>
+			  <li>
+				<p>&nbsp;暂无物流信息、</p>
+				<small>  </small>
+				<span class="circ circ-bg"></span>
+			  </li>
+		<?php endif; ?>
+	
+        </ul>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

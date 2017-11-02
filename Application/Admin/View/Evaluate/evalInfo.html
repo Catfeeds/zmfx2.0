@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>评价详情</title>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：评价详情</h3>
+        <ul>
+        	<li><a href="{:U('/Admin/Evaluate/evalList')}">返回列表</a></li>
+        </ul>
+    </div>
+    <div style="padding:40px;">
+    	<form id="adInfo" action="{:U('/Admin/Evaluate/evalInfo',array('oe_id'=>$evalInfo['oe_id']))}" method="POST" enctype="multipart/form-data">
+        <div class="info">
+        	<div class="title">商品名称:</div>
+            <span>{$evalInfo['goods_name']}</span>
+        </div>
+        <if condition="$evalInfo['thumb'] neq ''">
+        <div class="info">
+        	<div class="title">图片：</div>
+            <img src="{$evalInfo['thumb']}" style="width: 300px; padding: 3px; background: #FFFFFF; border: solid 1px #000000;">
+            <div class="clear"></div>
+        </div>
+        </if>
+		<div class="info">
+			<div class="title">用户名:</div>
+			<span>{$evalInfo['username']}</span>
+		</div>
+		<div class="info">
+			<div class="title">电话:</div>
+			<span>{$evalInfo['phone']}</span>
+		</div>
+		<div class="info">
+			<div class="title">评分情况:</div>
+			<span>
+				<switch name="evalInfo['start']">
+					<case value="1">☆</case>
+					<case value="2">☆☆</case>
+					<case value="3">☆☆☆</case>
+					<case value="4">☆☆☆☆</case>
+					<case value="5">☆☆☆☆☆</case>
+					<default />
+				</switch>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<switch name="evalInfo['start']">
+					<case value="1">差评</case>
+					<case value="2|3">中评</case>
+					<case value="4|5">好评</case>
+					<default />
+				</switch>
+			</span>
+		</div>
+		<div class="info">
+			<div class="title">评价描述:</div>
+			<span>{$evalInfo['control']}</span>
+		</div>
+		<div class="info">
+			<div class="title">提交时间:</div>
+			<span>
+				<if condition="$evalInfo['createtime']">
+					{$evalInfo['createtime']|date="Y-m-d",###}
+				</if>
+			</span>
+		</div>
+        <div class="info">
+        	<div class="title">状态：</div>
+            <select name="status" class="select fl">
+                <option value="1" <if condition="$evalInfo.status eq 1">selected</if>>显示</option>
+                <option value="2" <if condition="$evalInfo.status eq 2">selected</if>>屏蔽</option>
+            </select>
+            <div class="clear"></div>
+        </div>
+		<div class="info">
+		</div>
+		<div class="info">
+            <div class="title">&nbsp;</div>
+			<input name="oe_id" value="{$evalInfo['oe_id']}" type="hidden" />
+            <input type="submit" class="button fl" value="保存">
+            <input type="reset" class="button fl ml10" value="重置">
+            <div class="clear"></div>
+        </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

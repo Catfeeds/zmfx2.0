@@ -1,0 +1,16 @@
+                        <div class="row" id="order_action_content"></div>
+
+
+                        <script type="text/template" id="order_action_content_tpl" style="display: none">
+                            <div class="col-xs-12">
+                                    <div class="panel-body">
+                                        <span>{$L['text_order_operation']}：</span>
+                                        <span>                                           
+                                             <%  _.each(datas.order_action, function (item) { %> 
+                                                <input type="submit" value="<%= item.txt %>" name="<%= item.key %>">        
+                                            
+                                              <% }); %>   
+                                        </span>
+                                    </div>
+                            </div>                            
+                        </script>

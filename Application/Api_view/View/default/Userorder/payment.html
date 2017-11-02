@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/main.css">
+<link rel="stylesheet" href="__CSS__/user.css">
+<link rel="stylesheet" href="__CSS__/aftersales.css">
+<link href="__JS__/iCheck/skins/minimal/blue.css" rel="stylesheet">
+<link href="__JS__/iCheck/skins/square/blue.css" rel="stylesheet">
+<link href="__JS__/iCheck/skins/flat/blue.css" rel="stylesheet">
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/user.js"></script>
+<link rel="stylesheet" href="__CSS__/cart.css">
+<script src="__JS__/iCheck/jquery.icheck.js"></script>
+<script src="__JS__/icheck-init.js"></script>
+<script type="text/javascript" src="__JS__/fuelux/js/spinner.min.js"></script>
+<script src="__JS__/spinner-init.js"></script>
+<script src="__JS__/layer-mobile/layer.js"></script> 
+<script src="__JS__/public.js"></script> 
+<!-- 商品滑动 -->
+<link rel="stylesheet" href="__CSS__/swiper.min.css">
+<title>收银台</title>
+</head>
+<body class="wrap-bg">
+  <div class="syt">
+    <section>
+      <div class="invoice-info payment-info">
+        <div class="list-item">
+          <span class="pull-left">订单编号：{$orderInfo['order_sn']}</span>
+          <span class="pull-right red">总金额：￥{$orderInfo['order_price']}</span>
+          <div class="clearfix"></div>
+        </div>
+        <div class="offline-data">
+          <h5>线下支付信息</h5>
+		  <volist name="LinePayMode" id="vo">
+          <p>户&nbsp;&nbsp;&nbsp;名：{$vo.aname}</p>
+          <p>账&nbsp;&nbsp;&nbsp;号：{$vo.abank}</p>
+          <p>开户行：{$vo.tback}</p>
+		  </volist>
+          <p><small>提示：可在“个人中心”我的 订单管理 查看订单信息</small></p>
+        </div>
+      </div>
+    </section>
+    <section class="shouhouxq-sub">
+      <div class="payment-submit">
+        <p class="text-center">
+          <button type="submit" id="my_submit" class="btn btn-primary btn-blue btn-block" onclick="ai_mutual('5211,{$orderInfo['order_id']}');">上传付款凭证</button>
+          <br>
+          <button type="submit" id="my_submit" class="btn btn-danger btn-block" onclick="window.location='{:U('Userorder/onlineselect',array('order_id'=>$orderInfo['order_id'],'token'=>C('token'),'uid'=>C('uid'),'agent_id'=>C('agent_id')))}'">在线支付</button>
+        </p>
+      </div>
+    </section>
+    <section>
+      <div class="prompt">
+        <p class="title">温馨提示：</p>
+        <small class="hs">如果您选择线下转账付款，请在转完后保留凭证，拍照或截图上传，如果帮助请联系客服 <a href="{:C('site_contact')}">{:C('site_contact')}</a>，选择在线支付无需上传凭证。</small>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

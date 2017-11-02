@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>速易宝-用户体验</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+	<script src="js/jquery-1.12.3.js"></script>
+</head>
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+  }
+  li { list-style: none;}
+  input {
+    font-size: 14px;
+    font-family: "微软雅黑";
+  }
+  body { 
+    font-size: 14px;
+    font-family: "微软雅黑";
+    background: url("images/experience_bg.jpg") fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+  .header {
+    margin-top: 10%;
+  }
+  .logo,.search,.footer { 
+    text-align: center;
+  }
+  .search { width: 687px; height: 47px; margin: 0 auto; margin-top: 30px;}
+  .search .s_ipt {
+    width: 551px;
+    height: 44px;
+    line-height: 44px;
+    padding-left: 10px;
+    border: 1px solid #000;
+    border-right: none;
+    margin-right: -1px;
+    background: #FFF;
+  }
+  .search .s_btn {
+    width: 125px;
+    height: 46px;
+    color: #FFF;
+    background: #1693A9;
+    border: 1px solid #000;
+    border-left: none;
+    margin-top: 1px;
+    cursor: pointer;
+  }
+  .footer { margin-top: 15%; color: #FFF;}
+  .footer .codes ul { width: 205px; margin: 0 auto;}
+  .footer .codes ul li { float: left;}
+  .footer .codes ul li:first-child { margin-right: 20px;}
+  .clear { clear: both;}
+</style>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <div class="logo">
+        <a href="#"><img src="images/experience_logo.png" alt=""></a>
+      </div>
+      <div class="search">
+        <input type="text" class="s_ipt" placeholder="请输入公司名称或网站名称"><input type="button" class="s_btn" value="体验一下">
+      </div>
+    </div>
+    <div class="footer">
+      <div class="codes">
+        <ul>
+          <li><img src="images/experience_01.png" alt=""> <br> 公众号</li>
+          <li><img src="images/experience_02.png" alt=""> <br> 订阅号</li>
+          <div class="clear"></div>
+        </ul>
+      </div>
+      <p>&copy; 2010-2016速易宝 粤ICP备 3526653号</p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<div class="diamond-banner">
+    <if condition="$customAdList[0]['url'] neq '' ">
+        <a href="{$customAdList[0]['url']}">
+    </if>
+    <if condition="$customAdList[0]['images_path'] neq '' ">
+        <img src="/Public{$customAdList[0]['images_path']}">
+        <else/>
+        <img src="__IMG__/jt_steps_04.jpg">
+    </if>
+    <if condition="$customAdList[0]['url'] neq '' ">
+        </a>
+    </if>
+</div>
+
+<!--<div class="tiaoxuan" id='k'>
+    <ul>
+        <li onclick="location.href='#listbox'">
+            <button type="button" class="btn btn-default" style="visibility:hidden; position: absolute; right: 30px; top: 22px; z-index: 999; ">重选</button>
+            <div class="tiaoxuan-left">
+                <ul class="tiaoxuan-list">
+                    <li><img src="__IMG__/tiaoxuanimg_03.jpg" alt=""></li>
+                    <li id="selected_luozuan"></li>
+                    <li></li>
+                </ul>
+            </div>
+            <img src="__IMG__/pjt_03.jpg" alt="">
+        </li>
+        <li id="sellist">
+            <button type="button" class="btn btn-default" id="reset_select_goods" style="position: absolute; right: 65px; top: 22px; z-index: 999;">重选</button>
+            <div class="tiaoxuan-center">
+                <ul></ul>
+            </div>
+            <img src="__IMG__/pjt_04.jpg" alt="">
+        </li>
+        <li>
+            <div class="tiaoxuan-right">
+                <p>
+                    <h5 class="red">总价:¥<span id="price"></span></h5></p>
+                <p><img src="__IMG__/srdz_03.jpg" class="btn btn-link" style="padding: 0" id="addCart"></p>
+            </div>
+            <img src="__IMG__/pjt_05.jpg" alt="">
+        </li>
+        <div class="clearfix"></div>
+    </ul>
+</div>-->
+
+<div class="diamond-para sanhuo-para">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default border-radiusno margin-bottom-no">
+                <div class="panel-heading">
+                    <h5 class="pull-left"><strong>选择钻石</strong></h5>
+                    <button class="btn btn-warning border-radiusno pull-right deselect">清空己选条件</button>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="panel-body">
+                    <div id="gmap-street-view">
+                        <div class="col-md-12">
+                            <div class="diamond-listbox">
+                                <div class="row">
+
+                                    <div class="col-md-12 hptitle">
+                                        <strong class="pr14">请选择货品</strong>
+                                        <span class="d-list">
+                                            <select name="goodsType" class="slhp" onchange="setGoodsType(this)">
+                                                <option value="">所有分类</option>
+                                                <volist name="goodsType" id="vo">
+                                                    <option value="{$vo.tid}">{$vo.type_name}</option>
+                                                </volist>
+                                            </select>
+                                            <span class="huoping">
+                                                <input type="text" name="choose_goods_sn" value="" oninput="getGoodsSnList(this.value)"　placeholder="请选择货号" class="slhp huoping-text">
+                                                <ul class="hpul" id="goods_sn" style="display: none">
+
+                                                </ul>
+                                            </span>
+                                        </span>
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        <strong class="pr14">钻石分数段</strong>
+                                        <span class="d-list w6">
+                                                <volist name="sanhuoWeights" id="vo">
+                                                    <a href="javascript:void(0);" class="condition_item swiper-slide" name="Weight" ref="{$vo.weights_name}">{$vo.weights_name}</a>
+                                                </volist>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <strong>颜色</strong>
+                                        <span class="d-list w3">
+                                            <volist name="sanhuoColor" id="vo">
+                                                <a href="javascript:void(0);" class="condition_item swiper-slide" name="Color" ref="{$vo.color_contain}">{$vo.color_name}</a>
+                                            </volist>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <strong>净度</strong>
+                                        <span class="d-list w6">
+                                            <volist name="sanhuoClarity" id="vo">
+                                                <a href="javascript:void(0);" class="condition_item" name="Clarity" ref="{$vo.clarity_id}">{$vo.clarity_name}</a>
+                                            </volist>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <strong>切工</strong>
+                                        <span class="d-list w6">
+                                            <volist name="sanhuoCut" id="vo">
+                                                <a href="javascript:void(0);" class="condition_item" name="Cut" ref="{$vo.cut_name}">{$vo.cut_name}</a>
+                                            </volist>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <strong>筛选</strong>
+                                        <span class="d-list w6">
+                                            <volist name="locationList" id="vo">
+                                                <a href="javascript:void(0);" class="condition_item" name="Location" ref="{$vo}">{$vo}</a>
+                                            </volist>
+                                        </span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

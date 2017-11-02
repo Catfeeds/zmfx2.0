@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>添加钻石</title>
+</head>
+<body>
+<!-- right -->
+<style>
+    .pull-left { float: left;}
+    .add-diamond-box { padding: 20px;}
+    .add-diamond-box h1 { font-size: 18px; font-weight: 500; color: #000;}
+    .add-diamond-box .pl36 { font-size: 16px; padding: 10px; padding-left: 36px;}
+    .add-diamond-box .pl85 { font-size: 16px; padding: 10px; padding-left: 85px;}
+    .add-diamond-box dl { margin: 15px 0;}
+    .add-diamond-box dl dt { width: 85px; text-align: right; float: left;}
+    .add-diamond-box .add-diamond-text { width: 121px; height: 25px; line-height: 25px;}
+    .add-diamond-box .add-diamond-btn { width: 121px; height: 35px; cursor: pointer; margin-right: 10px;}
+    .add-diamond-box hr { margin: 15px 0;}
+    .add-diamond-box .p95 { padding-left: 95px; margin: 10px 0;}
+    .add-diamond-box .red { color: red;}
+    .add-diamond-box .h30 { height: 30px;}
+</style>
+<div class="goods page-main">
+    <div class="subMenu">
+        <h3>当前操作：钻石报价 > 添加钻石</h3>
+    </div>
+    <form method="post" action="" enctype="multipart/form-data">
+        <div class="add-diamond-box">
+            <h1>一、单粒上传</h1>
+            <input type="hidden" name="offer_id" value="{$offer_info.offer_id}">
+            <p class="pl36">钻石类型为圆形白钻，切工EX、抛光EX、对称EX、荧光None</p>
+            <dl>
+                <dt>钻重：</dt>
+                <dd><input type="text" name="weight" class="add-diamond-text" value="{$offer_info.weight}"></dd>
+            </dl>
+            <dl>
+                <dt>颜色：</dt>
+                <dd>
+                    <select name="color" class="add-diamond-text">
+                        <option value="">请选择</option>
+                        <volist name="setting_param.color_arr" id="color_name">
+                            <option value="{$color_name}" <if condition="$color_name eq $offer_info['color']">selected</if>>{$color_name}</option>
+                        </volist>
+                    </select>
+                </dd>
+            </dl>
+            <dl>
+                <dt>净度：</dt>
+                <dd>
+                    <select name="clarity" class="add-diamond-text">
+                        <option value="">请选择</option>
+                        <volist name="setting_param.clarity_arr" id="clarity_name">
+                            <option value="{$clarity_name}" <if condition="$clarity_name eq $offer_info['clarity']">selected</if>>{$clarity_name}</option>
+                        </volist>
+                    </select>
+                </dd>
+            </dl>
+            <dl>
+                <dt>国际报价：</dt>
+                <dd><input type="text" name="dia_global_price" class="add-diamond-text" value="{$offer_info.dia_global_price}"></dd>
+            </dl>
+            <dl>
+                <dt>折扣：</dt>
+                <dd><input type="text" name="dia_discount" class="add-diamond-text" value="{$offer_info.dia_discount}"></dd>
+            </dl>
+            <p class="pl85">
+                <button type="button" class="add-diamond-btn" onclick="form.action='{:U('Admin/Goods/offerInfo?submit_type=1')}';form.submit();">提交</button>
+                <button type="reset" class="add-diamond-btn">取消</button>
+            </p>
+            <hr>
+            <h1>二、批量导入</h1>
+            <a href="{:U('Admin/Goods/offerExportMode')}"><p class="p95"><button type="button" class="add-diamond-btn h30">下载excel模版</button></p></a>
+            <dl class="p95">
+                <dt>文件导入：</dt>
+                <dd><input type="file" name="file"> <small class="red">支持文件类型excel,文件不能超过3M</small></dd>
+            </dl>
+            <p class="pl85">
+                <button type="button" class="add-diamond-btn" onclick="form.action='{:U('Admin/Goods/offerInfo?submit_type=2')}';form.submit();">提交</button>
+                <button type="reset" class="add-diamond-btn">取消</button>
+            </p>
+        </div>
+    </form>
+</div>
+<!-- right end -->
+</body>
+</html>

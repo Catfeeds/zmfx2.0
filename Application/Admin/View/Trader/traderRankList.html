@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>分销商等级</title>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：分销商等级列表</h3>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+        	<th width="7%">等级ID</th>
+            <th width="15%">等级名称</th>
+            <th width="15%">最大下级分销商数</th>
+            <th width="20%">操作</th>
+        </tr>
+        <volist name="list" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+        	<td>{$vo.trid}</td>
+            <td>{$vo.rank_name}</td>
+            <td>{$vo.maximum}</td>
+            <td>
+                <a href="{:U('Admin/Trader/traderRankInfo?trid='.$vo['trid'])}" >修改</a>
+            </td>
+        </tr>
+        </volist>
+    </table>
+</div>
+</body>
+</html>

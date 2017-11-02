@@ -1,0 +1,8 @@
+<div class="title">推荐知识</div>
+<ul>
+    <if condition="$hot_article">
+    <volist name="hot_article" id="vo">
+    <li><a href="{:U('Home/Article/detail?aid='.$vo['aid'])}"> <span>{$vo.title|msubstr=0,24,'utf-8'}</span></a></li>
+    </volist>
+    </if> 
+</ul>

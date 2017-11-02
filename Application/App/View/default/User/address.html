@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>地址管理</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/user.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script type="text/javascript" src="__JS__/common.js"></script>
+	<script src="__JS__/public.js"></script> 
+	<script src="__JS__/layer-mobile/layer.js"></script> 
+
+</head>
+<style>
+	.footer li {
+	    text-align: center;
+	    float: none;
+	    width: auto;
+	}
+  .contright { width: 27px;}
+  .select-raido { width: 10%; float: left; height: 85px; text-align: left;}
+  .select-raido input[type="radio"] { margin-top: 35px;}
+</style>
+<body class="wrap-bg">
+	<!-- Header -->
+	<header class="header text-center">
+		<a href="/user/" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    	选择地址      
+    </header>
+    <!-- Header END //-->
+	
+	<!-- Main -->
+    <div style="margin-bottom: 68px; margin-top: 15px;">
+ 
+		<volist name="addresslist" id="vo">
+		<div class="panel panel-default border-radius-none user-address-list">
+		  <div class="panel-body username user-address">
+		    <ul>				
+		    	<li>
+            <div class="select-raido"><input  type="radio" name="payMethod" value="{$vo.address_id}"  <?php if($vo['is_default']==1) echo 'checked';?> ></div>
+		    		<div class="contleft">
+		    			<h5><strong>{$vo.title} {$vo.name} {$vo.phone}</strong> <span>{$vo.code}</span></h5>
+		    			<p>{$vo.country_name}{$vo.province_name}{$vo.city_name}{$vo.district_name}{$vo.address}</p>
+		    		</div>
+		    		<div class="contright text-center">
+		    			<!-- <if condition="$vo.is_default eq '1'"><i class="glyphicon glyphicon-map-marker" style="font-size: 1.5em;">默认地址</i></if>  -->
+              <span class="contright text-right" onclick="location.href='/user/addressedit.html?address_id={$vo.address_id}'">
+                <img src="__IMG__/user_address_03.png" alt="">
+              </span>
+		    		</div>		
+		    		<div class="clear"></div>    		
+		    	</li>				
+		    </ul>
+		  </div>
+		</div>
+		</volist>
+
+    </div>
+    <!-- Main END //-->
+	<script>
+		$(".contright").height($(".contleft").height());
+		var str1 = document.referrer;
+        var str2 = "user";
+        var str3 = "addressedit";
+		$("input:radio[name='payMethod']").change(function (){ 
+			var id = $(this).val();
+			var html = "";
+			$.post("/User/addressedit",{Action:"post",address_id:id,is_default:1},function(data){
+					if(data){
+						if(data.ret == '100'){
+							if(str1.indexOf(str2)>0 || str1.indexOf(str3)>0){
+								 tan(data.msg);
+							}else{
+								 tan(data.msg+'，三秒之后将跳转到确认订单页。');
+								 <?php if (I('get.cartid') == true): ?>
+									setTimeout("window.location.href='/Cart/Confirm_Cart/cart_id/<?php echo I('get.cartid');?>'",3000);  
+								 <?php else: ?>
+									setTimeout("window.location.href='/Cart/Confirm_Cart'",3000);  
+								 <?php endif; ?> 
+							}  
+						}else{
+								 tan(data.msg);
+						}
+					}else{
+								 tan('网络错误！');
+					} 
+			});
+		});
+
+	</script>
+    <!-- Footer -->
+    <footer class="footer">
+    	<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+              <ul class="nav">
+                 <li><a href="/user/addressadd.html"><i class="glyphicon glyphicon-plus"></i>添加新地址</a></li>
+                 
+              </ul>
+		</nav>
+    </footer>
+	<!-- Footer NED //-->
+</body>
+</html>

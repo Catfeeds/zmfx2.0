@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>物流列表</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+  <script src="__JS__/jquery.min.js"></script>
+  <script src="__JS__/bootstrap.min.js"></script>
+  <script src="__JS__/public.js"></script>  
+</head>
+<style>
+  body { background: #F6F5F3;}
+  .wulist { max-width: 960px; margin: 0 auto;}
+  .wulist header { background: #FFF;}
+  .wulist header h4 { font-weight: 500; margin: 12px 0; padding: 15px 10px; border-top: 1px solid #EBEBEB; border-bottom: 1px solid #EBEBEB;}
+  .wulist .wulist-box { background: #FFF; margin: 15px 0; border-top: 1px solid #EBEBEB; border-bottom: 1px solid #EBEBEB;}
+  .wulist .wulist-box .wulist-box-top { padding: 20px 15px;}
+  .wulist .wulist-box-left { width: 80%; height: 65px; overflow: hidden; float: left;}
+  .wulist .wulist-box-left img { width: 60px; height: 60px; margin-right: 8px;}
+  .wulist .wulist-box-right { width: 20%; height: 60px; line-height: 60px; float: right;}
+  .wulist .wulist-box-bottom { border-top: 1px solid #E6E6E6; padding: 10px 15px;}
+  .wulist .wulist-box-bottom .hj {font-size: 16px; height: 32px; line-height: 32px;}
+  .wulist .wulist-box-bottom .wlbtn { padding: 5px 10px; color: #000; text-decoration: none; display: inline-block; border: 1px solid #999; border-radius: 3px; -webkit-border-radius: 3px; -moz-border-radius: 3px; -ms-border-radius: 3px;}
+</style>
+<body>
+ 
+ <div class="wulist">
+   <header>
+     <h4>评价列表</h4>
+   </header>
+   <section>
+	<?php if ($data == true): ?>
+		<?php foreach($data as $key=>$val):?>
+		<div class="wulist-box">
+			<div class="wulist-box-top">
+			 <div class="wulist-box-left">
+			 	<?php if ($val['img']['small_path']): ?>
+						<img src="<?php echo ($val['img']['small_path']);?>" alt="">
+				<?php endif; ?>
+				<span><?php echo ($val['name']);?></span>
+			 </div>  
+			 <div class="wulist-box-right">
+			   共<?php echo intval($val['goods_number']);?>件 <i class="glyphicon glyphicon-chevron-right"></i>
+			 </div>    
+			 <div class="clearfix"></div>
+			</div>
+			<div class="wulist-box-bottom">
+			 <span class="pull-left hj">合计：￥<?php echo ($val['goods_price']);?></span>
+			 <span class="pull-right"> <a onclick="ai_mutual('527,<?php  echo $val['og_id']; ?>')" class="wlbtn"><?php if($val['oeval']=='1')		{	echo '评价';}else{	echo '已评价';}?></a> </span>
+			 <div class="clearfix"></div>
+			</div>
+		</div>
+		<?php endforeach; ?>
+	<?php else: ?>	
+		
+	<?php endif; ?>
+   </section>
+   
+ </div>
+</body>
+</html>

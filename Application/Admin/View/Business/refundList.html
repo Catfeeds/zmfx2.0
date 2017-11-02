@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>退款记录</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.css" />
+<script type="text/javascript" src="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/datepicker-tw.js"></script>
+<script type="text/javascript">
+$(function() {
+	$( "#from" ).datepicker($.datepicker.regional[ "zh-TW" ] );
+});
+</script>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：退款记录</h3>
+        <ul>
+            <li><a href="{:U('Admin/Business/refundInfo')}">手工退款</a></li>
+        </ul>
+    </div>
+    <div class="filter">
+    <form action="{:U('Admin/Business/refundList')}" method="get">
+        <div class="fl">订单编号：</div>
+        <input class="input" type="text" name="order_sn" value="{$order_sn}"/>
+		<div class="fl">退款时间：</div>
+		<input type='text' name='refund_time' class='datepicker' id="from" value="{$time}" >
+        <div class="fl">&nbsp;</div>
+        <input class="button" type="submit" value="查询" />
+    </form>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+            <th>退款ID</th>
+            <th>订单编号</th>
+            <th>退款金额</th>
+            <th>退款方式</th>
+            <th>退款时间</th>
+            <th>退款状态</th>
+            <th>操作</th>
+        </tr>
+        <volist name="list" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+            <td>{$vo.refund_id}</td>
+            <td><a href="{:U('Admin/Order/orderInfo?order_id='.$vo['order_id'])}" showOrder="{$vo.order_id}">{$vo.order_sn}</a></td>
+            <td>{$vo.refund_price}</td>
+            <td>{$vo.mode_name}</td>
+            <td>{$vo.order_price}{$vo.create_time|date="Y-m-d H:i",###}</td>
+            <td>
+                <eq name="vo.refund_status" value="1">手工添加</eq>
+                <eq name="vo.refund_status" value="2">已审核退款</eq>
+            </td>
+            <td>
+            	<a href="{:U('Admin/Business/refundInfo?refund_id='.$vo['refund_id'])}" >查看</a>
+            </td>
+        </tr>
+        </volist>
+    </table>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>

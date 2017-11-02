@@ -1,0 +1,214 @@
+<include file="Public:header" />
+<body>
+    <section class="upload-credentials">
+
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>上传凭证</h2>
+            </div>
+        </header>
+
+        <section class="wrapper">
+
+        <div class="item-box">
+            <p class="borderb">
+                订单编号：{$order_info['order_sn']}
+            </p>
+            <p>
+                总金额：<span class="rmb">￥{$order_info['order_price']}</span>
+            </p>
+        </div>
+		
+		
+		<form action="/User/paymentUploadSave.html" onsubmit="return submit_data()" class="form-box" method="post" enctype="multipart/form-data">		
+        <div class="item-box">
+	
+                <ul>
+                    <li>
+                        <label>付款方式：</label>
+                        <div class="input-box">
+							<input type="hidden" id="payment_mode" name="payment_mode" value="">
+                            <div class="select" id="play" name="">请选择付款方式</div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <label>转账账号：</label>
+                        <div class="input-box">
+                            <input type="text" name="payment_user"  id="payment_user" placeholder="输入您的账号" class="text-input">
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <label>转账金额：</label>
+                        <div class="input-box">
+                            <input type="text" name="payment_price" id="payment_price"  placeholder="输入您的金额" class="text-input">
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <label>转账时间：</label>
+                        <div class="input-box">
+                            <input type="text" name="create_time" id="beginTime"  class="stores-input select" placeholder="年/月/日">
+                            <div id="datePlugin" class="time-select"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <label>上传凭证：</label>
+                        <div class="input-box">
+                            <input type="file" name="payment_voucher" class="text-input"  id="payment_voucher">
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <label>备注：</label>
+                        <div class="input-box">
+                            <textarea name="payment_note" id="payment_note" class="text-input"></textarea>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                </ul>
+        </div>
+
+        <div class="add-box">
+            <button type="submit" class="add-address-btn">提交</button>
+		  <input type="hidden" id="order_id" name="order_id" value="{$order_info['order_id']}">
+        </div>
+     </form>
+        <!-- 时间选择 -->
+        <link rel="stylesheet" type="text/css" href="__CSS__/style-date.css" />
+        <script src="__JS__/date.js"></script>
+        <script src="__JS__/iscroll.js"></script>
+        <!-- 时间选择 end -->
+        <script>
+        $(function(){
+            var mobileSelect1 = new MobileSelect({
+            trigger: '#play',
+            title: '请选择付款方式',
+            wheels: [
+                        {data: (<?php echo json_encode($payment_mode);?>)}
+                    ],
+            position:[0],
+			callback:function(indexArr, data){
+				$('#payment_mode').val(data);
+			}
+            });
+
+            //时间选择
+            $('#beginTime').date();
+
+            $(document).delegate('#dateconfirm', 'click', function(){
+                console.log($('#beginTime').val());
+            });
+			
+			
+			
+			
+			
+ 
+			
+	        //预览大图
+	      	$('.min-img').bind('click', function(){
+	        	$('.max-img').attr('src', $(this).attr('src'));
+	      	});
+
+	      	$('#payment_voucher').bind('change', function(){
+	      		$('.min-img').show();
+	      		$('.min-img').attr('src', $(this).val());
+	      	});
+	      	
+            //订单是有效
+	      	var order_id 	 = "{$order_info['order_id']}";
+	      	var order_status = "{$order_info['order_status']}";
+	      	if(order_id == ''){
+	      		tan('您没有该订单!');
+				setTimeout("ai_mutual('52')",2000);
+	      	}
+
+	      	/*
+	      	if(order_status != 1){
+	      		tan('订单不是待付款状态!');
+				setTimeout("ai_mutual('521,"+order_id+"')",2000);
+	      	}
+	      	*/
+
+			var voucher_count = '{$voucher_count}';
+			if(voucher_count>0){
+				tan('该订单共上传'+voucher_count+'次付款凭证!');
+			}
+			
+ 
+			
+        });
+		 
+		
+		
+	    function submit_data(){
+	    	var payment_mode 	 = $('#payment_mode').find("option:selected").val();
+	    	var payment_user 	 = $('#payment_user').val();payment_price 
+	    	var payment_price	 = parseFloat($('#payment_price').val());
+	    	var create_time 	 = $('#beginTime').val();
+	    	var payment_voucher  = $('#payment_voucher').val();
+	    	var order_id         = $('#order_id').val();
+	    	var str = "";
+
+	    	if(payment_mode < 1){
+	    	 	layer.open({content: '请选择付款方式', time: 2});
+				$('#payment_user').focus();
+				return false;
+	    	}
+
+	     	if(payment_user == ''){
+	  			layer.open({content: '请输入转账账号',time: 2});
+				$('#payment_user').focus();
+				return false;
+	     	}else{
+	     		if(payment_user.length < 8 || payment_user.length > 20){
+		     		str = "转账账号在8-20之间"; 
+		     		layer.open({content: str,time: 2});
+					$('#payment_user').focus();
+					return false;
+		     	}
+	  		}
+	    	if(payment_price <= 0 || isNaN(payment_price)){
+	    		str = "转账金额不能为负数或零!"; 
+	    		layer.open({content: str,time: 2});
+				$('#payment_price').focus();
+				return false;
+	    	}
+	    	if( isNaN(payment_price)){
+	    		str = "转账金额必须是数字!"; 
+	    		layer.open({content: str,time: 2});
+				$('#payment_price').focus();
+				return false;
+	    	}
+	    	if(create_time <= 0){
+	    		str = "请选择转账时间!";
+	    		layer.open({content: str,time: 2});
+				$('#beginTime').focus();
+				return false; 
+	    	}
+	    	if(payment_voucher == ''){
+	    		str = "请上传凭证!";
+	    		layer.open({content: str,time: 2});
+				$('#payment_voucher').focus();
+				return false; 
+	    	}
+	    	return true;				                                            
+		}			
+		
+		
+		
+		
+		
+        </script>
+        </section>
+
+    </section>
+
+</body>
+</html>

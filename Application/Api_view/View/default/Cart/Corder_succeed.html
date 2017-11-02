@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>提交订单-成功</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/user.css">
+	<link rel="stylesheet" href="__CSS__/cart.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script src="__JS__/public.js"></script>
+</head>
+<body class="wrap-bg">
+	<!-- Header
+  <header class="header text-center">
+        提交订单
+          <a onclick="ai_mutual('4');" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+      </header>
+      Header END // -->
+
+	<!-- Main -->
+<!--  <div class="container wrap cart-submit-order-successful">
+     <div class="empty">
+       <div class="row">
+         <div class="col-xs-12">
+           <p><img src="__IMG__/order_succeed.png" alt="" class="cussimg"><strong>己提交成功！</strong></p>
+         </div>
+         <div class="col-xs-12">
+           <p>订单总额：<span class="red">￥{$order_total}</span></p>
+         </div>
+         <div class="col-xs-12 col-md-offset-5" >
+
+           <div class="succebox">
+         <p class="text-left">订单号:  {$order.order_sn} </p>
+         <volist name="LinePayMode" id="vo">
+           <p class="text-left">账户名称：  {$vo.aname}</p>
+           <p class="text-left">账号：    {$vo.abank}</p>
+           <p class="text-left">开户行：  {$vo.tback}</p>
+           <br/> 
+         </volist>
+
+         <p class="text-left">电话：    {:C('site_contact')}</p>
+             </div>
+
+               <p class="text-left">提示：</p>        
+         <p class="text-left">可在“个人中心”我的订单管理 查看订单信息</p>
+         </div>
+         <div class="col-xs-12">
+           <a onclick="ai_mutual('52');" class="blue">去看看</a>
+         </div>
+       </div>
+      </div>
+</div> -->
+
+    <div class="corder-succeed">
+      <section>
+        <div class="succeed-box">
+          <div class="succeed-head">
+            <div class="succeed-img">
+              <span class="pull-left"><img src="__IMG__/order_succeed.png" width="100" alt=""></span>
+              <span class="pull-left" style="padding-top: 25px;">
+                <p>支付方式：<span class="red">线下转账</span></p>
+                <p>订单金额：<span class="red">￥{$order_total}<small>.00</small></span></p>
+              </span>
+              <div class="clearfix"></div>
+            </div>
+            <div class="succeed-btn text-center">
+              <button type="button" class="btn btn-default" onclick="ai_mutual('52');">查看订单</button>
+              <button type="button" class="btn btn-default" onclick="ai_mutual('1');">去首页</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+      <section>
+        <div class="succeed-box succeed-data">
+          <h5>线下支付信息</h5>
+          <p>户&nbsp;&nbsp;&nbsp;名：{$vo.aname}</p>
+          <p>账&nbsp;&nbsp;&nbsp;号：{$vo.abank}</p>
+          <p>开户行：{$vo.tback}</p>
+          <p><small>提示：可在“个人中心”我的 订单管理 查看订单信息</small></p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Main END //-->
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品分类信息</title>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：产品分类>添加产品分类</h3>
+    </div>
+    <div class="article"  >
+	    <div class="categoryInfo" >
+    		<form action="{:U('Admin/Goods/proupdatepic')}" method="POST" enctype="multipart/form-data">
+    			<table>
+				<tr><th>分类名称:</th><td>{$imglist.name_alias}</td></tr>
+				<tr><th></th><td ><img src="/Public/images/category/zuan_temp.jpg" width="80%" ></td></tr>
+    			<tr><th>图片:</th>
+					<td>
+						<select  onchange="changeInput(this);return false;" name="parent_id" id="tip">
+							<option  value=""> 选择默认图片</option>
+							<option  value="/images/category/zuan_temp.jpg">钻石</option>
+							<option  value="/images/category/huan_temp.jpg">黄金</option>
+							<option  value="/images/category/fei_temp.jpg">翡翠</option>
+						</select>
+					</td>
+				</tr>
+				<tr><th></th><td><input name="template_img" type="file" style="width:300px;" value="游览" /></td></tr>
+    			<tr><th></th><td>
+		温馨提示：以上图片为系统默认图片，您还可以自己上传图片 。
+		上传图片要求：<br/>
+         <span class="red">图片尺寸比例3：1，参考尺寸900*300px，大小不超过2M，支持JPG/PNG</span><br/>
+					</td></tr>
+    				<tr><th colspan="2">
+					<input type="hidden" name="pid" value="{$imglist.category_id}" />
+					<input type="submit" name="submt" value="提交" />
+					<input type="reset" class="butto" value="重置" style="padding: 6px 15px; cursor: pointer; background-color: #0072C6; color: #FFF; border: 0;" >
+					</th></tr>
+    			</table>
+    		</form>
+	    </div>
+    </div>
+</div>
+</body>
+<script>
+	//点击替换图片
+ function changeInput(obj){
+    var cc= $("#tip option:selected").val();  
+	$(".article img ").attr('src','/Public'+cc);
+}
+</script>
+</html>

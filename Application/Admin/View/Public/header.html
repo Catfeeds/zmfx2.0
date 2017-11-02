@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit" />
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" />
+<script type="text/javascript" src="__PUBLIC__/Js/Jquery/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/layer/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC__/owl-carousel/owl.carousel.js"></script>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/owl-carousel/owl.carousel.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/owl-carousel/owl.theme.css" />
+<script type="text/javascript" src="__JS__/zm.js"></script>
+<script type="text/javascript" src="__JS__/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/yz.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/laydate/laydate.js"></script>
+<script type="text/javascript">
+$(function(){
+	$.addOrder = "{:U('Admin/Public/addOrder')}";//添加订单
+	$.getWebGoodsSpecification = "{:U('Admin/Public/getWebGoodsSpecification')}";//规格变化获取产品规格价格
+	$.getBusinessUserList = "{:U('Admin/Order/getBusinessUserList')}";//获取业务员列表
+	$.getUserAddress = "{:U('Admin/Order/getUserAddress')}";//获取用户地址
+	$.orderAddGoodsLuozuan = "{:U('Admin/Order/orderAddGoodsLuozuan')}";//添加订单页面增加证书货
+	$.orderAddGoodsSanhuo = "{:U('Admin/Order/orderAddGoodsSanhuo')}";//添加订单页面增加散货
+	$.orderAddProduct = "{:U('Admin/Order/orderAddProduct')}";//添加订单页面增加成品货
+	$.showOrder = "{:U('Admin/Public/showOrder')}";//显示订单信息
+	$.getSanhuoWeights = "{:U('Admin/Public/getSanhuoWeights')}";//获取散货或者筛号
+    <if condition = " $info['price_model'] ">
+    $.addLuozuanMatch  = "{:U('Admin/Public/addLuozuanMatch',array('price_model'=>'1'))}";//添加裸钻匹配记录
+    $.addMaterial      = "{:U('Admin/Public/addMaterial',array('price_model'=>'1'))}";//添加材质数据
+    $.addLuozuanMatch2 = "{:U('Admin/Public/addLuozuanMatch2',array('price_model'=>'1'))}";//添加匹配副石
+    $.loadAttSpe       = "{:U('Admin/Public/getGoodsAttribute',array('price_model'=>'1'))}";//获取分类下面的属性
+
+    <else />
+    $.addLuozuanMatch  = "{:U('Admin/Public/addLuozuanMatch')}";//添加裸钻匹配记录
+    $.addMaterial      = "{:U('Admin/Public/addMaterial')}";//添加材质数据
+    $.addLuozuanMatch2 = "{:U('Admin/Public/addLuozuanMatch2')}";//添加匹配副石
+    $.loadAttSpe       = "{:U('Admin/Public/getGoodsAttribute')}";//获取分类下面的属性
+
+    </if>
+
+    $.addGoodsSize              = "{:U('Admin/Public/addGoodsSize')}";//添加尺寸
+    $.orderAddConsignment       = "{:U('Admin/Order/orderAddConsignment')}";//添加订单页面增加代销货
+	$.getLuozuanDiscountPrice   = "{:U('Admin/Order/getLuozuanDiscountPrice')}";//获取裸钻销售折扣价格
+	$.getCssColorFile           = "{:U('Admin/System/getCssColorFile')}";//获取裸钻销售折扣价格
+	$.productAttributeValueInfo = "{:U('Admin/Goods/productAttributeValueInfo')}";//添加属性值
+	//$.loadSpecification = "{:U('Admin/Public/getGoodsSpecification')}";
+	$.productByOne         = "{:U('Admin/Goods/productByOne')}";
+	$.getAttributeList     = "{:U('Admin/Public/getAttributeList')}";
+	$.setAttributeIsFilter = "{:U('Admin/Goods/setAttributeIsFilter')}";
+})
+
+</script>
+</head>
+
+<!--[if IE 7]>
+<style>
+    html body { overflow-y: hidden;}
+    body .user-down { float: left !important;}
+    body .main .top .user .user-down ul { left: 0px !important;}
+</style>
+<![endif]-->
+<style>
+    .new_message {
+        width: 12px;
+        height: 11px;
+        line-height: 11px;
+        text-align: center;
+        display: inline-block;
+        position: absolute;
+        top: 10px;
+        right: 13px;
+        z-index: 999;
+        background: red;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        -o-border-radius: 50%;
+        padding: 3px;
+        font-size: 12px;
+        color: #CCC;
+        border: 1px solid #CCC;
+        box-shadow: -3px 3px 6px #555;
+        -webkit-box-shadow: -3px 3px 6px #555;
+        -moz-box-shadow: -3px 3px 6px #555;
+        -ms-box-shadow: -3px 3px 6px #555;
+        -o-box-shadow: -3px 3px 6px #555;
+    }
+</style>
+
+<body ontouchstart>
+<div class="main">
+	<div class="top">
+        <div class="logo">
+        	<a href="{:U('Admin/Index/index')}"><img src="/Public/{:C('admin_logo')}"/></a>
+        </div>
+        <div class="user">
+            <img src="__IMG__/touxiang.png" width="50" height="50" class="user_img" />
+            <li class="user-down">
+                <span>{$UserName}</span>
+                <img src="__IMG__/down_arrows.png" width="20" height="20" class="down_arrows" />
+                <ul>
+                    <li><a href="{:U('Admin/User/adminSavepwd?id='.$uid)}" >修改密码</a></li>
+                    <li><a href="{:U('Home/Index/index')}" target="_blank">站点首页</a></li>
+                    <li><a href="{:U('Public/logout')}">退出</a></li>
+                </ul>
+            </li>
+        </div>
+        <div class="task" style="display:none;">
+        	<a href="{:U('Admin/Order/orderList')}" class="task-ico taskD" >
+            	<div class="info"><span>新订单/</span><span class="red">20</span></div>
+            </a>
+            <a href="{:U('Admin/Goods/goodsList')}" class="task-ico taskC" >
+            	<div class="info"><span>新产品/</span><span class="red">506</span></div>
+            </a>
+            <a href="#" class="task-ico taskB" >
+            	<div class="info"><span>财务审核/</span><span class="red">6</span></div>
+            </a>
+            <a href="{:U('Admin/Order/orderList')}" class="task-ico taskA" >
+            	<div class="info"><span>待发货/</span><span class="red">10</span></div>
+            </a>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="buttom" style="background: #19252D;">
+        <div class="menu">
+            <ul class="menu">
+                <volist name="menuList" id="vo" key="k">
+                    <li class="nav <eq name="vo.url" value="$menuUrl">active</eq>">
+                    	<if condition="!in_array($vo['url'],$AuthList)">
+
+                            <if condition="is_array($vo['sub']) and (count($vo['sub']) gt 1)">
+                                <a class="a"><i class="menu-ico {$vo.menu_ico}"></i><span>{$vo.menu_name}</span></a>
+                                <ul class="subNav <gt name="k" value="5">b<else />t</gt>">
+                                    <volist name="vo.sub" id="io">
+                                        <li><a href="{:U($io['url'])}">{$io.menu_name}</a></li>
+                                    </volist>
+                                </ul>
+                            <else />
+                                <a class="a" href="{:U($vo['url'])}"><i class="menu-ico {$vo.menu_ico}"></i><span>{$vo.menu_name}</span></a><!--没有子菜单，则有链接-->
+                            </if>
+                    	</if>
+
+    					<eq name="vo.url" value="Admin/Order/index">
+        					<if condition="$orderunreadcount gt 0">
+        					   <span class="new_message">{$orderunreadcount}</span>
+        					</if>
+    					</eq>
+    					<eq name="vo.url" value="Admin/Store/booked">
+    						<if condition="$bookedCount gt 0">
+    						  <span class="new_message">{$bookedCount}</span>
+    						</if>
+    					</eq>
+                    </li>
+                </volist>
+            </ul>
+        </div>
+
+
+
+
+        <div class="content">
+        <script>
+            //动态改变提示消息框的大小
+            var len = $('.new_message').html().length;
+            if( len == 1 ){
+                $('.new_message').css({'width': '12px', 'height': '11px', 'line-height': '11px'});
+            }else if( len == 2 ){
+                $('.new_message').css({'width': '18px', 'height': '16px', 'line-height': '16px'});
+            }else if( len == 3 ){
+                $('.new_message').css({'width': '21px', 'height': '20px', 'line-height': '20px'});
+            }
+        </script>
+        <script>
+            $(function(){
+                $('.menu').height($('window').height());
+                $('.traderIndex').height($(document).height()).css({"background": "#CEDCFF"});
+                /*$(window).resize(function(){
+                    $('.menu').height($('window').height());
+                    $('.traderIndex').height($(document).height()).css({"background": "#CEDCFF"});
+                });*/
+            });
+        </script>

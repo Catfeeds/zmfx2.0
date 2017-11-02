@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>申请售后</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/aftersales.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script src="__JS__/m_back.js"></script>
+</head>
+<body class="wrap-bg">
+
+	<!-- Main -->
+    <div class="user-info">
+
+		<section class="after-sales-box">
+			<div class="after-sales-head">
+				<span class="active"><a href="javascript:">申请售后</a></span>
+				<span><a href="/OrderService/sList<?php echo '?agent_id='.C('agent_id').'&token='.C('token').'&uid='.C('uid')?>">售后进度</a></span>
+				<div class="clearfix"></div>
+			</div>
+		</section>
+ 
+		<if condition="$list">
+			<foreach name="list" item="vo" >
+				<section class="after-sales-list">
+					<div class="shouhou">
+						<div class="thead">
+							<span class="pull-left">订单号：{$vo.order_sn}</span>
+							<span class="pull-right red"></span>
+							<div class="clearfix"></div>
+						</div>
+						
+						<if condition="$vo.goods_list">
+							<foreach name = "vo.goods_list" item="v" >
+								<if condition = " $v.goods_type eq '3' || $v.goods_type eq '4' ">
+									<div class="tbody">
+										<div class="cbimg pull-left">
+											<img style="max-height:150px" src="{$v.thumb}" alt="">
+										</div>
+										<div class="after-data pull-left">
+											<p>{$v.goods_name}</p>
+											<p>数量：x{$v.goods_number}</p>
+										</div>
+										<div class="toview pull-right">
+											<if condition = " !$v.status ">
+												<a href="/OrderService/oInfo?og_id={$v['og_id']}<?php echo '&agent_id='.C('agent_id').'&token='.C('token').'&uid='.C('uid')?>" class="btn btn-default btn-sm pull-right">申请售后</a>
+											<else />
+												<span class="ysl">已受理</span>
+											</if>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								<else />
+									<div class="tbody tbody2">
+										<div class="after-data pull-left">
+											<p>【裸钻】货品编号：FME6420</p>
+											<p>GIA 2214685824</p>
+											<p>0.3ct L色 SI2净度 EX切工</p>
+											<p>数量：x{$v.goods_number}</p>
+										</div>
+										<div class="toview pull-right"><a href="javascript:" class="btn btn-default btn-sm pull-right">无法售后</a></div>
+										<div class="clearfix"></div>
+									</div>
+								</if>
+							</foreach>
+						</if>
+
+						<div class="tfoot">
+							<small class="pull-left">下单时间：{$vo.create_time} </small>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</section>
+			</foreach>
+		</if>
+    </div>
+	
+
+	<div id="pullUp">	
+		<span  id="msg_more" >
+			<?php if (count($list) == '5'): ?>
+				下拉搜索更多数据...
+			<?php else: ?>
+				没有更多数据了...
+			<?php endif; ?> 
+		</span>
+	</div>
+
+	
+    <!-- Main END //-->
+</body>
+<script type="text/javascript">
+	var page = 1;
+	var lock = false;
+	function submitData(page){
+		if(page==null){  submit_data_page='1';}
+		/* 当为空时，显示默认数据*/
+		$.post("/OrderService/oList/<?php echo '?agent_id='.C('agent_id').'&token='.C('token').'&uid='.C('uid')?>",
+			{
+				Action:"post",
+				page_id:page
+			},
+			refData,
+			'html'
+		);
+	}
+	
+	function refData(data){
+		var html = "";
+		if(data){
+			$('.user-info').append(data);
+			document.getElementById('msg_more').innerHTML="下拉搜索更多数据...";
+		}else{
+			lock = true;
+			document.getElementById('msg_more').innerHTML="没有更多数据了...";			
+		}
+	}
+	
+	
+	window.onscroll = function () { 
+		if (getScrollTop() + getClientHeight() == getScrollHeight()) { 
+			//var tippage=$("#search-right").text();
+			//if(tippage=="取消"){return false;}
+			//var count_page=$(".count_page_input").attr('data_num');//当前第
+			if(getScrollTop()<200){return false;}
+			//if(submit_data_page==1){page=1; submit_data_page='2';}
+			if(lock == false){
+				submitData(++page);
+			}
+		} 
+	}
+</script>
+</html>

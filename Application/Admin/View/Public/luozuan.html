@@ -1,0 +1,268 @@
+<!--裸钻列表-->
+<style>
+.listTbl .list .left{
+	text-align:left;
+	padding-left:2em;
+}
+
+</style>
+<notempty name="goodsList['luozuan']">
+<div class="info luozuan">
+	<div class="title">证书货产品:</div>
+	<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+            <if condition="!$orderInfo['order_status']">
+                <th>序号</th>
+            </if>
+            <th>证书号</th>
+			<th>原销售价(&yen;)</th>
+            <th>单价(&yen;)</th>
+            <if condition="!$tid">
+                <th width="6%">国际报价</th>
+            </if>
+            <if condition="!$tid">
+                <th width="5%">原折扣</th>
+            </if>
+            <if condition="!$tid and ($orderInfo['order_status'] gt 0)">
+                <th>销售折扣</th>
+            </if>
+            <eq name="orderInfo.order_status" value="0">
+            	<if condition="in_array('admin/order/getluozuandiscountprice',$AuthList)">
+            	   <th>折扣</th>
+            	</if>
+            </eq>
+            <if condition="!in_array_diy('7,8',$group)">
+                <th>产品类型</th>
+            </if>
+            <th>4C属性(重量/颜色/净度/切工)</th>
+            <th>订购数量(颗)</th>
+            <eq name="orderInfo.order_status" value="0">
+                <th>库存参考</th>
+            </eq>
+            <th>小计价格</th>
+
+            <if condition="!$orderInfo['order_status']">
+                <th>有货</th>
+                <th>发货时间</th>                       
+            </if>
+
+            <if condition="in_array('admin/order/orderdelgoods',$AuthList) and ($orderInfo['order_status'] eq 0)">
+                <th>删除</th>              
+            </if>
+				<th>备注</th>   			
+        </tr>
+        <volist name="goodsList['luozuan']" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'} list">
+			
+			<if condition="!$orderInfo['order_status'] ">
+                <td>
+                    <!--$vo.fahuo_time gt 0 and $vo.have_goods gt 0 and 下次增加这个条件的时候就不隐藏，提示需要钻明后台确认有货 -->
+                    <if condition=" $vo['attribute']['agent_id'] neq $agent_id ">
+            			<input type="checkbox" class="add_caigou" name="add_caigou[]" value="{$vo['og_id']}" />       			
+        			</if>
+                    {$vo['og_id']}
+                </td>
+            </if>
+            <td class="left">
+				<if condition="$vo['attribute']['luozuan_type'] eq 1 ">
+					彩钻
+				<else />
+					白钻
+				</if>
+				{$vo['attribute']['certificate_type']} {$vo['attribute']['certificate_number']}
+			</td>
+			<td>{$vo.goods_price}</td>
+            <td>
+                <eq name="orderInfo.order_status" value="0">
+                    <input type="text" value="{$vo.goods_price}" data-id="{$vo['og_id']}" name="goodsLuozuan[{$vo['og_id']}][price]" class="goods_price">
+                <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+                    {$vo.goods_price}
+                <else />
+                    {$vo.goods_price_up}
+                </eq>
+            </td>
+            <if condition="!$tid">
+                <td><!--国际报价-->
+                    {$vo['attribute']['dia_global_price']}
+                </td>
+            </if>
+            <if condition="!$tid"><!--原折扣-->
+                <td class="yadvantage">
+                    {$vo.advantage}
+                </td>
+            </if>
+
+            <if condition="!$tid and ($orderInfo['order_status'] gt 0)">
+                <td><!--销售折扣-->
+                    {$vo.xian_advantage}
+                </td>
+            </if>
+            <eq name="orderInfo.order_status" value="0">
+	            <if condition="in_array('admin/order/getluozuandiscountprice',$AuthList)">
+    				<td><!--折扣-->
+                        <input type="text" data-id="{$vo['og_id']}" class="discount" data-sn="{$vo['attribute']['certificate_number']}" value="{$vo.xian_advantage}" style="width: 40px;" />
+                    </td>
+	            </if>
+            </eq>
+            <if condition="!in_array_diy('7,8',$group)">
+                <td><!--产品类型-->
+                    {$vo['attribute']['quxiang']}
+                </td>
+            </if>
+
+            <td>
+                <!--4c-->
+                <span>{$vo['attribute']['weight']}/{$vo['attribute']['color']}/{$vo['attribute']['clarity']}/{$vo['attribute']['cut']}/{$vo['attribute']['polish']}/{$vo['attribute']['symmetry']}/{$vo['attribute']['fluor']}/{$vo['attribute']['milk']}/{$vo['attribute']['coffee']}</span>
+            </td>
+
+            <td><!--订购数量（颗）-->
+                <eq name="orderInfo.order_status" value="0">
+                    <input type="text" value="1" data-id="{$vo['og_id']}" name="goodsLuozuan[{$vo['og_id']}][goods_num]" class="goods_num">
+                <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+                    1
+                <else />
+                    {$vo.goods_number_up}
+                </eq>
+            </td>
+            <eq name="orderInfo.order_status" value="0">
+                <td class="goods_number" data-id="{$vo['og_id']}"><!--库存参考-->
+                    {$vo.goods_number_luozuan}
+                </td>
+            </eq>
+            <td class="goods_price"><!--小计价格-->
+                <eq name="orderInfo.order_status" value="0">
+                    {$vo.goods_price}
+                <elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+                    {$vo.goods_price}
+                <else />
+                    {$vo.goods_price_up}
+                </eq>
+            </td>
+            <if condition="!$orderInfo['order_status']">
+                <if condition="$vo['attribute']['agent_id'] neq $agent_id">
+                    <if condition="$vo.fahuo_time gt 0">
+                        <td>
+                            <if condition="$vo.have_goods gt 0">
+                                有货
+                            <else />
+                                无货
+                            </if>
+                        </td>
+                        <td>{$vo.fahuo_time|date="Y-m-d",###}</td>
+                    <else/>
+                        <td>待确认</td>
+                        <td>待确认</td>
+                    </if>
+                <else />
+                    <td></td>
+                    <td></td>
+                </if>
+            </if>
+            
+            <if condition="in_array('admin/order/orderdelgoods',$AuthList) and ($orderInfo['order_status'] eq 0)">
+                <td><a href="{:U('Admin/Order/orderDelGoods?order_id='.$orderInfo['order_id'].'&og_id='.$vo['og_id'])}" id="isDel">删除</a></td>              
+            </if>
+			    <td><input style="width: 108px;" type="text"  value="<?php if($vo['beizhu']) echo $vo['beizhu'];?>" placeholder="该备注仅针对采购单"  name="beizhu_{$vo.og_id}" ></td>
+        </tr>
+        </volist>
+        <tr class="count">
+            <td colspan="3"></td>
+            <if condition="!$orderInfo['order_status']">
+                <td colspan="2"></td>
+            </if>
+
+            <if condition="!$tid">
+                <td colspan="2"></td><!--国际报价--><!--原折扣-->                                   
+            </if>
+           
+
+            <if condition="!$tid and ($orderInfo['order_status'] gt 0)">
+                <td><!--销售折扣--></td>
+            </if>
+            <eq name="orderInfo.order_status" value="0">
+                <if condition="in_array('admin/order/getluozuandiscountprice',$AuthList)">
+                    <td><!--折扣--></td>
+                </if>
+                 <td><!--库存参考--></td>
+            </eq>
+
+            <if condition="!in_array_diy('7,8',$group)">
+                <td><!--产品类型--></td>
+            </if>
+            <if condition="$vo['attribute']['agent_id'] neq $agent_id and !$orderInfo['order_status']">                
+                <td></td>               
+            </if>
+            <if condition="in_array('admin/order/orderdelgoods',$AuthList) and ($orderInfo['order_status'] eq 0)">
+                <td></td>              
+            </if>
+                <td></td>			
+        	<td class="tr"><span>合计:</span></td>
+            <td class="tl"><span>&yen;</span><span id="luozuanTotal">{$luozuanPrice}</span></td>
+			
+			
+			<td></td>
+        </tr>
+	</table>
+    <div class="clear"></div>
+</div>
+<eq name="orderInfo.order_status" value="0">
+<div class="info period">
+	<div class="title">证书货结算:</div>
+    <label>
+    <input type="radio" name="luozuanPay" value="1" class="fl" checked/>
+    <span class="fl">做期支付</span>
+    </label>
+    <select name="luozuan_period_num" id="luozuan_period_num" class="fl">
+        <option value="2">分二期支付</option>
+        <option value="3">分三期支付</option>
+        <option value="4">分四期支付</option>
+        <option value="5">分五期支付</option>
+    </select>
+    <span class="fl">逾期利率(万分比)：</span>
+    <input type="text" name="luozuan_period_overdue" class="fl mr30 overdue" />
+    <label>
+    <input type="radio" name="luozuanPay" value="2" class="fl">
+    <span class="fl mr10">全款支付</span>
+    </label>
+    <div class="clear"></div>
+</div>
+<elseif condition="$orderInfo['order_status'] == -1 or $orderInfo['order_status'] == -2" />
+<else />
+<div class="info">
+	<div class="title">证书货结算:</div>
+    <eq name="periodList.luozuan.order_id" value="$orderInfo.order_id">
+        <ul class="periodList">
+        <li class="bg">
+            <span>做{$periodList.luozuan.period_num}期支付&nbsp;&nbsp;&nbsp;</span>
+            <span>应支付总金额:&yen;{$luozuanPrice}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span>逾期利率:0.0{$periodList.luozuan.period_overdue}%</span>
+        </li>
+        <volist name="receivablesList.luozuan" id="vo">
+        	<li>
+            <span>第{$vo.period_current}期</span>
+            <span>{$vo.period_day}天内</span>
+            <span>应支付:&yen;{$vo.receivables_price}</span>
+            <span>已支付:&yen;{$vo.payment_price}</span>
+            <eq name="vo.receivables_status" value="1"><span>&nbsp;&nbsp;&nbsp;未核销</span></eq>
+            <eq name="vo.receivables_status" value="2"><span>&nbsp;&nbsp;&nbsp;核销部分</span></eq>
+            <eq name="vo.receivables_status" value="3"><span>&nbsp;&nbsp;&nbsp;已核销</span></eq>
+            </li>
+        </volist>
+        </ul>
+    <else />
+        <ul class="periodList">
+        <li><span>全款支付，应支付金额：{$luozuanPrice}</span>
+        <volist name="receivablesList.luozuan" id="vo">
+            <span>已支付:&yen;{$vo.payment_price}</span>
+            <eq name="vo.receivables_status" value="1"><span>&nbsp;&nbsp;&nbsp;未核销</span></eq>
+            <eq name="vo.receivables_status" value="2"><span>&nbsp;&nbsp;&nbsp;核销部分</span></eq>
+            <eq name="vo.receivables_status" value="3"><span>&nbsp;&nbsp;&nbsp;已核销</span></eq>
+        </volist>
+        </li>
+        </ul>
+    </eq>
+</div>
+</eq>
+<div class="info period_list" id="luozuan_period_list"></div>
+</notempty>
+<!--裸钻列表结束-->

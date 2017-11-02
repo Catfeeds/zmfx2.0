@@ -1,0 +1,185 @@
+<extend name="Manage:Default:base" />
+<block name="title">{$L['login_title']}</block>
+<block name="desc">{$L['login_description']}</block>
+<block name="body">
+        <!-- 内容-->
+        <div class="wrapper">
+            <div class="row">
+                <div class="sign">
+                    <span><img src="/Application/Supply/View/Public/images/left-top.jpg"></span>
+                    <ul>
+                        <li>{$L['text_order_detail']}：</li>
+                    </ul>
+                </div>
+                <div class="col-lg-12 product">
+                     <section class="panel">
+                        <header class="panel-heading custom-tab ">
+                            <ul class="nav nav-tabs" >
+                                <li class="active">
+                                    <a href="#deposit" class="order-number" data-toggle="tab">{$L['finance_collection_record']}</a>
+                                </li>
+                            </ul>
+                        </header>
+                       <!--财务详情-->
+					   
+                       <div class="cate fina-info">
+							<div class="row" style="border-bottom: 1px solid #dddddd;float: left;font-size: 16px;height: 50px;line-height: 50px;margin-left: 18px;width: 100%;">
+								<a class="fanhui" href="javascript:;" style="color:#000;text-decoration:none;"> &lt;&lt; {$L['return']} </a>
+							</div>
+                            <div class="row" id="order_titleinfo">
+                                
+                            </div>
+							<script type="text/template" id="order_titleinfo_tpl">
+									<div class="col-lg-3" style="float:left">
+												<div class="panel-body">
+													<span>{$L['text_order_sn']}：</span>
+													<span><%= order_sn %></span>
+												</div>
+									</div>
+									<div class="col-lg-3 " style="float:left">
+												<div class="panel-body">
+												   <span>{$L['text_order_time']}：</span>
+													<span><%= create_time_cre %></span>
+												</div>
+									</div>
+									<div class="col-lg-3" style="float:left">
+											<div class="panel-body">
+												<span>{$L['text_order_price']}：</span>
+												<span><%= order_price %></span>
+											</div>
+									</div>
+							</script>
+							
+                            <div class="row">
+                                <!-- <div class="col-lg-2 text-center">
+                                        <div class="panel-body">
+                                            {$L['text_order_detail']}：
+                                        </div>
+                                </div> -->
+                                <!--订单裸钻产品-->                                                   
+								<include file="./Application/Supply/View/Manage/Default/Public/luozuan.html" />                        
+								
+								<!--订单散货产品-->      
+								<include file="./Application/Supply/View/Manage/Default/Public/sanhuo.html" />
+								
+								<!--订单商品-->      
+								<include file="./Application/Supply/View/Manage/Default/Public/consignment.html" />
+                            </div>
+                       <!---->
+                            <div class="row checkers">
+                           <!--  <div class="col-lg-2 text-center checkers-info">
+                                    <div class="panel-body">
+                                       {$L['finance_detail_receivables']}：
+                                    </div>
+                            </div> -->
+                            <div class="col-lg-6 ">
+                                    <div class="panel-body" id="stages_list">
+                                        
+									</div>
+			<script type="text/template" id="stages_list_tpl">
+				
+					<p> {$L['finance_total_receivables']}:￥<%= datas.order_info.order_price %></p>
+					<div class="table-responsive" >
+						<table class="table table-hover table-striped">
+								<thead>
+									<tr>
+										<th>{$L['finance_number_receivables']}</th>
+										<th>{$L['finance_time_receivables']}</th>
+										<th>{$L['finance_actual_receivables']}</th>
+										<th>{$L['status']}</th>
+									</tr>
+								</thead>
+							  <% _.each(datas.order_payment_list, function (item) { %>
+									<tr>
+										<td><%= item.key %></td>
+										<td><%= item.create_time_str %></td>
+										<td><%= item.payment_price %></td>
+										<td>
+										<% if(item.payment_status == 0){%>
+											{$L['finance_wait_receivables']}
+										<% }else if(item.payment_status == 1){ %>
+											{$L['finance_wait_examine']}
+										<% }else if(item.payment_status == 2){ %>
+											{$L['finance_already_examine']}
+										<% } %>
+										</td>
+									</tr>
+							  <% }); %>
+
+
+						</table>
+					</div>		
+			</script>
+                            </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+</block>
+<block name="my_js">
+<script>
+	//返回按钮
+	$('.fanhui').click(function(){
+		window.location.href = "{:GetSupplyUrl('Finance','index')}";
+	})
+	var order_id = '{$_GET["order_id"]}';
+	$(function(){
+		$.getJSON("{:U('Finance/financeInfo/order_id/"+order_id+"')}",function(data){
+			datas    = data['data'];                            
+			var con  = _.template($('#order_titleinfo_tpl').html());
+			var html = con(datas.order_info);
+			$('#order_titleinfo').html(html); 
+			
+			 if(datas.order_goods_list.luozuan){
+					$('#luozuan_list_content').html( _.template( $('#luozuan_list_content_tpl').html(), datas) ); 
+			}
+
+			if(datas.order_goods_list.sanhuo){
+				$('#sanhuo_list_content').html( _.template( $('#sanhuo_list_content_tpl').html(), datas) ); 
+			}
+			
+			if(datas.order_goods_list.consignment){
+				$('#consignment_list_content').html( _.template( $('#consignment_list_content_tpl').html(), datas) ); 
+			}
+			
+			if(datas.order_payment_list){
+				$('#stages_list').html( _.template( $('#stages_list_tpl').html(), datas) );
+			}
+			
+		})
+		
+		/*$('.examine').live('click',function(){
+			var payment_id = $(this).attr('data-id');
+			layer.confirm('{$L["finance_examine_notice"]}', {
+				  btn: ['{$L["sure"]}','{$L["cancel"]}'] //按钮
+				}, function(){
+					$.ajax({
+						type: 'POST',
+						url: "{:U('Finance/examine')}",
+						data: {payment_id:payment_id},
+						dataType: 'json',
+						success: function(data){
+						   if(data.ret == 100){
+								$(this).html('{$L["finance_already_examine"]}');
+								layer.msg(data.msg,{
+									offset:['260px'],
+									shift :6,
+								});
+						   }else{
+								layer.msg(data.msg,{
+									offset:['260px'],
+									shift :5,
+								});
+						   }
+						},
+						
+					});
+				})
+		})*/
+	
+	})
+</script>
+
+</block>

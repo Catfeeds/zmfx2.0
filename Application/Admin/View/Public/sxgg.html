@@ -1,0 +1,19 @@
+<td class="sxgg" colspan="20">
+	<eq name="orderInfo.order_status" value="0">
+	<volist name="vo.specificationList" id="oo" key="k">
+    <select name="product[{$SJID}][specification][{$key}]">
+        <option value="0">选择{$oo.name}</option>
+        <volist name="oo.sub" id="io">
+            <option value="{$io.specification_id}"
+            <if condition="$vo['specificationSel'][$k-1] == $io['specification_id']">selected="selected"</if>>{$io.name}</option>
+        </volist>
+    </select>
+    </volist>
+    <else />
+    	<volist name="vo.specificationList" id="oo" key="k">
+            <volist name="oo.sub" id="io">
+                <span><if condition="$vo['specificationSel'][$k-1] == $io['specification_id']">{$io.name}</if><span>
+            </volist>
+        </volist>
+    </eq>
+</td>

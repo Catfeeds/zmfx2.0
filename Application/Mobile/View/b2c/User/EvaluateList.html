@@ -1,0 +1,57 @@
+<include file="Public:header" />
+ 
+<body>
+ <body>
+    <section class="cart cart-listing evaluation-list">
+
+        <!-- top -->
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>评价列表</h2>
+            </div>
+        </header>
+        <!-- top end -->
+
+        <section class="cart-list wrapper">
+			<?php if ($data == true): ?>
+				<?php foreach($data as $key=>$val):?>
+					<div class="goods-item">
+						<div class="goods-layout clearfix">
+							<div class="goods-img">
+								<a href="/Goods/detail/goods_type/<?php echo $val['goods_type'];?>/gid/<?php echo $val['goods_id'];?>"><img src="<?php echo ($val['img']['small_path']);?>" alt=""></a>
+							</div>
+							<div class="goods-right">
+								<h2><a ><?php echo ($val['name']);?></a></h2>
+								<div class="goods-fangshi clearfix">
+									<span class="fl c9 rmb">￥<span class="price"><?php echo ($val['goods_price']);?></span></span>
+									<span class="fr">
+										<a href="/User/Evaluate/og_id/<?php echo $val['og_id']; ?>" class="btns">
+											<?php if ($val['oeval'] == '1'): ?>
+												 评价	 
+											<?php else: ?>
+												  己评价 
+											<?php endif; ?>
+										</a>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			<?php endif; ?>		
+		
+
+        </section>
+    </section>
+	
+
+	
+</body>
+
+
+
+ 
+</html>

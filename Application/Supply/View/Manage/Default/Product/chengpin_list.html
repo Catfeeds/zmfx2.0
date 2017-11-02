@@ -1,0 +1,206 @@
+<div class="cate-info">
+    <dl>
+        <dt>{$L['text_product_sn']}</dt>
+        <dd><input type="text" name="goods_sn"></dd>
+    </dl>
+    <dl>
+        <dt>{$L['text_goods_status']}</dt>
+        <dd>
+            <select name="product_status">
+                <option value="" >{$L['text_product_all']}</option>
+                <option value="0">{$L['text_product_unshelves']}</option>
+                <option value="1">{$L['text_product_onshelves']}</option>
+                <option value="2">{$L['finance_already_examine']}</option>
+                <option value="3">{$L['finance_not_already_examine']}</option>
+            </select>
+        </dd>
+    </dl>
+    <dl>
+		<dt>{$L['text_time_update']}</dt>
+        <dd><input type="text" name="time_begin" size="12" class="laydate-icon" onclick="laydate()" placeholder="{$L['text_enter_date']}"></dd>
+        <dt>{$L['text_until']}</dt>
+        <dd><input type="text" name="time_end" size="12" class="laydate-icon" onclick="laydate()" placeholder="{$L['text_enter_date']}"></dd>
+    </dl>
+    <dl>
+        <dd><input type="button" class="search" id="search_chengpin" value="{$L['search']}"></dd>
+    </dl>
+</div>
+<!--表格-->
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th><input type="checkbox" class="select_chengpin_all"></th>
+            <th>{$L['text_product_sn']}</th>
+            <th>{$L['text_product_type']}</th>
+            <th>{$L['text_product_name']}</th>
+            <th>{$L['text_product_img']}</th>
+            <th>{$L['text_product_stock']}</th>
+            <th>{$L['text_price']}</th>
+            <th>{$L['text_upload_time']}</th>
+            <th>{$L['text_goods_status']}</th>
+            <th>{$L['operation']}</th>
+        </tr>
+        </thead>
+        <tbody id="chengpin_content"></tbody>
+        <script type="text/template" id="chengpin_content_tpl">
+            <% if(datas.length > 0){ %>
+                <% _.each(datas, function (item) { %>
+                <tr title="{$L['text_upload_time']}:<%= item.create_time %>">
+                    <td><input type="checkbox" name="chengpin_goods_id[]" value="<%= item.goods_id %>" /></td>
+                    <td><%= item.goods_sn %></td>
+                    <td><%= item.category_name %></td>
+                    <td><%= item.goods_name %></td>
+                    <td><img class="img" style="width:50px;height:50px;" src="<%= item.thumb %>" /></td>
+                    <td><%= item.goods_number %></td>
+                    <td><%= item.goods_price %></td>
+                    <td><%= item.create_time %></td>
+                    <% if(item.valid_status == 1) { %>
+                        <td><%= item.product_status_text %></td>
+                        <td>
+                            <% if(item.product_status == 0) { %>
+                            <a data-goods-id="<%= item.goods_id %>" class="on_sale" href="javascript:void(0);">{$L['text_product_upshelves']}</a>/
+                            <a data-goods-id="<%= item.goods_id %>" class="modify_info" href="javascript:void(0);">{$L['change']}</a>/
+                            <a data-goods-id="<%= item.goods_id %>" class="remove" href="javascript:void(0);">{$L['delete']}</a>
+                            <% }else{ %>
+                            <a data-goods-id="<%= item.goods_id %>" class="off_shelves" href="javascript:void(0);">{$L['text_product_doshelves']}</a>
+                            <% } %>
+                        </td>
+                    <% }else{ %>
+                        <% if(item.valid_status == 0 ) { %>
+                        <td>{$L['finance_wait_examine']}</td>
+                        <% }else{ %>
+                        <td>{$L['finance_falied_examine']}</td>
+                        <% } %>
+                        <td>
+                            {$L['text_product_upshelves']}/
+                            <a data-goods-id="<%= item.goods_id %>" class="modify_info" href="javascript:void(0);">{$L['change']}</a>/
+                            <a data-goods-id="<%= item.goods_id %>" class="remove" href="javascript:void(0);">{$L['delete']}</a>
+                        </td>
+                    <% } %>
+                </tr>
+                <% }); %>
+            <% } else { %>
+            <tr>
+                <td colspan="20">{$L['no_data']}..</td>
+            </tr>
+            <% } %>
+        </script>
+    </table>
+</div>
+<div class="compose-btn">
+    <button class="btn btn-sm btn-default on_sale_batch" >{$L['batch']}{$L['text_product_upshelves']}</button>
+    <button class="btn btn-sm btn-default off_shelves_batch" >{$L['batch']}{$L['text_product_doshelves']}</button>
+    <button class="btn btn-sm btn-default remove_batch" >{$L['batch']}{$L['delete']}</button>
+</div>
+<div class="prve"></div>
+<script>
+    var datas;
+    function func_search_chengpin_list(){
+        var res       = chengpin_goods.get_goods(3);
+        var page_html = page.create({PageID:res['data']['page_id'],PageSize:res['data']['page_size'],TotalNum:res['data']['total']}).getHtml();
+        if( page_html == '' ){
+            var pageid = Math.ceil( res['data']['total'] / res['data']['page_size'] );
+            if( pageid < 1 ){
+                pageid = 1;
+            }
+            chengpin_goods.set_page( pageid , res['data']['page_size'] );;
+            res       = chengpin_goods.get_goods();
+            page_html = page.create({PageID:res['data']['page_id'],PageSize:res['data']['page_size'],TotalNum:res['data']['total']}).getHtml();
+        }
+        datas = res['data']['list'];
+        $('#chengpin_content').html( _.template($('#chengpin_content_tpl').html(), datas) );
+        $('#search_chengpin').closest('#chengpin').find('.prve').html(page_html);
+        $('#chengpin .prve a').on('click',function(){
+            chengpin_goods.set_page($(this).attr('data-page-id'),$(this).attr('data-page-size'));
+            func_search_chengpin_list();
+        });
+		//分页GO操作
+		$('#chengpin .prve .go').on('click',function(){
+			var data_page_id = parseInt($(this).prev().val(),10);
+			var data_page_size = parseInt($("input[name='page_size']").val(),10);
+			if(data_page_id){
+				chengpin_goods.set_page(data_page_id,data_page_size);
+				func_search_chengpin_list();
+			}
+		});
+        $('#chengpin .on_sale_batch').prop('disabled',true);
+        $('#chengpin .off_shelves_batch').prop('disabled',true);
+        $('#chengpin .remove_batch').prop('disabled',true);
+        $('input[type="checkbox"]').prop('checked',false);
+    }
+    //界面交互逻辑
+    $(function(){
+        //默认数据
+        func_search_chengpin_list();
+        $('#search_chengpin').on('click',function() {
+            chengpin_goods.set_arg('page_id','1');
+            chengpin_goods.set_arg('goods_sn',$('#search_chengpin').closest('#chengpin').find('input[name="goods_sn"]').val());
+            chengpin_goods.set_arg('certificate_number',$('#search_chengpin').closest('#chengpin').find('input[name="certificate_number"]').val());
+            chengpin_goods.set_arg('product_status',$('#search_chengpin').closest('#chengpin').find('select[name="product_status"]').val());
+            chengpin_goods.set_arg('time_begin',$('#search_chengpin').closest('#chengpin').find('input[name="time_begin"]').val());
+            chengpin_goods.set_arg('time_end',$('#search_chengpin').closest('#chengpin').find('input[name="time_end"]').val());
+            func_search_chengpin_list();
+        });
+        $('.select_chengpin_all').on('click',function() {
+            func_select_all('chengpin_goods_id[]',this);
+        });
+        $('.select_chengpin_all,input[name="chengpin_goods_id[]"]').live('click',function() {
+            $('#chengpin .on_sale_batch').prop('disabled',true);
+            $('#chengpin .off_shelves_batch').prop('disabled',true);
+            $('#chengpin .remove_batch').prop('disabled',true);
+            $('input[name="chengpin_goods_id[]"]:checked').each(function(){
+                $('#chengpin .on_sale_batch').prop('disabled',false);
+                $('#chengpin .off_shelves_batch').prop('disabled',false);
+                $('#chengpin .remove_batch').prop('disabled',false);
+            });
+        });
+        //批量操作
+        $("#chengpin .on_sale_batch,#chengpin .off_shelves_batch,#chengpin .remove_batch").on('click',function(){
+            var chengpin_goods_ids = $('input[name="chengpin_goods_id[]"]:checked').map(function(){
+                return $(this).val();
+            }).get();
+            //上架
+            if($(this).hasClass('on_sale_batch')){
+                chengpin_goods.on_sale(chengpin_goods_ids);
+            }
+            //下家
+            if($(this).hasClass('off_shelves_batch')){
+                chengpin_goods.off_shelves(chengpin_goods_ids);
+            }
+            //删除
+            if($(this).hasClass('remove_batch')){
+                if(confirm('{$L["text_detlte_notice"]}')) {
+                    chengpin_goods.remove_goods(chengpin_goods_ids);
+                }
+            }
+            func_search_chengpin_list();
+        });
+        //单页操作
+        $("#chengpin .on_sale,#chengpin .off_shelves,#chengpin .remove,#chengpin .modify_info").live('click',function(){
+            var chengpin_goods_ids = new Array();
+            chengpin_goods_ids.push($(this).attr('data-goods-id'));
+            //上架
+            if($(this).hasClass('on_sale')){
+                chengpin_goods.on_sale(chengpin_goods_ids);
+            }
+            //下家
+            if($(this).hasClass('off_shelves')){
+                chengpin_goods.off_shelves(chengpin_goods_ids);
+            }
+            //删除
+            if($(this).hasClass('remove')){
+                if(confirm('{$L["text_detlte_notice"]}')) {
+                    chengpin_goods.remove_goods(chengpin_goods_ids);
+                }
+            }
+            //修改
+            if($(this).hasClass('modify_info')){
+                var goods_id = $(this).attr('data-goods-id');
+                openWindows('{:U('Goods/productInfo')}?goods_id='+goods_id,'1050','650');
+                return false;
+            }
+            func_search_chengpin_list();
+        });
+    });
+</script>

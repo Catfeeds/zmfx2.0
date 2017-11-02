@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <block name="my_meta"><!--继承此板框给添加额外的meta--></block>
+        <meta name="description" content="<block name="desc"></block>">
+        <title><block name="title"></block>-{$L['main_title']}</title>
+        <link rel="shortcut icon" href="#" type="image/png">
+        <block name="css">
+            <link href="__CSS__/style.css" rel="stylesheet">
+            <link href="__CSS__/style-responsive.css" rel="stylesheet">
+			<if condition="LANG_SET eq 'en-us' ">
+			<link href="__CSS__/en-us.css" rel="stylesheet">
+			</if>
+        </block>
+        <block name="my_css"><!--继承此板框给添加额外的css代码--></block>
+    </head>
+
+    <body class="<block name="body_class">sticky-header</block>">
+        <block name="body"><!--继承此板框给添加body--></block>
+        <block name="js">
+            <script src="__JS__/jquery-1.10.2.min.js"></script>
+            <script src="__JS__/bootstrap.min.js"></script>
+            <script src="__JS__/modernizr.min.js"></script>
+			<script src="__JS__/layer/layer.js"></script>			
+            <script id="yzScript" src="__JS__/yz.js"  data="{$nowlang}"></script>
+        </block>
+        <block name="my_js"><!--继承此板框给添加额外的js代码--></block>
+    </body>
+    <script>
+        $(function(){
+            //登录切换高亮显示
+            $("#login-tab a").click(function(){
+                $("#login-tab a").removeClass("active");
+                $(this).addClass("active");
+            });
+            $(".regist-lo a").click(function(){
+                $("#login-tab a").removeClass("active").eq(0).addClass("active");
+            });
+        });
+    </script>
+</html>
+

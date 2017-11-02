@@ -1,0 +1,24 @@
+<if condition="$positionList[3]['is_show'] eq 1">
+    <if condition="$brandList">
+    <div class="item-box brand-series">
+        <div class="upstairs">
+            <h3 class="title">{$positionList[3]['title']}</h3>
+            <h4 class="subtitle">{$positionList[3]['english_title']}</h4>
+        </div>
+
+        <div class="series-list clearfix">
+            <volist name="brandList" id="vo" key="k">
+                <div class="w50s <if condition='$k eq 1'>fl<else />fr</if>">
+                    <a href="{:U('/Goods/cbList',array('goods_series_id'=>$vo['goods_series_id']))}">
+                        <notempty name="brandAdList[$k-1]">
+                            <img src="/Public{$brandAdList[$k-1]['images_path']}" alt="{$brandAdList[$k-1]['title']}">
+                        <else />
+                            <img src="/Public/{$vo['images_path']}" alt="{$vo['series_name']}" title="{$vo['series_name']}">
+                        </notempty>
+                    </a>
+                </div>
+            </volist>
+        </div>
+    </div>
+    </if>
+</if>

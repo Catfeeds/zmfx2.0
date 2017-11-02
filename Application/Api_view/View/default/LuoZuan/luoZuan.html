@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="__CSS__/main.css">
+    <link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+    <link rel="stylesheet" href="__CSS__/public.css">
+    <script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/layer-mobile/layer.js"></script>
+    <script src="__JS__/bootstrap.min.js"></script>
+	<script src="__JS__/public.js"></script> 
+	<script src="__JS__/luozuan.js"></script> 
+    <script src="__JS__/common.js"></script>
+<title>证书货钻石</title>
+</head>
+<style>
+.active_select {background:#dce3fe;}
+.load { width: 100%;height:0px; color: #333; opacity: 0.8; text-align: center; line-height: 50px;overflow:hidden;}
+.load { margin-bottom:100px;}
+.new_header { height: 20px; color: #fff; font-size: 18px; padding: 0 10px; position: relative;}
+.rank p { margin-bottom: 0;}
+
+</style>
+<body class="wrap-bg">
+    <!-- <header class="new_header">
+        <a href="javascript:;" id="search-right" class="pull-right">搜索</a>
+    </header> -->
+    <!--内容-->
+    <div class="container" id="maincont">
+    	<div class="row area">
+       		<!--选项卡-->
+    		<!-- <ul class="nav nav-tabs"> -->
+	           <!-- <li class="active"><a href=""></a></li> -->
+	           <!-- <li><a href=""></a></li> -->
+	        <!-- </ul> -->
+            
+            <div id="myTabContent" class="tab-content">
+				<div class="tab-pane fade in active" id="naked">
+					<div class="rank">
+						<p class="">今日美元汇率：<span id="dollar_huilv"></span></p>
+						<p class="right">共找到<span id="count"></span>颗钻</p>
+					</div>
+
+          <div class="text-right" style="height: 30px;">
+            <button type="button" class='btn btn-primary _dataSort' index="price" data="ASC" style="padding: 2px; margin-left: 0; font-size: 12px;">
+              <span id="sortPrice" class="asc">价格排序↑</span>
+            </button>
+            <button type="button" class="btn btn-primary" id="search-right" style="padding: 2px 10px; margin-left: 0; font-size: 12px;">
+              <i class="glyphicon glyphicon-search"></i> 
+              <span class="searchs">搜索</span>
+            </button>
+          </div>
+
+					<div id="luozuan">
+					
+					</div>
+
+				
+				</div>
+			     <!--更多在底部-->
+				<input type="hidden" id="_pageIndex" value="" />
+				<div class="load"></div>
+				<input name="goods_sn" value="{$goods_sn}" type="hidden" />
+            </div>
+			 
+            <!--底部-->
+            <div class="navbar-fixed-bottom area-bottom">
+                <button type="button" onclick="addCart(3);" class="btn btn-yellow">立即购买</button>
+                <button type="button" onclick="addCart(1);" class="btn">加入购物车</button>
+            </div>  
+   		</div>
+	</div>
+
+
+
+    <!-- Search alert -->
+    <div id="search-alert" class="user-info" style="display: none">
+
+        <div class="panel panel-default border-radius-none search-masonry">
+            <div class="panel-body username usbox">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">形状：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" name="Shape" ref="ROUND" class="btn btn-default navbar-btn selectList">
+							<img src="__IMG__/shape_img_43.png" alt="圆形" title="圆形">
+						</a>
+						
+                        <a href="javascript:;" name="Shape" ref="OVAL" class="btn btn-default navbar-btn selectList">
+							<img src="__IMG__/shape_img_40.png" alt="椭圆" title="椭圆">
+						</a>
+						
+                        <a href="javascript:;" name="Shape" ref="MARQUIS" class="btn btn-default navbar-btn selectList">
+							<img src="__IMG__/shape_img_36.png" alt="马眼" title="马眼">
+						</a>
+						
+                        <a href="javascript:;" name="Shape" ref="HEART" class="btn btn-default navbar-btn selectList">
+							<img src="__IMG__/shape_img_33.png" alt="心形" title="心形">
+						</a>
+						
+                        <a href="javascript:;" name="Shape" ref="PEAR" class="btn btn-default navbar-btn selectList">
+							<img src="__IMG__/shape_img_30.png" alt="水滴" title="水滴">
+						</a>
+						
+                        <a href="javascript:;" name="Shape" ref="PRINCESS" class="btn btn-default navbar-btn selectList">
+							<img src="__IMG__/shape_img_26.png" alt="方形" title="方形">
+						</a>
+						
+                        <a href="javascript:;"  name="Shape" ref="EMERALD" class="btn btn-default navbar-btn selectList">
+							<img src="__IMG__/shape_img_22.png" alt="祖母绿" title="祖母绿">
+						</a>
+						
+                        <a href="javascript:;" name="Shape" ref="CUSHION" class="btn btn-default navbar-btn selectList">
+							<img src="__IMG__/shape_img_07.png" alt="枕形" title="枕形">
+						</a>
+						
+                        <a href="javascript:;" name="Shape" ref="RADIANT" class="btn btn-default navbar-btn selectList">
+							<img src="__IMG__/shape_img_14.png" alt="蕾蒂恩" title="蕾蒂恩">
+						</a>
+						
+                        <a href="javascript:;" name="Shape" ref="BAGUETTE" class="btn btn-default navbar-btn selectList">
+							<img src="__IMG__/shape_img_03.png" alt="梯方" title="梯方">
+						</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">颜色：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" name="Color" ref="D" class="btn btn-default navbar-btn selectList btn-primary">D</a>
+                        <a href="javascript:;" name="Color" ref="E" class="btn btn-default navbar-btn selectList">E</a>
+                        <a href="javascript:;" name="Color" ref="F" class="btn btn-default navbar-btn selectList">F</a>
+                        <a href="javascript:;" name="Color" ref="G" class="btn btn-default navbar-btn selectList">G</a>
+                        <a href="javascript:;" name="Color" ref="H" class="btn btn-default navbar-btn selectList">H</a>
+                        <a href="javascript:;" name="Color" ref="I" class="btn btn-default navbar-btn selectList">I</a>
+                        <a href="javascript:;" name="Color" ref="J" class="btn btn-default navbar-btn selectList">J</a>
+                        <a href="javascript:;" name="Color" ref="K" class="btn btn-default navbar-btn selectList">K</a>
+                        <a href="javascript:;" name="Color" ref="L" class="btn btn-default navbar-btn selectList">L</a>
+                        <a href="javascript:;" name="Color" ref="M" class="btn btn-default navbar-btn selectList">M</a>
+                        <a href="javascript:;" name="Color" ref="N" class="btn btn-default navbar-btn selectList">N</a>
+                        <a href="javascript:;" name="Color" ref="Fancy" class="btn btn-default navbar-btn selectList">Fancy</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">净度：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" name="Clarity" ref="FL" class="btn btn-default navbar-btn selectList">FL</a>
+                        <a href="javascript:;" name="Clarity" ref="IF" class="btn btn-default navbar-btn selectList">IF</a>
+                        <a href="javascript:;" name="Clarity" ref="I1" class="btn btn-default navbar-btn selectList">I1</a>
+                        <a href="javascript:;" name="Clarity" ref="I2" class="btn btn-default navbar-btn selectList">I2</a>
+                        <a href="javascript:;" name="Clarity" ref="I3" class="btn btn-default navbar-btn selectList">I3</a>
+						<a href="javascript:;" name="Clarity" ref="VS1" class="btn btn-default navbar-btn selectList">VS1</a>
+						<a href="javascript:;" name="Clarity" ref="VS2" class="btn btn-default navbar-btn selectList">VS2</a>
+                        <a href="javascript:;" name="Clarity" ref="SI1" class="btn btn-default navbar-btn selectList">SI1</a>
+                        <a href="javascript:;" name="Clarity" ref="SI2" class="btn btn-default navbar-btn selectList">SI2</a>
+						<a href="javascript:;" name="Clarity" ref="VVS1" class="btn btn-default navbar-btn selectList">VVS1</a>
+                        <a href="javascript:;" name="Clarity" ref="VVS2" class="btn btn-default navbar-btn selectList">VVS2</a>
+                        
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">证书：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" name="Cert" ref="GIA" class="btn btn-default navbar-btn selectList">GIA</a>
+                        <a href="javascript:;" name="Cert" ref="HRD" class="btn btn-default navbar-btn selectList">HRD</a>
+                        <a href="javascript:;" name="Cert" ref="IGI" class="btn btn-default navbar-btn selectList">IGI</a>
+                        <a href="javascript:;" name="Cert" ref="NGTC" class="btn btn-default navbar-btn selectList">国检</a>
+                        <a href="javascript:;" name="Cert" ref="Other" class="btn btn-default navbar-btn selectList">其他</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">切工：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" name="Cut" ref="I" class="btn btn-default navbar-btn selectList">Ideal</a>
+                        <a href="javascript:;" name="Cut" ref="EX" class="btn btn-default navbar-btn selectList">EX</a>
+                        <a href="javascript:;" name="Cut" ref="VG" class="btn btn-default navbar-btn selectList">VG</a>
+                        <a href="javascript:;" name="Cut" ref="GD" class="btn btn-default navbar-btn selectList">GD</a>
+                        <a href="javascript:;" name="Cut" ref="f" class="btn btn-default navbar-btn selectList">Fair</a>
+                        <a href="javascript:;" name="Cut" ref="Other" class="btn btn-default navbar-btn selectList">其它</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">抛光：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" name="Polish" ref="I" class="btn btn-default navbar-btn selectList">Ideal</a>
+                        <a href="javascript:;" name="Polish" ref="EX" class="btn btn-default navbar-btn selectList">EX</a>
+                        <a href="javascript:;" name="Polish" ref="VG" class="btn btn-default navbar-btn selectList">VG</a>
+                        <a href="javascript:;" name="Polish" ref="GD" class="btn btn-default navbar-btn selectList">GD</a>
+                        <a href="javascript:;" name="Polish" ref="F" class="btn btn-default navbar-btn selectList">Fair</a>
+                        <a href="javascript:;" name="Polish" ref="Other" class="btn btn-default navbar-btn selectList">其它</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">对称：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" name="Symmetry" ref="I" class="btn btn-default navbar-btn selectList">Ideal</a>
+                        <a href="javascript:;" name="Symmetry" ref="EX" class="btn btn-default navbar-btn selectList">EX</a>
+                        <a href="javascript:;" name="Symmetry" ref="VG" class="btn btn-default navbar-btn selectList">VG</a>
+                        <a href="javascript:;" name="Symmetry" ref="GD" class="btn btn-default navbar-btn selectList">GD</a>
+                        <a href="javascript:;" name="Symmetry" ref="F" class="btn btn-default navbar-btn selectList">Fair</a>
+                        <a href="javascript:;" name="Symmetry" ref="Other" class="btn btn-default navbar-btn selectList">其它</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">荧光：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" name="Fluor" ref="N" class="btn btn-default navbar-btn selectList">N</a>
+                        <a href="javascript:;" name="Fluor" ref="F" class="btn btn-default navbar-btn selectList">F</a>
+                        <a href="javascript:;" name="Fluor" ref="M" class="btn btn-default navbar-btn selectList">M</a>
+                        <a href="javascript:;" name="Fluor" ref="S" class="btn btn-default navbar-btn selectList">S</a>
+                        <a href="javascript:;" name="Fluor" ref="VS" class="btn btn-default navbar-btn selectList">VS</a>
+                        <a href="javascript:;" name="NaiKa" ref="NoMilk" class="btn btn-default navbar-btn selectList">无奶</a>
+                        <a href="javascript:;" name="NaiKa" ref="NoCoffee" class="btn btn-default navbar-btn selectList">无咖</a>
+						<a href="javascript:;" name="NaiKa" ref="Other" class="btn btn-default navbar-btn selectList">其它</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">所属：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" name="Location" ref="香港"  class="btn btn-default navbar-btn selectList">香港</a>
+                        <a href="javascript:;" name="Location" ref="深圳" class="btn btn-default navbar-btn selectList">深圳</a>
+                        <a href="javascript:;" name="Location" ref="上海" class="btn btn-default navbar-btn selectList">上海</a>
+                        <a href="javascript:;" name="Location" ref="北京" class="btn btn-default navbar-btn selectList">北京</a>
+                        <a href="javascript:;" name="Location" ref="广州" class="btn btn-default navbar-btn selectList">广州</a>
+                        <a href="javascript:;" name="Location" ref="国外" class="btn btn-default navbar-btn selectList">国外</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">筛选：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <a href="javascript:;" name="Stock" ref="xianhuo" class="btn btn-default navbar-btn selectList btn-primary">现货</a>
+                        <a href="javascript:;" name="Stock" ref="dinghuo" class="btn btn-default navbar-btn selectList">订货</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">重量：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <p class="kl-box"><input type="text" name="minWeight" onblur="getPriceAndWeight()" value="0" class="kl"> - <input type="text" name="maxWeight" onblur="getPriceAndWeight()" value="500" class="kl"> 克拉</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p class="xztitle">价格：</p>
+                    </div>
+                    <div class="col-xs-9">
+                        <p class="kl-box"><input type="text" name="minPrice" onblur="getPriceAndWeight()" value="0" class="kl"> - <input type="text" name="maxPrice" onblur="getPriceAndWeight()" value="100000000" class="kl"> 人民币</p>
+                    </div>
+                </div>
+
+                <div class="navbar-fixed-bottom area-bottom">
+                    <button type="button" id="confirm-search" class="btn btn-yellow">确认搜索</button>
+                    <button type="button" onclick="clearParameters();" class="btn">重置</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Search alert END //-->
+
+
+
+</body>
+<script>
+	var get_uid		='<?php echo (isset($_GET['uid'])      ? $_GET['uid']      : '0')?>';
+	var get_token	='<?php echo (isset($_GET['token'])    ? $_GET['token']    : '0')?>';
+	var get_agent_id='<?php echo (isset($_GET['agent_id']) ? $_GET['agent_id'] : '' )?>';
+
+    $(function(){
+
+        /* 搜索切换 */
+        $(".searchs").click(function(){
+            if($(this).text() == "取消"){
+              $("#search-alert").fadeOut();
+              $("#maincont").fadeIn();
+              $(this).text("搜索");
+            }else{
+    			    $(".new_header").hide();   
+              $("#search-alert").fadeIn();
+              $("#maincont").fadeOut();
+              $(this).text("取消");
+            }
+        });
+		
+		/* 确认搜索 */
+		$("#confirm-search").click(function(){
+			$(".new_header").show(); 
+			$("#search-alert").fadeOut();
+			$("#maincont").fadeIn();
+			$(".searchs").text("搜索");
+		})
+    });
+</script>
+</html>

@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/user.css">
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/user.js"></script>
+<script src="__JS__/m_back.js"></script>
+<link rel="stylesheet" href="__CSS__/cart.css">
+<script src="__JS__/public.js"></script> 
+<script src="__JS__/layer-mobile/layer.js"></script> 
+<!-- 商品滑动 -->
+<link rel="stylesheet" href="__CSS__/swiper.min.css">
+<style>
+#page{
+	clear:both;
+	text-align: center;
+	font-size: 1.3rem;
+	padding: 10px 0;
+	}
+.swiper-container {
+	width: 100%;
+	height: 300px;
+	margin: 20px auto;
+    }
+.swiper-slide {
+	text-align: center;
+	font-size: 18px;
+	background: #fff;
+	
+	/* Center slide text vertically */
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+    }
+  .search-box {
+    padding: 0;
+  }
+</style>
+<title>我的订单-己完成</title>
+</head>
+
+<body class="wrap-bg">
+	<!-- Header -->
+    <header class=" header text-center">
+        <a href="/user" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    	我的订单
+    </header>
+
+    <nav class="navbar navbar-default footer user-order-empty user-order-waitpay" role="navigation">
+          <ul class="nav">
+             <li <?php if(I('get.os')==1) echo "class='active'";?> value="1"><a>待支付</a></li>
+             <li <?php if(I('get.os')==3) echo "class='active'";?> value="3"><a>待发货</a></li>
+             <li <?php if(I('get.os')==4) echo "class='active'";?> value="4"><a>待收货</a></li>
+             <li <?php if(I('get.os')==6) echo "class='active'";?> value="6"><a>完成</a></li>
+             <li <?php if((I('get.os')<0) || empty(I('get.os'))) echo "class='active'";?> value="-2"><a>全部</a></li> 
+          </ul>
+	
+    </nav>
+    <!-- Header END //-->
+    
+    <!-- Main -->
+    <div class="container-fluid">
+
+        <div class="search-box">
+            <div class="order-search">
+                <div class="form-group has-success has-feedback">
+                  <div class="input-group">
+                    <span class="input-group-btn">
+                        <button  class="btn btn-default btn-sub" type="button"><span  onclick="submit_data('777')" class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                    <input type="text" class="form-control" placeholder="订单编号">
+                </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="order-list">
+            <div class="col-xs-12">
+                 <div class="panel panel-default "></div>
+			</div>
+				<div id="page"></div>
+		</div>
+    <!-- Main END //-->
+    
+    <!-- Swiper JS -->
+    <script src="__JS__/swiper.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script>
+	var page='';
+	var content='';
+	var status='';
+	var status_tips='';
+		
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        slidesPerView: 3,
+        paginationClickable: true,
+        spaceBetween: 30,
+        freeMode: true
+    });
+
+	submit_data(page,status);		//初始化
+	$(".nav li").bind("click",function(){							//定义点击active
+				$(this).siblings("li").removeClass("active");		 
+				$(this).addClass("active");
+				status=($(".nav .active").val());
+				submit_data(page,status);
+				$(".form-control").val('');				//点击事件开始，清空之前输入框。
+	});
+			
+	function submit_data(page,status){
+		content=($(".form-control").val());
+		if(page=='777'){
+			if (content =="" || content ==undefined || content ==null) { tan ('订单编号不能为空！');return false;}	
+			if(isNaN(content)){	tan ('请输入正确用于模糊查询的订单编号！');return false;}	
+			page='0';
+		}
+			if (status =="" || status ==undefined || status ==null)	status=($(".nav .active").val());  
+			if (status<0 )											status='-2';
+		$.post("/Userorder/order_api",{Action:"POST",order_tips:content,order_status:status,page:page},function(data){
+			var html="";
+			var emptyhtml='';
+			var emptyhtmsl='';
+			if(data){
+					$.each(data ,function(k ,e) {
+						if(k=='page'){	return false;}
+						html += "<div class='panel panel-default'><a href='/Userorder/Info/goodid/"+e[0].order_id+"'>";
+						html += "<div class='panel-heading'><h6>订单编号:"+e[0].order_sn+"<span class='pull-right red'>"+e[0].status_txt+"</span></h6></div>";
+						html += "<div class='panel-body'>";   
+						html += "<div id='gmap-street-view'>";
+						html += "<div class='swiper-container spimg'>";
+						html += "<ul class='swiper-wrapper'>";
+						html += "<li><span class='swiper-slide'>";
+						$.each(e ,function(c ,b) { 	
+							if(b.goods_type==1){
+								html +="<img src='/Public/images/default/luozuan.jpg' alt=''>"
+							}else if(b.goods_type==2){
+								html +="<img src='/Public/images/default/sanhuo.jpg' alt=''>"
+							}else{
+								html +="<img src='"+b.goods_data.thumb+"' alt=''>"
+							}
+							if(c=='2'){	return false;}
+						});	
+						html +="</span></li>";
+						html += "<div class='clear'></div>";
+						html += "</ul></div>";
+						html += "<div class='spsum'> 共<span class='red'>"+e.length+"</span>件商品 <i class='glyphicon glyphicon-chevron-right'></i>  </div>";
+						html += " <div class='clear'></div></a>";
+						html += " </div><p>订单总额：￥<span>";
+						if(e[0].order_price_up>0){
+								html += ""+e[0].order_price_up+"";
+						}else if(e[0].goods_price_up>0){
+								html += ""+e[0].goods_price_up+"";
+						}else if(e[0].goods_price>0){
+								html += ""+e[0].order_price+"";
+						}else{
+								html += ""+e[0].goods_price+"";
+						}
+						html += "</span> <span class='pull-right'>";
+						if(e[0].order_status=='0'){
+							html += " <button class='btn btn-cart btn-pad' onclick='update_order(this,"+e[0].order_id+",0)'>取消</button>"
+						}else if(e[0].order_status=='-1'){
+							html += " <button class='btn btn-cart btn-pad' onclick='update_order(this,"+e[0].order_id+",-1)'>删除</button>"
+						}else if(e[0].order_status=='4'){
+							html += " <button class='btn btn-cart btn-pad' onclick='update_order(this,"+e[0].order_id+",4)'>确认收货</button>"
+						}else{
+							html += " <button class='btn btn-cart btn-pad' onclick='update_order(this,"+e[0].order_id+",777)'  >查看</button>"
+						}
+						html += "</span></p></div></div></div>";
+						html += "</ul></div>";
+					});
+		 				//判断是否是第一次初始化
+						$(".col-xs-12").html(html);
+						$("#page").html(data.page); 					
+					//$("#pullUp").html(emptyhtmsl);
+				}else{
+						emptyhtml +="<div class='empty' style='text-align:center;margin-top: 5em;'>";
+						emptyhtml+="<img src='__IMG__/user-order-empty_03.png' alt='' width='120'>";
+						if(content==""){
+							emptyhtml+="<h3>您还没有相关的订单...</h3>";
+						}else{
+							emptyhtml+="<h3>没有搜索到符合的数据...</h3>";
+						}
+						emptyhtml+="<p class='text-muted'>快去挑点宝贝吧</p>";
+						emptyhtml+="<a href='/' style='border:1px solid #fd7d16; color:#fd7d16; background:transparent;padding: 6px 16px;' class='btn btn-lg btn-default'>随便逛逛</a></div>";
+						$(".col-xs-12").html(emptyhtml);
+						$("#page").html(html); 
+					//if(data.count>10 && data.tip=='2'){
+					//	html+=" <span   style='font-size:18px' >没有更多数据了...</span>"
+					//	$("#pullUp").html(html);
+					//}
+				}
+			});
+	}		
+//		window.onscroll = function () { 
+//		if (getScrollTop() + getClientHeight() == getScrollHeight()) { 
+//			if( $('.panel-heading').length<'10'){return false;}
+//			if( $('.panel-heading').length=='10'){page='1';}
+//			submit_data(page++);
+//		} 
+//	}
+			
+	function update_order(obj,order_id,order_status){
+	if(order_status=='777'){		window.location.href="/Userorder/Info/goodid/"+order_id; return false;}
+	if(order_status=='0'){			var strs='你确定取消吗？';}
+	if(order_status=='-1'){			var strs='你确定删除吗？';}
+	if(order_status=='4'){			var strs='你确认收货吗？';}
+		layer.open({
+			content: strs,
+			btn: ['确认', '取消'],
+			shadeClose: false,
+			yes: function(){
+				$.post('/Userorder/update_order',{Action:"POST",order_id:order_id,order_status:order_status},function(data){
+				 if(data.status=='6'){
+					setTimeout(function () {   $(obj).parents(".panel.panel-default").remove();  }, 3000);
+				 }else if(data.status!='0'){
+					setTimeout(function () {   window.location.reload();   }, 3000);
+				 }
+				layer.open({content: data.msg, time: 1}); return false;
+				});
+			}, no: function(){
+				//layer.open({content: '你选择了取消', time: 1});
+			}
+		});
+	}
+	
+    </script>
+
+
+</body>
+</html>

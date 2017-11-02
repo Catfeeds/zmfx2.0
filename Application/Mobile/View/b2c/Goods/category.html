@@ -1,0 +1,79 @@
+<include file="Public:header" />
+<style>
+    header, .classify-tab { width: 100%; position: fixed; left: 0; top: 0;}
+    header { z-index: 999;}
+    .classify-tab { top: 2.5rem; z-index: 9;}
+</style>
+<body>
+    <section class="classify">
+
+		<include file="Public:localHeader" />
+		<!-- 搜索 -->
+		<include file="Public:search" />
+        <!-- content -->
+        <section class="wrapper">
+            <div class="classify-tab">
+                <a href="/Goods/category" class="active">产品分类</a>
+                <a href="/Goods/brand">品牌系列</a>
+            </div>
+
+            <div class="calssify-content">
+                <!-- 左侧导航 -->
+                <aside class="left-list">
+                    <ul>
+						<?php if ($publicdataList): ?>
+							<?php foreach($publicdataList as $val):?>
+							        <li class="ripple"><?php echo !empty($val['name_alias']) ? $val['name_alias'] : ' ';?></li>
+							<?php endforeach;?>
+      					<?php endif; ?>
+                    </ul>
+                </aside>
+                <!-- 左侧导航 end -->
+
+                <!-- 右侧内容 -->
+                <div class="right-cont">
+						<?php if ($publicdataList): ?>
+							<?php foreach($publicdataList as $key=>$val):?>
+								<div class="list-box" <?php if($key) echo 'style="display: none"';?>>
+									<div class="pop">
+										<img src="<?php echo !empty($val['img']) ? '/Public/'.$val['img'] : ' ';?>" alt="">
+									</div>
+									<h1 class="goods-type">商品分类</h1>
+									<div class="type-box">
+										<?php if ($val['sub']): ?>
+											<?php foreach($val['sub'] as $val):?>
+												<a href="/Goods/cbList/category_id/<?php echo !empty($val['category_id']) ? $val['category_id'] : ' ' ?>" class="ripple"><?php echo !empty($val['name_alias']) ? $val['name_alias'] : ' ';?></a>
+											<?php endforeach;?>
+										<?php endif; ?>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+							<?php endforeach;?>
+      					<?php endif; ?>
+                </div>
+                <!-- 右侧内容 -->
+                <div class="clearfix"></div>
+            </div>
+        </section>
+        <script>
+            $(function(){
+                //分类切换
+                $('.left-list ul li').each(function(){
+                    $(this).click(function(){
+                        var _this = $(this);
+                        $('.right-cont .list-box').each(function(){
+                            if(_this.index() == $(this).index()){
+                                $('.right-cont .list-box').hide();
+                                $(this).fadeIn();
+                            }
+                        });
+                    });
+                });
+            });
+        </script>
+        <!-- content end -->
+    </section>
+
+	<include file="Public:foot" />
+</body>
+</html>

@@ -1,0 +1,185 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>地址管理</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-swiper.css" /> <!-- tab -->
+    <link rel="stylesheet" type="text/css" href="../css/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="../css/style-layer.css" /> <!-- 提示 -->
+
+    <script src="../js/jquery-1.12.3.js"></script>
+    <script src="../js/swiper.min.js"></script> <!-- tab -->
+    <script src="../js/mobileSelect.js"></script> <!-- ios下弹式菜单选择 -->
+    <script src="../js/layer.js"></script> <!-- 提示 -->
+</head>
+
+
+<body>
+    <section class="address">
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="../img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>地址管理 </h2>
+            </div>
+        </header>
+
+        <div class="address-box wrapper">
+
+            <div class="address-list">
+                <div class="content">
+                    <div class="top clearfix">
+                        <div class="fl">余文乐</div>
+                        <div class="fr">18800781106</div>
+                    </div>
+                    <div class="describe">
+                        广东省深圳市罗湖区太白路松泉山庄裙楼A座三栋三层303号
+                    </div>
+                </div>
+                <div class="operation clearfix">
+                    <div class="fl">
+                        <input type="radio" class="zdy-radio" checked name="default-address" id="radio_01" value=""> <label class="moren-text" for="radio_01">默认地址</label>
+                    </div>
+                    <div class="fr">
+                        <a href="地址管理-添加收货地址.html">
+                            <img src="../img/edit_icon.png" class="operation-icon" alt="">
+                        </a>
+                        <img src="../img/remove_icon.png" class="operation-icon remove-address" alt="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="address-list">
+                <div class="content">
+                    <div class="top clearfix">
+                        <div class="fl">余文乐</div>
+                        <div class="fr">18800781106</div>
+                    </div>
+                    <div class="describe">
+                        广东省深圳市罗湖区太白路松泉山庄裙楼A座三栋三层303号
+                    </div>
+                </div>
+                <div class="operation clearfix">
+                    <div class="fl">
+                        <input type="radio" class="zdy-radio" name="default-address" value="" id="radio_02"> <label class="moren-text" for="radio_02">设为默认</label>
+                    </div>
+                    <div class="fr">
+                        <a href="地址管理-添加收货地址.html">
+                            <img src="../img/edit_icon.png" class="operation-icon" alt="">
+                        </a>
+                        <img src="../img/remove_icon.png" class="operation-icon remove-address" alt="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="address-list">
+                <div class="content">
+                    <div class="top clearfix">
+                        <div class="fl">余文乐</div>
+                        <div class="fr">18800781106</div>
+                    </div>
+                    <div class="describe">
+                        广东省深圳市罗湖区太白路松泉山庄裙楼A座三栋三层303号
+                    </div>
+                </div>
+                <div class="operation clearfix">
+                    <div class="fl">
+                        <input type="radio" class="zdy-radio" name="default-address" value="" id="radio_03"> <label class="moren-text" for="radio_03">设为默认</label>
+                    </div>
+                    <div class="fr">
+                        <a href="地址管理-添加收货地址.html">
+                            <img src="../img/edit_icon.png" class="operation-icon" alt="">
+                        </a>
+                        <img src="../img/remove_icon.png" class="operation-icon remove-address" alt="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="address-list">
+                <div class="content">
+                    <div class="top clearfix">
+                        <div class="fl">余文乐</div>
+                        <div class="fr">18800781106</div>
+                    </div>
+                    <div class="describe">
+                        广东省深圳市罗湖区太白路松泉山庄裙楼A座三栋三层303号
+                    </div>
+                </div>
+                <div class="operation clearfix">
+                    <div class="fl">
+                        <input type="radio" class="zdy-radio" name="default-address" value="" id="radio_04"> <label class="moren-text" for="radio_04">设为默认</label>
+                    </div>
+                    <div class="fr">
+                        <a href="地址管理-添加收货地址.html">
+                            <img src="../img/edit_icon.png" class="operation-icon" alt="">
+                        </a>
+                        <img src="../img/remove_icon.png" class="operation-icon remove-address" alt="">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <style>
+            body {
+                margin-bottom: 3.5rem;
+            }
+        </style>
+        <div class="add-box">
+            <a href="地址管理-添加收货地址.html" class="add-address-btn"><img src="../img/add_address_icon.png" width="15" alt=""> 新建地址</a>
+        </div>
+        <script>
+            $(function(){
+                //删除地址
+                $('.remove-address').bind('click', function(){
+                    var _this = $(this);
+                    layer.open({
+                        content: '确定要删除该地址吗？'
+                        ,btn: ['确定', '取消']
+                        ,yes: function(index){
+                            _this.parents('.address-list').remove();
+                            layer.close(index);
+                        }
+                    });
+                });
+
+                //地址选择
+                $('.zdy-radio').change(function(){
+                    if($(this).prop('checked')){
+                        var zdyRadio = $('.zdy-radio').parents('.fl').find('.moren-text');
+                        var thisRadio = $(this).parents('.fl').find('.moren-text');
+                        zdyRadio.html('设为默认').removeClass('moren-active');
+                        thisRadio.html('默认地址').addClass('moren-active');
+
+                        layer.open({
+                            content: '默认地址设置成功'
+                            ,btn: ['确定']
+                        });
+                    }
+                });
+
+                //初始化检测设置默认选中的则添加选中样式
+                $('.address-list').each(function(){
+                    if($(this).find('.zdy-radio').prop('checked')){
+                        $(this).find('.moren-text').addClass('moren-active');
+                    }
+                });
+
+            });
+        </script>
+    </section>
+    <!-- Zdy Input UI -->
+<script src="../js/zdy-input-ui.js"></script>
+
+</body>
+</html>

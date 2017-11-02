@@ -1,0 +1,56 @@
+<if condition="$step1">
+	<div class="step1">
+    		<div class="cleanDiv" style="width:100%;height:40px;line-height:40px;">
+				<div class="f_r" style="width:60px;">
+				<div class="f_l" style="width:22px;height:17px;margin:9px 5px 9px 0px;background:url(__IMG__/diy_step.png) no-repeat 0 -587px;"> </div>
+				<div class="f_l" style="width:auto;"><a onclick="diyStepReset(1);" href="{:U('/Home/Goods/goodsDiy')}" title="点击重新选择钻石">重选</a></div>
+				</div>
+			</div>
+			<div style="width:320px;height:160px;">
+				<div class="f_l" style="width:110px;margin-left:10px;"><img src="__IMG__/diamond_ROUND_100.gif" width="100" height="100" /></div>
+				<div class="f_l" style="width:22px;height:22px;background:url(__IMG__/diy_step.png) no-repeat -23px -587px;"></div>
+				<div class="f_l" style="width:170px;margin-left:5px;line-height:26px;">
+					<p>祼钻-{$step1.weight}克拉</p><p>{$step1.color}色 {$step1.clarity}-{$step1.cut}-{$step1.polish}-{$step1.symmetry}</p>
+					<p style="color:#999999">编号：{$step1.goods_name}</p>
+					<p style="color:#999999">证书号：{$step1.certificate_number}</p>
+					<p style="font-family:'微软雅黑';font-size:16px;font-weight:bold;color:#6a0000;">￥{$step1.goods_price}</p>
+				</div>
+			</div>
+		</div>
+<else />
+    <div class="step1"><a href="{:U('/Home/Goods/goodsDiy')}"><div class="diy_select_diamond"></div></a></div>
+</if>
+<if condition="$step2">
+    <div class="step2">
+			<div class="cleanDiv" style="width:100%;height:40px;line-height:40px;">
+				<div class="f_r" style="width:60px;">
+				<div class="f_l" style="width:22px;height:17px;margin:9px 5px 9px 0px;background:url(__IMG__/diy_step.png) no-repeat 0 -587px;"> </div>
+				<div class="f_l" style="width:auto;"><a onclick="diyStepReset(2,{$step2.goods_id});" href="{:U('/Home/Goods/diy')}" title="点击重新选择戒托">重选</a></div>
+				</div>
+			</div>
+			<div style="width:320px;height:160px;">
+				<div class="f_l" style="width:110px;margin-left:10px;"><a href="{:U('/Home/Goods/goodsInfo?gid='.$step2['goods_id'])}" target="_blank"><img src="{$step2.thumb}" style="width:100px;height:100px;" /></a></div>
+				<div class="f_l" style="width:22px;height:22px;background:url(__IMG__/diy_step.png) no-repeat -46px -587px;"></div>
+				<div class="f_l" style="width:170px;margin-left:5px;line-height:26px;">
+					<p>{$step2.goods_name}</p>
+					<p>{$step2.goods_sn}</p>
+					<p>库存：{$step2.goods_number}</p>
+					<p style="font-family:'微软雅黑';font-size:16px;font-weight:bold;color:#6a0000;">￥{$step2.goods_price}</p>
+				</div>
+			</div>
+		</div>
+<else />
+	<div class="step2"><a href="{:U('/Home/Goods/diy')}"><div class="diy_select_ring"></div></a></div>
+</if>
+<if condition="$step3">
+    <div class="step3">
+		<div class="cleanDiv" style="height:180px;margin:10px;padding:0px 20px;background:#f3f3f3;">
+			<div class="cleanDiv" style="height:30px;line-height:30px;"><if condition="$step3['luozuan']"><span class="f_l">裸钻价格：</span><span class="f_r">￥{$step3.luozuan}</span></if></div>
+			<div class="cleanDiv" style="height:30px;line-height:30px;"><if condition="$step3['jietuo']"><span class="f_l">戒托价格：</span><span class="f_r">{$step3.jietuo}</span></if></div>
+			<div class="cleanDiv" style="height:45px;line-height:45px;border-top:1px solid #ccc;"><span class="f_l fs2 f0">总价：</span><span class="f_r f10 fs3 f0">￥{$step3.total}</span></div>
+			<div class="cleanDiv" style="height:55px;"><a href="javascript:void(0)" onclick="diySubmit()" class="bnt_blue_3 f_r">确认定制</a></div>
+		</div>
+	</div>
+<else />
+	<div class="step3"><div class="diy_goods"></div></div>
+</if>

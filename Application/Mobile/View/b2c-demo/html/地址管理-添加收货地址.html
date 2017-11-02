@@ -1,0 +1,125 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>地址管理-添加收货地址</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/style-index.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-animate.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style-swiper.css" /> <!-- tab -->
+    <link rel="stylesheet" type="text/css" href="../css/style-mobileSelect.css" /> <!-- ios下弹式菜单选择 -->
+    <link rel="stylesheet" type="text/css" href="../css/style-layer.css" /> <!-- 提示 -->
+
+    <script src="../js/jquery-1.12.3.js"></script>
+    <script src="../js/swiper.min.js"></script> <!-- tab -->
+    <script src="../js/mobileSelect.js"></script> <!-- ios下弹式菜单选择 -->
+    <script src="../js/layer.js"></script> <!-- 提示 -->
+</head>
+
+
+<body>
+
+    <section class="login reg add-address">
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="../img/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>添加收货地址</h2>
+            </div>
+        </header>
+
+        <section class="wrapper">
+            <form>
+                <div class="form-box">
+                    <ul>
+                        <li>
+                            <label for="" class="label-title">收货人:</label>
+                            <input type="text" name="" value="" class="text-input" placeholder="输入收货人姓名">
+                        </li>
+                        <li>
+                            <label for="" class="label-title">联系方式:</label>
+                            <input type="text" name="" value="" class="text-input" placeholder="输入收货人手机号">
+                        </li>
+                        <li>
+                            <label for="" class="label-title">所在地区:</label>
+                            <!-- <div class="text-input" id="select-address">请选择地区</div> -->
+                            <div class="address-select ml">
+                                <span id="provinces" class="cont">省份</span>
+                                <span><img src="../img/down_icon.png" width="12" alt=""></span>
+                            </div>
+                            <div class="address-select">
+                                <span id="city" class="cont">城市</span>
+                                <span><img src="../img/down_icon.png" width="12" alt=""></span>
+                            </div>
+                            <div class="address-select">
+                                <span id="county" class="cont">区/县</span>
+                                <span><img src="../img/down_icon.png" width="12" alt=""></span>
+                            </div>
+                        </li>
+                        <li>
+                            <label for="" class="label-title">详细地址:</label>
+                            <input type="text" name="" value="" class="text-input" placeholder="输入街道门牌">
+                        </li>
+                    </ul>
+                </div>
+                <div class="form-box">
+                    <ul>
+                        <li class="clearfix">
+                            <label class="label-title set-title">设为默认地址</label>
+                            <input type="checkbox" class="zdy-checkbox zdy-switch" name="" value="">
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="add-box">
+                    <button type="submit" class="add-address-btn">保存地址</button>
+                </div>
+            </form>
+            <script>
+                //省
+                var arr1 = ['广东省','江苏省','浙江省','安徽省','吉林省'];
+                var mobileSelect1 = new MobileSelect({
+                trigger: '#provinces',
+                title: '请选择省份',
+                wheels: [
+                            {data: arr1}
+                        ],
+                position:[0] //初始化定位
+                });
+
+                //市
+                var arr2 = ['广州市','深圳市','湛江市','廉江市','茂名市'];
+                var mobileSelect1 = new MobileSelect({
+                trigger: '#city',
+                title: '请选择城市',
+                wheels: [
+                            {data: arr2}
+                        ],
+                position:[0] //初始化定位
+                });
+
+                //区
+                var arr3 = ['遂溪县','徐闻县','东源县','龙门县','新丰县'];
+                var mobileSelect1 = new MobileSelect({
+                trigger: '#county',
+                title: '请选择区/县',
+                wheels: [
+                            {data: arr3}
+                        ],
+                position:[0] //初始化定位
+                });
+            </script>
+        </section>
+    </section>
+    <!-- Zdy Input UI -->
+<script src="../js/zdy-input-ui.js"></script>
+
+</body>
+</html>

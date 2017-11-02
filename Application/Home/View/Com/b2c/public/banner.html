@@ -1,0 +1,39 @@
+ <!-- banner -->
+<div class="banner-box">
+    <div class="container-fluid padno">
+        <div id="owl-navlist" class="owl-carousel owl-theme">
+            <volist name="CarouselAdList" id="vo">
+                <if condition="$vo['status'] eq '1' ">
+                <div class="item">
+                    <if condition="$vo['url'] neq '' ">
+                    <a href="{$vo['url']}">
+                    </if>
+                    <img src="/Public{$vo.images_path}" alt="{$vo.title}">
+                    <if condition="$vo['url'] neq '' ">
+                    </a>
+                    </if>
+                </div>
+                </if>
+            </volist>
+        </div>
+        <script>
+            $(document).ready(function() {
+                var owl = $("#owl-navlist");
+                owl.owlCarousel({
+                    autoPlay : 3000,
+                    loop : true,   
+                    autoPlay : true,
+                    autoplayHoverPause:true,  
+                    stopOnHover : true,
+                    navigation:false,
+                    paginationSpeed : 1000,
+                    goToFirstSpeed : 2000,
+                    singleItem : true,
+                    autoHeight : false,
+                    transitionStyle:"fade"
+                });
+            });
+        </script>
+    </div>
+</div>
+<!-- banner end //-->

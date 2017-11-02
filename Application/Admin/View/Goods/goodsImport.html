@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>导入证书货</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" /> 
+<style>
+  .ui-progressbar {
+    position: relative;
+  }
+  .progress-label {
+    position: absolute;
+    left: 50%;
+    top: 4px;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #fff;
+  }
+  </style> 
+</head>
+<body>
+<div class="goods page-main">
+    <div class="subMenu">
+        <h3>当前操作：导入证书货</h3>
+    </div>
+    <div class="uploadData">
+        <h3>裸钻数据导入</h3>
+        <div class="info">
+        	<div class="title">Step1:上传数据包</div>
+            <form id="uploadData" enctype="multipart/form-data" action="{:U('Admin/Goods/uploadFile')}" method="POST" class="upload">
+                <input name="uploadData[]" type="file" />
+                <input type="submit" value="上传" />
+            </form>
+            <div class="clear"></div>
+        </div>
+        <div class="info">
+        	<div class="title">&nbsp;</div>
+            <div class="UPcontent">
+            	<div>                                      
+				<p>上传的格式必须为csv格式。转换步奏： (检验部数据不需要)</p>
+				<p>1、打开控制面板。</p>
+				<p>2、点击区域和语言。</p>
+				<p>3、点击其他设置，在列表分隔符中填写 " 双引号。</p>
+				<p>4、在excel文件中另成为csv格式。</p>                                                                        
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+       
+        <div class="info">
+        	<div class="title">Step2:导入数据包</div>
+            <div class="Bcontent"> 
+            <form action="{:U('Admin/Goods/importFile')}" method="POST">
+            	<div><label><input type="checkbox" name="import_checkSelDiamond" checked="true"/>不导入销售列表出现过的钻石</label></div>
+                <p>选择本次需要更新的文件，然后点击导入选中的文件，等待几分钟即可上传完成。</p>
+				<!-- <h5>检验部数据</h5>
+				<ul>
+					<volist name="files" id="vo">
+					<if condition="$vo['filetype'] eq 'jianyan'">
+					<li style="line-height:25px;font-color:red;"><input type="checkbox" name="excelname[]" value="{$vo.filename}" id="files_{$k}" />
+						<label for="files_{$k}">{$vo.filename} | {$vo.filectime}
+						<a href="../admin/luozuan/new/{$vo.filename}">下载{$vo.filename}</a>
+					</li>
+					</if>
+					
+					</volist>
+				</ul>
+				<h5>采购部数据</h5> -->
+				<ul>
+					<volist name="files" key="k" id="vo">
+					
+					<li style="line-height:25px;font-color:red;"><input type="checkbox" name="excelname[]" value="{$vo.name}" id="files_{$k}" /><label for="files_{$k}">{$vo.name} | {$vo.addtime|date="Y-m-d H:i",###}
+					<a href="/Public/Uploads/diamond/{$agent_id}/{$vo.name}">下载{$vo.name}</a>
+					</li>
+					
+					</volist>
+				</ul>
+                <input type="submit" value="导入选中的数据" />
+                </div>
+            </form> 
+        	</div> 
+            <div class="clear"></div>
+		</div>                                                                                          
+    </div>
+</div>
+</body>
+</html>

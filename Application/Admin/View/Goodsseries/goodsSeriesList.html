@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品系列</title>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：产品系列</h3>
+        <ul>
+            <li class=""><a href="{:U('Admin/Goodsseries/goodsSeriesAdd')}">添加产品系列</a></li>
+        </ul>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+        	<th width="5%">ID</th>
+            <th width="35%">产品系列</th>
+			<th width="15%">B2C首页展示</th>
+			<th width="15%">B2C_APP首页展示</th>
+			<th width="15%">系列图片</th>
+            <th width="15%">操作</th>
+        </tr>
+        <volist name="list" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+            <td>{$vo.goods_series_id}</td>
+            <td class="tl pl10">{$vo.series_name}</td>
+			<td>
+				<input type="radio" <eq name="vo['home_show']" value="0"> checked </eq> value="0" class="showInput" name="home_show_{$vo['goods_series_id']}">不展示&nbsp;&nbsp;
+				<input type="radio" <eq name="vo['home_show']" value="1"> checked </eq> value="1" class="showInput" name="home_show_{$vo['goods_series_id']}">展示
+			</td>
+			<td>
+				<input type="radio" <eq name="vo['app_home_show']" value="0"> checked </eq> value="0" class="app_showInput" name="app_home_show_{$vo['goods_series_id']}">不展示&nbsp;&nbsp;
+				<input type="radio" <eq name="vo['app_home_show']" value="1"> checked </eq> value="1" class="app_showInput" name="app_home_show_{$vo['goods_series_id']}">展示
+			</td>
+			<td>
+				<if condition="$vo['images_path'] neq ''">
+				<img src="/Public/{$vo.images_path}" style="width: 100px; height:50px; padding: 3px; background: #FFFFFF; border: solid 1px #000000;">
+				</if>
+			</td>
+			<td>            	
+            	<a  href="{:U('Admin/Goodsseries/goodsSeriesUpdate?id='.$vo['goods_series_id'])}">修改</a>
+                <a  href="javascript:if(confirm('确实要删除该数据吗?'))location='{:U('Admin/Goodsseries/goodsSeriesDelete?id='.$vo['goods_series_id'])}'">删除</a>
+            </td>
+        </tr>
+        </volist> 
+    </table>
+</div>
+</body>
+</html>
+<script>
+	/* 更改首页展示 */
+	$('.showInput,.app_showInput').change(function(){
+		var className	= $(this).attr('class');
+		if(className == 'showInput'){
+			var goods_series_id = $(this).attr('name').replace('home_show_','');
+			var nowName	= 'home_show';
+		}else{
+			var goods_series_id = $(this).attr('name').replace('app_home_show_','');
+			var nowName	= 'app_home_show';
+			
+		}
+		
+		var nowValue		 = $(this).val();
+		var arr = ['0','1'];
+		if(arr.indexOf(nowValue) == -1){
+			layer.msg('操作错误',{
+				shift:6,
+			});
+			return false;
+		}
+		if(goods_series_id && nowValue){
+				$.ajax({
+					type: "post",
+					url : "/Admin/Goodsseries/updateHomeShow", 
+					dataType:'json',
+					data: {goods_series_id:goods_series_id,nowName:nowName,nowValue:nowValue}, 
+					success: function(res){
+						if(res.status != 100){
+							layer.msg(res.info,{
+								shift:6,
+								icon: 5
+							});
+						}
+					},
+				});	
+		}else{
+			layer.msg('操作错误',{
+				shift:6,
+			});
+			return false;
+		}
+	})
+
+</script>

@@ -1,0 +1,45 @@
+<include file="Public:header" />
+<body>
+    <section class="cart cart-listing evaluation-list">
+
+        <!-- top -->
+        <header>
+            <div class="web-top">
+                <div class="back-box">
+                    <img src="__IMG__/back_icon.png" onclick="history.back(-1)" class="back-img" alt="">
+                </div>
+                <h2>查看物流</h2>
+            </div>
+        </header>
+        <!-- top end -->
+
+        <section class="cart-list wrapper">
+			<?php if ($data): ?>
+				<?php foreach ($data as $k=>$v):?>
+					<?php if (is_numeric($k)): ?>
+					
+							<div class="goods-item">
+								<div class="goods-layout clearfix">
+									<div class="goods-img">
+										<a><img src="<?php echo ($v[0]['img']['small_path']);?>" alt=""></a>
+									</div>
+									<div class="goods-right">
+										<h2><a >玫瑰系列钻石戒指 经典</a></h2>
+										<div class="goods-fangshi clearfix">
+											<span class="fl c9 rmb">￥<span class="price"><?php  echo ($v['sum_price']);  ?></span></span>
+											<span class="fr">
+												<a href="/User/Exper/id/<?php  echo $v[0]['delivery_id']; ?>" class="btns">查看物流</a>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+		 
+					<?php endif; ?>	 
+				<?php endforeach;?>	 
+			<?php endif; ?>
+            <!-- 彩钻 end -->
+        </section>
+    </section>
+</body>
+</html>

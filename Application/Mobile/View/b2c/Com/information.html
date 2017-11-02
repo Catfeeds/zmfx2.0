@@ -1,0 +1,25 @@
+<script src="__JS__/slideup.js"></script>
+<div class="index-bottom">
+    <if condition="$positionList[4]['is_show'] eq 1">
+        <if condition="$articleList">
+            <div class="information clearfix">
+                <div class="fl fl-1">
+                    <h1><a href="{:U('/Article/index')}">{$positionList[4]['title']}</a></h1>
+                </div>
+                <div class="fl fl-2">
+                    <ul class="line">
+                        <volist name="articleList" id="vo">
+                            <li><a href="/Article/info/aid/<?php echo $vo['aid'];?>" title="{$vo['title']}">{$vo['title']}</a></li>
+                        </volist>
+                    </ul>
+                </div>
+            </div>
+        </if>
+    </if>
+    <div class="join-zmfx">
+        <p><a href="{:U('/User/traderAdd')}" title="加入分销">加入分销</a></p>
+        <p><a href="{:U('/Article/info', ['aid' => help])}" title="售后服务">售后服务</a></p>
+    </div>
+
+    <include file="Public:footer" />
+</div>

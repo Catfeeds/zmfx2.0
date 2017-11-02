@@ -1,0 +1,82 @@
+<include file="Public:header" />
+<!--导航-->
+<div class="am-g ">
+	<!--搜索-->
+	<include file="Public:search" />
+	<div class="navigation"><span class="left"><a href="{:U('Index/index')}">{:C('site_name')}</a></span><span class="right">填写订单</span></div>
+	<form action="{:U('Order/orderDone')}" method="get">
+	<div class="wrap">
+		<div class="sign">
+			<p>配送方式</p>
+			<a href="#"></a>
+		</div>
+		<div class="date">
+			<p><a href="#">送货上门</a></p>
+			<p>配货时间：工作日、双休日节假日均可送货</p>
+		</div>
+		<div class="sign">
+			<p>收货地址</p>
+		</div>
+		<div class="am-u-sm-12 adress">
+			<h3>收货信息</h3>
+			<label class="am-radio">
+				<input type="radio" name="radio1" value="" data-am-ucheck> 公司 广东省深圳市罗湖区松泉山庄三栋三层
+			</label>
+			<label class="am-radio">
+				<input type="radio" name="radio1" value="" data-am-ucheck checked> 家里 广东省深圳市罗湖区松泉山庄三栋三层
+			</label>
+			<a href="#">设为默认地址</a><a href="#">编辑</a><a href="#">删除</a>
+			<p style="clear:both"></p>
+			<br>
+			<span class=" add_address" onclick="">+新增地址</span>
+		</div>
+		<div class="sign"><p>商品清单</p></div>
+		<!--选购的商品-->
+		<div class="am-list-news-bd shop">
+			<ul class="am-list">
+				<li class="am-g am-list-item-dated">
+					<span>【初心之恋】</span><span><a href="#" class="del"></a><a href="#" class="write"></a></span>
+					<p>白18K金50分/0.5克拉钻石女士戒指
+						<br> 价格：
+						<big>￥12968.00</big>
+						<br> 数量：1
+					</p>
+				</li>
+				<li class="am-g am-list-item-dated">
+					<span>【初心之恋】</span><span><a href="#" class="del"></a><a href="#" class="write"></a></span>
+					<p>白18K金50分/0.5克拉钻石女士戒指
+						<br> 价格：
+						<big>￥12968.00</big>
+						<br> 数量：1
+					</p>
+				</li>
+				<li class="am-g am-list-item-dated">
+					<span>【初心之恋】</span><span><a href="#" class="del"></a><a href="#" class="write"></a></span>
+					<p>白18K金50分/0.5克拉钻石女士戒指
+						<br> 价格：
+						<big>￥12968.00</big>
+						<br> 数量：1
+					</p>
+				</li>
+				<li class="am-g am-list-item-dated">
+					<span>【初心之恋】</span><span><a href="#" class="del"></a><a href="#" class="write"></a></span>
+					<p>白18K金50分/0.5克拉钻石女士戒指
+						<br> 价格：
+						<big>￥12968.00</big>
+						<br> 数量：1
+					</p>
+				</li>
+			</ul>
+		</div>
+		<div class="sign"><p>金额信息</p></div>
+		<div class="list-default">
+			<b>购买件数 : 3</b><br>
+			<b> 总 金 额 &nbsp;:<big>￥12968.00</big></b>
+		</div>
+		<div>
+			<input type="submit" value="提交订单" class="am-btn am-btn-blue am-radius" />
+		</div>
+	</div>
+	</form>
+</div>
+<include file="Public:footer" />

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>个人中心</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/user.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script type="text/javascript" src="__JS__/common.js"></script>
+<script src="__JS__/layer-mobile/layer.js"></script> 
+</head>
+<body class="wrap-bg">
+	<!-- Header -->
+	<header class="header text-center">
+    	个人中心
+        <a href="/user/umsg" class="pull-right">
+		 <if condition="$msg_count gt 0">
+			<img src="__IMG__/user_03.png" alt="" class="pull-right-img">
+		 <else />
+			<img src="__IMG__/user_if_03.png" alt="" class="pull-right-img">
+		 </if>
+		</a>
+    </header>
+    <!-- Header END //-->
+	
+	<!-- Main -->
+    <div style="margin-top: 10px">
+    	<div class="panel panel-default border-radius-none">
+		  <div class="panel-body username">
+		    <ul>
+		    	<li onclick="location.href='/user/info/'">
+		    		<img src="__IMG__/user_07.png" alt="">用户名
+		    		<img src="__IMG__/user_10.png" alt="" class="list-img">
+		    	</li>
+		    </ul>
+		  </div>
+		</div>
+
+		<div class="panel panel-default border-radius-none">
+			<div class="panel-body username usbox">
+				<ul>
+					<li onclick="location.href='/Userorder/'"> 
+				  		<img src="__IMG__/user_15.png"> 
+				  		我的订单 
+				  		<img src="__IMG__/user_10.png" alt="" class="list-img">
+					</li>
+					<li onclick="location.href='/user/address/'"> 
+				  		<img src="__IMG__/user_19.png"> 
+				  		地址管理 
+				  		<img src="__IMG__/user_10.png" alt="" class="list-img">
+					</li>
+					<li onclick="location.href='/user/password/'"> 
+				  		<img src="__IMG__/user_23.png"> 
+				  		账户安全 
+				  		<img src="__IMG__/user_10.png" alt="" class="list-img">
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="panel panel-default border-radius-none">
+			<div class="panel-body username usbox fxs">
+				<ul>
+					<li onclick="location.href='/user/trader'"> 
+				  		<img src="__IMG__/user_27.png"> 
+				  		加入分销商 
+				  		<img src="__IMG__/user_10.png" alt="" class="list-img">
+					</li>
+					<li></li>
+				</ul>
+
+				<button type="button" id="btn_logout" class="btn btn-primary exit-button">退出</button>
+			</div>
+		</div>
+    </div>
+    <!-- Main END //-->
+
+	{:W('Frame/footer', array('user'))}
+
+
+<script>
+$(document).ready(function(){
+	//推出
+	$("#btn_logout").click(function(){
+		layer.open({
+			content: '确定要退出吗？',
+			btn: ['确认', '取消'],
+			shadeClose: false,
+			yes: function(){
+						$.ajax({
+						url:"/public/logout.html",
+						type: 'GET',
+						success: function(d){
+							//console.log(d);
+							if(d.ret==100){
+								window.location.href=d.url;
+							}else{
+							layer.open({content: d.msg, time: 1}); 
+							}
+						}
+					});
+
+			}, no: function(){
+				//layer.open({content: '你选择了取消', time: 1});
+			}
+		});
+		
+	});
+
+})
+</script>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<div class="material" id="material_{$info.material_id}">
+	<div class="materialTitle">{$info.material_name}：</div>
+	<div class="materialContent">
+		<div class="materialTop">
+			<span>预估金重：</span>
+			<input type="text" style="width: 120px;" value="" name="material[info][{$info.material_id}][weights_name]" placeholder="(单位：G)" />
+			<if condition=" !$price_model ">
+				<span>损耗：</span>
+				<input type="text" style="width: 80px;" value="" name="material[info][{$info.material_id}][loss_name]" placeholder="(单位：%)" />
+				<span>基本工费：</span>
+				<input type="text" style="width: 120px;" value="" name="material[info][{$info.material_id}][basic_cost]" placeholder="(单位：￥)" />
+			</if>
+		</div>
+		<div class="materialBottom">
+			<div class="materialBottomTitle">匹配钻石：</div>
+			<div class="luozuan_match"></div>
+			<button type="button" class="luozuan_button add" data-id="{$info.material_id}">添加匹配</button>
+			<div class="clear"></div>
+		</div>
+		<if condition=" $price_model ">
+			<if condition=" InStringByLikeSearch($category_name,array('钻戒','戒','对戒'))  ">
+				<div class="materialBottom goods_size">
+					<div class="materialBottomTitle">手寸价格：</div>
+					<div class="luozuan_match luozuan_match3"></div>
+					<button type="button" class="luozuan_button add3" data-id="{$info.material_id}" data-category-id="{$category_id}" >添加手寸价格</button>
+					<div class="clear"></div>
+				</div>
+			<elseif condition=" InStringByLikeSearch($category_name,array('项链','手链'))  "/>
+				<div class="materialBottom goods_size">
+					<div class="materialBottomTitle">尺寸价格：</div>
+					<div class="luozuan_match luozuan_match3"></div>
+					<button type="button" class="luozuan_button add3" data-id="{$info.material_id}" data-category-id="{$category_id}" >添加尺寸价格</button>
+					<div class="clear"></div>
+				</div>
+			<else />
+				<div class="materialBottom goods_size">
+					<div class="materialBottomTitle">一口价：</div>
+					<div class="luozuan_match luozuan_match3">
+						<input type="text" value="{$vo.fixed_price}" name="material[info][{$info.material_id}][fixed_price]" placeholder="价格">
+					</div>
+					<div class="clear"></div>
+				</div>
+			</if>
+		</if>
+	</div>
+	<div class="clear"></div>
+</div>

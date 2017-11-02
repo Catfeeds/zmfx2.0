@@ -1,0 +1,33 @@
+<div class="groups">
+    <ul>
+        <li class="attrs xlattr">产品系列：
+            <a href="javascript:void(0);" data-value-id="1"></a>
+            <volist name="goods_series_list" id="v">
+                <a href="javascript:void(0);" data-value-id="{$v.goods_series_id}">{$v.series_name}</a>
+            </volist>
+        </li>
+    </ul>
+</div>
+<script>
+    $(function(){
+        //系列分类单选
+		$('.xlattr a').each(function(){
+			$(this).click(function(){
+				if($(this).hasClass('active')){
+					$('.xlattr a').removeClass('active');
+					chengpin.set_goods_series_id(0);
+				}else{
+					$('.xlattr a').removeClass('active');
+					var id  = $(this).attr('data-value-id');
+					$(this).addClass('active');
+					chengpin.set_goods_series_id(id);
+				}
+				chengpin.set_page('1');
+				chengpin.get_goods_list(func_display_goods_list);
+			});
+		});
+		if( chengpin.goods_series_id > 0 ){
+			$('.xlattr a[data-value-id="'+chengpin.goods_series_id+'"]').addClass('active');
+		}
+    });
+</script>

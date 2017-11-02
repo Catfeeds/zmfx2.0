@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<script src="__JS__/jquery.min.js"></script>
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/information.css">
+<script src="__JS__/common.js"></script>
+<title>资讯详情</title>
+</head>
+
+<body>
+
+    <div class="container wrap">
+    	<div class="row detail">
+        	<div class="panel panel-default">
+               <div class="panel-heading">
+                  <h3 class="panel-title">
+                     <big>{$info.title}</big>
+                  </h3>
+                  <small class="text-muted">{$info.addtime|date="Y-m-d H:i",###}</small>
+               </div>
+            </div>
+            <div class="panel panel-default">
+               <div class="panel-body">
+				   {$info.content||htmlspecialchars_decode}
+               </div>
+            </div>
+   		</div>
+	</div>
+   
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+</body>
+</html>

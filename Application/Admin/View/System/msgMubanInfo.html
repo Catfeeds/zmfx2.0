@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>编辑消息模板</title>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：编辑消息模板</h3>
+        <ul>
+            <volist name="menuList[7]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+    </div>
+    <form action="{:U('Admin/System/msgMubanInfo?id='.$info['muban_id'])}" method="post">
+    	<div style="padding:20px 50px;">
+            <div class="info">
+                <div class="title">模板名称:</div>
+                <input type="text" name="muban_name" value="{$info.muban_name}" style="width:300px;">
+            </div>
+            <div class="info">
+                <div class="title">模板类型:</div>
+                <select name="type">
+                    <option value="1" <if condition="$info.type eq 1">selected</if>>发给客户</option>
+                    <option value="2" <if condition="$info.type eq 2">selected</if>>发给系统</option>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">短信消息模板:</div>
+                <textarea name="phone_content" style="min-width:600px; min-height:60px;">{$info.phone_content}</textarea>
+            </div>
+            <div class="info">
+                <div class="title">系统消息模板:</div>
+                <textarea name="websys_content" style="min-width:600px; min-height:80px;">{$info.websys_content}</textarea>
+            </div>
+            <div class="info">
+                <div class="title">邮件消息模板:</div>
+                <textarea name="email_content" style="min-width:600px; min-height:180px;">{$info.email_content}</textarea>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="hidden" name="uid" value="{$userInfo.uid}" />
+                <input type="submit" class="button fl" value="保存">
+                <input type="reset" class="button fl ml10" value="重置">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

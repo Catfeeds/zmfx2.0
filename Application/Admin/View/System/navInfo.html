@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>编辑/添加导航</title>
+</head>
+<body>
+<script type="text/javascript">
+	$.getNavUrl = "{:U('Admin/Public/getNavUrl')}";
+</script>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：编辑/添加导航</h3>
+    </div>
+ 
+    <form action"{:U('Admin/System/navInfo?nid='.$info['nid'])}" method="post" enctype="multipart/form-data">
+    	<div style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">上级导航:</div>
+                <select name="pid" style="width: 300px;" class="pid_this">
+                	<option value="0">顶级导航</option>
+                	<volist name="navList" id="vo">
+                		<option value="{$vo.nid}" <eq name="info.pid" value="$vo['nid']">selected=""</eq>>{$vo.nav_name}</option>
+                	</volist>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">导航名称:</div>
+                <input name="nav_name" type="text" value="{$info.nav_name}" style="width: 288px;">
+            </div>
+			
+            <if condition="$info['pid'] eq '0' || $info['pid'] eq '' ">
+            <div class="info  nav_img_class">
+                <div class="title">导航图片:</div>
+				<input type="file" name="nav_img" value="{$info.img_path}" style="width:300px;"/>
+            </div>	
+			
+			<div class="info nav_img_class">
+                <div class="title">&nbsp;</div>
+				<div class="red">图片要求：尺寸大小400*225px，大小不得超过2M，格式png/jpg</div>
+			</div>
+				<if condition="$info['nav_img'] neq '' ">
+					<div class="info">
+						<div class="title">缩略图:</div>
+						<img style="width: 280px;" src="__PUBLIC__/{$info.nav_img}">
+
+					</div>
+				</if>
+			
+            <div class="info nav_img_class">
+                <div class="title">图片链接:</div>
+                <input name="nav_img_link" type="text" value="" style="width: 288px;">
+            </div>	
+			</if>
+			
+            <div class="info">
+                <div class="title">导航类型:</div>
+                <select name="nav_type" id="nav_type" style="width: 300px;">
+                	<option value="1" <eq name="info.nav_type" value="1">selected=""</eq>>成品产品分类</option>
+                	<option value="4" <eq name="info.nav_type" value="4">selected=""</eq>>定制产品分类</option>
+                	<option value="2" <eq name="info.nav_type" value="2">selected=""</eq>>站点功能</option>
+                	<option value="3" <eq name="info.nav_type" value="3">selected=""</eq>>URL地址</option>
+                	<option value="5" <eq name="info.nav_type" value="5">selected=""</eq>>产品系列</option>
+                </select>
+            </div>
+            <div class="info <if condition="$info['nav_type'] != 1 and $info['nid']">dn</if>" id="category_id">
+                <div class="title">选择分类:</div>
+                <select name="category_id" style="width: 300px;">
+                	<volist name="catList" id="vo">
+                		<option value="{$vo.category_id}"<eq name="info.category_id" value="$vo['category_id']">selected=""</eq>>&nbsp;&nbsp;{$vo.category_name}({$vo.name_alias})</option>
+	                	<volist name="vo.sub" id="io">
+	                		<option value="{$io.category_id}"<eq name="info.category_id" value="$io['category_id']">selected=""</eq>>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---{$io.category_name}({$io.name_alias})</option>
+	                	</volist>
+                	</volist>
+                </select>
+            </div>
+            <div class="info <if condition="$info['nav_type'] != 2">dn</if>" id="function_id">
+                <div class="title">选择功能:</div>
+                <select name="function_id">
+                	<option value="1"<eq name="info.function_id" value="1">selected=""</eq>>裸钻页面</option>
+                	<option value="2"<eq name="info.function_id" value="2">selected=""</eq>>散货页面</option>
+                	<option value="3"<eq name="info.function_id" value="3">selected=""</eq>>百科页面</option>
+                	<option value="4"<eq name="info.function_id" value="4">selected=""</eq>>用户中心</option>
+                	<option value="5"<eq name="info.function_id" value="5">selected=""</eq>>我的订单</option>
+                	<option value="6"<eq name="info.function_id" value="6">selected=""</eq>>加入分销</option>
+                    <option value="7"<eq name="info.function_id" value="7">selected=""</eq>>产品定制</option>
+					<option value="8"<eq name="info.function_id" value="8">selected=""</eq>>门店预约</option>
+					<option value="9"<eq name="info.function_id" value="9">selected=""</eq>>设计与报价</option>
+                    <if condition="C('templateSetting')['diamonds_template_show'] eq 1 ">
+                        <option value="10"<eq name="info.function_id" value="10">selected=""</eq>>钻石报价</option>
+                    </if>
+				</select>
+            </div>
+            <div class="info <if condition="$info['nav_type'] != 5">dn</if>" id="goods_series_id">
+                <div class="title">选择系列:</div>
+                <select name="goods_series_id">
+                    <volist name="goodsSeries" id="v">
+                        <option value="{$v.goods_series_id}" <eq name="info.goods_series_id" value="$v['goods_series_id']">selected=""</eq>    >{$v.series_name}</option>
+                    </volist>
+                </select>
+            </div>
+			<div class="info" id="nav_url">
+                <div class="title">Url地址:</div>
+                <input name="nav_url" type="text" value="{$info.nav_url}" style="width: 288px;">
+            </div>
+            <div class="info">
+                <div class="title">排序:</div>
+                <input type="text" name="sort" value="{$info.sort}"  style="width: 288px;"/>
+            </div>
+            <div class="info">
+                <div class="title">状态:</div>
+                <select name="status" style="width: 300px;">
+					<?php  if(!isset($info['status'])) $info['status']=1;?>
+                	<option value="0"<eq name="info.status" value="0">selected=""</eq>>关闭</option>
+                	<option value="1"<eq name="info.status" value="1">selected=""</eq>>开启</option>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="保存">
+                <input type="reset" class="button fl ml10" value="重置">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+
+$(".pid_this").change(function(){
+ if($(this).val()=='0'){
+	$(".nav_img_class").show();
+ }else{
+	$(".nav_img_class").hide();
+ }
+});
+
+</script>
+</body>
+</html>

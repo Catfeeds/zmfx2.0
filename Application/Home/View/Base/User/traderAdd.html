@@ -1,0 +1,367 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<script type="text/javascript" src="__PUBLIC__/Js/jquery.validator.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/ajaxupload.js"></script>
+<div id="joinTrader">
+	<div class="contain">
+		<div><img src="__IMG__/join.jpg" /></div>
+		<form id="joinTrader" action="" name="joinTrader" enctype="multipart/form-data">
+			<table>
+				<tr><td colspan="2">温馨提示：以下资料均为保密资料，请放心填写。</td></tr>
+				<tr><td width="20%" class="tdRight">分销商：</td><td><input type="text" name="trader[trader_name]" /></td></tr>
+				<tr><td width="20%" class="tdRight">公司名称：</td><td><input type="text" name="trader[company_name]" /></td></tr>
+                <tr><td width="20%" class="tdRight">站点域名：</td><td><input type="text" name="trader[domain]" /><span style="color:red"> * 非必填，但是必须得有一个域名，申请域名备案时间约为3周。</span></td></tr>
+				<tr><td width="20%" class="tdRight">联系人：</td><td><input type="text" name="trader[contacts]" /></td></tr>
+				<tr><td class="tdRight">联系电话：</td><td><input type="text" name="trader[phone]" /></td></tr>
+				<tr><td class="tdRight">营业执照：</td><td><input type="text" name="trader[business_license]" /></td></tr>
+				<tr><td class="tdRight">注册资金：</td>
+					<td>
+						<input type="radio" name="trader[funds]" id="capital1" value="1" /><label for="capital1">20-50万</label>
+						<input type="radio" name="trader[funds]" id="capital2" value="2" /><label for="capital2">50-100万</label>
+						<input type="radio" name="trader[funds]" id="capital3" value="3" /><label for="capital3">100万-500万</label>
+						<input type="radio" name="trader[funds]" id="capital4" value="4" /><label for="capital4">500万-1000万</label>
+						<input type="radio" name="trader[funds]" id="capital5" value="5" /><label for="capital4">1000万以上</label>
+					</td>
+				</tr>
+				<tr><td class="tdRight">实收资本：</td>
+					<td><input type="text" name="trader[capital]" /></td>
+				</tr>
+				<tr><td class="tdRight">营业执照复印件：</td>
+					<td>
+    					<input type="hidden" id="business_license_img" name="trader[business_license_img]" value="" />
+					    <div class="controls" style="text-align:left;">
+					        <img id="newbikephoto" src="" style="max-height:200px;" />
+					        <span class="help-inline"></span>
+					        <div id="uploadphotoconfirm"></div>
+					        <input type="button" ref="business_license_img" class="btn btn-primary" id="upload_button"  value="上传图片" />
+					    </div>
+					</td>
+				</tr>
+				<tr><td class="tdRight">税务登记证复印件：</td>
+					<td><input type="hidden" id="business_tax_img" name="trader[business_tax_img]" value="" />
+					    <div class="controls" style="text-align:left;">
+					        <img id="newbikephoto2" src="" style="max-height:200px;" />
+					        <span class="help-inline"></span>
+					        <div id="uploadphotoconfirm2"></div>
+					        <input type="button" ref="business_license_img" class="btn btn-primary" id="upload_button2"  value="上传图片" />
+					    </div>
+					</td>
+				</tr>
+				<tr><td class="tdRight">机构代码证复印件：</td>
+					<td><input type="hidden" id="business_code_img" name="trader[business_code_img]" value="" />
+					    <div class="controls" style="text-align:left;">
+					        <img id="newbikephoto3" src="" style="max-height:200px;" />
+					        <span class="help-inline"></span>
+					        <div id="uploadphotoconfirm3"></div>
+					        <input type="button" ref="business_code_img" class="btn btn-primary" id="upload_button3"  value="上传图片" />
+					    </div></td>
+				</tr>
+				<tr><td class="tdRight">分销地区：</td>
+					<td><select name="trader[province_id]" onchange="getCity(this)">
+						<if condition="$provinceList">
+						<volist name="provinceList" id="vo">
+							<option value="{$vo.region_id}">{$vo.region_name}</option>
+						</volist>
+						</if>
+						</select>
+						<div id="cities" class="selectCities" style="display:none;"></div>
+						</td>
+				</tr>
+				<tr><td class="tdRight" style="vertical-align:top;">留言内容：</td><td><textarea name="trader[note]" cols="50" rows="5"></textarea></td></tr>
+				<tr><td></td><td align="left"><input type="submit" class="submit" /></td></tr>
+
+			</table>
+		</form>
+		</div>
+	</div>
+</div>
+<script>
+function getCity(obj){
+	$.post("/Home/User/getAjaxCity",{province_id:obj.value},function(data){
+		if(data.status == 1){
+			html = "<select name='trader[city_id]'>";
+			data.data.forEach(function(e){
+				html += "<option value='"+e.region_id+"'>"+e.region_name+"</option>";
+			});
+			html += "</select>";
+			$("#cities").html(html);
+			$("#cities").show();
+		}
+	});
+}
+
+
+$(function(){
+    var button = $('#upload_button'), interval;
+    var confirmdiv = $('#uploadphotoconfirm');
+    var fileType = "pic",fileNum = "one";
+    new AjaxUpload(button,{
+        action: "{:U('User/uploadPic')}",
+        name: 'userfile',
+        onSubmit : function(file, ext){
+            if(fileType == "pic")
+            {
+                if (ext && /^(jpg|png|jpeg|gif|JPG)$/.test(ext)){
+                    this.setData({
+                        'info': '文件类型为图片'
+                    });
+                } else {
+                     confirmdiv.text('文件格式错误，请上传格式为.png .jpg .jpeg 的图片');
+                    return false;
+                }
+            }
+
+            confirmdiv.text('文件上传中');
+
+            if(fileNum == 'one')
+                this.disable();
+
+            interval = window.setInterval(function(){
+                var text = confirmdiv.text();
+                if (text.length < 14){
+                    confirmdiv.text(text + '.');
+                } else {
+                    confirmdiv.text('文件上传中');
+                }
+            }, 200);
+        },
+        onComplete: function(file, response){
+            if(response != "success"){
+                if(response =='2'){
+                    confirmdiv.text("文件格式错误，请上传格式为.png .jpg .jpeg 的图片");
+                }else{
+                    if(response.length<20){
+                        confirmdiv.text("文件上传失败请重新上传"+response);
+                    }else{
+                        confirmdiv.text("上传完成");
+                         $("#business_license_img").val(response);
+                        $("#newbikephoto").attr("src",response);
+                    }
+                }
+
+            }
+
+            window.clearInterval(interval);
+
+            this.enable();
+
+            if(response == "success")
+            alert('上传成功');
+        }
+    });
+ });
+ $(function(){
+    var button = $('#upload_button2'), interval;
+    var confirmdiv = $('#uploadphotoconfirm2');
+    var fileType = "pic",fileNum = "one";
+    new AjaxUpload(button,{
+        action: "{:U('User/uploadPic')}",
+        name: 'userfile',
+        onSubmit : function(file, ext){
+            if(fileType == "pic")
+            {
+                if (ext && /^(jpg|png|jpeg|gif|JPG)$/.test(ext)){
+                    this.setData({
+                        'info': '文件类型为图片'
+                    });
+                } else {
+                     confirmdiv.text('文件格式错误，请上传格式为.png .jpg .jpeg 的图片');
+                    return false;
+                }
+            }
+
+            confirmdiv.text('文件上传中');
+
+            if(fileNum == 'one')
+                this.disable();
+
+            interval = window.setInterval(function(){
+                var text = confirmdiv.text();
+                if (text.length < 14){
+                    confirmdiv.text(text + '.');
+                } else {
+                    confirmdiv.text('文件上传中');
+                }
+            }, 200);
+        },
+        onComplete: function(file, response){
+            if(response != "success"){
+                if(response =='2'){
+                    confirmdiv.text("文件格式错误，请上传格式为.png .jpg .jpeg 的图片");
+                }else{
+                    if(response.length<20){
+                        confirmdiv.text("文件上传失败请重新上传"+response);
+                    }else{
+                        confirmdiv.text("上传完成");
+                         $("#business_tax_img").val(response);
+                        $("#newbikephoto2").attr("src",response);
+                    }
+                }
+
+            }
+
+            window.clearInterval(interval);
+
+            this.enable();
+
+            if(response == "success")
+            alert('上传成功');
+        }
+    });
+ });
+
+$(function(){
+    var button = $('#upload_button3'), interval;
+    var confirmdiv = $('#uploadphotoconfirm3');
+    var fileType = "pic",fileNum = "one";
+    new AjaxUpload(button,{
+        action: "{:U('User/uploadPic')}",
+        name: 'userfile',
+        onSubmit : function(file, ext){
+            if(fileType == "pic")
+            {
+                if (ext && /^(jpg|png|jpeg|gif|JPG)$/.test(ext)){
+                    this.setData({
+                        'info': '文件类型为图片'
+                    });
+                } else {
+                     confirmdiv.text('文件格式错误，请上传格式为.png .jpg .jpeg 的图片');
+                    return false;
+                }
+            }
+
+            confirmdiv.text('文件上传中');
+
+            if(fileNum == 'one')
+                this.disable();
+
+            interval = window.setInterval(function(){
+                var text = confirmdiv.text();
+                if (text.length < 14){
+                    confirmdiv.text(text + '.');
+                } else {
+                    confirmdiv.text('文件上传中');
+                }
+            }, 200);
+        },
+        onComplete: function(file, response){
+            if(response != "success"){
+                if(response =='2'){
+                    confirmdiv.text("文件格式错误，请上传格式为.png .jpg .jpeg 的图片");
+                }else{
+                    if(response.length<20){
+                        confirmdiv.text("文件上传失败请重新上传"+response);
+                    }else{
+                        confirmdiv.text("上传完成");
+                         $("#business_code_img").val(response);
+                        $("#newbikephoto3").attr("src",response);
+                    }
+                }
+
+            }
+
+            window.clearInterval(interval);
+
+            this.enable();
+
+            if(response == "success")
+            alert('上传成功');
+        }
+    });
+ });
+
+//验证初始化
+$('#joinTrader').validator({
+    theme: 'simple_right',
+    focusCleanup: true,
+    stopOnError:false,
+    //debug: true,
+    timely: 2,
+    //自定义规则（PS：建议尽量在全局配置中定义规则，统一管理）
+    rules: {
+        username: [/^[a-zA-Z0-9]+$/, '用户名无效! 仅支持字母与数字。'],
+        phone:  [/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/,'手机号码不正确']
+    },
+
+    fields: {
+        "trader[trader_name]": {
+            rule: "required",
+            tip: "输入你的分销商名称",
+            ok: "",
+            msg: {required: "请输入分销商名称"}
+        },
+        "trader[company_name]": {
+            rule: "required",
+            tip: "输入你的公司名称",
+            ok: "",
+            msg: {required: "请输入公司名称"}
+        },
+         "trader[contacts]": {
+            rule: "required",
+            tip: "输入你的名字。",
+            ok: "",
+            msg: {required: "请输入联系人!"}
+        },
+        "trader[phone]": {
+            rule: "required;phone;",
+            tip: "输入你的手机号码。",
+            ok: "",
+            msg: {required: "请输入手机号!"}
+        },
+        "trader[business_license]": {
+            rule: "required",
+            tip: "输入你的公司营业执照编号",
+            ok: "",
+            msg: {required: "请输入营业执照编号!"}
+        },
+        "trader[business_license_img]": {
+            rule: "required",
+            tip: "请上传营业执照复印件",
+            ok: "",
+            msg: {required: "请上传营业执照复印件!"}
+        },
+        "trader[business_tax_img]": {
+            rule: "required",
+            tip: "请上传税务登记证复印件",
+            ok: "",
+            msg: {required: "请上传税务登记证复印件!"}
+        },
+        "trader[business_code_img]": {
+            rule: "required",
+            tip: "请上传机构代码复印件",
+            ok: "",
+            msg: {required: "请上传机构代码复印件!"}
+        }
+    },
+    //验证成功
+    valid: function(form) {
+        $.ajax({
+            url: '/Home/User/traderAdd',
+            type: 'POST',
+            data: $(form).serialize(),
+            success: function(d){
+              	alert(d.msg);
+              	window.location = "/Home/User/traderList";
+            }
+        });
+    },
+    //验证失败
+    invalid: function(form) {
+        //按钮动画效果
+        $('#btn-submit').stop().delay(100)
+            .animate({left:-5}, 100)
+            .animate({left:5}, 100)
+            .animate({left:-4}, 100)
+            .animate({left:4}, 100)
+            .animate({left:-3}, 100)
+            .animate({left:0}, 100);
+    }
+});
+
+</script>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

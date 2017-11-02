@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/main.css">
+<title>首页-搜索列表</title>
+</head>
+<style>
+.form-control{
+	margin-top:8px;
+}
+
+</style>
+<body class="product-bg">
+	<!-- Header -->
+    <header class="header text-center search-box">
+            <div class="col-xs-1" style="padding-left: 0; padding-right: 0;">
+                <a href="{:U('Goods/search')}"><i class="glyphicon glyphicon-chevron-left"></i></a>
+            </div>
+			<form action="{:U('/Goods/searchList')}" method="get">
+            <div class="col-xs-11">
+                <div class="input-group">
+                    <input type="text" name="keyword" value="{$keyword}" class="form-control search-input" placeholder="搜索  编号、名称、证书号">
+					<span class="input-group-btn">
+                        <button class="btn btn-default btn-sub" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                </div>
+            </div>
+            </form>
+    </header>
+    <!-- Header END //-->
+
+    <!--内容-->
+    <div class="container" style="margin-bottom: 62px;">
+    	<div class="product text-center">
+        	<ul id="content">
+				<if condition="$products neq '' ">
+				<volist name="products" id="vo">
+            	<li>
+                	<div class="product-img"><a href="{:U('/Goods/goodsInfo/',array('goods_id'=>$vo['goods_id'],'type'=>$vo['goods_type']))}"><img src="{$vo['thumb']}" alt="{$vo['goods_name']}" width="140" height="140"></a></div>
+                    <div class="info">
+                    	<a href="{:U('/Goods/goodsInfo/',array('goods_id'=>$vo['goods_id'],'type'=>$vo['goods_type']))}">
+                    		<p>{$vo['goods_name']}</p>
+                            <em>¥
+								<in name="vo['activity_status']" value="0,1">
+									{$vo['activity_price']}
+								<else/>
+									{$vo['goods_price']}
+								</in>
+							</em>
+                    	</a>
+                    </div>
+                </li>
+				</volist>
+				<else/>
+					<p style="text-align: center; color:red">没有搜索到符合条件的数据，请返回！</p>
+				</if>
+			</ul>
+        </div>
+	</div>
+    
+    <!--底部-->
+    {:W('Frame/footer', array('index'))}
+
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+</body>
+</html>
+<script>
+/* 滑动到底部加载数据 */
+var page = 1,pagesize = 10;
+$(window).scroll(function() {
+	var scrollTop = $(this).scrollTop();               //滚动条距离顶部的高度
+	var scrollHeight = $(document).height();           //当前页面的总高度
+	var windowHeight = $(this).height();               //当前可视的页面高度
+	var nowContent	 = $('.maincont').html();
+	if(nowContent != '暂无数据...' ){
+		//判断滚动条是否滚到底部
+		if(scrollTop + windowHeight == scrollHeight){
+			page +=  1;
+			var keyword = '{$keyword}';
+			$.ajax({
+				url:"{:U('/Goods/ajax_searchList')}",
+				type:'post',
+				data:{'keyword':keyword,'page':page,'pagesize':pagesize},
+				dataType:'json',
+				success:function(res){
+					if(res.data){
+						var html = "";
+						$.each(res.data,function(i,item){
+							html += "<li>";
+							html +="<div class='product-img'><a href='{:U('/Goods/goodsInfo/goods_id/"+item.goods_id+"/type/"+item.goods_type+"')}'><img src='"+item.thumb+"' alt='"+item.goods_name+"' width='140' height='140'></a></div>";
+							html +="<div class='info'>";
+							html +="<a href='{:U('/Goods/goodsInfo/',array('goods_id'=>$vo['goods_id'],'type'=>$vo['goods_type']))}'><p>"+item.goods_name+"</p>";
+							if(item.activity_status == '0' || item.activity_status == '1'){
+								html += "<em>¥"+item.activity_price+"</em></a>";
+							}else{
+								html += "<em>¥"+item.goods_price+"</em></a>";
+							}
+							html +="</div>";
+							html +="</li>";
+						});
+					}
+					$('#content').append(html);
+				}
+			})
+
+		}
+	}
+})
+		
+
+</script>

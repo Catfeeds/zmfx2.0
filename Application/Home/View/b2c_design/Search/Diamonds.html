@@ -1,0 +1,142 @@
+<div id="main">
+  <style>
+    .counterfeiting { padding-bottom: 10px; }
+    .counterfeiting .top-search { background: #D9D9D9; text-align: center; border-top: 1px solid #B4B4B4; border-bottom: 1px solid #B4B4B4;position: static;}
+    .counterfeiting .query-form { width: 250px; height: 32px; border: 1px solid #BCBCBC; background: #FFF;}
+    .counterfeiting .search-btn { width: 95px; height: 32px; line-height: 32px; border: none; color: #FFF; margin-left: 30px; cursor: pointer; background: #937253; }
+    .counterfeiting .query-results { border: 1px solid #999; margin-top: 20px;}
+    .counterfeiting .query-results .top-title { padding: 10px; text-align: center; background: #F3F3F3; border-bottom: 1px solid #999;}
+    .counterfeiting .query-content { padding: 20px; }
+    .counterfeiting .pull-left,
+    .counterfeiting .pull-right { float: left;}
+    .counterfeiting .pull-right ul { margin-top: 30px; margin-left: 30px;}
+    .counterfeiting .pull-right li { margin-bottom: 20px; font-size: 18px;}
+    .counterfeiting .query-data td { border: 1px solid #E6E6E6; padding: 10px 30px; font-size: 14px;}
+  </style>
+  
+
+    <div class="counterfeiting">
+
+			<form action="" method="get">
+				<div class="top-search" <?php if(isset($_GET['unforgecode']) && isset($goodsInfo) ){	echo "style='padding: 160px;'";	}else{	echo  "style='padding: 80px;'";}?>>
+				  珠宝成品防伪查询： <input type="text" name="unforgecode" class="query-form" value="<?php echo !empty($_GET['unforgecode']) ? $_GET['unforgecode'] : '' ;?>"> <button class="search-btn">查询</button>
+				</div>
+			</form>
+
+		<div class="container">			
+		<?php if (isset($_GET['unforgecode']) && isset($goodsInfo)): ?>
+			<div class="query-results">
+			  <div class="top-title">查询结果</div>
+			  <div class="query-content">
+				<img src="<?php echo $goodsInfo['thumb'];?>" width="200" height="200" alt="" class="pull-left">
+				<div class="pull-right" style="float: left !important">
+				  <ul>
+					  <li>产品名称：<?php echo !empty($goodsInfo['goods_name']) ? $goodsInfo['goods_name'] : '暂无' ;?></li>
+					  <li>产品款号：<?php echo !empty($goodsInfo['goods_sn']) ? $goodsInfo['goods_sn'] : '暂无' ;?></li>
+					  <li>市场指导价格：<?php echo !empty($goodsInfo['market_guide_price']) ? $goodsInfo['market_guide_price'] : '暂无' ;?></li>
+					  <li>证书类型：<?php	
+									if($goodsInfo['attributes']['29']['attr_code']=='1'){
+										echo 'GIA';
+									}elseif($goodsInfo['attributes']['29']['attr_code']=='2'){
+										echo 'NGTC';
+									}elseif($goodsInfo['attributes']['29']['attr_code']=='4'){
+										echo 'IGI';
+									}elseif($goodsInfo['attributes']['29']['attr_code']=='8'){
+										echo 'GIA';
+									}else{
+										echo '暂无';
+									}
+									?></li>
+					  <li>证书编号：<?php echo !empty($goodsInfo['attributes']['39']['attr_value']) ? $goodsInfo['attributes']['39']['attr_value'] : '暂无' ;?></li>
+				  </ul>
+				</div>
+				<div class="clearfix"></div>
+			  </div>
+			  <div class="query-data">
+						<table cellpadding="0" cellspacing="0">
+						  <tbody>
+									<tr>
+									  <td width="230">产品材质</td>
+									  <td width="370"><?php
+												if($goodsInfo['attributes']['16']['attr_code']=='1'){
+													echo '千足金';
+												}elseif($goodsInfo['attributes']['16']['attr_code']=='2'){
+													echo '足金';
+												}elseif($goodsInfo['attributes']['16']['attr_code']=='4'){
+													echo 'PT950';
+												}elseif($goodsInfo['attributes']['16']['attr_code']=='8'){
+													echo 'PT900';
+												}elseif($goodsInfo['attributes']['16']['attr_code']=='16'){
+													echo '18K金';
+												}elseif($goodsInfo['attributes']['16']['attr_code']=='32'){
+													echo '14K金';
+												}elseif($goodsInfo['attributes']['16']['attr_code']=='64'){
+													echo '9K金';
+												}elseif($goodsInfo['attributes']['16']['attr_code']=='128'){
+													echo '千足银';
+												}elseif($goodsInfo['attributes']['16']['attr_code']=='256'){
+													echo '足银';
+												}elseif($goodsInfo['attributes']['16']['attr_code']=='512'){
+													echo 'S925银';
+												}else{
+													echo '暂无';
+												}
+									?></td>
+									  <td width="230">材质金重</td>
+									  <td width="370"><?php echo !empty($goodsInfo['attributes']['18']['attr_value']) ? $goodsInfo['attributes']['18']['attr_value'].'G' : '暂无' ;?></td>
+									</tr>
+									<tr>
+									  <td width="230">主石类型</td>
+									  <td width="370"><?php echo !empty($goodsInfo['attributes']['20']['attr_value']) ? $goodsInfo['attributes']['20']['attr_value'] : '暂无' ;?></td>
+									  <td width="230">主石形状</td>
+									  <td width="370"><?php echo !empty($goodsInfo['attributes']['21']['attr_value']) ? $goodsInfo['attributes']['21']['attr_value'] : '暂无' ;?></td>
+									</tr>
+									<tr>
+									  <td width="230">主石大小</td>
+									  <td width="370"><?php echo !empty($goodsInfo['attributes']['22']['attr_value']) ? $goodsInfo['attributes']['22']['attr_value'].'CT' : '暂无' ;?></td>
+									  <td width="230">主石颜色</td>
+									  <td width="370"><?php echo !empty($goodsInfo['attributes']['23']['attr_value']) ? $goodsInfo['attributes']['23']['attr_value'] : '暂无' ;?></td>
+									</tr>
+									<tr>
+									  <td width="230">主石净度</td>
+									  <td width="370"><?php echo !empty($goodsInfo['attributes']['24']['attr_value']) ? $goodsInfo['attributes']['24']['attr_value'] : '暂无' ;?></td>
+									  <td width="230">切工净度</td>
+									  <td width="370"><?php echo !empty($goodsInfo['attributes']['25']['attr_value']) ? $goodsInfo['attributes']['25']['attr_value'] : '暂无' ;?></td>
+									</tr>
+									<tr>
+									  <td width="230">荧光</td>
+									  <td width="370"><?php echo !empty($goodsInfo['attributes']['38']['attr_value']) ? $goodsInfo['attributes']['38']['attr_value'] : '暂无' ;?></td>
+									  <td width="230">副石类型</td>
+									  <td width="370"><?php echo !empty($goodsInfo['attributes']['26']['attr_value']) ? $goodsInfo['attributes']['26']['attr_value'] : '暂无' ;?></td>
+									</tr>
+									<tr>
+									  <td width="230">副石大小</td>
+									  <td width="370"><?php echo !empty($goodsInfo['attributes']['28']['attr_value']) ? $goodsInfo['attributes']['28']['attr_value'].'CT' : '暂无' ;?></td>
+									  <td width="230">副石数量</td>
+									  <td width="370"><?php echo !empty($goodsInfo['attributes']['27']['attr_value']) ? $goodsInfo['attributes']['27']['attr_value'].'粒' : '暂无' ;?></td>
+									</tr>
+									<tr>
+									  <td width="230">祼石专利号</td>
+									  <td width="370"><?php echo !empty($goodsInfo['naked_number']) ? $goodsInfo['naked_number'] : '暂无' ;?></td>
+									  <td width="230">款式专利号</td>
+									  <td width="370"><?php echo !empty($goodsInfo['design_number']) ? $goodsInfo['design_number'] : '暂无' ;?></td>								  
+									</tr>
+									<tr>
+									  <td>产品在售门店</td>
+									  <td colspan="3"><?php echo !empty($goodsInfo['product_store']) ? $goodsInfo['product_store'] : '暂无' ;?></td>
+									</tr>
+						  </tbody>
+						</table>
+					  </div>
+			</div>
+		<?php elseif($_GET['unforgecode']): ?>
+			<br/>
+			<br/>
+			<br/>
+			<p style="text-align: center">暂未查询到数据，请检查防伪码是否输入正确。</p>
+		<?php endif; ?>
+	    </div>
+	</div>
+
+</div>
+ 

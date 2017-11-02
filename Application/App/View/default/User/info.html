@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>个人信息</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/user.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script src="__JS__/common.js"></script>
+	<!-- 出生日期 -->
+	<link rel="stylesheet" href="__CSS__/date.css">
+	<script type="text/javascript" src="__JS__/date.js" ></script>
+	<script type="text/javascript" src="__JS__/common.js" ></script>
+	<script type="text/javascript" src="__JS__/iscroll.js" ></script>
+	<script src="__JS__/layer-mobile/layer.js"></script> 
+	<script type="text/javascript">
+		$(function(){
+			$('#beginTime').date();
+		});
+	</script>
+</head>
+<body class="wrap-bg">
+	<!-- Header -->
+	<header class="header text-center">
+    	个人信息
+        <a href="/user/" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    </header>
+    <!-- Header END //-->
+
+    <!-- 日期选择 -->
+	<div class="lie"><input id="beginTime" class="kbtn" /><div id="datePlugin"></div></div>
+
+	<!-- Main -->
+	<form name="form_1" id="form_1">
+    <div class="container-fluid user-info">
+
+		<div class="panel panel-default border-radius-none">
+			<div class="panel-body username usbox">
+				<ul>
+					<li> 
+				  		用户名 
+				  		<span class="una">{$info.username}</span>
+					</li>
+					<li id="date">  
+				  		出生日期 				  		
+				  		<img src="__IMG__/user_10.png" alt="" class="list-img">
+				  		<input type="text" name="birthday" class="inputval text-right" readonly value="{$info.birthday}">
+					</li>
+					<script>
+						$(function(){
+							$("#date").click(function(){
+								$("#beginTime").click();
+							});
+
+							$(document).delegate('#dateconfirm','click', function() {
+								$(".inputval").val($("#beginTime").val());
+							});
+						});
+					</script>
+
+					<li> 
+				  		性别 
+				  		<span class="una text-right">
+						<input type="radio" name="sex" value="0" <eq name="info.sex" value="0">checked</eq>>男 
+						<input type="radio" name="sex" value="1" <eq name="info.sex" value="1">checked</eq>>女
+						</span>
+					</li>
+					<li> 
+				  		手机
+						<span class="una"><input type="text" name="phone" value="{$info.phone}"></span>
+					</li>
+					<li> 
+				  		电子邮件
+						<span class="una"><input type="text" name="email" value="{$info.email}"></span>
+					</li>
+					<li> 
+				  		真实姓名
+						<span class="una"><input type="text" name="realname" value="{$info.realname}"></span>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="panel panel-default border-radius-none">
+			<div class="panel-body username usbox fxs">
+				<ul>
+					<li>职业 <span class="una"><input type="text" name="job" value="{$info.job}"></span></li>
+					<li>公司名称 <span class="una"><input type="text" name="company_name" value="{$info.company_name}"></span></li>
+					<li>企业法人 <span class="una"><input type="text" name="legal" value="{$info.legal}"></span></li>
+					<li>公司地址 <span class="una"><input type="text" name="company_address" value="{$info.company_address}"></span></li>
+					<li></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="container">
+			<button type="button" id="btn_save_info" class="btn btn-primary exit-button">保存</button>
+		</div>
+    </div>
+	</form>
+    <!-- Main END //-->
+<script>
+	$(function() {
+		$("#btn_save_info").click(function(){
+			if(!check_email($('#form_1 input[name="email"]').val())){
+				layer.open({content: '请填写准确的邮箱', time: 2}); 
+				$('#form_1 input[name="email"]').focus();
+				return false;
+			}
+			if(!check_mobilephone($('#form_1 input[name="phone"]').val())){
+				$('#form_1 input[name="phone"]').focus();
+				layer.open({content: '请填写准确的手机号', time: 2}); 				
+				return false;
+			}
+			if(getLength($('#form_1 input[name="realname"]').val())<2){
+				layer.open({content: '长度不够,请填写正确的真实姓名', time: 2}); 	
+				$('#form_1 input[name="realname"]').focus();
+				return false;
+			}
+
+			if(getLength($('#form_1 input[name="job"]').val())<2){
+				layer.open({content: '长度不够,请完善职业信息', time: 2}); 	
+				$('#form_1 input[name="job"]').focus();
+				return false;
+			}
+			if(getLength($('#form_1 input[name="company_name"]').val())<2){
+				layer.open({content: '长度不够,请填写正确的公司名称', time: 2}); 				
+				return false;
+			}
+			if(getLength($('#form_1 input[name="legal"]').val())<2){
+				$('#form_1 input[name="legal"]').focus();
+				layer.open({content: '长度不够,请填写正确的公司法人信息', time: 2}); 				
+				return false;
+			}
+			if(getLength($('#form_1 input[name="company_address"]').val())<2){
+				$('#form_1 input[name="company_address"]').focus();
+				layer.open({content: '长度不够,请填写正确的公司地址信息', time: 2}); 	
+				return false;
+			}
+			
+			$.ajax({
+				url:"/user/info.html",
+				type: 'POST',
+				data: $('#form_1').serialize(),
+				success: function(d){
+					//console.log(d);
+					if(d.ret==100){
+						layer.open({content: d.msg, time: 2}); 
+						//window.location.href=d.url;
+					}else{
+						layer.open({content: d.msg, time: 2}); 
+					}
+				}
+			});
+		});
+	});
+</script>
+</body>
+</html>

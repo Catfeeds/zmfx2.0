@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加或编辑用户地址</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" />
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：添加用户地址</h3>
+        <ul>
+            <volist name="menuList[1]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+    </div>
+    <form id='add_Form' name='add_Form' action="{:U('Admin/User/userAddAd')}" method="post" onSubmit="if(checkConsignee(this)){ ajaxForm('#add_Form', refForm); } return false;">
+      <div style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">用户:</div>
+                <select name="uid">
+                  <volist name="userList" id="vo">
+                    <option value="{$vo.uid}">{$vo.username}</option>
+                  </volist>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">地址标注:</div>
+                <input type="text" name="title" >
+            </div>
+            <div class="info">
+                <div class="title">配送区域:</div>
+                <select name="country_id" id="selCountries">
+                  <option value="0">{$Think.lang.L9063}</option>
+                  <option value="1">{$Think.lang.L9078}</option>
+                </select>
+                <select name="province_id" id="selProvinces">
+                  <option value="0">{$Think.lang.L9063}</option>
+                </select>
+                <select name="city_id" id="selCities">
+                  <option value="0">{$Think.lang.L9063}</option>
+                </select>
+                <select name="district_id" id="selDistricts">
+                  <option value="0">{$Think.lang.L9063}</option>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">{$Think.lang.L9064}:</div>
+                <input type="text" name="address" style="width:350px" >
+            </div>
+            <div class="info">
+                <div class="title">{$Think.lang.L9065}:</div>
+                <input type="text" name="code">
+            </div>
+            <div class="info">
+                <div class="title">{$Think.lang.L9066}:</div>
+                <input type="text" name="name" >
+            </div>
+            <div class="info">
+                <div class="title">{$Think.lang.L836}:</div>
+                <input type="text" name="phone" >
+            </div>
+            <div class="info">
+                <div class="title">{$Think.lang.L9072}：</div>
+                <select name="is_default">
+                  <option value="1" selected>是</option>
+                  <option value="2">否</option>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="保存">
+                <input type="reset" class="button fl ml10" value="重置">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+$(document).ready(function () {
+  // 省市区地址
+    function address(sel, hl) {
+        var parent_id = $(sel).children('option:selected').val(), html, i;
+        if (parent_id !== 0) {
+            $.get("{:U('Admin/Public/getRegion')}", {'parent_id': parent_id}, function (data) {
+                html = '<option value="0">{$Think.lang.L9063}</option>';
+                for (i = 0; i < data.length; i++) {
+                    html += '<option value="' + data[i].region_id + '">' + data[i].region_name + '</option>';
+                }
+                $(hl).html(html);
+            });
+        }
+    }
+    $('#selCountries').change(function () { address('#selCountries', '#selProvinces'); });
+    $('#selProvinces').change(function () { address('#selProvinces', '#selCities'); });
+    $('#selCities').change(function () { address('#selCities', '#selDistricts'); });
+});
+
+function trim(text) {
+    if (typeof text === "string") {
+        return text.replace(/^\s*|\s*$/g, "");
+    } else {
+        return text;
+    }
+}
+function isEmpty(val) {
+    var result = true;
+    switch (typeof val) {
+    case 'string':
+        if (val === '0') {
+            result = true;
+        } else {
+            result = trim(val).length === 0 ? true : false;
+        }
+        break;
+    case 'number':
+        result = val === 0;
+        break;
+    case 'object':
+        result = val === null;
+        break;
+    case 'array':
+        result = val.length === 0;
+        break;
+    default:
+        result = true;
+    }
+    return result;
+}
+function isNumber(val) {
+    var reg = /^[\d|\.|,]+$/;
+    return reg.test(val);
+}
+function isTel(tel) {
+    var reg = /^[\d|\-|\s|\_]+$/; //只允许使用数字-空格等
+    return reg.test(tel);
+}
+// 检查地址数据
+function checkConsignee(frm) {
+    var msg = [], err = false, message;
+    console.log(frm);
+    if (frm.elements['selCountries'] && isEmpty(frm.elements['selCountries'].value)) {
+        msg.push("{$Think.lang.L9080}");
+        err = true;
+    }
+    if (frm.elements['selProvinces'] && isEmpty(frm.elements['selProvinces'].value)) {
+        err = true;
+        msg.push("{$Think.lang.L9081}");
+      }
+    if (frm.elements['selCities'] && isEmpty(frm.elements['selCities'].value)) {
+        err = true;
+        msg.push("{$Think.lang.L9082}");
+    }
+    if (frm.elements['selDistricts'] &&  isEmpty(frm.elements['selDistricts'].value)) {
+        err = true;
+        msg.push('{$Think.lang.L9083}');
+    }
+    if (isEmpty(frm.elements['name'].value)) {
+        err = true;
+        msg.push('{$Think.lang.L9084}');
+    }
+    if (frm.elements['address'] && isEmpty(frm.elements['address'].value)) {
+        err = true;
+        msg.push('{$Think.lang.L9085}');
+    }
+    if (frm.elements['code'] && (!isNumber(frm.elements['code'].value))) {
+        err = true;
+        msg.push('{$Think.lang.L9086}');
+    }
+    if ((frm.elements['phone'] && (!isTel(frm.elements['phone'].value)))) {
+        err = true;
+        msg.push('{$Think.lang.L9087}');
+    }
+    if (err) {
+        message = msg.join("\n");
+        alert(message);
+    }
+    return !err;
+}
+</script>

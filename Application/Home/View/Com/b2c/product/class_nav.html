@@ -1,0 +1,66 @@
+<if condition=" $c_list ">
+    <div class="groups goods_class">
+        <ul>
+            <li class="attrs xlattr" >商品分类
+                <a class = "active" data-value-id = "0" >全部</a>
+                <foreach name="c_list" item="vo">
+                    <a href="javascript:void(0);" data-value-id="{$vo.category_id}">{$vo.name_alias}</a>						
+                </foreach>
+            </li>
+            <li class="attrs attr-child" id="js_category_child" >
+            </li>
+        </ul>
+    </div>
+    <script>
+        //分类单选
+        $('.xlattr a').each(function(){
+            $(this).click(function(){
+                if($(this).hasClass('active')){
+                    $('.xlattr a').removeClass('active');
+                    zuantuo.set_category_id(0);
+                    $('#js_category_child').html('');
+                    $('#div_attributes').hide();
+                }else{
+                    $('.xlattr a').removeClass('active');
+                    var id = $(this).attr('data-value-id');
+                    $(this).addClass('active');
+                    $.getJSON("{:U('Goods/getCategroyItem')}",{id:id},function(data){
+                        if( data.ret == 100 ){
+                            data = data.data;
+                            if( data.length > 0  ){
+                                var html  = '<a href="javascript:void(0);" data-value-id="'+id+'" class="active">所有</a>';
+                                for(var row in data){
+                                    html += '<a href="javascript:void(0);" data-value-id="'+data[row].category_id+'" >'+data[row].category_name+'</a>'
+                                }
+                                $('#js_category_child').html(html);
+                                //子分类单选
+                                $('#js_category_child a').each(function(){
+                                    $(this).click(function(){
+                                        if(!$(this).hasClass('active')){
+                                            $('.attr-child a').removeClass('active');
+                                            $(this).addClass('active');   
+                                            var id = $(this).attr('data-value-id');
+                                            zuantuo.set_category_id(id);
+                                            zuantuo.set_page('1');
+                                            zuantuo.get_attributes(func_display_attributes_data);
+                                        }
+                                        zuantuo.get_goods_list(func_display_goods_list);
+                                    });
+                                });
+                            } else {
+                                $('#js_category_child').html('');
+                            }
+                        } else {
+                            layer.msg('获取数据出错',{ shift:6, });
+                        }
+                    });
+                    zuantuo.set_category_id(id);
+                    zuantuo.set_page('1');
+                    zuantuo.get_attributes(func_display_attributes_data);
+                    $('#div_attributes').show();
+                }
+                zuantuo.get_goods_list(func_display_goods_list);
+            });
+        });
+    </script>
+</if>

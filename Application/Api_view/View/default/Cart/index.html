@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link href="__JS__/iCheck/skins/minimal/blue.css" rel="stylesheet">
+<link href="__JS__/iCheck/skins/square/blue.css" rel="stylesheet">
+<link href="__JS__/iCheck/skins/flat/blue.css" rel="stylesheet">
+<script src="__JS__/jquery.min.js"></script>
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/cart.css">
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/common.js"></script>
+<title>购物车</title>
+</head>
+<style>
+  .mediaber {  margin-top: 0 !important; border-top: none !important;}
+  .size {width: 52px;height:50px;}
+  .none {display:none;}
+  .block{display: inline-block;}
+  .red {color:red;}
+  .new_header {  background: #ededf3;  height: 30px; color: #fff;  line-height: 25px;  font-size: 18px;  padding: 0 8px;  position: relative; }
+</style>
+<body class="wrap-bg">
+<if condition="$data['count'] neq 0 " >
+	<!--头部-->
+    <!-- <header class=" new_header">
+        
+    </header>   -->
+    <!--内容-->
+
+    <div class="container wrap">
+    	<div class="row cart">
+			<volist name="data['product']['data']" id="product" >
+			<if condition="$product['goods_type'] eq 4">
+        	<div class="media dingzhi" data-cart-id="{$product['id']}" >
+				<div class="product square-blue single-row pull-left">
+					<div class="radio">
+						<label>
+                            <input value="{$product['id']}"  ref="{$product['id']}" type="checkbox">
+							<span class="fa fa-check"></span>
+						</label>
+					</div>
+                </div>
+					 
+				<a class="pull-left" onclick="ai_mutual('23,{$product['goods_attrs']['goods_id']},4');">
+                  <img class="media-object" src="{$product['goods_attrs']['thumb']}" alt="{$product['goods_attrs']['goods_name']}" width="100">
+				</a>
+				<div class="media-body cart-list">
+					<h4 class="media-heading">
+						<a onclick="ai_mutual('23,{$product['goods_attrs']['goods_id']},4');">
+							{$product['goods_attrs']['goods_name']}
+						</a>
+					</h4>
+					<p class="text-left text-muted"><del>市场价：{$product['goods_attrs']['marketPrice']}</del></p>
+					<p class="text-left">会员价：¥
+					<in name="product['goods_attrs']['activity_status']" value="0,1">
+						{$product['goods_attrs']['activity_price']}
+					<else/>
+						{$product['goods_attrs']['goods_price']}
+					</in>
+					</p>
+          <p class="text-left text-muted">小计：<span class="red">￥</span><big class="xiaoji">{$product['goods_attrs']['goods_price2']}</big></p>
+					<div class="form-group pull-left cart-btn">
+						<div class="spinner3">
+							<div class="input-group" style="width:85px;">
+								<div class="spinner-buttons input-group-btn" onclick="spinner(this,{$product['id']},{$product.goods_type})">
+									<button type="button" class="btn btn btn-default spinner-down">
+										<i class="glyphicon glyphicon-minus"></i>
+									</button>
+								</div>
+								<input onBlur="changeGoodsNumber(this,{$product['id']},{$product.goods_type})" type="text" value="{$product['goods_number']}" class="spinner-input form-control form-input" maxlength="3" data-goods-price=" <in name="product['goods_attrs']['activity_status']" value="0,1" >{$product['goods_attrs']['activity_price']} <else/>{$product['goods_attrs']['goods_price']} </in> " />
+								<input type="hidden" name="{$product['id']}_stock" value="{$product['goods_attrs']['goods_number']}" cart_id="{$product['id']}" default_val="{$product.goods_number}" /><!-- 此成品规格对应的sku库存 -->
+								<div class="spinner-buttons input-group-btn" onclick="spinner(this,{$product['id']},{$product.goods_type})" >
+									<button type="button" class="btn btn-default spinner-up">
+										<i class="glyphicon glyphicon-plus"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+                     <p class="pull-right"><a class="btn btn-cart"  onclick="ai_mutual('44,{$product['id']},{$product['goods_attrs']['luozuanInfo']['gal_id']},{$product['goods_attrs']['associateInfo']['material_id']},{$product['goods_attrs']['deputystone']['gad_id']}');">匹配钻石</a></p>
+            	</div>
+				
+
+				<if condition="$product['pp_luozuan']">
+					<volist name="product['pp_luozuan']" id="pp_luozuan" offset="0" length="2">
+						<if condition="$pp_luozuan['goods_attrs']['goods_name']">
+						<div class="media mediaber saber">
+							<if condition="$i eq 1" >
+								<div class="square-blue single-row pull-left lancer" style="margin: 0px 10px">
+									<div class="radio  yincang">
+										<label>
+								 
+											<input type="checkbox"  ref="<?php echo ','.(implode(",", $product['pp_luozuan']['stopgap_id']))?>"  value="<?php echo ','.(implode(",", $product['pp_luozuan']['stopgap_id']))?>">
+											<span class="fa fa-check"></span>
+										</label>
+									</div>
+								</div>
+							<else/>
+								<div class="square-blue single-row pull-left size" style="margin: 0px 10px">
+							
+								</div>
+							</if>
+							<div class="media-body">
+								<h4 class="media-heading lz">【裸钻】 货品编号：{$pp_luozuan['goods_attrs']['goods_name']} 
+								<span class="pull-right">×{$pp_luozuan['goods_attrs']['goods_number']}</span> 
+									<!--<span class="pull-right">
+										<div class="spinner3">
+											<div class="input-group" style="width:100px;">
+											
+												<div class="spinner-buttons input-group-btn">
+													<button type="button" class="btn btn btn-default spinner-down">
+													<i class="glyphicon glyphicon-minus"></i>
+													</button>
+												</div>
+												<input value="{$pp_luozuan['goods_attrs']['goods_number']}" type="text" class="spinner-input form-control form-input" maxlength="2" />
+												<div class="spinner-buttons input-group-btn">
+													<button type="button" class="btn btn-default spinner-up">
+													<i class="glyphicon glyphicon-plus"></i>
+													</button>
+												</div>
+											</div>
+										</div>
+									</span>-->
+								</h4>
+								<p class="text-muted">
+									&nbsp;&nbsp; {$pp_luozuan['goods_attrs']['certificate_type']} {$pp_luozuan['goods_attrs']['goods_sn']} {$pp_luozuan['goods_attrs']['weight']}ct {$pp_luozuan['goods_attrs']['color']}色 {$pp_luozuan['goods_attrs']['clarity']}净度 {$pp_luozuan['goods_attrs']['clarity']}切工
+								</p>
+							</div>
+						</div>
+						</if>
+					</volist>
+				</if>
+				
+				<div class="media mediaber archer">
+				<if condition="$product['pp_luozuan_count'] GT 2">
+				<a style="display:block;"    onclick="ai_mutual('45,{$product['id']}');">
+				</if>
+					<p class="text-muted">
+						<span class=" pull-left">
+							<if condition="$product['pp_luozuan_count'] GT 2">......</if>共{$product['pp_luozuan_count']}件裸钻<if condition="$product['pp_luozuan_count'] GT 2"><i class="glyphicon glyphicon-chevron-right"></i></if>
+						</span>
+						<span class="pull-right">
+							共计<span class="red">￥</span><strong class="red xiaoji">{$product['pp_luozuan_totalprice']}</strong>
+						</span>
+						<div class="clearfix"></div>
+					</p>
+				<if condition="$product['pp_luozuan_count'] GT 2">
+				</a>
+				</if>
+				</div>
+				
+            </div>
+			</if>
+			</volist>
+			
+			<if condition="$data['luozuan']['count'] neq 0 " >
+			<volist name="data['luozuan']['data']" id="luozuan">
+			<div class="media">
+					<div class="luozuan square-blue single-row pull-left">
+						<div class="radio">
+							<label>
+							  <input value="{$luozuan['id']}"   ref="{$luozuan['id']}"  type="checkbox">
+							  <span class="fa fa-check"></span>
+							</label>
+						</div>
+				   </div>
+				   <div class="media-body">
+					  <h4 class="media-heading">【裸钻】 货品编号：{$luozuan['goods_attrs']['goods_name']}</h4>
+						<p class="text-muted"> {$luozuan['goods_attrs']['certificate_type']}&nbsp;&nbsp;{$luozuan['goods_sn']}<br>{$luozuan['goods_attrs']['weight']}ct&nbsp;&nbsp;{$luozuan['goods_attrs']['color']}色&nbsp;&nbsp;{$luozuan['goods_attrs']['clarity']}净度&nbsp;&nbsp;{$luozuan['goods_attrs']['cut']}切工</p>
+						<div><p class="pull-left">×{$luozuan['goods_attrs']['goods_number']}</p><p class="text-right">粒单价：<span class="red">￥</span><big class="xiaoji">{$luozuan['goods_attrs']['price']}</big></p></div>
+				   </div>
+			</div>
+			</volist>
+			</if>
+           
+			<if condition="$data['sanhuo']['count'] neq 0 " >
+			<volist name="data['sanhuo']['data']" id="sanhuo" >
+			<div class="media">
+				<div class="luozuan square-blue single-row pull-left">
+                    <div class="radio">
+                        <label>
+                           <input value="{$sanhuo['id']}" ref="{$sanhuo['id']}" type="checkbox" />
+                           <span class="fa fa-check"></span>
+                        </label>
+                    </div>
+				</div>
+				<div class="media-body">
+                  <h4 class="media-heading">【散货】 货号：{$sanhuo['goods_sn']}</h4>
+                  	<p class="text-muted">
+						{$sanhuo['goods_attrs']['type_name']}&nbsp;&nbsp;库存{$sanhuo['goods_attrs']['goods_weight']}ct<span class="pull-right">每卡单价：{$sanhuo['goods_attrs']['goods_price']}</span><br>颜色{$sanhuo['goods_attrs']['color']}  净度{$sanhuo['goods_attrs']['clarity']}  {$sanhuo['goods_attrs']['cut']}切工
+					</p>
+                  	<div>
+						<p class="pull-left">
+							<input onBlur="changeGoodsNumber(this,{$sanhuo['id']},{$sanhuo['goods_type']})" type="text" data-goods-price="{$sanhuo['goods_attrs']['goods_price']}" value="{$sanhuo['goods_number']}" size="8" placeholder="" />ct
+							<input type="hidden" name="{$sanhuo['id']}_stock" value="{$sanhuo['goods_attrs']['goods_weight']}" cart_id="{$sanhuo['id']}" default_val="{$sanhuo['goods_number']}" /><!-- 此成品规格对应的sku库存 -->
+						</p>
+						<p class="text-right">现金小计：
+							<span class="red">￥</span><big class="xiaoji">{$sanhuo['goods_attrs']['goods_price2']}</big>
+						</p>
+					</div>
+				</div>
+			</div>
+			</volist>
+			</if>
+		   
+			<if condition="$data['product']['count'] neq 0 " >
+			<volist name="data['product']['data']" id="product" >
+			<if condition="$product['goods_type'] eq 3">
+			<div class="media cart-list">
+				<div class="chengpin square-blue single-row pull-left">
+					  <div class="radio">
+						 <label>
+							 <input value="{$product['id']}" ref="{$product['id']}" type="checkbox">
+							 <span class="fa fa-check"></span>
+						  </label>
+					  </div>
+				 </div>
+
+				<a class="pull-left" onclick="ai_mutual('23,{$product['goods_attrs']['goods_id']},3');">	
+					<img class="media-object" src="{$product['goods_attrs']['thumb']}" title="{$product['goods_attrs']['goods_name']}" width="100">
+				</a>
+				<div class="media-body">
+					<h4 class="media-heading">
+					<a class="pull-left" onclick="ai_mutual('23,{$product['goods_attrs']['goods_id']},3');">
+						{$product['goods_attrs']['goods_name']}
+					</a>
+					<br><del>市场价：{$product['goods_attrs']['marketPrice']}</del>
+					</h4>
+					<p class="pull-left">会员价：¥
+					<in name="product['goods_attrs']['activity_status']" value="0,1">
+						{$product['goods_attrs']['activity_price']}
+					<else/>
+						{$product['goods_attrs']['goods_price']}
+					</in>
+					</p>
+					<div class="form-group pull-left cart-btn">
+						<div class="spinner3">
+							<div class="input-group" style="width:85px;">
+								<div class="spinner-buttons input-group-btn" onclick="spinner(this,{$product['id']},{$product.goods_type})">
+									<button type="button" class="btn btn btn-default spinner-down">
+										<i class="glyphicon glyphicon-minus"></i>
+									</button>
+								</div>
+								<input onBlur="changeGoodsNumber(this,{$product['id']},{$product.goods_type})" type="text" value="{$product['goods_number']}" class="spinner-input form-control form-input" data-goods-price=" <in name="product['goods_attrs']['activity_status']" value="0,1" >{$product['goods_attrs']['activity_price']} <else/>{$product['goods_attrs']['goods_price']} </in> " maxlength="3" />
+								<input type="hidden" name="{$product['id']}_stock" value="{$product['goods_attrs']['goods_number']}" cart_id="{$product['id']}" default_val="{$product.goods_number}" /><!-- 此成品规格对应的sku库存 -->
+								<div class="spinner-buttons input-group-btn" onclick="spinner(this,{$product['id']},{$product.goods_type})">
+									<button type="button"  class="btn btn-default spinner-up">
+										<i class="glyphicon glyphicon-plus"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<p class="pull-left">小计：<span class="red">￥</span><big class="xiaoji">{$product['goods_attrs']['goods_price2']}</big></p>
+				</div>
+			</div>
+			</if>
+			</volist>
+			</if>
+
+			<!-- <p class="text-center order-all" style="padding-bottom: 0px;">商品总价：<span class="red">¥</span><em id="total">{$data.total}</em></p> -->
+			
+            <div class="cart-fixed">
+            	<div class="square-blue single-row pull-left">
+                      <div class="radio" style="margin-bottom: 0">
+                          <label>
+                             <input id="selectAll" type="checkbox">
+                             <span class="fa fa-check"></span>
+                          </label>
+                      </div>
+                </div>	
+                <label>全选</label>
+                <span class="yincang">应付金额：<span class="red">¥</span><big id="payable">0</big></span>
+                <a href="javascript:;" id="edit" class="btn btn-default btn-sm pull-right" style="margin-right: 5px; margin-top: 10px;">编辑</a>
+				<div class="container" style="margin-bottom: 15px;">
+					<button type="button" class="btn btn-primary btn-block yincang" onclick="Confirm_Cart()">确认订单</button>
+          <button onclick="deleteCart(2)" type="button" class="btn btn-primary btn-block none xianshi">删除商品</button>
+				</div>
+        
+      </div>
+
+		</div>
+	</div>
+    
+<else/>
+	<!--头部-->
+	<!-- <header class=" header text-center"> -->
+		<!-- 购物车 -->
+	<!-- </header> -->
+	<!--内容-->
+	<div class="container wrap">
+		<div class="empty">        	
+			<img src="__IMG__/empty.png" alt="" width="120">
+			<h3>您购物车还没有商品T.T</h3>
+			<p class="text-muted">快去挑点宝贝吧</p>
+			<a onclick="ai_mutual('1');" class="btn btn-lg btn-default">去逛逛</a>
+	
+		</div>
+	</div>
+</if>
+<!--底部-->
+{:W('Frame/footer', array('cart'))}
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/iCheck/jquery.icheck.js"></script>
+<script src="__JS__/icheck-init.js"></script>
+<script type="text/javascript" src="__JS__/fuelux/js/spinner.min.js"></script>
+<script src="__JS__/spinner-init.js"></script>
+<script src="__JS__/public.js"></script>
+<script src="__JS__/layer-mobile/layer.js"></script>
+</body>
+
+</html>
+<script>
+
+
+
+<!-- 获取当前选中input框的小计金额 -->
+function get_xiaoji(c){
+	var xiaoji = 0;
+	if($(c).parents('.square-blue').hasClass('product')){
+		xiaoji = $(c).parents('.square-blue').siblings('.media-body').find('.xiaoji').html();
+   }else if($(c).parents('.square-blue').hasClass('lancer')){
+		xiaoji = $(c).parents('.saber').siblings('.archer').find('.xiaoji').html();
+   }else if($(c).parents('.square-blue').hasClass('luozuan')){
+		xiaoji = $(c).parents('.luozuan').next('.media-body').find('.xiaoji').html();
+   }else if($(c).parents('.square-blue').hasClass('chengpin')){
+		xiaoji = $(c).parents('.chengpin').siblings('.media-body').find('.xiaoji').html();
+   }
+   return xiaoji;
+}
+	
+<!-- 进入页面是否有选中的产品,计算出应付金额 -->
+function payable(){
+	var payable = 0;
+	var xiaoji = 0;
+	$('.icheckbox_square-blue').each(function(){
+		if($(this).hasClass('checked')){
+			xiaoji = get_xiaoji($(this));
+			payable = accAdd(payable,xiaoji).toFixed(2);
+		}
+	})
+	$('#payable').html(payable);
+}
+	
+var goods_id = [];
+var goods_ids = [];
+var tips='';
+var uid	 ='<?php echo empty(C('uid'))   	? 0 : C('uid')?>';
+var token='<?php echo empty(C('token')) 	? 0 : C('token')?>';
+var agent_id='<?php echo empty(C('agent_id'))  ? 0 : C('agent_id')?>';	
+
+$(document).ready(function(){
+
+  //默认全选
+  
+  //$("input[type='checkbox']").iCheck('check');	 $('input').on('ifClicked').each(function(i){  goods_id[i] = $(this).attr("ref");  }); 
+
+	$("input[type='checkbox']").iCheck('check');
+	$('input').on('ifClicked').each(function(i){
+		goods_ids[i] = $(this).attr("ref");
+		$.each(goods_ids ,function(k ,v) {
+			if(v){
+				if(v.indexOf(",")==0){
+							string_to_array(v,1);
+							RemoveArrayValue(goods_ids,v);									
+				} 
+			}
+		})
+	});
+	for(var k in goods_ids){
+		if(goods_ids[k]){
+			goods_id.unshift(goods_ids[k]);
+		}
+	}
+	goods_id=unique_array(goods_id);
+	
+	
+	payable();
+	<!-- 编辑 -->
+	$('#edit').click(function(){
+		if($('#edit').html() == '编辑'){
+			$('#edit').text('取消');
+			$('.yincang').hide(); //匹配裸钻input框 和 底部确认订单内容隐藏
+			$('.lancer').addClass('size');		 //追加样式，两个匹配的裸钻样式保持一致
+			$('.xianshi').show(); //底部确认订单内容隐藏，删除内容显示
+			$('.dingzhi').each(function(){		 //当为删除时候，匹配的裸钻可以点击进入匹配裸钻列表页
+				var cart_id = $(this).attr('data-cart-id');
+				$(this).children('.saber').wrap("<a onclick='ai_mutual('45,cart_id');'></a>");
+			});
+			//初始化input按钮，移除input框被选中效果
+			$('input').iCheck('uncheck');
+		}else{
+			$('#edit').text('编辑');
+			$('.yincang').show(); //匹配裸钻input框 和 底部确认订单内容显示
+			$('.lancer').removeClass('size');		 			//清除样式，两个匹配的裸钻样式保持一致
+			$('.xianshi').hide(); //底部确认订单内容显示，删除内容隐藏
+			//初始化input按钮，移除input框被选中效果
+			$('input').iCheck('uncheck');
+			$('.saber').unwrap();				//删除外层A标签
+			$('#payable').html(0);				//应付金额设置为零
+		}
+		
+	})
+	
+	<!-- 全选 -->
+	$('input').on('ifClicked', function(event){
+		var id = $(this).attr('id');
+		var total = 0;
+		if(id == 'selectAll'){
+			//input框全部被选中效果
+			if($(this).parent().hasClass('checked')){	
+				$('input').iCheck('uncheck'); //移除 checked 状态 
+				goods_id = [];	
+				tips='3';		//未选中
+			}else{	
+				goods_id = [];	
+				//先获取全选
+				$('input').on('ifClicked').each(function(i){
+					goods_ids[i] = $(this).attr("ref");
+					$.each(goods_ids ,function(k ,v) {
+						if(v){
+							if(v.indexOf(",")==0){
+										string_to_array(v,1);
+										RemoveArrayValue(goods_ids,v);									
+							} 
+						}
+					})
+				});		
+				for(var k in goods_ids){
+					if(goods_ids[k]){
+						goods_id.unshift(goods_ids[k]);
+					}
+				}
+				$('input').iCheck('check');   //将输入框的状态设置为checked 
+				<!-- 全选，则应付金额为总金额 -->
+				total = $('#total').html();	
+				tips='1';		//选中
+			}
+			$('#payable').html(total);
+		}else{
+			if (tips==''){	tips='2';	}
+			<!-- 应付金额 -->
+		   var payable = $('#payable').html();
+		   var xiaoji = 0;
+		   var newpayable = 0;
+		   xiaoji = get_xiaoji($(this));
+		   if($(this).parent().hasClass('checked')){			
+				newpayable = accSub(payable,xiaoji).toFixed(2);
+				if(tips=='1'){		//非全选		
+					if($(this).val().indexOf(",")==0){
+								string_to_array($(this).val(),2)	 
+					}else{
+								RemoveArrayValue(goods_id,$(this).val());
+					}
+				}else if (tips=='2'){	
+					if($(this).val().indexOf(",")==0){
+								string_to_array($(this).val(),2)	 
+					}else{
+								RemoveArrayValue(goods_id,$(this).val());
+					}			
+				}else{			
+					if($(this).val().indexOf(",")==0){
+								string_to_array($(this).val(),2)	 
+					}else{
+								RemoveArrayValue(goods_id,$(this).val());
+					}		 
+				}
+		    }else{		
+				newpayable = accAdd(payable,xiaoji).toFixed(2);
+				if(tips=='1'){	 //非全选			
+								goods_id.unshift($(this).val());	 
+				}else if (tips=='2'){				
+					if($(this).val().indexOf(",")==0){
+								string_to_array($(this).val(),1)	 
+					}else{
+								goods_id.unshift($(this).val());	 
+					}
+				}else{			
+					if($(this).val().indexOf(",")==0){
+								string_to_array($(this).val(),1)	 
+					}else{
+								goods_id.unshift($(this).val());	 	
+					}
+				}
+			}
+			$('#payable').html(newpayable);
+		}
+		});
+	})
+	
+	/**
+	*	批量删除和添加匹配的ID数组
+	*	zhy
+	*	2016年10月28日 15:21:31
+	*/
+	function string_to_array(come_string,type){
+		var arr = come_string.split(',');
+		for(var k in arr){
+			if(arr[k]){
+				if(type=='1'){
+					goods_id.unshift(arr[k]);
+				}else{
+					RemoveArrayValue(goods_id,arr[k]);
+				}
+			}
+		}
+	}
+	
+	/**
+	*	数组祛重
+	*	zhy
+	*	2016年11月2日 11:58:27
+	*/
+	function unique_array(arr) {
+		var result = [], hash = {};
+		for (var i = 0, elem; (elem = arr[i]) != null; i++) {
+			if (!hash[elem]) {
+				result.push(elem);
+				hash[elem] = true;
+			}
+		}
+		return result;
+	}
+
+	<!-- 产品数量加减 -->
+	function spinner(b,cart_id,goods_type){
+		var a = $(b).siblings('.spinner-input');
+		changeGoodsNumber(a,cart_id,goods_type);
+	}
+	
+	<!-- 产品数量更改 -->
+	function changeGoodsNumber(a,cart_id,goods_type){
+		var stock = $("input[type=hidden][name="+cart_id+"_stock]").val().trim();
+		var buy_quantity; 
+		switch(goods_type){
+			case 2:	//散货
+				stock = parseFloat(stock);
+				buy_quantity = parseFloat($(a).val());
+				break;
+			case 3:	//成品
+				stock = parseInt(stock);
+				buy_quantity = parseInt($(a).val());
+				break;
+			case 4:	//成品
+				stock = parseInt(stock);
+				buy_quantity = parseInt($(a).val());
+				break;
+		}
+		if(buy_quantity <= 0){
+			tan('购买数量必须大于0');
+			buy_quantity = $("input[type=hidden][cart_id="+cart_id+"]").attr("default_val");
+			return false;
+		}
+		if(goods_type!=4){
+			if(buy_quantity > stock){
+				tan('购买数量超过库存！现库存为'+stock);
+				buy_quantity = $("input[type=hidden][cart_id="+cart_id+"]").attr("default_val");
+				return false;
+			}
+		}
+		$.ajax({
+			type: 'POST',
+			url	: '/Cart/changeGoodsNumber' ,
+			dataType:'json',
+			data: {'cart_id':cart_id,'goods_type':goods_type,'goods_number':buy_quantity,'uid':uid,'token':token,'agent_id':agent_id},
+			success: function (ref) {
+				if(ref.status == 100){
+					var goods_price = parseFloat($(a).attr('data-goods-price'));
+					var goods_number= parseFloat(ref.goods_number);
+					//四舍五入保留两位小数
+					var xiaoji = accMul(goods_number,goods_price).toFixed(2);
+					//小计
+					switch(ref.goods_type){
+						case 2:
+							$(a).parent().next().children('.xiaoji').text(xiaoji);
+							break;
+						case 3:
+							$(a).parents('.cart-btn').next('').children('.xiaoji').text(xiaoji);
+							break;
+						case 4:
+							$(a).parents('.cart-btn').prev('').children('.xiaoji').text(xiaoji);
+							break;
+					}
+					//数量改变则总价重新计算
+					var total = $('#total').html();
+					var newtotal = accAdd(total,ref.change_price).toFixed(2);
+					$('#total').html(newtotal);
+					
+					//应付金额修改
+					payable();
+				}else{
+					if(ref.status == 101){
+						$(a).val(ref.goods_number);
+						tan(ref.msg);
+					}else if(ref.status == 0){
+						tan(ref.msg);
+					}
+				}
+			}
+		})
+	}
+	
+	function Confirm_Cart(){
+			$.ajax({
+			type: 'POST',
+			url	: '/Cart/Confirm_Cartapi' ,
+			dataType:'json',
+			data: {'goodsid':goods_id,'uid':uid,'token':token,'agent_id':agent_id},
+			success: function (data) {
+				 	if(data.status == '1'){
+						tan(data.msg);
+						setTimeout("ai_mutual('59')",3000);  
+					}else if(data.status == '2'){
+						tan(data.msg);
+					}else{
+						ai_mutual('41');
+					}
+				
+			}
+		})
+	}
+
+</script>

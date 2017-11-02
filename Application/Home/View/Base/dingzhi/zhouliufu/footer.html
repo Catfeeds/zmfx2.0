@@ -1,0 +1,39 @@
+<!-- 返回顶部 -->
+<style media="screen">
+    .back_top { position: fixed; bottom: 10%; right: 3%;}
+</style>
+<a href="javascript:;" class="back_top" style="display: none;"><img src="__IMG_DZ__/totop.png" width="40px" alt=""></a>
+<script>
+    $(function(){
+        //返回顶部
+    	$(window).scroll(function(){
+            if($(document).scrollTop() + $(window).height() >= $(document).height()){
+                $('.back_top').fadeIn();
+            }else{
+                $('.back_top').fadeOut();
+            }
+    	});
+
+        $('.back_top').bind('click', function(){
+    	    $('body,html').animate({scrollTop : 0},400);
+    	});
+
+        $('.back_top').hover(function(){
+            $(this).find('img').attr('src', '__IMG_DZ__/totop_hover.png');
+        },function(){
+            $(this).find('img').attr('src', '__IMG_DZ__/totop.png');
+        });
+    });
+</script>
+<!-- 返回顶部 end -->
+
+<!-- footer -->
+<div class="footer">
+    <div class="w1200">
+        <p>© 2010-2017 周六福珠宝 版权所有,并保留所有权利</p>
+        <p>粤ICP备xxxxxx号</p>
+    </div>
+</div>
+<!-- footer end -->
+</body>
+</html>

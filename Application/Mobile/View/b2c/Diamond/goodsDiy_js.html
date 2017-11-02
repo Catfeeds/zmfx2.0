@@ -1,0 +1,527 @@
+<script type="text/javascript">
+	//删除数组中指定的元素
+	function removeByValue(arr, val) {	
+	  for(var i=0; i<arr.length; i++) {
+		if(arr[i] == val) {
+		  arr.splice(i, 1);
+		  break;
+		}
+	  }
+	}
+    $(function(){
+		var goodsSn = $("#goodsSn").val();
+		load_data();
+		
+		//排序
+		$('.sort-box').bind('click', function(){
+			if($(this).attr('data') == 'down'){
+				$(this).find('.sort-img').css('transform', 'rotate(180deg)');
+				$(this).attr('data', '');
+				$("#desc").val("asc");
+			}else{
+				$(this).find('.sort-img').css('transform', 'rotate(0deg)');
+				$(this).attr('data', 'down');
+				$("#desc").val("desc");
+				//排序方式的选择
+				if($(this).hasClass('orderWeight') != false ){
+					$("#order").val("weight");	
+					$(".orderPrice").find('.sort-img').css('transform', 'rotate(180deg)');
+					$(".orderPrice").attr('data', '');
+					$(".orderWeight").attr('data', 'down');
+				}else if($(this).hasClass('orderPrice') != false ){
+					$("#order").val("dia_global_price");
+					$(".orderWeight").find('.sort-img').css('transform', 'rotate(180deg)');
+					$(".orderWeight").attr('data', '');
+					$(".orderPrice").attr('data', 'down');
+				}
+			}
+			//alert($("#desc").val());
+			//重新触发事件
+			var minWeight = $("#minWeight").val();
+			var maxWeight = $("#maxWeight").val();
+			var minPrice = $("#minPrice").val();
+			var maxPrice = $("#maxPrice").val();
+			if($(".checks").hasClass('active')!=false || minWeight!='' || maxWeight!='' || minPrice!='' || maxPrice!=''){
+				$(".determine").click();
+			}else{
+				var newPrice 	= $("#selectedPrice span").html();
+				var newWeight 	= $("#selectedWeight span").html();
+				var newColor 	= $("#selectedColor span").html();
+				if(newPrice == '<img src="__IMG__/down_icon.png" alt="">'){ newPrice = ''; }
+				if(newWeight == '<img src="__IMG__/down_icon.png" alt="">'){ newWeight = ''; }
+				if(newColor == '<img src="__IMG__/down_icon.png" alt="">'){ newColor = ''; }
+				if(newPrice!=undefined || newWeight!=undefined || newColor!=undefined){
+					$(".topScreen").click();	
+				}else{
+					load_data();	
+				}
+			}
+		});
+        //点击修改input的值
+		$('.checks').click(function(){
+            var type  = $(this).attr('data-type');
+            var value = $(this).attr('data-value');
+			var typeVal = $("#"+type+"").val();
+			if( $(this).hasClass('active') != false ){
+				//选中
+				if(typeVal==""){
+					var newTypeVal  =	value;
+				}else{
+					var newTypeVal  =	typeVal+","+value;
+				}
+				$("#"+type+"").val(newTypeVal);
+			}else{	
+				//不选中
+				if(typeVal!=""){
+					var typeValArr = new Array();
+					typeValArr = typeVal.split(',');
+					var s = typeValArr.indexOf(value);
+					if(s != -1){
+						removeByValue(typeValArr,value);	
+						var newTypeVal = typeValArr.join(',');	
+						$("#"+type+"").val(newTypeVal);
+					}
+				}
+			}	
+		});
+		$('.Weight').blur(function(){
+			//修改自定义筛选重量参数
+			var minWeight = parseFloat($('#minWeight').val());
+			var maxWeight = parseFloat($('#maxWeight').val());
+			var weight_value	  = '';
+			if($('#minWeight').val().length > 8 || $('#maxWeight').val().length > 8 ){
+				layer.open({
+					   content: '自定义的每项输入长度最多为八个!'
+					   ,btn: '确定'
+				});	
+				return false;
+			}
+			if(minWeight && maxWeight){
+				weight_value = minWeight + "-" + maxWeight;
+			}else if (minWeight){
+				weight_value = minWeight + "-500";
+			}else if (maxWeight){
+				weight_value = "0-" + maxWeight;
+			}
+			$("#Weight").val(weight_value);
+		})
+		$('.Price').blur(function(){
+			//修改自定义筛选重量参数
+			var minPrice = parseFloat($('#minPrice').val());
+			var maxPrice = parseFloat($('#maxPrice').val());
+			var price_value	  = '';
+			if($('#minPrice').val().length > 8 || $('#maxPrice').val().length > 8 ){
+				layer.open({
+					   content: '自定义的每项输入长度最多为八个!'
+					   ,btn: '确定'
+				});	
+				return false;
+			}
+			if(minPrice && maxPrice){
+				price_value = minPrice + "-" + maxPrice;
+			}else if (minPrice){
+				price_value = minPrice + "-99999999";
+			}else if (maxPrice){
+				price_value = "0-" + maxPrice;
+			}
+			$("#Price").val(price_value);
+		})
+
+		//重置，把变量值置为空
+		$("#resetData").click(function(){
+			$("#Shape").val("");
+			$("#Color").val("");
+			$("#Clarity").val("");
+			$("#Cut").val("");
+			$("#Polish").val("");
+			$("#Fluor").val("");
+			$("#Location").val("");
+			$("#Cert").val("");
+			$("#Weight").val("");
+			$("#Price").val("");
+			$("#Symmetry").val("");
+			$("#Milk").val("");
+			$("#Coffee").val("");
+		});
+
+		//加载初始数据
+		function load_data(){
+			var desc = $("#desc").val();
+			var order = $("#order").val();
+			var gal_id = $("#gal_id").val();
+			$.ajax({
+				url: '/Diamond/getDiamondData',
+				type: 'POST',
+				dataType: 'json',
+				data: {'luozuan_type':0,'goods_sn':goodsSn,'order':order,'desc':desc,'gal_id':gal_id},
+				success: function(d){
+					var dataList = new Array();
+					dataList = d.data.list;
+					//是否显示底部分页效果
+					var nPage 	  = $("#nowPage").val();
+					var totalPage = Math.ceil(d.data.total/15);
+					if(totalPage>nPage){
+						$('.loading').show();	
+					}else{
+						$('.loading').hide();
+					}
+					//加载数据
+					var html="";
+					if( dataList.length > 0 ){
+						for(var row in dataList){
+							var newPrice = Math.floor(dataList[row].price);
+							html += '<tr class="border-top" onclick="displayParameter('+dataList[row].gid+')"><td>'+dataList[row].shape_name+'</td><td>'+dataList[row].weight+'</td><td>'+dataList[row].color+'</td><td>'+dataList[row].clarity+'</td><td>'+dataList[row].cut+'</td><td class="rmb">￥'+newPrice+'</td></tr>';
+						}
+						$('.fancyTable tbody').html(html);
+					}else{
+						html += '<tr><td colspan="6">没有搜索到符合条件的商品，请重新选择参数！</td></tr>';
+						$('.loading').hide();
+					}
+					$("#newTotal").html(d.data.total);
+					$('.fancyTable tbody').html(html);
+				}
+			});		
+		}
+		
+		//左边筛选，重新加载数据
+		$("#determine").click(function(){
+			var desc = $("#desc").val();
+			var order = $("#order").val();
+			var gal_id = $("#gal_id").val();
+			//去除头部的筛选样式
+			$('.topData li').removeClass('active');
+			$(".screening-btn").removeClass('screening-btn-active');
+			$("#selectedPrice").html('价格<span class="icon"><img src="__IMG__/down_icon.png" alt=""></span>');
+			$("#selectedWeight").html('钻重<span class="icon"><img src="__IMG__/down_icon.png" alt=""></span>');
+			$("#selectedColor").html('颜色<span class="icon"><img src="__IMG__/down_icon.png" alt=""></span>');
+			
+			//ajax加载数据			
+			$.ajax({
+				url: '/Diamond/getDiamondData',
+				type: 'POST',
+				dataType: 'json',
+				data:$('#myform').serialize()+'&desc='+desc+'&order='+order+'&gal_id='+gal_id,
+				success: function(d){
+					var dataList = new Array();
+					dataList = d.data.list;
+					//是否显示底部分页效果
+					var nPage 	  = $("#nowPage").val();
+					var totalPage = Math.ceil(d.data.total/15);
+					if(totalPage>nPage){
+						$('.loading').show();	
+					}else{
+						$('.loading').hide();
+					}
+					//加载数据
+					var html="";
+					if( dataList.length > 0 ){
+						for(var row in dataList){
+							var newPrice = Math.floor(dataList[row].price);
+							html += '<tr class="border-top" onclick="displayParameter('+dataList[row].gid+')"><td>'+dataList[row].shape_name+'</td><td>'+dataList[row].weight+'</td><td>'+dataList[row].color+'</td><td>'+dataList[row].clarity+'</td><td>'+dataList[row].cut+'</td><td class="rmb">￥'+newPrice+'</td></tr>';
+						}
+					}else{
+						html += '<tr><td colspan="6">没有搜索到符合条件的商品，请重新选择参数！</td></tr>';
+						$('.loading').hide();
+					}
+					$("#newTotal").html(d.data.total);
+					$('.fancyTable tbody').html(html);
+					$("#nowPage").val("1");
+				}
+			});		
+		});
+		
+		//头部筛选
+		$(".topScreen").click(function(){
+			//去除右边的筛选条件
+			$('.item-list .checks').removeClass('active');
+            $('.number-input').val('');
+			$('.leftData').val('');
+
+			var desc = $("#desc").val();
+			var order = $("#order").val();
+			var gal_id = $("#gal_id").val();
+			
+			var newPrice 	= $("#selectedPrice span").html();
+			var newWeight 	= $("#selectedWeight span").html();
+			var newColor 	= $("#selectedColor span").html();
+			if(newPrice == '<img src="__IMG__/down_icon.png" alt="">'){ newPrice = ''; }
+			if(newWeight == '<img src="__IMG__/down_icon.png" alt="">'){ newWeight = ''; }
+			if(newColor == '<img src="__IMG__/down_icon.png" alt="">'){ newColor = ''; }
+			
+			if(newPrice=="1万或以上"){
+				newPrice  = "10000-99999999";	
+			}
+			if(newWeight=="1克拉或以上"){
+				newWeight = "1-500";	
+			}
+			$.ajax({
+				url: '/Diamond/getDiamondData',
+				type: 'POST',
+				dataType: 'json',
+				data: {'Price':newPrice,'Weight':newWeight,'Color':newColor,'order':order,'desc':desc,'gal_id':gal_id},
+				success: function(d){
+					var dataList = new Array();
+					dataList = d.data.list;
+					//是否显示底部分页效果
+					var nPage 	  = $("#nowPage").val();
+					var totalPage = Math.ceil(d.data.total/15);
+					if(totalPage>nPage){
+						$('.loading').show();	
+					}else{
+						$('.loading').hide();
+					}
+					//加载数据
+					var html="";
+					if( dataList.length > 0 ){
+						for(var row in dataList){
+							var newPrice = Math.floor(dataList[row].price);
+							html += '<tr class="border-top" onclick="displayParameter('+dataList[row].gid+')"><td>'+dataList[row].shape_name+'</td><td>'+dataList[row].weight+'</td><td>'+dataList[row].color+'</td><td>'+dataList[row].clarity+'</td><td>'+dataList[row].cut+'</td><td class="rmb">￥'+newPrice+'</td></tr>';
+						}
+					}else{
+						html += '<tr><td colspan="6">没有搜索到符合条件的商品，请重新选择参数！</td></tr>';
+						$('.loading').hide();
+					}
+					$("#newTotal").html(d.data.total);
+					$('.fancyTable tbody').html(html);
+					$("#nowPage").val("1");
+				}
+			});		
+		});
+			
+		//下拉分页，加载数据*****
+		$(window).scroll(function(){
+            if($(document).scrollTop() + $(window).height() >= $(document).height()){	
+		
+			/*$(window).scroll(function(){
+			var str = $(document).height() - $('.diamond-table-list').height();
+			if($(document).scrollTop() + str >= $('#load-box').offset().top){	*/
+				var desc = $("#desc").val();
+				var order = $("#order").val();
+				var page = parseInt($("#nowPage").val());
+				if(page!=0){ var nowPage = page+parseInt('1'); }
+				var minWeight = $("#minWeight").val();
+				var maxWeight = $("#maxWeight").val();
+				var minPrice = $("#minPrice").val();
+				var maxPrice = $("#maxPrice").val();
+				var gal_id = $("#gal_id").val();
+				var nPage 	  = parseInt($("#nowPage").val());
+				
+				if(page!=0){
+				if($(".checks").hasClass('active')!=false || minWeight!='' || maxWeight!='' || minPrice!='' || maxPrice!=''){
+				
+				
+					//左边筛选条件的分页
+					//ajax加载数据			
+					$.ajax({
+						url: '/Diamond/getDiamondData',
+						type: 'POST',
+						dataType: 'json',
+						data:$('#myform').serialize()+'&page_id='+nowPage+'&desc='+desc+'&order='+order+'&gal_id='+gal_id,
+						success: function(d){
+							var dataList = new Array();
+							dataList = d.data.list;
+							//是否显示底部分页效果
+							var totalPage = Math.ceil(d.data.total/15);
+							if(totalPage>(nPage+1)){
+								$('.loading').show();	
+								$("#nowPage").val(nowPage);	
+							}else{
+								$('.loading').hide();
+								$("#nowPage").val("0");
+							}
+							//加载数据
+							var html="";
+							if( dataList.length > 0 ){
+								for(var row in dataList){
+									var newPrice = Math.floor(dataList[row].price);
+									html += '<tr class="border-top" onclick="displayParameter('+dataList[row].gid+')"><td>'+dataList[row].shape_name+'</td><td>'+dataList[row].weight+'</td><td>'+dataList[row].color+'</td><td>'+dataList[row].clarity+'</td><td>'+dataList[row].cut+'</td><td class="rmb">￥'+newPrice+'</td></tr>';
+								}
+								$('.fancyTable tbody').append(html);
+							}
+						}
+					});		
+					
+						
+				}else{
+					var newPrice 	= $("#selectedPrice span").html();
+					var newWeight 	= $("#selectedWeight span").html();
+					var newColor 	= $("#selectedColor span").html();
+					if(newPrice == '<img src="__IMG__/down_icon.png" alt="">'){ newPrice = ''; }
+					if(newWeight == '<img src="__IMG__/down_icon.png" alt="">'){ newWeight = ''; }
+					if(newColor == '<img src="__IMG__/down_icon.png" alt="">'){ newColor = ''; }
+					if(newPrice!=undefined || newWeight!=undefined || newColor!=undefined){
+						//头部筛选条件的分页	
+						if(newPrice=="1万或以上"){
+							newPrice  = "10000-99999999";	
+						}
+						if(newWeight=="1克拉或以上"){
+							newWeight = "1-500";	
+						}
+						$.ajax({
+							url: '/Diamond/getDiamondData',
+							type: 'POST',
+							dataType: 'json',
+							data: {'Price':newPrice,'Weight':newWeight,'Color':newColor,'page_id':nowPage,'order':order,'desc':desc,'gal_id':gal_id},
+							success: function(d){
+								var dataList = new Array();
+								dataList = d.data.list;
+								//是否显示底部分页效果
+								var totalPage = Math.ceil(d.data.total/15);
+								if(totalPage>(nPage+1)){
+									$('.loading').show();	
+									$("#nowPage").val(nowPage);	
+								}else{
+									$('.loading').hide();
+									$("#nowPage").val("0");
+								}
+								//加载数据
+								var html="";
+								if( dataList.length > 0 ){
+									for(var row in dataList){
+										var newPrice = Math.floor(dataList[row].price);
+										html += '<tr class="border-top" onclick="displayParameter('+dataList[row].gid+')"><td>'+dataList[row].shape_name+'</td><td>'+dataList[row].weight+'</td><td>'+dataList[row].color+'</td><td>'+dataList[row].clarity+'</td><td>'+dataList[row].cut+'</td><td class="rmb">￥'+newPrice+'</td></tr>';
+									}
+									$('.fancyTable tbody').append(html);
+								}
+							}
+						});		
+						
+						
+							
+					}else{
+					
+					
+						//无筛选条件的分页
+						$.ajax({
+							url: '/Diamond/getDiamondData',
+							type: 'POST',
+							dataType: 'json',
+							data: {'luozuan_type':0,'goods_sn':goodsSn,'page_id':nowPage,'order':order,'desc':desc,'gal_id':gal_id},
+							success: function(d){
+								var dataList = new Array();
+								dataList = d.data.list;
+								//是否显示底部分页效果
+								var totalPage = Math.ceil(d.data.total/15);
+								if(totalPage>(nPage+1)){
+									$('.loading').show();	
+									$("#nowPage").val(nowPage);	
+								}else{
+									$('.loading').hide();
+									$("#nowPage").val("0");
+								}
+								//加载数据
+								var html="";
+								if( dataList.length > 0 ){
+									for(var row in dataList){
+										var newPrice = Math.floor(dataList[row].price);
+										html += '<tr class="border-top" onclick="displayParameter('+dataList[row].gid+')"><td>'+dataList[row].shape_name+'</td><td>'+dataList[row].weight+'</td><td>'+dataList[row].color+'</td><td>'+dataList[row].clarity+'</td><td>'+dataList[row].cut+'</td><td class="rmb">￥'+newPrice+'</td></tr>';
+									}
+									$('.fancyTable tbody').append(html);
+								}
+							}
+						});	
+						
+						
+									
+					}
+				}
+				} 		
+            }
+        });
+		
+		
+		
+	})	
+	function displayParameter(gid){
+		GDCondition.gid	=	gid;
+		//ajax获取详细参数
+		$.ajax({
+			url: '/Diamond/getCertInfo',
+			type: 'POST',
+			dataType: 'json',
+			data: {'gid':gid},
+			success: function(d){
+				$("#parameter1").html(d.data['certificate_number']);
+				$("#parameter2").html(d.data['certificate_type']);
+				$("#parameter3").html(d.data['shape_name']);
+				$("#parameter4").html(d.data['fluor']);
+				$("#parameter5").html(d.data['weight']);
+				$("#parameter6").html(d.data['dia_depth']);
+				$("#parameter7").html(d.data['color']);
+				$("#parameter8").html(d.data['dia_table']);
+				$("#parameter9").html(d.data['clarity']);
+				$("#parameter10").html(d.data['milk']);
+				$("#parameter11").html(d.data['cut']);
+				$("#parameter12").html(d.data['coffee']);
+				$("#parameter13").html(d.data['polish']);
+				$("#parameter14").html(d.data['gid']);
+				$("#parameter15").html(d.data['symmetry']);
+				$("#parameter16").html(d.data['price']);
+				$("#parameter17").html(d.data['dia_size']);
+				$("#parameter18").html(d.data['location']);
+				if(d.data['id']){
+					$('.toolbar-collection img').attr('src', '__IMG__/toolbar_collection_success.png');
+					$('.toolbar-collection').attr('data-lock', 'true');
+				}else{
+					$('.toolbar-collection img').attr('src', '__IMG__/toolbar_collection.png');
+					$('.toolbar-collection').attr('data-lock', 'false');
+				}
+				layer.open({
+					type: 1
+					,content: $('.detailed-content').html()
+					,anim: 'up'
+					,style: 'position:fixed; bottom:0; left:0; width: 100%; border:none;'
+				});
+			}
+		});	
+	}
+	function matching(data){
+		if(data!=null){
+			var dingzhi = getCookieOfObject("dingzhi"); 
+			if(dingzhi!=null){
+				var gid = dingzhi.luozuan_info.gid;
+				location.href="{:U('/Goods/goodsDiy')}?gcid=60&shape="+dingzhi.luozuan_info.shape+"&weight="+dingzhi.luozuan_info.weight;
+			}
+		}else{
+			var gid = $("#parameter14").html();
+			$.ajax({
+				url: '/Diamond/getDiamondInfo',
+				type: 'POST',
+				dataType: 'json',
+				data: {'gid':gid},
+				success: function(d){
+					var dingzhiData = getCookieOfObject("dingzhi"); 
+					var dingzhi = {};
+					dingzhi.luozuan_info = {};
+					dingzhi.luozuan_info = d.data;
+					dingzhi.jietuo_info  = {}; 	
+					if( !$.isEmptyObject(dingzhiData) ){ 
+						if( !$.isEmptyObject(dingzhiData.jietuo_info) ){
+							dingzhi.jietuo_info  = dingzhiData.jietuo_info;
+						}
+					}
+					var newDingzhi = JSON.stringify(dingzhi);
+					SetCookie("dingzhi", newDingzhi, 1000);
+					//json转化成对象
+					if( !$.isEmptyObject(dingzhiData) &&  !$.isEmptyObject(dingzhiData.jietuo_info) ){
+						layer.open({
+							   content: '尊敬的客户，您的钻戒匹配成功。'
+							   ,btn: '确定'
+							   ,yes: function(index){
+								  location.href="{:U('/Diamond/goodsDiy')}";
+							   } 
+						});	
+					}else{
+						layer.open({
+							   content: '钻石选择成功，是否去挑选戒托？'
+							   ,btn: ['是','否'] 
+							   ,yes: function(index){
+								  location.href="{:U('/Goods/goodsDiy')}?gcid=60&shape="+d.data["shape"]+"&weight="+d.data["weight"];
+							   }  
+						});	
+					}
+				}
+			});
+		}		
+	}
+</script>

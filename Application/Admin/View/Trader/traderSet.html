@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>分销商配置</title>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：分销商配置</h3>
+    </div>
+	<form action"{:U('Admin/Trader/traderSet?tid='.$traderInfo['tid'])}" method="post" enctype="multipart/form-data">
+    	<div style="padding:10px 50px;">
+        	<volist name="configList" id="vo">
+            <eq name="vo['config_type']" value="1">
+            <div class="info">
+                <div class="title">{$vo.config_key_name}:</div>
+                <input name="{$vo.config_key}" type="text" value="{$vo.config_value}" style="width:300px;">
+            </div>
+            </eq>
+            <eq name="vo['config_type']" value="2">
+            <div class="info">
+                <div class="title">{$vo.config_key_name}:</div>
+                <volist name="vo['config_option']" id="id">
+               	<input type="radio" name="{$vo.config_key}" value="{$id.key}" <eq name="vo['config_value']" value="$id['key']">checked</eq>>{$id.val}
+                </volist>
+            </div>
+            </eq>
+            <eq name="vo['config_type']" value="3">
+            <div class="info">
+                <div class="title">{$vo.config_key_name}:</div>
+                <volist name="vo['config_option']" id="id">
+               	<input type="checkbox" name="{$vo.config_key}[]" value="{$id.key}" <if condition="in_array($id['key'],$vo['config_value'])">checked</if>>{$id.val}
+                </volist>
+            </div>
+            </eq>
+            <eq name="vo['config_type']" value="4">
+            <div class="info">
+                <div class="title">{$vo.config_key_name}:</div>
+                <select name="{$vo.config_key}" style="width:120px;">
+                	<option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </div>
+            </eq>
+            <eq name="vo['config_type']" value="5">
+            <div class="info">
+                <div class="title">{$vo.config_key_name}:</div>
+                <textarea name="{$vo.config_key}"></textarea>
+            </div>
+            </eq>
+            <eq name="vo['config_type']" value="6">
+            <div class="info">
+                <div class="title">{$vo.config_key_name}:</div>
+                <input name="{$vo.config_key}" type="file" value="" />
+            </div>
+            <if condition="$vo['config_value']">
+            <div class="info"><div class="title">展示:</div><img src="/Public/{$vo.config_value}" style="width: 30%; border: 1px solid #d9d9d9; padding: 3px; background: #ffffff;"></div>
+            </if>
+            </eq>
+			</volist>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="保存">
+                <input type="reset" class="button fl ml10" value="重置">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品属性信息</title>
+</head>
+<body>
+<div class="page-main edit">
+    <form action="{:U('Admin/Goods/ProductAttributeInfo')}" method="post">
+        <div style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">属性名称:</div>
+                <input name="attr_name" type="text" value="">
+            </div>
+            <div class="info">
+                <div class="title">输入类型:</div>
+				<label>
+					<input type="radio" value="1" name="input_type" checked />
+					<span>唯一属性</span>
+				</label>
+				<label>
+					<input type="radio" value="2" name="input_type" />
+					<span>多选属性</span>
+				</label>
+				<label>
+					<input type="radio" value="3" name="input_type" />
+					<span>手填属性</span>
+				</label>
+                <div class="clear"></div>
+            </div>
+            <div class="info dn" id="input_mode_div">
+            	<div class="title">输入模型:</div>
+                <label>
+					<input type="radio" value="1" name="input_mode" checked />
+					<span>只能填数字</span>
+				</label>
+				<label>
+					<input type="radio" value="2" name="input_mode" />
+					<span>只能填字母</span>
+				</label>
+				<label>
+					<input type="radio" value="3" name="input_mode" />
+					<span>可填文字/字母/数字</span>
+				</label>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+            	<div class="title">属性值:</div>
+            	<textarea name="attr_value" placeholder="一行一个属性值，自动添加到属性下级属性值" style="max-height: 200px; min-height: 200px; max-width: 200px;"></textarea>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="添加">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>速易宝-购物车-添加地址</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script src="js/jquery-1.12.3.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/public.js"></script>
+</head>
+
+<body>
+	<!-- header -->
+	<div class="header cart-header">
+		<div class="container">
+			<div class="shortcut cart-top">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-6 col-md-6">
+							<p class="text-left">您好，欢迎来到Munch珠宝 [<a href="#">登录</a>] [<a href="#">注册</a>]</p>
+						</div>
+						<div class="col-sm-6 col-md-6">
+							<div class="shortcut-right">
+								<ul class="list-inline text-right">
+									<li class=""><a href="#">购物车(<span class="cat-c">2件</span>)</a></li>
+									<li class="">|</li>
+									<li class=""><a href="#">我的订单</a></li>
+									<li class="">|</li>
+									<li class=""><a href="#">帮助中心</a></li>
+								</ul>   
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- header end //-->
+	
+	<!-- cart -->
+	<div class="cart check-cart">
+		<div class="steps">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-2">
+						<img src="images/cart-logo.png" alt="">
+					</div>
+					<div class="col-md-10">
+						<img src="images/cart-order_03.png" style="margin-top: 8px;" alt="">
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="container">
+			<h4 class="ortitle">填写并核对订单信息</h4>
+			<div class="check-order">
+				<div class="txlist">
+					<div><strong>收货地址</strong></div>
+					<div class="shxs">
+						<p><span><strong>收货人信息</strong></span> <span class="red"><i class="glyphicon glyphicon-plus add"></i>添加新地址</span></p>
+						<p><input type="radio"> 公司 广东深圳罗湖区太白路松泉山庄三栋三层 林大福 13333333333 <a href="#" class="btn-link">编辑</a></p>
+					</div>
+					
+					<div class="add-address">
+						<p><span>地址标注</span> <input type="text"> 例如家里、公司、最多4个汉字或者8个字母</p>
+						<p><span>配送地址</span> <select id="s_province" name="s_province"></select> <select id="s_city" name="s_city" ></select> <select id="s_county" name="s_county"></select></p>
+						<p><span>详情地址</span> <input type="text"></p>
+						<p><span>邮政编码</span> <input type="text"></p>
+						<p><span>收货人姓名</span> <input type="text"></p>
+						<p><span>联系电话</span> <input type="text"></p>
+						<p><span>设为默认</span> <input type="radio" name="mrdz">是 &nbsp;<input type="radio" name="mrdz">否</p>
+						<p><span class="hidden-xs"></span><button class="btn btn-zdy">确定</button> &nbsp; <button class="btn btn-default">取消</button></p>
+					</div>
+					<script src="js/area.js"></script>
+					<script type="text/javascript">
+						var opt0 = ["省份","地级市","市、县级市"];//初始值
+						var Gid  = document.getElementById ;
+						var showArea = function(){
+							Gid('show').innerHTML = "<h3>" + Gid('s_province').value + " - 市" +
+							Gid('s_city').value + " - 县/区" + 
+							Gid('s_county').value + "</h3>"
+													}
+						Gid('s_county').setAttribute('onchange','showArea()');
+
+					</script>
+					<script type="text/javascript">_init_area();</script>
+					<div class="fanshi">
+						<h5><strong>支付配送方式</strong></h5>
+						<p>支付方式  <input type="radio" name="zffs">线下转账  <input type="radio" name="zffs">在线支付</p>
+						<p>配送方式  <input type="radio" name="psfs">上门自取 <input type="radio" name="psfs">顺丰物流</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="table-box">
+			<div class="container">
+				<div class="cart-list table-responsive">
+				  <h4>您选购了以下商品：</h4>
+				  <table class="table">
+				      <thead>
+				        <tr>
+				          <th><input type="checkbox"> 全选</th>
+				          <th>商品名称</th>
+				          <th>货品编号</th>
+				          <th>单价</th>
+				          <th>数量</th>
+				          <th>小计</th>
+				          <th>操作</th>
+				        </tr>
+				      </thead>
+				      <tbody>
+				        <tr>
+				          <th scope="row"><input type="checkbox"></th>
+				          <td><img src="images/cart_11.png" alt=""> <br> 天籁-白18K金对戒(男) <br> 天籁-白18K金钻石对戒(女) </td>
+				          <td>2016MJ001SJ012</td>
+				          <td>¥5199.00</td>
+				          <td><input type="text" value="1"></td>
+				          <td><span class="red">¥5199.00</span></td>
+				          <td><a href="#" class="btn-link">删除</a></td>
+				        </tr>
+				        <tr>
+				          <th scope="row"><input type="checkbox"></th>
+				          <td><img src="images/cart_11.png" alt=""> <br> 天籁-白18K金对戒(男) <br> 天籁-白18K金钻石对戒(女) </td>
+				          <td>2016MJ001SJ012</td>
+				          <td>¥5199.00</td>
+				          <td><input type="text" value="1"></td>
+				          <td><span class="red">¥5199.00</span></td>
+				          <td><a href="#" class="btn-link">删除</a></td>
+				        </tr>
+
+				       <tr>
+				          <th scope="row"><input type="checkbox"></th>
+				          <td>GIA_7196541097  圆形   0.5ct  颜色:I  净度:VS1  切工:F  抛光:VG  荧光:F 对称:VG  </td>
+				          <td>2016MJ001SJ012</td>
+				          <td>¥5199.00</td>
+				          <td><input type="text" value="1"></td>
+				          <td><span class="red">¥5199.00</span></td>
+				          <td><a href="#" class="btn-link">删除</a></td>
+				        </tr>
+			      </tbody>
+			    </table>
+			</div>
+			<div class="row js">
+		    	<div class="col-md-6"> &nbsp;&nbsp;<input type="checkbox"> 全选    <a href="#">清空购物车</a>     <a href="#"><strong>继续购物</strong></a></div>
+			    <div class="col-md-6 text-right">
+			    	共 3件商品<br>
+					订单总金额：<strong class="red">¥15398.00</strong><br>
+					<button class="btn btn-danger cart-sub">提交</button>
+			    </div>
+			    <div class="clearfix"></div>
+			</div>
+	    </div>
+	</div>
+</div>
+	<!-- cart end //-->
+
+	<!-- footer -->
+	<div class="footer">
+		<div class="container">
+			<div class="ensure center-block text-center">
+				<div class="row">
+					<div class="col-xs-12 col-sm-4 col-md-5ths"><img src="images/index_86.png" alt="...">一钻双证</div>
+					<div class="col-xs-12 col-sm-4 col-md-5ths"><img src="images/index_88.png" alt="...">全国免费配送</div>
+					<div class="col-xs-12 col-sm-4 col-md-5ths"><img src="images/index_90.png" alt="...">珠宝协会会员</div>
+					<div class="col-xs-12 col-sm-6 col-md-5ths"><img src="images/index_93.png" alt="...">15天免费退换</div>
+					<div class="col-xs-12 col-sm-6 col-md-5ths"><img src="images/index_95.png" alt="...">全程保险</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="foot-desc">
+			<div class="container">
+				<div class="row foot-desc-list">
+					<div class="col-xs-12 col-md-2 footer-logo">
+						<img src="images/logo.png" alt="">
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>用户指南</h5>
+						<ul class="list-group">
+							<li><a href="#">注册用户</a></li>
+							<li><a href="#">购买流程</a></li>
+							<li><a href="#">支付方式</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>关于配送</h5>
+						<ul class="list-group">
+							<li><a href="#">商品包装</a></li>
+							<li><a href="#">配送方式</a></li>
+							<li><a href="#">配送流程</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>售后服务</h5>
+						<ul class="list-group">
+							<li><a href="#">会员细节</a></li>
+							<li><a href="#">售后保障</a></li>
+							<li><a href="#">退换流程</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-6 col-md-2">
+						<h5>常见问题</h5>
+						<ul class="list-group">
+							<li><a href="#">珠宝常识</a></li>
+							<li><a href="#">配送问题</a></li>
+							<li><a href="#">联系客服</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-12 col-md-2 gstime">
+						<img src="images/footer-phone.png" alt="">
+						<strong><h4>0755-22922183</h4></strong>
+						<span>服务时间： AM9: 00-PM23: 00</span>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				<p class="copy-link">伪验证   友情链接        钻石、钻戒、裸钻、婚戒、戒指、结婚钻戒、结婚戒指、钻石戒指、珠宝、首饰、订婚戒指、克拉钻、异形钻、30分钻石、50分钻石、钻石饰品、裸钻定制</p>
+				<p class="text-center">© 2010-2016 珠宝官网 版权所有,并保留所有权利  粤ICP备123456789号</p>
+			</div>
+		</div>
+	</div>
+	<!-- footer end //-->
+
+
+</body>
+</html>

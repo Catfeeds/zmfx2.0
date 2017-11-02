@@ -1,0 +1,36 @@
+<div class="goods_message">
+    <h4>客户评论</h4>
+    <h6>全部评价（<span id="msg_count">0</span>）</h6>
+    <ul id="msg"></ul>
+</div>
+<script>
+    var func_msg = function(){
+        $.post("/Home/Goods/getAjaxComment",{Action:'post',gid:'{$goodsInfo['goods_id']}'},function(data){
+            if(data.data && data.data != ''){
+                var html = "";
+                data.data.forEach(function(e){
+                    html += "<li>";
+                        html += "<div class='row'>";
+                            html += "<div class='col-md-12 text-left'>";
+							var createtime = new Date(parseInt(e.createtime) * 1000).toLocaleString();
+                            html += "<span class='messname pull-left'>"+e.username+" · 网站 · "+createtime+"</span>";
+                            html += "<span class='xingxing pull-right'>";
+                            for(var i = 0;i < e.start ; i++){
+                                html += '<img src="__IMG__/goods-details_23.jpg" />';
+                            }
+                            html += "</span>";
+                            html += "</div>";
+                            html += "<div class='col-md-12'>"+e.control+"</div>";
+                            html += "<div class='clearfix'></div>";
+                        html += "</div>";
+                    html += "</li>";
+                });
+                $("#msg_count").html(data.count);
+                $("#msg").html(html);
+            }else{
+				$("#msg").html('');
+			}
+        });
+    }
+    func_msg();
+</script>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>加点设置</title>
+</head>
+<body>
+<!-- right -->
+<style>
+    .pull-left { float: left;}
+    .add-diamond-box { padding: 20px;}
+    .add-diamond-box h1 { font-size: 18px; font-weight: 500; color: #000;}
+    .add-diamond-box .pl36 { font-size: 16px; padding: 10px; padding-left: 36px;}
+    .add-diamond-box .pl85 { font-size: 16px; padding: 10px; padding-left: 85px;}
+    .add-diamond-box dl { margin: 15px 0;}
+    .add-diamond-box dl dt { width: 85px; text-align: right; float: left;}
+    .add-diamond-box .add-diamond-text { width: 121px; height: 25px; line-height: 25px;}
+    .add-diamond-box .add-diamond-btn { width: 121px; height: 35px; cursor: pointer; margin-right: 10px;}
+    .add-diamond-box hr { margin: 15px 0;}
+    .add-diamond-box .p95 { padding-left: 95px; margin: 10px 0;}
+    .add-diamond-box .red { color: red;}
+    .add-diamond-box .h30 { height: 30px;}
+    .add-diamond-box .type-input { width: 62px; height: 28px; text-align: center; border: 1px solid rgb(102, 102, 102);}
+    .add-diamond-box .type_add,
+    .add-diamond-box .type_remove,
+    .add-diamond-box .type_ml { margin-left: 5px; margin-top: 5px;}
+</style>
+<form method="post">
+<div class="goods page-main">
+    <div class="subMenu">
+        <h3>当前操作：钻石报价 > 设置</h3>
+    </div>
+    <div class="add-diamond-box">
+        <h1>一、加点设置（保留两位）</h1>
+        <dl>
+            <dt>&nbsp;</dt>
+            <!--<dd>加点模式：钻重区间段价格加点 <br>  <input type="text" class="add-diamond-text"> </dd> -->
+            <dd>
+
+                <table id="luozuan_advantage_type_table">
+                    <tbody>
+                    <tr>
+                        <td colspan="4">加点模式：钻重区间段价格加点</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" class="type-input" value="" readonly placeholder="最小值">
+                        </td>
+                        <td>
+                            ~ <input type="text" class="type-input" value="" readonly placeholder="最大值">
+                        </td>
+                        <td>
+                            <input type="text" class="type-input" value="" readonly placeholder="点数">
+                        </td>
+                        <td><img src="__IMG__/add_u28.png" width="25" height="25" style="cursor: pointer;" class="type_add" alt="添加">
+                        </td>
+                    </tr>
+                    <volist name="data" id="point_info">
+                        <tr>
+                            <td><input name="min_value[]" type="text" class="type-input" value="{$point_info.min_value}" placeholder="最小值"></td>
+                            <td> ~ <input name="max_value[]" type="text" class="type-input" value="{$point_info.max_value}" placeholder="最大值"></td>
+                            <td><input name="point_value[]" type="text" class="type-input" value="{$point_info.point_value}" placeholder="点数"></td>
+                            <td><img src="__IMG__/remove_u26.png" width="25" height="25" style="cursor: pointer;" class="type_remove" alt="删除"></td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+
+            </dd>
+        </dl>
+        <p class="pl85">
+            <button type="button" class="add-diamond-btn" onclick="form.action='{:U('Admin/Goods/offerSettingInfo')}';form.submit();">保存</button>
+        </p>
+    </div>
+</div>
+</form>
+<script>
+    $(function(){
+        $('.type_add').click(function(){
+            var html  = '';
+            html     += '   <tr>';
+            html     += '       <td><input name="min_value[]" type="text" class="type-input" value="0.00" placeholder="最小值"></td>';
+            html     += '       <td> ~ <input name="max_value[]" type="text" class="type-input" value="0.00" placeholder="最大值"></td>';
+            html     += '       <td><input name="point_value[]" type="text" class="type-input" value="0.00" placeholder="点数"></td>';
+            html     += '       <td><img src="__IMG__/remove_u26.png" width="25" height="25" style="cursor: pointer;" class="type_remove" alt="删除"></td>';
+            html     += '   </tr>';
+            $('#luozuan_advantage_type_table').append(html);
+        });
+        $(document).delegate('.type_remove', 'click', function(event) {
+            $(this).parents('tr').remove();
+        });
+    });
+</script>
+<!-- right end -->
+</body>
+</html>

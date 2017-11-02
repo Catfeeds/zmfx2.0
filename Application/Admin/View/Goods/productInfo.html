@@ -1,0 +1,397 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品编辑</title>
+<script type="text/javascript" src="__JS__/ajaxfileupload.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/Jquery/jquery.form.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" src="__JS__/Jquery.SkuAction.js"></script>
+<script type="text/javascript" src="__JS__/product.js"></script>
+</head>
+<style>
+  #productMain .thumbImg:hover .deleteImg { display: block;}
+</style>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：产品编辑</h3>
+        <a style="color:red;" href="{:U('Admin/Goods/setPublicGoodsDesc')}">公共模版配置</a>
+    </div>
+
+
+	
+    <form action="{:U('Admin/Goods/productInfoDo?goods_id='.$info['goods_id'])}" method="post" enctype="multipart/form-data" >
+        <div id="productMain" style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">产品分类:</div>
+                <!--编辑不显示分类-->
+	                <select name="category_id" class="fl" style="width: 212px;">
+	                    <option value="0" selected="">请选择产品分类</option>
+	                    <volist name="categoryList" id="vo">
+	                    <option value="{$vo.category_id}" data-pid="0">&nbsp;&nbsp;{$vo.category_name}<neq name="vo.category_name" value="vo.name_alias">({$vo.name_alias})</neq></option>
+	                    	<volist name="vo.sub" id="io">
+		                    <option value="{$io.category_id}"<eq name="info.category_id" value="$io['category_id']">selected</eq>>
+		                    	&nbsp;&nbsp;&nbsp;|--{$io.category_name}<neq name="io.category_name" value="io.name_alias">({$io.name_alias})</neq></option>
+		                    </volist>
+	                    </volist>
+	                </select>
+                <!--编辑不显示类别-->
+            	<div class="fl ml10 mr10">产品类别：</div>
+            	<if condition="!$info['goods_id']">
+	                <select name="goods_type" class="fl" style="width: 220px;">
+                		<option value="3" <eq name="info.goods_type" value="3">selected</eq>>珠宝成品</option>
+                    	<option value="4" <eq name="info.goods_type" value="4">selected</eq>>珠宝定制</option>
+	                </select>
+                <else />
+	                <span><eq name="info.goods_type" value="3">珠宝成品</eq></span>
+	                <span><eq name="info.goods_type" value="4">珠宝定制</eq></span>
+	                <input type="hidden" id="goods_type" value="{$info.goods_type}" name="goods_type" />
+                </if>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">产品名称:</div>
+                <input name="goods_name" id="goods_name" type="text" value="{$info.goods_name}" style="width:500px" placeholder="例：黄18K金钻石戒指（对戒）" />
+            </div>
+            <if condition="!$info['goods_id']">
+                <div class="info" id="goods_series">
+                    <div class="title">产品系列:</div>
+                    <select name="goods_series_id" class="fl" style="width: 212px;">
+                        <option value="0" selected="">默认系列</option>
+                        <volist name="goods_series" id="vo">
+                            <option value="{$vo.goods_series_id}">{$vo.series_name}</option>
+                        </volist>
+                    </select>
+                    <script>$("select[name='goods_series_id']").val("{$info['goods_series_id']}")</script>
+                </div>
+                <br/>
+            <else />
+                <eq name="info.goods_type" value="3">
+                    <div class="info" id="goods_series">
+                        <div class="title">产品系列:</div>
+                        <select name="goods_series_id" class="fl" style="width: 212px;">
+                            <option value="0" selected="">默认系列</option>
+                            <volist name="goods_series" id="vo">
+                                <option value="{$vo.goods_series_id}">{$vo.series_name}</option>
+                            </volist>
+                        </select>
+                        <script>$("select[name='goods_series_id']").val("{$info['goods_series_id']}")</script>
+                    </div>
+                    <br/>
+                </eq>
+            </if>
+
+            <div class="info">
+                <div class="title">产品编号:</div>              
+                <input name="goods_sn" id="goods_sn" value="{$info.goods_sn}" type="text"  style="width:250px" placeholder="不填写默认生成">            	
+            </div>
+
+            <div class="info dn" id="goods_price_div">
+                <div class="title">一口价:</div>
+            	<input name="goods_price" id="goods_price" type="text" value="{$info.goods_price}" style="width:250px" placeholder="价格:人民币" />
+            </div>
+			
+			
+			 
+				
+			<?php if (C('unforgecode') == '1'): ?>
+					<!--珠宝成品-->
+					<div class="info chengpinfangwei" >
+						<div class="title">款式专利号:</div>
+						<input name="design_number" type="text" value="{$info.design_number}" style="width:250px" placeholder="" />
+					</div>
+					
+					<!--珠宝成品-->
+					<div class="info chengpinfangwei" >
+						<div class="title">裸石专利号:</div>
+						<input name="naked_number" type="text" value="{$info.naked_number}" style="width:250px" placeholder="" />
+					</div>	
+
+					<!--珠宝成品-->
+					<div class="info chengpinfangwei" >
+						<div class="title">市场指导价格:</div>
+						<input name="market_guide_price" type="text" value="{$info.market_guide_price}" style="width:250px" placeholder="" />
+					</div>				
+					
+					<!--珠宝成品-->
+					<div class="info chengpinfangwei" >
+						<div class="title">产品在售门店:</div>
+						<textarea style="width: 50%;" name="product_store" >{$info.product_store}</textarea>
+					</div>			
+
+				
+				<script>
+					var goods_type_chengpinfangwei='<?php echo $info['goods_type'];?>';
+					if(goods_type_chengpinfangwei==4){
+						$(".chengpinfangwei").hide();
+					}else{
+						$(".chengpinfangwei").show();
+					}
+				</script>
+			<?php endif; ?> 				
+
+
+            <!--属性数据-->
+            <div class="info dn" id="attrDiv">
+                <div class="title">产品属性:</div>
+                <div class="attrDivContent" id="attrDivContent"></div>
+                <div class="clear"></div>
+            </div>
+
+            <!--珠宝成品-->
+            <div class="info dn" id="specDiv">
+                <div class="title">产品规格:</div>
+                <div class="specDivContent" id="specDivContent"></div>
+                <div class="clear"></div>
+            </div>
+			
+			
+			
+			
+			
+			
+
+
+			
+			
+			
+			
+			
+			
+            <!--珠宝定制-->
+            <div class="dingzhi_div info">
+                <div class="title">产品定制规格： </div>
+                <div class="">
+                    <input type="radio" name="price_model" value='0' class="metalworking">金工石 
+                    &nbsp; &nbsp;
+                    <input type="radio" name="price_model" value='1' class="custom">自定义   
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <!-- 金工石 -->
+            <div class="dingzhi_div info dn metalworking_box">
+	            <div class="title">
+                    &nbsp;
+                </div>
+    			<div class="luozuanMatchBox" id="luozuanMatchBox">
+                </div>
+                <div class="clear"></div>
+            </div>
+            <script>
+                $(function(){
+					$("input[name='price_model']").change(function(){
+						var v = $("input[name='price_model']:checked").val();
+						if( v == '1' ){
+							$.addLuozuanMatch  = "{:U('Admin/Public/addLuozuanMatch',array('price_model'=>'1'))}";//添加裸钻匹配记录
+							$.addMaterial      = "{:U('Admin/Public/addMaterial',array('price_model'=>'1'))}";//添加材质数据
+							$.addLuozuanMatch2 = "{:U('Admin/Public/addLuozuanMatch2',array('price_model'=>'1'))}";
+                            $.loadAttSpe       = "{:U('Admin/Public/getGoodsAttribute',array('price_model'=>'1'))}";//获取分类下面的属性
+						} else {
+							$.addLuozuanMatch  = "{:U('Admin/Public/addLuozuanMatch')}";//添加裸钻匹配记录
+							$.addMaterial      = "{:U('Admin/Public/addMaterial')}";//添加材质数据
+							$.addLuozuanMatch2 = "{:U('Admin/Public/addLuozuanMatch2')}";//添加匹配副石
+                            $.loadAttSpe       = "{:U('Admin/Public/getGoodsAttribute')}";//获取分类下面的属性
+						}
+                        var html = $('#attrDivContent').html();
+                        SetAttrSpec( html );
+					});
+                });
+                <if condition=" $info['price_model'] ">
+                    $('input[name="price_model"][value="1"]').attr('checked',true);
+                <else />
+                    $('input[name="price_model"][value="0"]').attr('checked',true);
+                </if>
+            </script>
+           
+            <!-- 个性符号 -->
+            <div class="info" style="margin-top: 5px;">
+              <div class="title">个性符号:</div>
+              <div class="imgsDiv">
+                <input type="file" name="images_path" id="sd_setting"/>
+                <span class="iconbox">
+                	<span class="iconlist">
+                		<img src="http://www.easyicon.net/api/resizeApi.php?id=1195773&size=64" alt="" />
+                		<img src="http://www.easyicon.net/api/resizeApi.php?id=1195773&size=64" alt="" />
+                	</span>
+                	<span class="iconmore"> 更多 > </span>
+                	<div class="morelist" style="display: none;">
+                		<ul id="js_sd_list">
+                			<div class="clear"></div>
+                		</ul>
+                		<div class="remove-icon"><button type="button" id="js_sd_delete">删除</button></div>
+                	</div>
+                </span>
+              </div>
+              <div class="clear"></div>
+            </div>
+            
+            <script type="text/javascript">
+            	$(function(){
+            		$('.iconmore').bind('click', function(){
+            			$('.morelist').toggle(); 
+            		});
+            	});
+            </script>
+            
+            <div class="info">
+                <div class="title">&nbsp;&nbsp;</div>
+                <div class="red">注释：参考尺寸80*80px，大小不得超过1M</div>
+            </div>
+            
+            <div class="info" id='firstImgDiv'>
+                <div class="title">产品图片:</div>
+                <div id="imgsDiv">
+                    <volist name="imgsList" id="img">
+                        <div class="thumbImg">
+                            <a value="{$img.images_id}" id="deleteImg"><img src="__IMG__/mail_delete.png"/ width="25"></a>
+                            <input type="hidden" value="{$img.images_id}" name="images[]">
+                            <img src="{$img.small_path}" width="100%" />
+                        </div>
+                    </volist>
+                    <a href="#" id="firstImg">
+                    	<img src="__IMG__/list_add.png" width="100" />
+                        <input type="file" name="product_img">
+                    </a>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+	              <div class="title">&nbsp;&nbsp;</div>
+	              <div class="red">注释：参考尺寸800*800px，等比例放大缩小，大小不得超过3M，支持jpg/png，五张以内效果最佳。</div> <!-- 商品详情产品图片 -->
+	        </div>
+			<div class="info" id="firstImgDiv">
+                <div class="title">珠宝试戴图片:</div>
+                <div id="tryThumb">
+					<if condition="$info['trythumb']" >
+					<img src="/Public/{$info['trythumb']}" width="100">
+					</if>
+					<input type="file" name="tryThumb">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					示例：
+					<img src="/Application/Admin/View/img/zbsd3.png" width="100">
+				</div>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+	              <div class="title">&nbsp;&nbsp;</div>
+	              <div class="red">注释：参考尺寸600*300px，等比例放大缩小，大小不得超过1M，仅支持png格式。</div> <!-- 珠宝试戴图片 -->
+	        </div>
+			<div class="info">
+                <div class="title">产品视频:</div>
+                <div id="imgsDiv">
+                   <!-- <a href="#" >
+                        <img src="__IMG__/list_add.png"/ width="100">
+					 </a>	
+						-->
+                        <input type="file" name="video_adds"><br/>
+                </div>         
+            </div>
+			
+			
+
+			
+             <div class="info">
+                  <div class="title">&nbsp;&nbsp;</div>
+                  <div  ><input type="text" name="video_adds_text" placeholder="视频网络链接"></div> 		<!-- 视频链接 -->
+            </div>
+			
+             <div class="info">
+                  <div class="title">&nbsp;&nbsp;</div>
+                  <div class="red">注释：本地上传视频大小不得超过2M，添加网络链接时候，只支持< iframe >格式链接，只能上传一个视频，之后上传的会替换之前的视频。	</div> <!-- 商品详情产品图片 -->
+            </div>
+
+			<div class="info" >
+                <div class="title">&nbsp;&nbsp;</div>
+                <div id="imgsDiv">
+                    <volist name="vdesList" id="video">
+					  <div class="thumbImg  video_div_{$video.videos_id}" style="width: 280px; height: auto; margin-right: 10px;">
+						<if condition="($video['video_adds'] neq '') && ($video['video_adds'] neq '-') ">
+                            <a href=" javascript:void(0)" class="deleteImg" onclick="deleteVideo({$video.videos_id})"><img src="__IMG__/mail_delete.png"/ width="25" style="background: #FFF;"></a> 
+                            <?php if(strpos($video['video_adds'],'http')===false){?>
+                                <!--
+                                <iframe src="<?php echo C('agent_domain_once').'/Public/'.$video['video_adds']?>"  style="max-width:280px;height:auto;"></iframe>
+                                -->
+                                <video controls="" class="maxvideo big_overflow" style="max-width:280px;height:auto;">
+                                    <source src="<?php echo C('agent_domain_once').'/Public/'.$video['video_adds']?>" type="video/mp4" class="video_url">
+                                    <!-- <source src="movie.ogg" type="video/ogg"> -->
+                                    您的浏览器不支持最新的视频播放,请升级
+                                </video>
+                            <?php }else{?>
+                                <iframe src="<?php echo $video['video_adds']?>"  style="max-width:280px;height:auto;"></iframe>
+                            <?php }?>
+						</if>
+					 </div>
+                    </volist> 
+                </div>
+                <div class="clear"></div>
+            </div>
+			  
+
+            <div class="info">
+                <div class="title">商品详情:</div>
+                <div class="fl" style="width: 60%;"><textarea style="width: 100%;" name="content" id="content">{$info.content}</textarea></div>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="hidden" id="goods_id" value="{$info.goods_id}" name="goods_id" />
+                <if condition="$info['goods_id']">
+                    <if condition=" $info['agent_id'] eq $agent_id ">
+                        <input type="submit" class="button fl" value="保存修改">
+                    <else />
+                	    <span>无权修改</span>
+                    </if>
+                <else />
+                	<input type="submit" class="button fl" value="添加产品">
+                </if>
+                <input type="button" class="button fl ml10" value="返回" onclick="window.history.back();">
+                <div class="clear"></div>
+            </div>
+            <if condition="$info['goods_id']">
+                <div id='public_goods_desc_down'>
+                    <p><strong>公共内容(详情补充)</strong>&nbsp;<a href="{:U('Admin/Goods/setPublicGoodsDesc')}?goods_type={$info['goods_type']}&category_id={$info['category_id']}">编辑</a></p>
+                    <div class="info">
+                        <div class="title">&nbsp;</div>
+                        <div class="fl" style="width: 60%;">
+                            {$public_gooda_desc_down|htmlspecialchars_decode}
+                        </div>
+                    </div>
+                </div>
+            </if>
+        </div>
+        <br/>
+		<?php if($_GET['goods_id']):?>
+			 <input type="hidden" id="back_url" value="" name="back_url" />
+			 <script>$("#back_url").val(document.referrer);</script>
+		<?php endif;?>	
+		
+		
+    </form>
+</div>
+<script>
+    function deleteVideo(id){
+        $.ajax({
+            type: 'get',
+            url	: '/Admin/Goods/delete_video_id' ,
+            dataType:'json',
+            data: {'id':id},
+            success: function (data) {
+                if(data){
+                    alert(data.msg);
+                    if(data.code=='100'){
+                        $('.video_div_'+id).remove();
+                    }
+                }else{
+                    alert('网络错误！');
+                }
+                
+            }
+        })
+    }
+    
+</script>
+</body>
+</html>

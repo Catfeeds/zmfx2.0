@@ -1,0 +1,470 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>管理后台</title>
+<script type="text/javascript" src="__PUBLIC__/xcharts/d3.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/xcharts/xcharts.min.js"></script>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/xcharts/xcharts.min.css">
+<script>
+$(document).ready(function(){
+	laydate.skin('molv');  							//加载皮肤，参数lib为皮肤名 
+	laydate({
+		elem: 	'#starTime',
+		min: 	'2010-01-01', 						//最小日期
+		max:	laydate.now(), 						//设定最大日期为当前日期
+		start:  laydate.now('','YYYY-MM-01'),    	//开始日期
+	});
+	laydate({
+		elem: 	'#endTime',
+		max:	laydate.now(), 						//设定最大日期为当前日期
+		
+	});
+})
+</script>
+<style>
+.daytype span{
+	display: inline-block;
+	border: 1px solid #ccc;
+	line-height: 25px !important;
+	padding: 2px 5px;
+	float: left;
+	margin-right: -1px;
+	background: #fff;
+	margin-top: 11px;
+	cursor:pointer;
+	margin-left:10px;
+}
+
+.daytype span.active{
+	background: #95CEFF;
+}
+</style>
+</head>
+<body>
+<div class="traderIndex">
+    <div class="subMenu">
+        <h3>当前操作：分销商首页</h3>
+    </div>
+		<!-- 会员统计 -->
+		<div class="trIndex">
+			<h4 class="title">会员统计：</h4>
+			<div class="Top">
+				<ul>
+					<li><a class="b3" href="{:U('Admin/User/userList')}"><p>网站会员</p><span>{$countUser}</span></a></li>
+					<eq name="identification" value="1">
+					<li><a class="b4" href="{:U('Admin/Trader/traderList')}"><p>分销商家</p><span>{$countAgent}</span></a></li>
+					</eq>
+					<div class="clear"></div>
+				</ul>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<!-- 产品数据 -->
+		<div class="trIndex">
+			<h4 class="title">产品数据：</h4>
+			<div class="Top">
+				<ul>
+					<li><a href="{:U('Admin/Goods/goodsList',array('luozuantype'=>0))}" class="b3"><p>白钻</p><span>{$baizuan_count}颗</span></a></li>
+					<li><a href="{:U('Admin/Goods/goodsList',array('luozuantype'=>1))}"  class="b4"><p>彩钻</p><span>{$caizuan_count}颗</span></a></li>
+					<li><a href="{:U('Admin/Goods/sanhuoList')}"  class="b5"><p>散货</p><span>{$sanhuo_count}CT</span></a></li>
+					<li><a href="{:U('Admin/Goods/productList')}" class="b1"><p>成品</p><span>{$chengpin_count}件</span></a></li>
+					<li><a href="{:U('Admin/Goods/productList')}" class="b2"><p>订制</p><span>{$dingzhi_count}件</span></a></li>
+					<div class="clear"></div>
+				</ul>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<!-- 订单数据统计 -->
+		<div class="trIndex">
+			<div class="title">
+				<h4 style="float: left">订单数据统计：
+					<select name="orderCountType" id="orderCountType">
+						<option value="1" selected  >最近7天订单数量</option>
+						<option value="2" <if condition="$orderCountType eq 2">selected</if>  >最近1个月订单数量</option>
+						<option value="3" <if condition="$orderCountType eq 3">selected</if>  >最近1年订单数量</option>
+					</select>
+				</h4>
+				<p style="float: right">说明：该订单数据统计只是已付款的订单状态数据统计</p>
+				<div style="clear:both"></div>
+			</div>
+			<div class="contentOne" id="container">
+				
+			</div>
+			<div class="clear"></div>
+		</div>
+		<!-- 产品月销量 -->
+		<div class="trIndex">
+			<div class="title">
+				<h4>产品月销量：
+					<input name="proType" checked type="radio" value="3"> 成品销量
+					<input name="proType" type="radio" value="1"> 裸钻销量
+				</h4>
+			</div>
+			<div class="contentOne" id="monthlySales">
+				
+			</div>
+			<div class="clear"></div>
+		</div>
+		<!-- 销售总额 -->
+		<div class="trIndex">
+			<div class="title">
+				<h4 style="float: left">销售总额：
+					<input class="laydate-icon" type="text" name="starTime"  placeholder="开始时间" id="starTime" value="{$_GET['starTime']}"> 至
+					<input class="laydate-icon" type="text" name="endTime"  placeholder="结束时间" id="endTime" value="{$_GET['endTime']}">
+					<a href="javascript:;" id="submit" class="btn-cx">查询</a>
+				</h4>
+				<p class="daytype" style="float: right"><span class="day active" data-value="1">今天</span>&nbsp;<span class="day" data-value="2">昨天</span>&nbsp;<span class="day" data-value="3">近30天</span></p>
+				<div style="clear:both"></div>
+			</div>
+			<div class="contentOne" id="totalSalesMoney">
+				
+			</div>
+			<div class="clear"></div>
+		</div>
+		
+</div>
+		<!-- 更新公告 -->
+	    <style>
+	        .announcement { width: 750px; height: 500px; background: #FFF; position: fixed; top: 50%; left: 50%; margin-top: -250px; margin-left: -375px; z-index: 999;}
+	        .announcement h1 { text-align: center; font-size: 16px; padding: 10px; background: #eee; border-bottom: 1px solid #ddd; clear: both; overflow: hidden;}
+	        .announcement-bg { width: 100%; height: 100%; background: rgba(0,0,0,.5); z-index: 998; position: fixed; top: 0; left: 0;}
+	        .announcement .close { float: right; cursor: pointer;}
+	        .announcement .contents { width: 610px; height: 400px; margin: 0 auto; margin-top: 25px; overflow: auto;word-wrap: break-word; word-break: normal;  }
+	        .announcement .contents h4 { margin-top: 20px;}
+	        .announcement .contents h4:first-child { margin-top: 0;}
+	    </style>
+	    <div class="announcement" style="display: none">
+	        <h1><span class="titles"></span><span class="close">X</span></h1>
+	        <div class="contents">	          
+	        </div>
+	    </div>
+	    <div class="announcement-bg" style="display: none"></div>
+	    <script>
+	        var noticeId=0;
+	        $(function(){	
+	        	//初始化时检查是否有未讯的消息
+	        	$.ajax({
+					url: "{:U('noticeGetLast')}",
+					type: 'post',
+					dataType: 'json',					
+					success: function (result, a, g) {
+						if (result.status==100) {
+							noticeId=result.data.id;
+							$('.titles').html(result.data.title);
+							$('.contents').html(result.data.content);
+							$('.announcement, .announcement-bg').show();
+						} else {
+							layer.msg(result.msg,{
+								shift:6,
+							});
+						}
+					},
+					error: function (e) {
+						console.log(e);
+					}
+				});	
+	        	//关闭写服务器状态
+	            $('.close').bind('click', function(){	   
+	            	$.post("{:U('noticeSetStatus')}?id="+noticeId);
+	            	$('.announcement, .announcement-bg').hide();
+	        	});
+	        });
+	    </script>
+	    <!-- 更新公告 end -->
+
+
+</body>
+</html>
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script>
+/**
+	 * auth	：fangkai
+	 * content：id:需要显示图表的html ID
+				intdata: 初始化数值
+	 * time	：2016-9-1
+	**/
+function highcharts(id,intdata){
+	    $('#'+id+'').highcharts({
+        chart: {
+            type: 'column'			//柱状图
+			//type: 'line'			//线状图
+        },
+        title: {
+            text: intdata.title
+        },
+        subtitle: {
+            text: intdata.subtitle
+        },
+        xAxis: {
+            categories: intdata.x_categories
+		},
+		credits:{
+			 enabled:false 			// 禁用版权信息
+		},
+        yAxis: {
+            min: 0,
+            title: {
+                text: intdata.y_title
+            },
+			allowDecimals: false,	//Y标轴数据不能为负数
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            },
+			//line: {
+            //    dataLabels: {
+            //       enabled: true	//如果为线状图，则各节点上方显示数据(true:显示，false:不显示)
+            //    },
+            //   enableMouseTracking: false	//鼠标移动到节点显示数据(true:显示，false:不显示)	
+            //}
+        },
+        series: [{
+            name: intdata.name,
+            data: intdata.data
+
+        },]
+    });
+
+}
+$(function () {
+	var intdata={
+		x_categories : {$X_date},		//X 轴坐标的标识
+		data		 : {$orderCount},	//需要显示的数据
+		subtitle	 : '{$subTitle}',	//副标题，显示订单的总数
+		title		 : '订单数据统计',	//标题
+		y_title      : '数量（单）',	//Y轴坐标左侧显示的文字
+		name		 : '订单数量',		//图表下方展示的文字
+		
+	}
+	//进入页面订单统计图表默认显示七天内的订单数据统计
+	highcharts('container',intdata);
+	
+	//进入页面产品月销量图表默认显示成品的销量数据
+	intdata.title 		= '产品销量数据统计';
+	intdata.y_title 	= '数量（件）';
+	intdata.name 		= '近一个月销量';
+	intdata.x_categories= {$X_prodate};
+	intdata.data		= {$saleCount};
+	intdata.subtitle	= '{$saleSubTitle}';
+	highcharts('monthlySales',intdata);
+	
+	//进入页面销售总额图表默认显示当天的销售总额
+	intdata.title 		= '销售总额数据统计';
+	intdata.y_title 	= '销售额（万元）';
+	intdata.name 		= '销售总额';
+	intdata.x_categories= {$X_totalMoneydate};
+	intdata.data		= {$moneyCount};
+	intdata.subtitle	= '{$moneySubTitle}';
+	highcharts('totalSalesMoney',intdata);	
+		
+	//改变订单统计数据展示方式显示不同的图表
+	$('#orderCountType').change(function(){
+		var orderCountType = $('select[name="orderCountType"]').val();
+		var arr=["1","2","3"]; 
+		if(arr.toString().indexOf(orderCountType) == -1){
+			layer.msg('操作错误',{
+					shift:6,
+				});
+			return false;
+		}
+
+		$.ajax({
+			type: "post",
+			url : "{:U('/Admin/Index/changeOrderCountType')}", 
+			dataType:'json',
+			data: {type:orderCountType}, 
+			success: function(res){
+				if(res.status == 100){
+					switch(orderCountType){
+						case '1':
+							intdata.subtitle = '最近7天订单总数为：'+res.data.totalCount+'单';
+							break;
+						case '2':
+							intdata.subtitle = '最近一个月订单总数为：'+res.data.totalCount+'单';
+							break;
+						case '3':
+							intdata.subtitle = '最近一年订单总数为：'+res.data.totalCount+'单';
+							break;
+					};
+					intdata.x_categories = res.data.X_date;
+					intdata.data		 = res.data.orderCount;
+					intdata.title 		 = '订单数据统计';
+					intdata.name 		 = '订单数量';
+					intdata.y_title 	 = '数量（单）';
+					
+					//选中图表的显示方式
+					$("#orderCountType").find("option[value='"+orderCountType+"']").attr("selected",true);
+					highcharts('container',intdata);
+					
+				}else{
+					layer.msg(res.msg,{
+						shift:6,
+						icon: 5
+					});
+				}
+			},
+		});
+	})
+	
+	//改变产品销量统计数据展示方式显示不同的图表
+	$('input[name="proType"]').change(function(){
+		var proType = $('input[name="proType"]:checked').val();
+		var arr=["1","3"]; 
+		if(arr.toString().indexOf(proType) == -1){
+			layer.msg('操作错误',{
+					shift:6,
+				});
+			return false;
+		}
+		$.ajax({
+			type: "post",
+			url : "{:U('/Admin/Index/changeProType')}", 
+			dataType:'json',
+			data: {type:proType}, 
+			success: function(res){
+				if(res.status == 100){
+					switch(proType){
+						case '1':
+							intdata.subtitle = '最近1个月裸钻销量为：'+res.data.totalSaleCount+'粒';
+							intdata.y_title 	 = '数量（粒）';
+							break;
+						case '3':
+							intdata.subtitle = '最近1个月成品销量为：'+res.data.totalSaleCount+'件';
+							intdata.y_title 	 = '数量（件）';
+							break;
+					};
+					intdata.x_categories = res.data.X_prodate;
+					intdata.data		 = res.data.saleCount;
+					intdata.title 		 = '产品销量数据统计';
+					intdata.name 		 = '近一个月销量';
+
+					highcharts('monthlySales',intdata);
+					
+				}else{
+					layer.msg(res.msg,{
+						shift:6,
+						icon: 5
+					});
+				}
+			},
+		});
+		
+	})
+	
+	/*	选择时间展示不同的销售总额数据
+		dayType ：1 今天，2 昨天，3 近30天，4 按天，5 按月，6 按年
+	*/
+	$('.day').click(function(){
+		var nowthis = $(this);
+		var dayType = nowthis.attr('data-value');
+		var arr=["1",,"2","3"]; 
+		if(arr.toString().indexOf(dayType) == -1){
+			layer.msg('操作错误',{
+					shift:6,
+				});
+			return false;
+		}
+		$.ajax({
+			type: "post",
+			url : "{:U('/Admin/Index/changedayType')}", 
+			dataType:'json',
+			data: {type:dayType}, 
+			success: function(res){
+				if(res.status == 100){
+					//图表类型样式选中
+					nowthis.addClass('active');
+					nowthis.siblings().removeClass('active');
+					
+					switch(dayType){
+						case '1':
+							intdata.subtitle = '今天的销售总额为：'+res.data.totalMoneyCount+'万元';
+							break;
+						case '2':
+							intdata.subtitle = '昨天的销售总额为：'+res.data.totalMoneyCount+'万元';
+							break;
+						case '3':
+							intdata.subtitle = '近30天的销售总额为：'+res.data.totalMoneyCount+'万元';
+							break;
+					};
+					intdata.name 	 = '销售总额';
+					intdata.y_title  = '销售额（万元）';
+					intdata.x_categories = res.data.X_totalMoneydate;
+					intdata.data		 = res.data.moneyCount;
+					intdata.title 		 = '销售总额数据统计';
+
+					highcharts('totalSalesMoney',intdata);
+					
+				}else{
+					layer.msg(res.msg,{
+						shift:6,
+						icon: 5
+					});
+				}
+			},
+		});
+	})
+	
+	/*	选择时间展示不同的销售总额数据
+		type ：1 今天，2 昨天，3 近30天，4 按天，5 按月，6 按年
+	*/
+	$('#submit').click(function(){
+		var starTime = $('input[name="starTime"]').val();
+		var endTime  = $('input[name="endTime"]').val();
+		var sDate = new Date(starTime.replace(/-/g, "/"));
+		var eDate = new Date(endTime.replace(/-/g, "/"));
+		if(starTime && endTime ){
+			if(sDate > eDate ){
+				layer.msg('开始时间不能大于结束时间',{
+					shift:6,
+				});
+				return false;
+			}
+			$.ajax({
+				type: "post",
+				url : "{:U('/Admin/Index/choseDate')}", 
+				dataType:'json',
+				data: {'starTime':starTime,'endTime':endTime}, 
+				success: function(res){
+					if(res.status == 100){
+						$('.day').removeClass('active');		//移除右边选中效果
+						
+						intdata.subtitle = res.data.starTime+' 至 '+res.data.endTime+'的销售总额为：'+res.data.totalMoneyCount+'万元';
+						intdata.name 	 = '销售总额';
+						intdata.y_title  = '销售额（万元）';
+						intdata.x_categories = res.data.X_totalMoneydate;
+						intdata.data		 = res.data.moneyCount;
+						intdata.title 		 = '销售总额数据统计';
+
+						highcharts('totalSalesMoney',intdata);
+						
+					}else{
+						layer.msg(res.msg,{
+							shift:6,
+							icon: 5
+						});
+						return false;
+					}
+				},
+			});
+		}else{
+			layer.msg('必须选择开始和结束时间',{
+				shift:6,
+			});
+			return false;
+		}
+		
+	})
+});
+
+</script>

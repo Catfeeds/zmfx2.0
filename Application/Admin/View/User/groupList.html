@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>管理组列表</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" /> 
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：管理组列表</h3>
+        <ul>
+            <li class=""><a href="{:U('Admin/User/groupInfo')}">添加管理组</a></li>
+        </ul>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+        <tr class="top">
+            <th>管理组id</th>
+            <th>管理组名称</th>
+            <th>管理组状态</th>
+            <th>备注</th>
+            <th>操作</th>
+        </tr>
+        <volist name="groupList" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+            <td>{$vo.id}</td>
+            <td>{$vo.title}</td>
+            <td>{$vo['status']?'正常':'关闭'}</td>
+            <td>{$vo.note}</td>
+            <td>
+                <a href="{:U('Admin/User/groupInfo?id='.$vo['id'])}" >分配权限</a>
+                <a href="{:U('Admin/User/adminUserList?id='.$vo['id'])}" >下级管理员</a>
+                <a href="{:U('Admin/User/groupDel?id='.$vo['id'])}" id="isDel" >删除</a>
+            </td>
+        </tr>
+        </volist>
+    </table>
+</div>
+</body>
+</html>

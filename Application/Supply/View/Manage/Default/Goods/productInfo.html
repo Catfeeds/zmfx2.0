@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$L['icon_product']}{$L['edit']}</title>
+    <script type="text/javascript" src="__PUBLIC__/product/jquery-1.8.0.min.js"></script>
+    <script src="__JS__/layer/layer.js"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/product/admin.css" />
+    <script type="text/javascript" src="__PUBLIC__/product/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/product/zm.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/product/jquery.form.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/product/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="__JS__/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="__JS__/ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/product/Jquery.SkuAction.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/product/product.js"></script>
+    <script>
+        $.addLuozuanMatch = "{:U('Goods/addLuozuanMatch')}";//添加裸钻匹配记录
+        $.addMaterial = "{:U('Goods/addMaterial')}";//添加材质数据
+        $.addLuozuanMatch2 = "{:U('Goods/addLuozuanMatch2')}";//添加匹配副石
+        $.productByOne = "{:U('Goods/productByOne')}";
+        $.getAttributeList = "{:U('Goods/getAttributeList')}";
+        $.loadAttSpe = "{:U('Goods/getGoodsAttribute')}";//获取分类下面的属性
+    </script>
+</head>
+<style>
+    #rightcont { height: 1200px;}
+</style>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>{$L['text_current_operation']}：{$L['icon_product']}{$L['edit']}</h3>
+    </div>
+    <form action="{:U('Goods/productInfoDo?goods_id='.$info['goods_id'])}" method="post">
+        <div id="productMain" style="padding:5px 0;">
+            <div class="info">
+                <div class="title">{$L['text_product_class']}:</div>
+                <!--编辑不显示分类-->
+                <select name="category_id" class="fl" style="width: 212px;">
+                    <option value="0" selected="">{$L['text_choice_product_class']}</option>
+                    <volist name="categoryList" id="vo">
+                        <option value="{$vo.category_id}" data-pid="0">&nbsp;&nbsp;{$vo.category_name}<neq name="vo.category_name" value="vo.name_alias">({$vo.name_alias})</neq></option>
+                        <volist name="vo.sub" id="io">
+                            <option value="{$io.category_id}"<eq name="info.category_id" value="$io['category_id']">selected</eq>>
+                            &nbsp;&nbsp;&nbsp;|--{$io.category_name}<neq name="io.category_name" value="io.name_alias">({$io.name_alias})</neq></option>
+                        </volist>
+                    </volist>
+                </select>
+                <!--编辑不显示类别-->
+                <div class="fl ml10 mr10">{$L['text_product_cate']}：</div>
+                <if condition="!$info['goods_id']">
+                    <select name="goods_type" class="fl" style="width: 220px;">
+                        <option value="3" <eq name="info.goods_type" value="3">selected</eq>>{$L['index_product_xianhuo']}</option>
+                        <option value="4" <eq name="info.goods_type" value="4">selected</eq>>{$L['index_product_dingzhi']}</option>
+                    </select>
+                    <else />
+                    <span><eq name="info.goods_type" value="3">{$L['index_product_xianhuo']}</eq></span>
+                    <span><eq name="info.goods_type" value="4">{$L['index_product_dingzhi']}</eq></span>
+                    <input type="hidden" id="goods_type" value="{$info.goods_type}" name="goods_type" />
+                </if>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">{$L['text_product_name']}:</div>
+                <input name="goods_name" id="goods_name" type="text" value="{$info.goods_name}" style="width:500px" placeholder="{$L['error_msg_071']}" />
+            </div>
+            <div class="info">
+                <div class="title">{$L['text_product_sn']}:</div>
+                <if condition="!$info['goods_sn']">
+                    <input name="goods_sn" id="goods_sn" type="text"  style="width:250px" placeholder="{$L['error_msg_072']}">
+                    <else />
+                    <span>{$info.goods_sn}</span>
+                </if>
+            </div>
+            <div class="info dn" id="goods_price_div">
+                <div class="title">{$L['text_one_price']}:</div>
+                <input name="goods_price" id="goods_price" type="text" value="{$info.goods_price}" style="width:250px" placeholder="{$L['price']}:{$L['text_type_RMB']}" />
+            </div>
+            <!--属性数据-->
+            <div class="info dn" id="attrDiv">
+                <div class="title">{$L['text_product_attr']}:</div>
+                <div class="attrDivContent" id="attrDivContent"></div>
+                <div class="clear"></div>
+            </div>
+            <!--珠宝成品-->
+            <div class="info dn" id="specDiv">
+                <div class="title">{$L['text_product_speci']}:</div>
+                <div class="specDivContent" id="specDivContent"></div>
+                <div class="clear"></div>
+            </div>
+            <!--珠宝定制-->
+            <div class="info dn" id="matchDiv">
+                <div class="title">{$L['text_metal_stone_data']}：</div>
+                <div class="luozuanMatchBox" id="luozuanMatchBox"></div>
+                <div class="clear"></div>
+            </div>
+            <div class="info" id='firstImgDiv'>
+                <div class="title">{$L['text_product_img']}:</div>
+                <div id="imgsDiv">
+                    <volist name="imgsList" id="img">
+                        <div class="thumbImg">
+                            <a value="{$img.images_id}" id="deleteImg"><img src="__IMG__/mail_delete.png"/ width="25"></a>
+                            <input type="hidden" value="{$img.images_id}" name="images[]">
+                            <img src="/Public{$img.small_path|substr=1}" width="100%" />
+                        </div>
+                    </volist>
+                    <a href="#" id="firstImg">
+                        <img src="__IMG__/list_add.png"/ width="100">
+                        <input type="file" name="product_img">
+                    </a>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">{$L['text_product_detail']}:</div>
+                <div class="fl" style="width: 60%;"><textarea style="width: 100%;" name="content" id="content">{$info.content}</textarea></div>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="hidden" id="goods_id" value="{$info.goods_id}" name="goods_id" />
+                <if condition="$info['goods_id']">
+                    <input type="submit" class="button fl" value="{$L['save']}{$L['change']}">
+                    <else />
+                    <input type="submit" class="button fl" value="{$L['add']}{$L['icon_product']}">
+                </if>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

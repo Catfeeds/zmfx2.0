@@ -1,0 +1,162 @@
+<!doctype html>
+<html class="no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>{:C('site_name')}</title>
+	<meta name="description" content="{:C('seo_keywords')}">
+	<meta name="keywords" content="{:C('seo_description')}">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />          
+  	<!-- Add to homescreen for Chrome on Android -->
+  	<meta name="mobile-web-app-capable" content="yes">
+  	<link rel="icon" sizes="192x192" href="/Public/{:C('favicon')}">
+  	<!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="{:C('site_name')}"/>
+    <link rel="apple-touch-icon-precomposed" href="/Public/{:C('favicon')}">
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="/Public/{:C('favicon')}">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+	<link rel="icon" type="image/png" href="/Public/{:C('favicon')}">
+	<link rel="stylesheet" href="__ASS__/css/amazeui.min.css">
+	<link rel="stylesheet" href="__ASS__/css/app.css">
+	<link rel="stylesheet" href="__ASS__/css/admin.css">
+	<link rel="stylesheet" href="__CSS__/m.css">
+	<script src="__ASS__/js/jquery.min.js" type="text/javascript"></script>
+	<script src="__ASS__/js/amazeui.js" type="text/javascript"></script>
+	<!--<script src="__PUBLIC__/assets/js/app.js" type="text/javascript"></script>-->
+</head>
+<body>
+<link rel="stylesheet" href="__PUBLIC__/assets/css/admin.css" />
+<link rel="stylesheet" href="__CSS__/color/{:C('agent_id')}.css">
+<div class="admin-content head">
+<!-- Header -->
+	<header data-am-widget="header" class="am-header am-serch cat">
+		<div class="am-header-left am-header-nav">
+			<a href="javascript:;" onclick="javascript:history.go(-1);" class="">
+				<img class="am-header-icon-custom" src="__ASS__/Img/search_01.png" alt=""/>
+			</a>
+		</div>
+		<h1 class="am-header-title">
+			会员注册
+		</h1>
+	</header>
+	<div class="am-content">
+		<form for="am-form" id="form_1">
+			<ul class="content">
+				<li>
+					<label>登录账户：</label>
+					<input name="username" type="text" placeholder="输入用户名（至少3位字符）" >
+				</li>
+				<li>
+					<label for="password">密　　码：</label>
+					<input id="password" name="password" type="password" placeholder=""请输入账号密码（至少6个字符）" ">
+				</li>
+				<li>
+					<label>确认密码：</label>
+					<input id="confirm_password" type="password" placeholder="">
+				</li>
+				<li>
+					<label>邮　　箱：</label>
+					<input name="email" type="text" placeholder="邮箱">
+				</li>
+				<li>
+					<label>手　　机：</label>
+					<input name="phone" type="text" placeholder="手机号">
+				</li>
+				<li class="am-pace">
+					<button type="button" onclick="history.go(-1);" class="am-btn am-btn-blue am-radius">返回</button>
+					<button type="button" id ='save_info' class="am-btn am-btn-blue am-radius">注册</button>
+				</li>
+			</ul>
+		</form>
+	</div>
+</div>
+<script>
+	var getLength = function (str) {
+		///<summary>获得字符串实际长度，中文2，英文1</summary>
+		///<param name="str">要获得长度的字符串</param>
+		var realLength = 0, len = str.length, charCode = -1;
+		for (var i = 0; i < len; i++) {
+			charCode = str.charCodeAt(i);
+			if (charCode >= 0 && charCode <= 128) realLength += 1;
+			else realLength += 2;
+		}
+		return realLength;
+	};
+	function check_num(str){
+		return str.match(/\D/) == null;
+	}
+	var check_email = function(str){
+		if (str.match(/[A-Za-z0-9_-]+[@](\S*)(net|com|cn|org|cc|tv|[0-9]{1,3})(\S*)/g) == null) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	};
+	function check_mobilephone(str){
+		if (str.match(/^(?:13\d|15[89]|1[\d][\d])-?\d{5}(\d{3}|\*{3})$/) == null) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	var check_telephone = function(str){
+		if (str.match(/^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/) == null) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	};
+	$(function() {
+		$("#save_info").click(function(){
+			var username = jQuery.trim($('input[name="username"]').val());
+			if(username.length<3){
+				alert("长度不够,必须大于3个字符,请填写准确的用户名");
+				return false;
+			}
+			//if(getLength($('#form_1 input[name="username"]').val())<3){
+			//	alert("长度不够,必须大于3个字符,请填写准确的用户名");
+			//	return false;
+			//}
+			if(getLength($('#form_1 input[name="password"]').val())<6){
+				alert("长度不够,请填写大于六个字的密码");
+				return false;
+			}
+			if($('#form_1 input[name="password"]').val()!==$('#form_1 #confirm_password').val()){
+				alert("请确认你的重复输入的密码正确");
+				return false;
+			}
+			if(check_mobilephone($('#form_1 input[name="phone"]').val())==false ){
+				alert("请填写准确的手机号");
+				return false;
+			}
+			if(check_email($('#form_1 input[name="email"]').val())==false ){
+				alert("请填写准确的邮箱");
+				return false;
+			}
+			$.ajax({
+				url:"/Public/regist.html",
+				type: 'POST',
+				data: $('#form_1').serialize(),
+				success: function(d){
+					//console.log(d);
+					alert(d.msg);
+					if(d.success==true){
+						window.location.href=d.url;
+					}
+				}
+			});
+		});
+	});
+</script>
+<footer>
+	<p>copy©2013—2015 {:C('site_name')}版权所有</p>
+	<p> 粤ICP备案 11102294</p>
+</footer>

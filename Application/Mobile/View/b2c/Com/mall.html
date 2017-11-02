@@ -1,0 +1,46 @@
+<if condition="$positionList[2]['is_show'] eq 1">
+    <if condition="$mallHotList['count']">
+    <div class="item-box mall-promotion">
+        <div class="upstairs">
+            <h3 class="title">{$positionList[2]['title']}</h3>
+            <h4 class="subtitle">{$positionList[2]['english_title']}</h4>
+        </div>
+        <volist name="mallHotList" id="vo" key="k">
+            <if condition="$vo['goods_list'] neq '' ">
+            <div class="goods-box">
+                <h3 class="clearfix">
+                    <div class="goods-title">{$vo['name_alias']}</div>
+                    <a href="/Goods/category.html" class="more">更多></a>
+                </h3>
+
+                <notempty name="mallHotAdList[$k-1]">
+                    <div class="pop">
+                        <a href="{$mallHotAdList[$k-1]['url']}"><img src="/Public{$mallHotAdList[$k-1]['images_path']}" alt="{$mallHotAdList[$k-1]['title']}"></a>
+                    </div>
+                </notempty>
+
+                <div class="goods-list clearfix">
+                    <ul>
+                        <volist name="vo['goods_list']" id="vog">
+                        <li class="col-3">
+                            <a href="{:U('/Goods/detail',array('goods_type'=>$vog['goods_type'],'gid'=>$vog['goods_id']))}">
+                                <p>
+                                    <if condition="$vog['thumb']">
+                                        <img src="{$vog['thumb']}" alt="{$vog['goods_name']}">
+                                    <else />
+                                        <img src="__IMG__/default_image.png" alt="">
+                                    </if>
+                                </p>
+                                <p class="zs-name">{$vog['goods_name']}</p>
+                                <p class="rmb">￥{$vog['goods_price']}</p>
+                            </a>
+                        </li>
+                        </volist>
+                    </ul>
+                </div>
+            </div>
+            </if>
+        </volist>
+    </div>
+    </if>
+</if>

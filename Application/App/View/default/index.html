@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/main.css">
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/common.js"></script>
+
+<!-- Owl Carousel Assets -->
+<link href="__CSS__/owl.carousel.css" rel="stylesheet">
+<link href="__CSS__/owl.theme.css" rel="stylesheet">
+<script src="__JS__/owl.carousel.js"></script>
+
+<title>首页</title>
+</head>
+
+<body class="wrap-bg">
+	<!--头部-->
+    <header class=" header text-center">
+    	<!--<div class="index-logo"><img src="#" alt="logo" class="img-polaroid"></div>logo-->
+        <a href="#" class="index-logo"><img src="img/logo.png" alt="logo"></a>
+        <a href="#" class="pull-right"><i class="glyphicon glyphicon-search"></i></a>
+    </header>
+    <!--内容-->
+    <div class="container wrap">
+    	<div class="row">
+        <!--轮播-->
+        <div id="owl-demo" class="owl-carousel owl-theme">
+          <div class="item"><img src="img/1.jpg" alt=""></div>
+          <div class="item"><img src="img/1.jpg" alt=""></div>
+          <div class="item"><img src="img/1.jpg" alt=""></div>
+        </div>
+     	  <!--内容-->
+        <div class="panel panel-default">
+           <div class="panel-body">
+           		<div class="col-xs-4"><img src="img/index_01.jpg" alt="" width="100" height="100"></div>
+              <div class="col-xs-8 index-list">
+              	<h5>个性定制</h5>
+              	<p>18K金钻石情侣对戒定制</p>
+              	<em>¥8888</em>
+              </div>
+           </div>
+        </div>   
+			<div class="index">
+            	<ul>
+                	<li><a href="#"><img src="img/index_5.jpg" alt=""></a></li>
+                    <li><a href="#"><img src="img/index_6.jpg" alt=""></a></li>
+              </ul>
+      </div>
+    
+   		</div>
+	</div>
+    <!--底部-->
+	<include file="Public:footer" />
+
+</body>
+    <style>
+      #owl-demo .item img{
+          display: block;
+          /* width: 100%; */
+          /* height: auto; */
+          width: 640px;
+          height: 160px;
+      }
+    </style>
+
+    <script>
+      $(document).ready(function() {
+        $("#owl-demo").owlCarousel({
+
+        navigation : false,
+        slideSpeed : 300,
+        paginationSpeed : 400,
+        singleItem : true
+
+        // "singleItem:true" is a shortcut for:
+        // items : 1, 
+        // itemsDesktop : false,
+        // itemsDesktopSmall : false,
+        // itemsTablet: false,
+        // itemsMobile : false
+
+        });
+      });
+</script>
+</html>

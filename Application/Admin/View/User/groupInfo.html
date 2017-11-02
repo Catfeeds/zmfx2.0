@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>分配权限</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" /> 
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：管理组信息</h3>
+    </div>
+    <form action="{:U('Admin/User/groupInfo?id='.$groupInfo['id'])}" method="post">
+        <div style="padding:10px;">
+            <div class="info">
+                <div class="title">管理组名称：</div>
+                <input type="text" name="title" value="{$groupInfo.title}" />
+            </div>
+            <div class="info">
+                <div class="title">状态：</div>
+                <select name="status">
+                	<option value="1" <eq name="groupInfo.status" value="1">selected="selected"</eq>>开启</option>
+                    <option value="0" <eq name="groupInfo.status" value="0">selected="selected"</eq>>关闭</option>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">是否是业务员：</div>
+                <select name="is_yewuyuan">
+                    <option value="1" <eq name="groupInfo.is_yewuyuan" value="1">selected="selected"</eq>>是</option>
+                    <option value="0" <eq name="groupInfo.is_yewuyuan" value="0">selected="selected"</eq>>否</option>
+                </select>
+            </div>
+            <div class="info">
+            	<div class="title">备注：</div>
+                <textarea name="note">{$groupInfo.note}</textarea>
+            </div>
+            <div class="info">
+            	<div class="title">权限：</div>
+                <div style="float:left; width:80%;">
+                    <volist name="ruleList" id="vo">
+                    <ul>
+                        <div class="tname"><label><span>{$vo.title}</span></label></div>
+                        <div style="padding:10px;">
+                            <volist name="vo.sub" id="io">
+                            <li><label><input type="checkbox" value="{$io.id}" name="rules[]"<if condition="in_array($io['id'],$groupRulesInfo)">checked</if>><span>{$io.title}</span></label></li>
+                            </volist>
+                            <div class="clear"></div>
+                        </div>
+                    </ul>
+                    </volist>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+            	<div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="保存">
+            	<input type="reset" class="button fl ml10" value="重置">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

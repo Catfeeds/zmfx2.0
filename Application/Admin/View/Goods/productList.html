@@ -1,0 +1,482 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品列表</title>
+<script>
+// 表单全选
+function selectcheckbox(form){
+	for(var i = 0;i < form.elements.length; i++){
+		var e = form.elements[i];
+		if(e.name != 'chkall' && e.disabled != true) e.checked = form.chkall.checked;
+	}
+}
+
+
+function submitForm(){
+		if($("input[type='checkbox']").is(':checked')==false){
+			if(confirm("当没有勾选到任何产品记录时，将打印满足当前查询条件的所有产品记录，确定打印吗？"))return true;
+			else return false;
+		}else{
+			return true;
+		}
+	}
+
+</script>
+<style>
+.opention{
+	width:100%;
+	height:25px;
+	margin-top:25px;
+	line-height:25px;
+	font-size:12px;
+}
+.opention .cut{
+	border: 1px solid;
+    cursor: pointer;
+    float: left;
+    margin: 0 20px;
+    text-align: center;
+    width: 8%;
+	background:#E1E1E1;
+	border:1px solid #ADADAD;
+}
+.opention .cut a{
+	color:#000;
+}
+.opention .cut:hover{
+	background:#E1FBFF;
+}
+.chongzhi{
+	height: 20px !important;
+    line-height: 20px !important;
+	width:35px;
+	text-align:center;
+}
+
+
+</style>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：产品列表</h3>
+        <ul>
+            <li class=""><a href="{:U('Admin/Goods/productInfo')}">添加产品</a></li>
+        </ul>
+    </div>
+	<div class="filter">
+	<form action="{:U('Admin/Goods/productList')}" method="get">
+		<div class="fl">产品编号:&nbsp;</div>
+		<input type='text' name='Productno' value="{$Productno|stripslashes}">
+		<div class="fl">产品名称:&nbsp;</div>
+		<input type='text' name='Productname' value="{$Productname|stripslashes}">
+		
+		<div class="fl">版房款式编号:&nbsp;</div>
+		<input type='text' name='banfangGoodsSn' value="{$banfangGoodsSn|stripslashes}">
+		
+		<div class="fl">产品分类:&nbsp;</div>
+		<select name="category">
+			<option>选择一级分类</option>
+			<volist name="category" id="vo">
+				<option id="cateId" value="{$vo['category_id']}" <if condition="$category_id eq $vo['category_id']">selected</if>  >{$vo['category_name']}</option>
+			</volist>
+		</select>
+                <select name="category2">
+			<option>请先选择一级分类</option>
+			<volist name="cate_children" id="vo">
+				<option id="cId" value="{$vo['category_id']}" <if condition="$category2_id eq $vo['category_id']">selected</if>  >{$vo['category_name']}</option>
+			</volist>
+		</select>
+                <div class="fl">产品类别:&nbsp;</div>
+                <select name="goods_type">
+                    <option value=""  >全部</option>
+                    <option value="3" <if condition="$goods_type eq 3">selected</if> >珠宝成品</option>
+		    <option value="4" <if condition="$goods_type eq 4">selected</if> >珠宝定制</option>
+                </select>
+                
+		<div class="fl">首页展示产品:&nbsp;</div>
+		<select name="home_show">
+			<option value='' >全部产品</option>
+			<option value="1" <if condition="$home_show eq 1">selected</if>  >不展示</option>
+			<option value="2" <if condition="$home_show eq 2">selected</if>  >展示</option>
+		</select>
+
+		<div class="fl">上架状态：</div>
+		<select name="sell_status" class="fl">
+			<option value="-1">全部产品</option>
+			<option <eq name="sell_status" value="0"> selected </eq> value="0" >未上架</option>
+			<option <eq name="sell_status" value="1"> selected </eq> value="1" >已上架</option>
+			<option <eq name="sell_status" value="2"> selected </eq> value="2" >未接入</option>
+        </select>
+        <div class="fl">&nbsp;</div>
+		<div class="f1" style="float:left;">
+			<input class="button" type="submit" value="查询" />
+		</div>
+		<div class="fl">&nbsp;</div>
+		<div class="fl" style="float:left;">
+			<!--
+			<input class="button jieru" style="height: 20px !important;line-height: 20px !important;" value="接入产品库中的数据" />
+			-->
+		</div>
+	</form>
+	</div>
+    <form action="{:U('Admin/Excel/exportproductList')}" method="POST"  onsubmit="return submitForm();">
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+        <tr class="top">
+        	<!--<th width="50px">全选:<input onclick="selectcheckbox(this.form)" type="checkbox" name="chkall" id="chkall" value="All" /></th>-->
+			<th width="3%"><input id="selectThisPage" type="checkbox"></th>
+            <th width="5%">产品ID</th>
+            <th width="13%">产品编号</th>
+            <th>版房款式编号</th>			
+            <th>产品名称</th>
+            <th>产品类别</th>
+			<th>首页展示</th>
+			<th>上架状态</th>
+			<th>销售价格</th>
+<if condition=" in_array('admin/costprofit/index',$AuthList) ">        
+            <th>产品价格</th>
+</if>                        
+            <th>产品库存</th>
+            <th>操作</th>
+        </tr>
+        <volist name="dataList" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+			<td><input data-id="chk_{$vo['goods_id']}"  name="tbSelectedId" type="checkbox"></td>
+        	<!-- <td><input type="checkbox" name="pids[]" value="{$vo.goods_id}" /></td> -->
+            <td><a href="{:U('Admin/Goods/productInfo?goods_id='.$vo['goods_id'])}">{$vo.goods_id}</a></td>
+            <td><a href="{:U('Admin/Goods/productInfo?goods_id='.$vo['goods_id'])}">{$vo.goods_sn}</a></td>
+            <td>{$vo.banfang_goods_id}</td>			
+            <td>{$vo.goods_name}</td>
+            <td>
+            	<eq name="vo.goods_type" value="3">珠宝成品</eq>
+                <eq name="vo.goods_type" value="4">珠宝定制</eq>
+            </td>
+			<td>
+                <eq name="vo.home_show" value="2">
+					展示
+				<else/>
+					不展示
+				</eq>
+			</td>
+			<td>
+				<if condition=" $vo.sell_status eq '1' " >
+					已上架
+				<elseif condition=" $vo.sell_status eq '0' "/>
+					未上架
+				<else />
+					未接入
+				</if>
+			</td>
+			<td>{$vo.goods_price}</td>
+                        
+<if condition=" in_array('admin/costprofit/index',$AuthList) ">        
+            <td>{$vo.caigou_price}</td>
+</if>            
+            <td>{$vo.goods_number}</td>
+            <td>
+				<a target="_bank" href="{:U('/Home/Goods/'.$detail_action.'/',array('goods_type'=>$vo['goods_type'],'gid'=>$vo['goods_id']))}">查看</a>
+
+				<?php if ($vo['agent_id'] == $agent_id && $vo['banfang_goods_id'] == '0' ): ?>
+						<a href="{:U('Admin/Goods/productInfo?goods_id='.$vo['goods_id'])}">修改</a>
+						<a href="javascript:;" onClick="del_product({$vo['goods_id']})">删除</a>
+				<?php else: ?>
+					无权修改
+				<?php endif; ?> 				
+ 
+ 
+ 
+ 
+ 				<?php if ($vo['goods_type'] == '3' && $new_rules['lease_components']): ?>
+					<a target="_bank"  href="/Admin/Goods/LeaseSetting/id/<?php echo $vo['goods_id'];?>">租赁设置</a>
+				<?php endif; ?>
+ 
+
+ 
+			</td>
+        </tr>
+        </volist>
+    </table>
+			<div class="tbl_buttom"><input type="submit" name="export"  value="导出数据" /></div>
+    <!--<div class="tbl_buttom"><input type="submit" name="export" value="导出所选" /></div>-->
+    </form>
+	<div class="opention">
+		<div class="cut" id="sendmessage">批量删除</div>
+		<div class="cut" id="move_goods">移动到活动列表</div>
+		<div class="cut" id="home_show">设置首页展示</div>
+		<div class="cut" id="cancel_show">取消首页展示</div>
+		<div class="cut" id="sell_status_on">批量上架</div>
+		<div class="cut" id="sell_status_off">批量下架</div>
+	</div>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>
+<script>
+        $(function(){
+	//根据父级cateId获取子级
+	$('select[name="category"]').change(function(){
+		category = $(this).val();
+		if(category > 0){
+			$.get("/Admin/Public/getChildrenCate.html",{cateid:category},function(data){
+				html = '<option value="0">请选择二级分类</option>';
+				for(i=0;i<data.length;i++){
+					html += '<option value="'+data[i].category_id+'">'+data[i].category_name+'</option>';
+				}
+				$('select[name="category2"]').html(html);
+			});
+		}
+	});
+    });
+	// 删除产品 -->
+	function del_product(thisid){
+		var msg = '确定要删除吗？';
+		layer.confirm(msg, {
+			  btn: ['确定','再想想'] //按钮
+			}, function(){
+				$.ajax({
+					type: "post",
+					url : "{:U('/Admin/Promotion/productDel')}", 
+					dataType:'json',
+					data: {goods_id:thisid}, 
+					success: function(res){
+						if(res.status == 100){
+							layer.msg(res.info,{
+								shift:6,
+								icon: 6
+							});
+							setTimeout(function(){
+								window.location.href="/Admin/Goods/productList";
+							},1500)
+						}else{
+							layer.msg(res.info,{
+								shift:6,
+								icon: 5
+							});
+						}
+					},
+				});
+			}
+		);
+	}
+	// type: 1:产品列表页首页展示，2：产品列表页取消展示 -->
+	function home_show(msg,type){
+		layer.confirm(msg, {
+			  btn: ['确定','再想想'] //按钮
+			}, function(){
+				$.ajax({
+					type: "post",
+					url : "{:U('/Admin/Promotion/homeShow')}", 
+					dataType:'json',
+					data: {thisid:thisid,type:type}, 
+					success: function(res){
+						if(res.status == 100){
+							layer.msg(res.info,{
+								shift:6,
+								icon: 6
+							});
+							setTimeout(function(){
+								window.location.href="/Admin/Goods/productList";
+							},1500)
+						}else{
+							layer.msg(res.info,{
+								shift:6,
+								icon: 5
+							});
+						}
+					},
+				});
+			}
+		);
+	
+	}
+
+	// 上架下架 -->
+	function update_sell_status(thisid,sell_status){
+		$.ajax({
+			type: "post",
+			url : "{:U('/Admin/Goods/updateSellStatus')}", 
+			dataType:'json',
+			data: {goods_id:thisid,sell_status:sell_status}, 
+			success: function(res){
+				if(res.status == 100){
+					layer.msg(res.info,{
+						shift:6,
+						icon: 6
+					});
+					setTimeout(function(){
+						location.reload();
+					},1500)
+				}else{
+					layer.msg(res.info,{
+						shift:6,
+						icon: 5
+					});
+				}
+			},
+		});
+	}
+
+	// 上架下架 -->
+	function jieru(){
+		$.ajax({
+			type: "post",
+			url : "{:U('/Admin/Goods/jieru')}", 
+			dataType:'json',
+			success: function(res){
+				if(res.status == 100){
+					layer.msg(res.info,{
+						shift:6,
+						icon: 6
+					});
+					setTimeout(function(){
+						location.reload();
+					},1500)
+				}else{
+					layer.msg(res.info,{
+						shift:6,
+						icon: 5
+					});
+				}
+			},
+		});
+	}
+	
+$(document).ready(function(){
+	<!-- 当前选中的商品ID -->
+	function nowid(){
+		<!-- 初始化当前选中的id -->
+		thisid  = '';
+		$("input[name = tbSelectedId]:checkbox").each(function(){
+			if($(this).is(":checked")){
+				thisid += $(this).attr('data-id').replace('chk_','')+',';
+			}
+		});
+		if(thisid == ''){
+			return false;
+		} else {
+			return thisid;
+		}
+	};
+	<!-- 重置按钮 -->
+	$('.jieru').click(function(){
+		var msg = '此操作会把您的上级添加的产品统一接入到您的网站中，并展示给您的用户。';
+		layer.confirm(msg, {
+			btn: ['确定','再想想'] //按钮
+			}, function(){
+				jieru();
+			}
+		);
+	})
+	
+	<!--点击提交事件-->
+	$(".tbl_buttom input").on("click",function(){ 
+		nowid();
+		if(thisid !=""){
+			$('.goodsList_hidden').remove();
+			var html ="<input class='goodsList_hidden' type='hidden' name='productList[]' value="+thisid+" >";
+			$('.listTbl').before(html);
+		}else{
+			$('.goodsList_hidden').remove();
+		}
+	 }); 
+
+	<!-- 选定当前页数据 -->
+	$('#selectThisPage').click(function(){
+		var status = $("#selectThisPage").is(":checked");   
+		$("input[name = tbSelectedId]:checkbox").prop("checked", status);
+	})
+	<!-- 批量移动 -->
+	$('#move_goods').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+		var msg = '确定要移动到活动列表吗？';
+		layer.confirm(msg, {
+			  btn: ['确定','再想想'] //按钮
+			}, function(){
+				$.ajax({
+					type: "post",
+					url : "{:U('/Admin/Promotion/moveGoods')}", 
+					dataType:'json',
+					data: {thisid:thisid}, 
+					success: function(res){
+						if(res.status == 100){
+							layer.msg(res.info,{
+								shift:6,
+								icon: 6
+							});
+							setTimeout(function(){
+								window.location.href="/Admin/Goods/productList";
+							},1500)
+						}else{
+							layer.msg(res.info,{
+								shift:6,
+								icon: 5
+							});
+						}
+					},
+				});
+			}
+		);
+	})
+	<!-- 设置首页展示 -->
+	$('#home_show').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+		var msg = '确定要设置到首页展示吗？';
+		var type = 1;
+		home_show(msg,type);
+	})
+	<!-- 取消首页展示 -->
+	$('#cancel_show').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+		var msg = '确定要取消首页展示吗？';
+		var type = 2;
+		home_show(msg,type);
+	})
+	<!-- 批量删除 -->
+	$('#sendmessage').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+		del_product(thisid);
+	})
+
+	<!-- 批量更新状态 -->
+	$('#sendmessage').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+		del_product(thisid);
+	})
+	$('#sell_status_on').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+		var msg = '你确定要上架这些数据吗？';
+		layer.confirm(msg, {
+			  btn: ['确定','再想想'] //按钮
+			}, function(){
+				update_sell_status(thisid,'1');
+			}
+		);
+	});
+	$('#sell_status_off').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+		var msg = '你确定要下架这些数据吗？';
+		layer.confirm(msg, {
+			  btn: ['确定','再想想'] //按钮
+			}, function(){
+				update_sell_status(thisid,'0');
+			}
+		);
+	});
+});
+
+</script>

@@ -1,0 +1,19 @@
+<!-- mallhot -->
+<include file=".:Com:b2c:product:goods_js" />
+<div class="mallhot mallhot-type diamond diamond-select">
+	<div class="container">
+		<div class="path">
+			<ol class="breadcrumb">
+				当前位置：
+				<li><a href="javascript:void(0);">首页</a></li>
+				<if condition=" $keyword eq '' ">
+					<li class="active">商城热卖</li>
+				<else />
+					<li class="active">产品列表</li>
+				</if>
+			</ol>
+		</div>
+		<include file=".:Com:b2c:product:goods_list2" />
+	</div>
+</div>
+<!-- mallhot end //-->

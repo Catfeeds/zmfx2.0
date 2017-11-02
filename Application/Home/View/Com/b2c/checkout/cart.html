@@ -1,0 +1,562 @@
+
+<!-- cart -->
+<div class="cart">
+	<div class="steps">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<if condition="$product['data'] neq '' ||  $luozuan['data'] neq '' " >
+					<img src="__IMG__/cart_06.png" style="margin-top: 8px;" alt="">
+					</if>
+				</div>
+			</div>
+		</div>
+	</div>
+	<if condition="$product['data'] neq '' ||  $luozuan['data'] neq '' || $sanhuo['data'] neq ''" >
+	<div class="table-box">
+		<div class="container">
+			<div class="cart-list table-responsive">
+				<table class="table" style="margin-bottom:0px;">
+					<thead>
+					<tr>
+						<th width="5%"><input id="selectThisPage" checked type="checkbox">全选</th>
+						<th align="center"  width="45%">商品名称</th>
+						<th width="15%">货品编号/货号</th>
+						<th width="10%">单价</th>
+						<th width="10%">数量/购买重量</th>
+						<th width="10%">小计</th>
+						<th width="5%">操作</th>
+					</tr>
+					</thead>
+				</table>	
+					<!--<tbody>-->
+ 					<if condition="$dingzhi_list">
+						<volist name="dingzhi_list" id="vv">
+						
+							<table class="table">
+								<volist name="vv" id="vo">
+								
+								
+								
+								<if condition="$key eq 'product'">	
+								<tbody>
+								<tr>
+									<td scope="row" width="5%">
+										<input class="checkbox" data-id="chk_{$vo['id']}"  name="tbSelectedId" type="checkbox">
+									</td>
+									<td width="45%">
+									<a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_type'],'gid'=>$vo['goods_id']))}">
+									<img src="{$vo['goods_attrs']['thumb']}" width="80" height="80" alt="{$vo['goods_attrs']['goods_name']}" title="{$vo['goods_attrs']['goods_name']}" />
+									</a>
+									<br> 
+									<a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_type'],'gid'=>$vo['goods_id']))}">
+									{$vo['goods_attrs']['goods_name']} {$vo['goods_attrs']['attrs']}
+			 
+									<?php echo !empty($vo['goods_attrs']['associateInfo']['material_name']) 	? '材质:'.$vo['goods_attrs']['associateInfo']['material_name']		 	: '';?>
+									
+									<?php echo !empty($vo['goods_attrs']['hand']) 				? '手寸:'.$vo['goods_attrs']['hand']		 			: '';?>
+									<?php echo !empty($vo['goods_attrs']['word']) 				? '刻字:'.$vo['goods_attrs']['word']		 			: '';?>
+									
+									<?php echo !empty($vo['goods_attrs']['hand1']) 				? '手寸（女戒）:'.$vo['goods_attrs']['hand1']		 	: '';?>
+									<?php echo !empty($vo['goods_attrs']['word1']) 				? '刻字:'.$vo['goods_attrs']['word1']		 			: '';?>
+									</a>
+									</td>
+									<td width="15%">{$vo['goods_attrs']['goods_sn']}<if condition="$vo['have_goods'] lt 1">【<span style="color:red;">无货</span>】</if></td>
+									<td width="10%">¥
+									<in name="vo['goods_attrs']['activity_status']" value="0,1">
+										{$vo['goods_attrs']['activity_price']}
+									<else/>
+										{$vo['goods_attrs']['goods_price']}
+									</in>
+									</td>
+									<td width="10%">
+									<button type="button" onclick="spinner(this,{$vo['id']},{$vo['goods_type']},1)" class="btn btn-default btn-xs spinner-up">
+									<i class="glyphicon glyphicon-minus"></i>
+									</button>
+									<input onBlur="changeGoodsNumber(this,{$vo['id']},{$vo.goods_type})" type="text" name="goods_number" value="{$vo['goods_number']|intval}" data-goods-price=" <in name="vo['goods_attrs']['activity_status']" value="'0','1'" >{$vo['goods_attrs']['goods_price']} <else/>{$vo['goods_attrs']['activity_price']} </in> " onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+									<input type="hidden" name="{$vo['id']}_stock" value="{$vo['goods_attrs']['goods_sku']['goods_number']}" cart_id="{$vo['id']}" default_val="{$vo.goods_number}" /><!-- 此成品规格对应的sku库存 -->
+									<button onclick="spinner(this,{$vo['id']},{$vo['goods_type']},2)" type="button" class="btn btn-default btn-xs spinner-up">
+									<i class="glyphicon glyphicon-plus"></i>
+									</button>
+									</td>
+									<td class="xiaoji" width="10%"><span class="red">￥</span><span class="red price">{$vo['goods_attrs']['goods_price2']}</span></td>
+									<td width="5%"><a href="javascript:;" onclick="opration('确定要删除吗？',{$vo['id']});" class="btn-link">删除</a></td>
+								</tr>
+								</tbody>
+							
+
+							<else if condition="$key eq 'luozuan'" />		
+								<?php $vo = $vv["luozuan"]; ?>
+								<tbody>
+								<tr>
+									<td scope="row">
+									<input class="checkbox" data-id="chk_{$vo['id']}"  name="tbSelectedId" type="checkbox">
+			
+									</td>
+									<td>{$vo['goods_attrs']['certificate_type']} <if condition="$yn_certificate_num_cv neq 1">_{$vo['goods_attrs']['certificate_number']}</if>  <if condition="$vo['have_goods'] lt 1">【<span style="color:red;">无货</span>】 </if>{$vo['goods_attrs']['shape_name']}   {$vo['goods_attrs']['weight']}ct  颜色:{$vo['goods_attrs']['color']}  净度:{$vo['goods_attrs']['clarity']}  切工:{$vo['goods_attrs']['cut']}  抛光:{$vo['goods_attrs']['polish']}  荧光:{$vo['goods_attrs']['fluor']} 对称:{$vo['goods_attrs']['symmetry']}  </td>
+									<td>
+									<eq name="vo['goods_attrs']['luozuan_type']" value="1">
+									彩钻&nbsp;
+									</eq>
+									{$vo['goods_attrs']['goods_name']}
+									</td>
+									<td>￥{$vo['goods_attrs']['price']}</td>
+									<td>×1</td>
+									<td class="xiaoji"><span class="red">￥</span><span class="red price">{$vo['goods_attrs']['price']}</span></td>
+									<td><a href="javascript:;" onclick="opration('确定要删除吗？',{$vo['id']});" class="btn-link">删除</a></td>
+								</tr>
+								</tbody>
+							
+							
+								
+							</if>
+							</volist>
+						</table>			
+						</volist>
+							
+					</if>
+					
+					
+					
+					<if condition="$product['data']">
+					<volist name="product['data']" id="vo" >
+					<table class="table">
+					<tbody>
+					<tr>
+						<td scope="row" width="5%">
+							<input class="checkbox" data-id="chk_{$vo['id']}"  name="tbSelectedId" type="checkbox">
+						</td>
+						<td width="45%">
+						<a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_type'],'gid'=>$vo['goods_id']))}">
+						<img src="{$vo['goods_attrs']['thumb']}" width="80" height="80" alt="{$vo['goods_attrs']['goods_name']}" title="{$vo['goods_attrs']['goods_name']}" />
+						</a>
+						<br> 
+						<a href="{:U('/Home/Goods/goodsDetails',array('goods_type'=>$vo['goods_type'],'gid'=>$vo['goods_id']))}">
+						{$vo['goods_attrs']['goods_name']} {$vo['goods_attrs']['attrs']}
+ 
+						<?php echo !empty($vo['goods_attrs']['associateInfo']['material_name']) 	? '材质:'.$vo['goods_attrs']['associateInfo']['material_name']		 	: '';?>
+						
+						<?php
+							if($vo['goods_type'] == 16){ //szzmzb 板房数据
+								if(dingzhi_szzmzb_jewelry_name($vo['goods_attrs']['jewelry_name'])){
+									echo dingzhi_szzmzb_jewelry_name($vo['goods_attrs']['jewelry_name']).':'.$vo['goods_attrs']['hand'];
+								}
+							}else{
+								echo !empty($vo['goods_attrs']['hand'])?'手寸:'.$vo['goods_attrs']['hand']: '';
+							}
+						?>
+						
+						<?php echo !empty($vo['goods_attrs']['word']) 				? '刻字:'.$vo['goods_attrs']['word']		 			: '';?>
+						
+						<?php echo !empty($vo['goods_attrs']['hand1']) 				? '手寸（女戒）:'.$vo['goods_attrs']['hand1']		 	: '';?>
+						<?php echo !empty($vo['goods_attrs']['word1']) 				? '刻字:'.$vo['goods_attrs']['word1']		 			: '';?>
+						</a>
+						</td>
+						<td width="15%">{$vo['goods_attrs']['goods_sn']}<if condition="$vo['have_goods'] lt 1">【<span style="color:red;">无货</span>】</if></td>
+						<td width="10%">¥
+						<in name="vo['goods_attrs']['activity_status']" value="0,1">
+							{$vo['goods_attrs']['activity_price']}
+						<else/>
+							{$vo['goods_attrs']['goods_price']}
+						</in>
+						</td>
+						<td width="10%">
+						<button type="button" onclick="spinner(this,{$vo['id']},{$vo['goods_type']},1)" class="btn btn-default btn-xs spinner-up">
+						<i class="glyphicon glyphicon-minus"></i>
+						</button>
+						<input onBlur="changeGoodsNumber(this,{$vo['id']},{$vo.goods_type})" type="text" name="goods_number" value="{$vo['goods_number']|intval}" data-goods-price=" <in name="vo['goods_attrs']['activity_status']" value="'0','1'" >{$vo['goods_attrs']['activity_price']} <else/>{$vo['goods_attrs']['goods_price']} </in> " onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+						<input type="hidden" name="{$vo['id']}_stock" value="{$vo['goods_attrs']['goods_sku']['goods_number']}" cart_id="{$vo['id']}" default_val="{$vo.goods_number}" /><!-- 此成品规格对应的sku库存 -->
+						<button onclick="spinner(this,{$vo['id']},{$vo['goods_type']},2)" type="button" class="btn btn-default btn-xs spinner-up">
+						<i class="glyphicon glyphicon-plus"></i>
+						</button>
+						</td>
+						<td class="xiaoji" width="10%"><span class="red">￥</span><span class="red price">{$vo['goods_attrs']['goods_price2']}</span></td>
+						<td width="5%"><a href="javascript:;" onclick="opration('确定要删除吗？',{$vo['id']});" class="btn-link">删除</a></td>
+					</tr>
+					</tbody>
+					</table>
+					</volist>
+					</if>
+					<if condition="$luozuan['data']">
+					
+					<volist name="luozuan['data']" id="vo" >
+					<table class="table">
+					<tbody>
+					<tr>
+						<td scope="row" width="5%">
+						<input class="checkbox" data-id="chk_{$vo['id']}"  name="tbSelectedId" type="checkbox">
+
+						</td>
+						<td width="45%">{$vo['goods_attrs']['certificate_type']} <if condition="$yn_certificate_num_cv neq 1">_{$vo['goods_attrs']['certificate_number']}</if>  <if condition="$vo['have_goods'] lt 1">【<span style="color:red;">无货</span>】 </if>{$vo['goods_attrs']['shape_name']}   {$vo['goods_attrs']['weight']}ct  颜色:{$vo['goods_attrs']['color']}  净度:{$vo['goods_attrs']['clarity']}  切工:{$vo['goods_attrs']['cut']}  抛光:{$vo['goods_attrs']['polish']}  荧光:{$vo['goods_attrs']['fluor']} 对称:{$vo['goods_attrs']['symmetry']}  </td>
+						<td width="15%">
+						<eq name="vo['goods_attrs']['luozuan_type']" value="1">
+						彩钻&nbsp;
+						</eq>
+						{$vo['goods_attrs']['goods_name']}
+						</td>
+						<td width="10%">￥{$vo['goods_attrs']['price']}</td>
+						<td width="10%">×1</td>
+						<td class="xiaoji" width="10%"><span class="red">￥</span><span class="red price">{$vo['goods_attrs']['price']}</span></td>
+						<td width="5%"><a href="javascript:;" onclick="opration('确定要删除吗？',{$vo['id']});" class="btn-link">删除</a></td>
+					</tr>
+					</tbody>
+					</table>
+					</volist>
+					</if>
+					<if condition="$sanhuo['data']">
+					<volist name="sanhuo['data']" id="vo" >
+					<table class="table">
+					<tbody>
+						<tr>
+							<td scope="row" width="5%">
+								<input class="checkbox" data-id="chk_{$vo['id']}"  name="tbSelectedId" type="checkbox">
+							</td>
+							<td width="45%">{$vo['goods_attrs']['goods_sn']} 分类:{$vo['goods_attrs']['type_name']} 颜色:{$vo['goods_attrs']['color']}  净度:{$vo['goods_attrs']['clarity']}  切工:{$vo['goods_attrs']['cut']}  库存重量:{$vo['goods_attrs']['goods_weight']} CT</td>
+							<td>
+								{$vo['goods_attrs']['goods_sn']}<if condition="$vo['have_goods'] lt 1">【<span style="color:red;">无货</span>】 </if>
+							</td>
+							<td width="15%">￥{$vo['goods_attrs']['goods_price']}</td>
+							<td width="10%"><input type="text" style="width:85px;" name="weight" class="goods_number" value="{$vo.goods_number}" onBlur="changeGoodsNumber(this,{$vo['id']},{$vo.goods_type})" id="weight_{$vo.goods_id}" data-goods-price="{$vo['goods_attrs']['goods_price']}"/></td>
+							<td class="xiaoji" width="10%"><span class="red">￥</span><span id="price_{$vo.goods_id}" class="red price">{$vo.goods_attrs.goods_price2}</span></td>
+							<input type="hidden" name="{$vo['id']}_stock" value="{$vo.goods_attrs.goods_weight}" cartId="{$vo['id']}" default_val="{$vo.goods_number}"></input>
+							<td width="5%"><a href="javascript:;" onclick="opration('确定要删除吗？',{$vo['id']});" class="btn-link">删除</a></td>
+						</tr>
+					</tbody>
+					</table>
+					</volist>
+					</if>
+				<!--</tbody>-->
+			</table>
+		</div>
+			<div class="row js">
+				<div class="col-md-6"><a href="javascript:;" id="clearCat" >批量删除</a>  &nbsp;&nbsp;   <a href="/"><strong>继续购物</strong></a></div>
+				<div class="col-md-6 text-right">
+					共<span id="count"> {$count}</span>件商品<br>
+					订单总金额：<span class="red">￥</span><strong class="red" id="total">{$total}</strong><br>
+					<a class="btn btn-danger cart-sub" href="javascript:;">提交</a></button>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+	<else />
+	<div class="container null" style="padding: 100px 0">
+		<div class="row">
+			<div class="col-md-5 col-sm-5 col-xs-4 tpimg text-right">
+				<img src="__IMG__/empty.png" width="80" style="margin-top: -15px;" alt="cart">
+			</div>
+			<div class="col-md-7 col-sm-7 col-xs-8 tedc">
+				<p style="margin-bottom: 5px; font-size: 14px;">您的购物车还是空的，赶紧行动吧！您可以：</p>
+				<if condition="$Think.session.web.uid eq ''">
+				<a href="{:U('/Home/Public/login')}" class="btn btn-danger btn-sm">登录</a> 
+				</if>
+				<a href="/" class="btn btn-link">去购物 ></a>
+			</div>
+		</div>
+	</div>
+	</if>
+</div>
+<!-- cart end //-->
+<script>
+// 页面选中的产品,计算出应付金额 -->
+function payable(){
+	var payable = 0;
+	var xiaoji = 0;
+	$('input[name = tbSelectedId]:checkbox').each(function(){
+		if($(this).is(":checked")){
+			xiaoji = $(this).parent().siblings('.xiaoji').children('.price').html();
+			payable = accAdd(payable,xiaoji).toFixed(2);
+		}
+	})
+	$('#total').html(payable);
+}
+
+/// 批量删除，单个删除-->
+function opration(msg,data){
+	layer.confirm(msg, {
+			btn: ['确定','再想想'] //按钮
+		}, function(){
+			$.ajax({
+				type: "post",
+				url : "{:U('/Home/Order/cartDelete')}", 
+				dataType:'json',
+				data: {thisid:data}, 
+				success: function(res){
+					if(res.status == 100){
+						layer.msg(res.msg,{
+							shift:6,
+							icon: 6
+						});
+						setTimeout(function(){
+							window.location.href="/Home/Order/orderCart";
+						},1500)
+					}else{
+						layer.msg(res.msg,{
+							shift:6,
+							icon: 5
+						});
+					}
+				},
+			});
+		}
+	);
+}
+
+// 产品数量加减 -->
+function spinner(b,cart_id,goods_type,type){
+	switch(type){
+		case 1:
+			var a = $(b).next('input[name="goods_number"]');
+			//若为减，则不能小于1
+			if(parseInt(a.val()) <= 1){
+				layer.msg('购买数量必须大于0',{
+					shift :6,
+				});
+				return false;
+			}
+			var nowval = accSub(a.val(),1);
+			a.val(nowval);
+			break;
+		case 2:
+			var a = $(b).siblings('input[name="goods_number"]');
+			var stock = $("input[type=hidden][name="+cart_id+"_stock]").val().trim();
+			if(goods_type == 3){
+				//若为加，则不能超过库存
+				if(parseInt(a.val()) >= parseInt(stock)){
+					var msg = '购买数量超过库存！现库存为'+stock ;
+					layer.msg(msg,{
+						shift :6,
+					});
+					return false;
+				}
+			}
+			var nowval = accAdd(a.val(),1);
+			switch(goods_type){
+				case 3:		//成品限购500件
+					if(nowval > 500){
+						layer.msg('成品限购500个',{
+							shift :6,
+						});
+					}
+					break;
+				case 4:
+					if(nowval > 50){
+						layer.msg('订制产品限购50个',{
+							shift :6,
+						});
+					}
+					break;
+			}
+			a.val(nowval);
+			break;
+	}
+	changeGoodsNumber(a,cart_id,goods_type);
+}
+
+// 产品数量更改 -->
+function changeGoodsNumber(a,cart_id,goods_type){
+	var stock = $("input[type=hidden][name="+cart_id+"_stock]").val().trim();
+	var buy_quantity;
+
+    switch(goods_type){
+        case 2:	//散货
+            stock = parseFloat(stock);
+            buy_quantity = parseFloat($(a).val());
+            break;
+        case 3:	//成品
+            stock = parseInt(stock);
+            buy_quantity = parseInt($(a).val());
+            break;
+        case 4:	//成品
+            stock = parseInt(stock);
+            buy_quantity = parseInt($(a).val());
+            break;
+        case 16:	//szzmzb 板房
+            stock = parseInt(stock);
+            buy_quantity = parseInt($(a).val());
+            break;
+    }
+    if(buy_quantity <= 0 || isNaN(buy_quantity)){
+        if(goods_type == 2){
+            layer.msg('购买重量必须大于0',{
+                shift :6
+            });
+		}else{
+            layer.msg('购买数量必须大于0',{
+                shift :6
+            });
+		}
+		return false;
+	}
+
+    $(a).val(buy_quantity);
+
+	if(goods_type == 2 || goods_type == 3){
+		if(buy_quantity > stock){
+            var msg;
+		    if(goods_type == 3){
+                msg = '购买数量超过库存！现库存为'+stock ;
+			}else{
+                msg = '购买重量超过库存重量！现库存为'+stock+'CT' ;
+			}
+
+			layer.msg(msg,{
+				shift :6
+			});
+			return false;
+		}
+	}
+
+	$.ajax({
+		type: 'POST',
+		url	: '/Home/Order/changeGoodsNumber' ,
+		dataType:'json',
+		data: {'cart_id':cart_id,'goods_type':goods_type,'goods_number':buy_quantity},
+		success: function (ref) {
+		    console.log(ref);
+			if(ref.status == 100){
+                var goods_price;
+
+                goods_price = parseFloat($(a).attr('data-goods-price'));
+
+				var goods_number = parseFloat(ref.goods_number);
+				//四舍五入保留两位小数
+				var xiaoji = accMul(goods_number,goods_price).toFixed(2);
+				//小计
+				$(a).parent().next('').children('.price').text(xiaoji);
+				
+				//计算当前的商品总数
+				var count  = $('#count').html();
+				if(ref.goods_type != 2){
+                    count = accAdd(count, ref.change_number);
+				}else{
+				    count = accAdd(count, 0);
+				}
+
+				$('#count').html(count); 
+				
+				//数量改变则总价重新计算
+				//if($(a).parent().siblings('td:eq(0)').children('input').is(':checked')){
+				//	var total = $('#total').html();
+				//	var newtotal = accAdd(total,ref.change_price).toFixed(2);
+				//	$('#total').html(newtotal);
+				//}
+				payable();
+			}else{
+				if(ref.status == 101){
+					$(a).val(ref.goods_number);
+					layer.msg(ref.msg,{
+						shift :6,
+					});
+				}else if (ref.status != 102){
+					layer.msg(ref.msg,{
+						shift :6,
+					});
+					return false;
+				}
+			}
+		}
+	})
+}
+
+// 全部选中产品 -->
+function selectAll(){
+	var status = $("#selectThisPage").is(":checked");
+	$("input[name = tbSelectedId]:checkbox").prop("checked", status);
+	payable();
+}
+$(document).ready(function(){
+    // 进入页面全部选中 -->
+	selectAll();
+	//payable();
+	
+	// 当前选中的商品ID -->
+	function nowid(){
+		<!-- 初始化当前选中的id -->
+		thisid  = '';
+		$("input[name = tbSelectedId]:checkbox").each(function(){
+			if($(this).is(":checked")){
+				thisid += $(this).attr('data-id').replace('chk_','')+',';
+			}
+		});
+		if(!thisid){
+			layer.msg('请选择产品',{
+				shift :6,
+			});
+			return false;
+		}
+	};
+	// 单选商品 -->
+	$('.checkbox').click(function(){
+		var payable = $('#total').html();
+		var now_price = $(this).parent().siblings('.xiaoji').children('.price').html();
+		if($(this).is(':checked')){
+			payable = accAdd(payable,now_price).toFixed(2);
+		}else{
+			payable = accSub(payable,now_price).toFixed(2);
+		}
+		$('#total').text(payable);
+	})
+	
+	// 选定当前页数据 -->
+	$('#selectThisPage').click(function(){
+		selectAll();
+	})
+	
+	// 批量删除 -->
+	$('#clearCat').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+		var msg = '确定要批量删除吗？';
+		opration(msg,thisid);
+	})	
+	
+	// 提交 -->
+	$('.cart-sub').click(function(){
+		if(nowid() == false){
+			return false;
+		}
+
+        if($("#total").html() != 0) {
+            var goods_number_array=[];
+            var goods_check_array=[];
+            $(".goods_number").each(function(i){
+                goods_number_array[i] = $(this).val();
+                goods_check_array[i] = $(this).parent().parent().find('.checkbox').is(":checked");
+            });
+
+            for(var i in goods_number_array){
+                if(goods_check_array[i]){
+                    if(goods_number_array[i]=='0.000' || goods_number_array[i]=='' || goods_number_array[i]<=0){
+                        layer.msg("请先添加货品数量/重量再提交订单！",{shift :6});
+                        return false;
+                    }
+				}
+            }
+
+            $.ajax({
+                type: 'POST',
+                url	: '/Home/Order/choseOrder' ,
+                dataType:'json',
+                data: {'thisid':thisid},
+                success: function (ref) {
+                    if(ref.status == 100){
+                        window.location.href="{:U('/Home/Order/choseOrder')}?id="+thisid;
+                    }else if(ref.status == 101){
+                        url_l=ref.url;
+                        layer.msg(ref.msg,{				shift :6,	});
+                        if(url_l)	setTimeout("window.location.href=url_l",2000);
+                    }else{
+                        layer.msg('网络错误！',{		shift :6,	});
+
+                    }
+                }
+            })
+
+        }else{
+            layer.msg("请先添加货品再提交订单",{shift :6});
+        }
+	})
+})
+</script>

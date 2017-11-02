@@ -1,0 +1,507 @@
+<extend name="Manage:Default:Index:base" />
+<block name="title">{$L['apply_open_title']}</block>
+<block name="desc">{$L['apply_open_description']}</block>
+<block name="body_class">forget</block>
+
+<block name="body">
+    <div class="registr">
+        <div class="dropdown pull-right">
+            <a href="javascript:void(0);" class="btn btn-default dropdown-toggle info-number" data-toggle="dropdown">
+				{$nowlang}
+				<i class="fa fa-chevron-down"></i>
+			</a>
+			<div class="dropdown-menu dropdown-menu-head pull-right">
+				<ul class="dropdown-list normal-list">
+					<li class="new"><a href="javascript:void(0);" onclick="setlang('zh-cn')">{$L['text_zh-cn']}</a></li>
+					<li class="new"><a href="javascript:void(0);" onclick="setlang('zh-tw')">{$L['text_zh-tw']}</a></li>
+					<li class="new"><a href="javascript:void(0);" onclick="setlang('en-us')">{$L['text_en-us']}</a></li>
+				</ul>
+			</div>
+        </div>
+        <div class="container">
+			<if condition="LANG_SET eq 'en-us' ">
+				<img src="__IMG__/en-supply.png">
+			<else />
+				<img src="__IMG__/logo.png">
+			</if>
+            <span>{$L['apply_open_span_title']}</span>
+        </div>
+    </div>
+    <!--忘记密码-->
+    <if condition="$supply_status eq 0 ">
+        <div class="container">
+            <div class="from-bg col-lg-12">
+                <div class="settled ">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <h3>{$L['apply_open_h3']}</h3>
+                            {$L['apply_open_h3_label']}
+                        </header>
+                        <div class="panel-body">
+                            <form class="form-horizontal" method="post" role="form">
+                                <h4>{$L['apply_open_h4_1']}</h4>
+                                <div class="form-group">
+                                    <label class="col-lg-2 col-sm-2 control-label"><i>*</i>{$L['text_corp_name']}</label>
+                                    <div class="col-lg-4">
+                                        <input type="text" name="corp_name" value="{$info['corp_name']}" class="form-control" placeholder="{$L['entry_corp_name']}" style="float: left">
+                                        <span class="red">{$L['apply_open_notice2']}</span>
+                                    </div>
+                                    
+                                    <div class="col-lg-4">
+                                        <p class="help-block"><em>{$error_corp_name}</em></p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 col-sm-2 control-label">{$L['text_corp_alias']}</label>
+                                    <div class="col-lg-4">
+                                        <input type="text" name="corp_alias"  value="{$info['corp_alias']}" class="form-control" placeholder="{$L['entry_corp_alias']}">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <p class="help-block">{$L['help_corp_alias']}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 col-sm-2 control-label"><i>*</i>{$L['text_legal_representative_desc']}</label>
+                                    <div class="col-lg-4">
+                                        <input type="text" name="legal_representative" value="{$info['legal_representative']}" class="form-control" placeholder="{$L['entry_legal_representative_desc']}">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <p class="help-block"><em>{$error_legal_representative}</em></p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 col-sm-2 control-label"><i>*</i>{$L['text_id_type']}</label>
+                                    <div class="col-lg-2">
+                                        <select name="id_type" class="form-control">
+                                            <option value="居民身份证">{$L['text_id_type_zh']}</option>
+                                            <option value="港台身份证">{$L['text_id_type_hk_mc_tw']}</option>
+                                            <option value="护照">{$L['text_passport']}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <input type="text" name="id_number"  value="{$info['id_number']}"  class="form-control" placeholder="{$L['entry_id_number']}">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <p class="help-block"><em>{$error_id_number}</em></p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 col-sm-2 control-label"><i>*</i>{$L['text_business_type']}</label>
+                                    <div class="col-lg-7">
+                                        <label><input type="checkbox" name="business_type[]" value="裸钻">{$L['text_business_type_luozuan']}</label>
+                                        <label><input type="checkbox" name="business_type[]" value="钻饰">{$L['text_business_type_zuanshi']}</label>
+                                        <label><input type="checkbox" name="business_type[]" value="素金">{$L['text_business_type_sujin']}</label>
+                                        <label><input type="checkbox" name="business_type[]" value="彩宝">{$L['text_business_type_caibao']}</label>
+                                        <label><input type="checkbox" name="business_type[]" value="玉石">{$L['text_business_type_yushi']}</label>
+                                        <label><input type="checkbox" name="business_type[]" value="其它">{$L['text_business_type_other']}</label>
+                                        <textarea class="form-control" cols="100" rows="4" name="business_desc" <if condition="$info['business_desc'] eq '' "> placeholder="{$L['entry_business_type']}" </if> >{$info['business_desc']}</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 col-sm-2 control-label"><i>*</i>{$L['text_business_liaisons']}</label>
+                                    <div class="col-lg-4">
+                                        <input type="text" name="business_liaisons" value="{$info['business_liaisons']}" class="form-control" placeholder="{$L['entry_business_liaisons']}">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <p class="help-block"><em>{$error_business_liaisons}</em></p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 col-sm-2 control-label"><i>*</i>{$L['text_business_contact_telphone']}</label>
+                                    <div class="col-lg-4">
+                                        <input type="text" name="business_contact_telphone" value="{$info['business_contact_telphone']}" class="form-control" placeholder="{$L['entry_business_contact_telphone']}">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <p class="help-block"><em>{$error_business_contact_telphone}</em></p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 col-sm-2 control-label"><i>*</i>{$L['text_registered_address']}</label>
+                                    <div class="col-lg-4">
+                                        <input type="radio" name="country" value="china" <if condition="$info['country'] neq 'other' "> checked </if>><label>{$L['text_china']}</label>
+                                        <input type="radio" name="country" value="other" <if condition="$info['country'] eq 'other' "> checked </if>><label>{$L['text_china_other']}</label>
+                                        <!--br>
+                                        <select name="province" class="form-control">
+                                        </select>
+                                        <select name="city" class="form-control">
+                                        </select--><br /><br />
+										<select name="province" id="province" class="f5 f3" <if condition="$info['country'] eq 'other' "> style="display:none;" </if> >
+											<option value="" selected="selected">请选择省份</option>
+											<volist name="province" id="val">
+											<option value="{$val['region_name']}" data-id="{$val['region_id']}" <if condition="$info['province'] eq $val['region_name']">selected="selected"</if> >{$val['region_name']}</option>
+											</volist>
+										</select>&nbsp;&nbsp;
+										<select name="city" class="city" class="f5" <if condition="$info['country'] eq 'other' "> style="display:none;" </if> >
+											<option value="" selected="selected">请选择城市</option>
+											<volist name="city" id="val">
+											<option value="{$val['region_name']}" data-id="{$val['region_id']}" <if condition="$info['city'] eq $val['region_name']">selected="selected" </if> >{$val['region_name']}</option>
+											</volist>
+										</select>
+                                    </div>
+									
+                                </div>
+								<!--div class="form-group">
+                                    <label class="col-lg-2 col-sm-2 control-label"><i>*</i>{$L['text_establishment_date']}</label>
+                                    <div class="col-lg-4">
+                                        <input type="text" name="establishment_date" class="form-control">
+                                    </div>
+                                </div-->
+                                <div class="form-group">
+                                    <label class="col-lg-2 col-sm-2 control-label"><i>*</i>{$L['text_contact_info']}</label>
+                                    <div class="col-lg-6 settled-info">
+                                        <ul>
+                                            <li><label>{$L['text_email']}</label>    <input type="email" name="corp_email" value="{$info['corp_email']}" class="form-control" placeholder="{$L['entry_email']}"></li>
+                                            <li><label>{$L['text_telphone']}</label> <input type="text" name="corp_telphone" value="{$info['corp_telphone']}" class="form-control" placeholder="{$L['entry_telphone']}"></li>
+                                            <li><label>{$L['text_fax']}</label>      <input type="text" name="corp_fax" value="{$info['corp_fax']}" class="form-control" placeholder="{$L['entry_fax']}"></li>
+                                            <li><label>{$L['text_address']}</label>  <input type="text" name="corp_address" value="{$info['corp_address']}" class="form-control" placeholder="{$L['entry_address']}"></li>
+                                        </ul>
+                                    </div>
+                                </div>
+								<h4>{$L['apply_open_h4_2']}</h4>
+                                <style>
+                                    .imgsDiv{ 
+										float: left; 
+										position: relative; 
+										text-align: center;
+									}
+                                    .imgsDiv input{
+										width: 200px; 
+										height: 170px; 
+										opacity: 0; 
+										position: absolute; 
+										top: 0; 
+										left: 0; 
+									}
+									.imgsDiv p{
+										height: 50px;
+										line-height: 20px;
+									}
+									.notice{
+										height: auto;
+										line-height: 50px;
+										margin-bottom: 10px;
+										padding-left: 85px;
+									}
+									.red {
+										color:red;
+									}
+									.text-center{
+										margin-left:69px;
+									}
+									.col-md-3 .img{display: block;
+										height: 200px;
+										overflow: hidden;
+										padding: 8px 0;
+										position: relative;
+										width: 200px;
+									}
+									.deleteImg{
+										cursor: pointer;
+										display: none;
+										position: absolute;
+										right: 8px;
+										top: 14px;
+									}
+									.col-md-3 .imgsDiv:hover .deleteImg{
+										display:block;
+									}
+                                </style>
+                                <div class="form-group">
+								<div class="notice">{$L['apply_open_notice']}</div>
+                                <div class="col-md-3  text-center">
+                                    <div class="imgsDiv">
+										<a href="javascript:;" class="img" id="oneImg">
+											<if condition="$info['license_imgs'] neq '' ">
+												<img class="oneImg" src="{$info['license_imgs']}" width="200" />
+											<else />
+												<img class="oneImg" src="__IMG__/list_add.png" width="200" />
+											</if>
+											<input type="file" name="license_img">
+										</a>
+										<if condition="$info['organization_imgs'] neq '' ">
+										<a href="javascript:;" class="deleteImg" onclick="deleteImg(this,'license_imgs')">
+											<img src="__IMG__/mail_delete.png"/ width="25">
+										</a>
+										<input type="hidden" value="{$info['license_imgs']}" name="license_imgs">
+										</if>
+										<p>[{$L['apply_open_license']}]</p>
+									</div>
+								</div>
+								<div class="col-md-3  text-center">
+									<div class="imgsDiv">
+										<a href="javascript:;" class="img" id="twoImg">
+											<if condition="$info['registration_imgs'] neq '' ">
+												<img class="twoImg" src="{$info['registration_imgs']}" width="200" />
+											<else />
+												<img class="twoImg" src="__IMG__/list_add.png" width="200" />
+											</if>
+											<input type="file" name="registration_img">
+										</a>
+										<if condition="$info['organization_imgs'] neq '' ">
+										<a href="javascript:;" class="deleteImg" onclick="deleteImg(this,'registration_imgs')">
+											<img src="__IMG__/mail_delete.png"/ width="25">
+										</a>
+										<input type="hidden" value="{$info['registration_imgs']}" name="registration_imgs">
+										</if>
+										<p>[{$L['apply_open_registration']}]</p>
+									</div>
+								</div>
+								<div class="col-md-3  text-center">
+									<div class="imgsDiv">
+										<a href="javascript:;" class="img" id="thereImg">
+											<if condition="$info['organization_imgs'] neq '' ">
+												<img class="thereImg" src="{$info['organization_imgs']}" width="200" />
+											<else />
+												<img class="thereImg" src="__IMG__/list_add.png" width="200" />
+											</if>
+											<input type="file" name="organization_img">
+										</a>
+										<if condition="$info['organization_imgs'] neq '' ">
+										<a href="javascript:;" class="deleteImg" onclick="deleteImg(this,'organization_imgs')">
+											<img src="__IMG__/mail_delete.png"/ width="25">
+										</a>
+										<input type="hidden" value="{$info['organization_imgs']}" name="organization_imgs">
+										</if>
+										<p>[{$L['apply_open_organization']}]</p>
+									</div>
+								</div>
+                                <div class="clearfix"></div>
+								</div>
+								
+								<div class="form-group">
+                                    <div class="settled-btn col-lg-12">
+                                        <button type="button" class="btn btn-warning" id="addbusiness">{$L['apply_open_submit']}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                    <div class="corner"></div>
+                </div>
+            </div>
+        </div>
+    <elseif  condition="$supply_status eq 1 " />
+        <style>        
+            .footer{clear: both; position: absolute; bottom: 20px; text-align: center; width: 100%;}
+        </style>
+        <div class="container">
+            <div class="from-bg col-lg-12 text-center"><span style="font-size: 32px; margin-top: 100px; display: inline-block; color： #333">{$L['text_data_examineing']}</span></div>             
+            <div class="from-bg col-lg-12 text-center">
+                <p><span style="font-size: 20px; margin-top: 50px; display: inline-block; color： #333">{$L['text_data_fast_through']}</span></p>
+                <p><span style="font-size: 20px; margin-top: 20px; display: inline-block; color： #333">{$L['text_email']}:{$supply_kefu_email}</span></p>
+                <p><span style="font-size: 20px; margin-top: 20px; display: inline-block; color： #333">{$L['text_telphone']}: {$supply_kefu_tel}</span></p>
+            </div>
+        </div>
+        <div class="footer">
+            <p>{$L['copyright']} <br /> {$L['copyright_information']}</p>
+        </div>
+    <elseif  condition="$supply_status eq 3 " />		
+	    <style>        
+            .footer{clear: both; position: absolute; bottom: 20px; text-align: center; width: 100%;}
+        </style>
+        <div class="container">
+            <div class="from-bg col-lg-12 text-center"><span style="font-size: 32px; margin-top: 100px; display: inline-block; color： #333">{$L['text_data_nopass_examineing']}</span></div>             
+            <div class="from-bg col-lg-12 text-center">
+                <p><span style="font-size: 20px; margin-top: 50px; display: inline-block; color： #333">{$L['text_data_fast_through']}</span></p>
+                <p><span style="font-size: 20px; margin-top: 20px; display: inline-block; color： #333">{$L['text_email']}:{$supply_kefu_email}</span></p>
+                <p><span style="font-size: 20px; margin-top: 20px; display: inline-block; color： #333">{$L['text_telphone']}: {$supply_kefu_tel}</span></p>
+            </div>
+        </div>
+        <div class="footer">
+            <p>{$L['copyright']}<br />{$L['copyright_information']}</p>
+        </div>
+    </if>
+</block>
+<block name="my_css">
+    <link href="__CSS__/fileinput.css" rel="stylesheet" type="text/css" />
+</block>
+<block name="my_js">
+<!--上传控件-->
+<script type="text/javascript" src="__PUBLIC__/product/ajaxfileupload.js"></script>
+<script>
+<!-- 图片ajax上传 -->
+function ajaxFileUpload(fileElementId,name) {
+	$.ajaxFileUpload({
+		url: "{:U('Index/supplyImg')}"+'?name='+name,
+		secureuri: false,
+		fileElementId: fileElementId,
+		dataType: 'json',
+		success: function (data, status) {
+			if (data.success) {
+				$('.'+fileElementId).attr("src",data.data.img_path);
+				$('#'+fileElementId).next('.deleteImg').remove();
+				$('input[name="'+name+'s"]').remove();
+				var html='';
+				html = '<a href="javascript:;" class="deleteImg" onclick="deleteImg(this,\''+name+'s\')"><img src="/Application/Supply/View/Public/images/mail_delete.png"/ width="25"></a><input type="hidden" value="'+data.data.img_path+'" name="'+name+'s">';
+				$('#'+fileElementId).after(html);
+			} else {
+				if(data.data){
+					layer.msg(data.data,{
+						shift:6,
+					})
+				}else{
+					layer.msg('{$L["error_msg_074"]}',{
+						shift:6,
+					})
+				}
+			}
+			$('#'+fileElementId+' input').change(function () {
+				var name = $(this).attr('name');
+				ajaxFileUpload(fileElementId,name);
+			});
+		},
+		error: function (data, status, e) {
+			layer.msg('{$L["error_msg_075"]}',{
+				shift:6,
+			})
+		}
+	});
+}
+		// 为缩略图绑定删除事件
+		function deleteImg(a,name){
+			$('input[name="'+name+'"]').remove();
+			$(a).prev().children('img').attr('src','/Application/Admin/View/img/list_add.png');
+			$(a).remove();
+			
+		}
+		/*图片上传 
+		 *参数：
+		 *	id: 需要替换图片的元素父级id值
+		 *	name:	input框name值
+		*/
+		$('.img input').change(function () {
+			var id = $(this).parent().attr('id');
+			var name = $(this).attr('name');
+			if(id && name){
+				ajaxFileUpload(id,name);
+			}
+		});
+	
+		<!-- 多语言切换 -->
+		function setlang(lang_type){
+            self.location.href = '{:U("Index/login")}?lang='+lang_type
+        }
+        //$('button').on('click',function(){
+         //   return false;
+       // });
+
+        var business_type = "{$info['business_type']}";
+        var bool          = business_type.indexOf(",");
+        if( bool > 0 ){
+            business_type_array = business_type.split(","); //字符分割
+            for (var i = 0;i<business_type_array.length ;i++ ){
+                $('input[name="business_type[]"][value="'+business_type_array[i]+'"]').prop("checked",true);
+            }
+        }else{
+            $('input[name="business_type[]"][value="'+business_type+'"]').prop("checked",true);
+        }
+
+        $('input[name="id_type"]').val("{$info['id_type']}");
+        $('input[name="country"][value="{$info['country']}"]').prop("checked",true);
+$(document).ready(function(){
+	<!-- 选择国内或者国外显示不同 -->
+	$('input[name="country"]').change(function(){
+		var country = $(this).val();
+		if(country == 'other'){
+			$('#province').val('');
+			$('#province').hide();
+			$('.city').val('');
+			$('.city').hide();
+		}else{
+			$('#province').show();
+			$('.city').show();
+		}
+	})
+	<!-- 选择省份ajax返回城市地址 -->
+	$('#province').change(function(){
+		var id = $(this).find ("option:selected").attr('data-id');
+		if(!id){
+			$('.city').html('<option value="" selected="selected">{$L["apply_chose_city"]}</option>');
+			return false;
+		}
+		$.ajax({
+			type: "get",
+			url : "{:U('Public/getRegion/parent_id/"+id+"')}", 
+			dataType:'json', 
+			success: function(res){
+				if(res){
+					var content = '<option value="" selected="selected">{$L["apply_chose_city"]}</option>';
+					$.each( res, function(index,item){
+						content +='<option value="'+item.region_name+'" >'+item.region_name+'</option>';
+					});
+					$('.city').html(content);
+				}else{
+					layer.msg('网络错误',{
+						shift :6,
+						icon: 5
+					});
+					return false;
+				}
+			},
+		});
+	})
+	<!-- 供应商提交 -->
+	$('#addbusiness').click(function(){
+		if(checkeinput_length('corp_name','2','50','{$L["apply_open_notice3"]}') == false){
+			return false;
+		}
+		if(checkeinput_length('legal_representative','2','15','{$L["apply_open_notice4"]}') == false){
+			return false;
+		}
+		if(checkeselect('id_type','{$L["apply_id_type_must"]}') == false){
+			return false;
+		}
+		if(checkeinput_length('id_number','','','{$L["apply_id_number_must"]}') == false){
+			return false;
+		}
+		
+		if(checke_checked('business_type[]','{$L["apply_chose_business_type"]}') == false){
+			return false;
+		}
+		
+		if(checketextarea_length('business_desc','2','500','{$L["apply_open_notice5"]}') == false){
+			return false;
+		}
+		if(checkeinput_length('business_liaisons','2','15','{$L["apply_open_notice6"]}') == false){
+			return false;
+		}
+		if(checkeinput_length('business_contact_telphone','','','{$L["entry_business_contact_telphone"]}') == false){
+			return false;
+		}
+		if(checkeinput('email','corp_email') == false){
+			return false;
+		}
+		if(checkeinput_length('corp_telphone','','','{$L["entry_telphone"]}') == false){
+			return false;
+		}
+		if(checkeinput_length('corp_fax','','','{$L["entry_fax"]}') == false){
+			return false;
+		}
+		if(checkeinput_length('corp_address','','','{$L["error_addr_must"]}') == false){
+			return false;
+		}
+		if(checkeinput_length('license_imgs','','','{$L["apply_license_imgs_must"]}') == false){
+			return false;
+		}
+		// if(checkeinput_length('registration_imgs','','','{$L["apply_registration_imgs_must"]}') == false){
+		// 	return false;
+		// }
+		// if(checkeinput_length('organization_imgs','','','{$L["apply_organization_imgs_must"]}') == false){
+		// 	return false;
+		// }
+		var msg = "{$L['apply_submit_notice']}";
+		layer.confirm(msg, {
+			  btn: ['{$L["sure"]}','{$L["cancel"]}'] //按钮
+			}, function(){
+				$('.form-horizontal').submit();
+				return false;
+			}
+		);
+		
+	})
+
+
+
+})
+</script>
+</block>

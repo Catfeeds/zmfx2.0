@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>新增权限</title>
+    <style>
+        .huise{
+            color:#ccc;
+        }
+    </style>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：订单列表</h3>
+        <ul>
+            <volist name="menuList[104]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+    </div>
+    <form action="{$my_all_param['submit_url']}" method="post">
+        <div style="padding:10px;">
+            <div class="info">
+                <div class="title">功能类别:</div>
+                <select name="ca_rank">
+                    <option value="">请选择</option>
+                    <volist name="cate_arr" id="vo">
+                        <option value="{$vo['id']}" <if condition="$vo['id'] eq $info['ca_rank']">selected</if> >{$vo['name']}</option>
+                    </volist>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">系列名称:</div>
+                <input type="text" name="ca_name"  value="{$info['ca_name']}">
+            </div>
+            <div class="info">
+                <div class="title">EOS系统编码:</div>
+                <input type="text" name="ca_code"  value="{$info['ca_code']}">
+            </div>
+            <div class="info">
+                <div class="title">排序:</div>
+                <input type="number" name="ca_sort"  value="{$info['ca_sort']}">
+                <label>如：0为最前面</label>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="hidden" name="id" value="{$info['id']}">
+                <input type="submit" class="button fl" value="保存">
+
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

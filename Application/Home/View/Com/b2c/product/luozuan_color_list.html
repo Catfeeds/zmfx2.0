@@ -1,0 +1,112 @@
+<div class="datalist">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="sorting">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul>
+                            <li class="orderby">按价格 <i class="glyphicon" data-value="dia_global_price"></i></li>
+                            <li class="orderby">钻重 <i class="glyphicon" data-value="weight"></i></li>
+                            <li class="orderby">颜色 <i class="glyphicon" data-value="color"></i></li>
+                            <li class="orderby">净度 <i class="glyphicon" data-value="clarity"></i></li>
+                            <div class="clearfix"></div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default border-radiusno">
+                <div class="panel-heading">
+                    <h5 class="pull-left"><strong>共找到<label id="num"></label>颗钻石供您挑选</strong></h5>
+                    <button onclick="javascript:location.href='{:U('/Home/Order/orderCart')}';" class="btn btn-warning border-radiusno pull-right">购物车（<span id="cart">{$cartNumber}</span>）</button>
+					<button class="btn border-radiusno pull-right" onclick="etdata('1','2');" style="margin-right: 2px">导出当前页数据</button> &nbsp;
+					<button class="btn border-radiusno pull-right" onclick="etdata('2','2');" style="margin-right: 2px">导出选中数据</button> &nbsp;
+					<div class="clearfix"></div>
+                </div>
+                <div class="panel-body">
+                    <div id="diamond_info">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="lb-hide">详细</th>
+                                        <th class="nf-hide">来源</th>
+                                        <th>形状</th>
+                                        <th>证书</th>
+                                        <th>编号</th>
+                                        <th>钻重</th>
+                                        <th>颜色</th>
+                                        <th>色度</th>
+                                        <th>净度</th>
+                                        <th>抛光</th>
+                                        <th>对称</th>
+                                        <th>荧光</th>
+                                        <th class="lb-hide">全深比</th>
+                                        <th class="lb-hide">台宽比</th>
+                                        <th>价格</th>
+                                        <th><input type="checkbox" class="all-checkbox"></th>
+                                        <th style="width: 150px;"><button class="btn btn-default btn-warning" id="addCartAll">批量购买</button></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="luozuan_table">
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="pages" class="pages text-center">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Large modal -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-md">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">规格明细</h4>
+        </div>
+
+        <div class="luozuanDetail">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul id="luozuan_info">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        luozuan.condition['luozuan_type'] = [1];
+        $('.orderby').click(function(){
+			if( $(this).find('i').hasClass('glyphicon-arrow-down') || $(this).find('i').hasClass('glyphicon-arrow-up') ){
+				if( $(this).find('i').hasClass('glyphicon-arrow-down') ){
+					$('.orderby').find('i').removeClass('glyphicon-arrow-down');
+					$(this).find('i').addClass('glyphicon-arrow-up');
+					var order = $(this).find('i').attr('data-value');
+					luozuan.set_orderby(order,'asc');
+				} else {
+					$('.orderby').find('i').removeClass('glyphicon-arrow-up');
+					$(this).find('i').addClass('glyphicon-arrow-down');
+					var order = $(this).find('i').attr('data-value');
+					luozuan.set_orderby(order,'desc');
+				}
+			}else{
+				$('.orderby').find('i').removeClass('glyphicon-arrow-down');
+				$('.orderby').find('i').removeClass('glyphicon-arrow-up');
+				$(this).find('i').addClass('glyphicon-arrow-down');
+				var order = $(this).find('i').attr('data-value');
+				luozuan.set_orderby(order,'desc');
+			}
+            luozuan.get_list(func_display_luozuan_data);
+		});
+    });
+</script>

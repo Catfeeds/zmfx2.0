@@ -1,0 +1,19 @@
+<script>
+	/* 附加删除条件的方法 */ 
+	$(document).delegate('.mallhot-tag','click', function() {
+		var attr_code,attr_id;
+		attr_code = $(this).attr('data-attr-code');
+		attr_id   = $(this).attr('data-attr-id');
+		$('a[data-attr-code="'+attr_code+'"][data-attr-id="'+attr_id+'"]').removeClass('active');
+		$(this).parents("a").remove();
+		zuantuo.clear_condition(attr_id,attr_code);
+		zuantuo.set_page('1');
+		zuantuo.get_goods_list(func_display_goods_list);
+	});
+    $(function(){
+		zuantuo.get_attributes(func_display_attributes_data);
+    });
+</script>
+<div class="groups" id='div_attributes'> 
+    <ul id='attributes'></ul>
+</div>

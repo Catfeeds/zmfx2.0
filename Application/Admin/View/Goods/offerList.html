@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>钻石报价列表</title>
+</head>
+<body>
+<!-- right -->
+<style>
+    .pull-left { float: left;}
+</style>
+<div class="goods page-main">
+    <div class="subMenu">
+        <h3>当前操作：钻石报价</h3>
+        <ul>
+            <li><a href="{:U('Admin/Goods/offerInfo')}">+添加钻石</a></li>
+            <li><a href="{:U('Admin/Goods/offerSettingInfo')}">设置</a></li>
+        </ul>
+    </div>
+    <div class="filter">
+        <form action="{:U('/Admin/Goods/offerList/')}" method="get">
+            <div class="fl">
+                钻重区间：
+            </div>
+            <select name="weight_section" class="fl" style="width: 166px;">
+                <option value="0">请选择</option>
+                <volist name="setting_param.weight_arr" id="weights" key="ke">
+                    <option value="{$weights['value']}" <if condition="$weights['value'] eq $search['weight_section']">selected</if>>{$weights['name']}</option>
+                </volist>
+            </select>
+            <div class="fl">
+                颜色：
+            </div>
+            <select name="color" class="fl">
+                <option value="">请选择</option>
+                <volist name="setting_param.color_arr" id="color_name">
+                    <option value="{$color_name}" <if condition="$color_name eq $search['color']">selected</if>>{$color_name}</option>
+                </volist>
+            </select>
+            <div class="fl">
+                净度：
+            </div>
+            <select name="clarity" class="fl">
+                <option value="">请选择</option>
+                <volist name="setting_param.clarity_arr" id="clarity_name">
+                    <option value="{$clarity_name}" <if condition="$clarity_name eq $search['clarity']">selected</if>>{$clarity_name}</option>
+                </volist>
+            </select>
+
+            <div class="fl">
+                &nbsp;
+            </div>
+            <input class="button" type="submit" value="查询">
+            <p style="padding: 5px 10px">以下报价结果主要是圆形白钻，切工EX抛光EX对称EX荧光None 汇率{$huilv}</p>
+        </form>
+    </div>
+    <form action="#" method="POST" style="padding: 0 15px">
+        <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+            <tbody>
+            <tr class="top">
+                <th>
+                    <input id="selectThisPage" type="checkbox">
+                </th>
+                <th>钻重</th>
+                <th>颜色</th>
+                <th>净度</th>
+                <th>国际报价</th>
+                <th>折扣</th>
+                <th>克拉单价（原价）</th>
+                <th>克拉单价（加价）</th>
+                <th>单粒价格（原价）</th>
+                <th>单粒价格（加价）</th>
+                <th>操作</th>
+            </tr>
+            <volist name="lists" id="list" mod="2">
+                <tr class="{$mod ? 'bg2' : 'bg1'}">
+                    <td><input data-id="chk_716352813" name="tbSelectedId" type="checkbox"></td>
+                    <td>{$list.weight}</td>
+                    <td>{$list.color}</td>
+                    <td>{$list.clarity}</td>
+                    <td>{$list.dia_global_price}</td>
+                    <td>{$list.dia_discount}</td>
+                    <td>{$list.carat_arr.price}</td>
+                    <td>{$list.carat_arr.add_price}</td>
+                    <td>{$list.single_arr.price}</td>
+                    <td>{$list.single_arr.add_price}</td>
+                    <td><a href="{:U('Admin/Goods/offerInfo?offer_id='.$list['offer_id'])}">修改</a> <a href="{:U('Admin/Goods/offerDelete?offer_id='.$list['offer_id'])}">删除</a></td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+    </form>
+    <div class="page">{$page}</div>
+</div>
+<!-- right end -->
+
+</body>
+</html>

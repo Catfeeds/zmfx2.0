@@ -1,0 +1,38 @@
+<script type="text/javascript" src="__JS__/jquery.10.js"></script> 
+<script>
+function synZuanming(){ 
+	$("#synBtn").attr("disabled", true);
+	var page = arguments[0] ? arguments[0] : 1;
+	$.post("/Admin/Goods/getSynZuanmingData",{Action:"post",page:page},function(data){   
+		if(data.page<=data.totalpage){
+			$("#total").html(data.total);
+			$("#totalpage").html(data.totalpage);
+			$("#importpage").html(data.page);
+			synZuanming(page+1);
+		}else{
+			alert("已完成");
+		}                             
+	});
+}
+</script>
+
+<div class="goods page-main">
+    <div class="subMenu">
+        <h3>当前操作：同步供应商裸钻数据</h3>
+    </div> 
+    <div class="uploadData">  
+		<div class="info">
+	        <div class="title">&nbsp;</div>
+	        <div class="UPcontent">
+	            <div>              
+            		<input id="synBtn" type="button" onclick="synZuanming()" value="开始同步{$laiziWhere}裸钻数据" />                          
+					<p>同步数据的时候不要关闭或者刷新当前页面，否则数据传输会中断。</p>   
+					<div id="synMsg" class="UPcontent">
+						总数：<span id="total"></span>总共：<span id="totalpage"></span>页数据 已导入：<span id="importpage">0</span>页数据
+					</div>                                        
+	            </div>
+	        </div>
+	        <div class="clear"></div> 
+		</div>
+	</div>
+</div>

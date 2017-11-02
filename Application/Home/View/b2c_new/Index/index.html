@@ -1,0 +1,41 @@
+
+<!-- main -->
+<div class="main fadeIn animated">
+	<include file=".:Com:b2c:public:banner" />
+	<include file=".:Com:b2c:product:special_index" />
+	<include file=".:Com:b2c:product:custom_index" />
+	<include file=".:Com:b2c:product:mallhot_index" />
+	<include file=".:Com:b2c:product:brand_index" />
+	<include file=".:Com:b2c:article:new_index" />
+  <include file=".:Com:b2c:public:zdy_index" />
+
+	<script>
+		$(function(){
+			$('body').attr('class','index-bg');
+			//调整栏目和图片大小 
+			
+			window.onload=function(){
+				$('.contbox').each(function(){
+					$(this).find('.contright').height($(this).find('.contleft').height());
+					$(this).find('.imgleft2').height($(this).find('.contleft').height()-8);
+					$(this).find('.imgright2').height($(this).find('.imgleft2').height());
+					$(this).find('.imgright2').children().height($(this).find('.imgleft2').height()/2 - 9);
+				});
+			}
+
+			$(window).resize(function(){
+				$('.contbox').each(function(){
+					$(this).find('.contright').height($(this).find('.contleft').height());
+					$(this).find('.imgleft2').height($(this).find('.contleft').height()-8);
+					$(this).find('.imgright2').height($(this).find('.imgleft2').height());
+					$(this).find('.imgright2').children().height($(this).find('.imgleft2').height()/2 - 9);
+				});
+			});
+		});
+	</script>
+</div>
+
+ 
+<!-- main end //-->
+
+

@@ -1,0 +1,15 @@
+article,aside,details,figcaption,figure,footer,header,hgroup,nav,section {display:block;}
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,legend,input,lable,textarea,p,blockquote,th,td {margin:0;padding:0;}
+html{font-size:100%;overflow-y:scroll;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+table{border-collapse: collapse;border-spacing:0;}
+fieldset,img{border:0;}
+address,caption,cite,code,dfn,em,th,var{font-style:normal; font-weight:normal;}
+ol,ul{list-style:none;}
+h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
+body{font-size: 13px;line-height: 18px;color: #333; width:100%;}
+.box_163css{margin-top:20px; overflow:hidden;width:100%;height:60px;font-size: 16px;line-height: 36px;position:relative;}
+.line{ position:absolute; height:50px; left:0; line-height:50px; text-align:center; color:#000; /*  background:#2c63a6;  */ background: #eee; cursor:pointer;}
+.line li{float:left; background:url(images/line.png) no-repeat left 9px;}
+.line li:first-child{ background:none; }
+.line li a{ color:#000; background: none; text-decoration:none;}
+.line li.active { background: #ddd;}

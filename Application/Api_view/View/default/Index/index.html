@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/main.css">
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/common.js"></script>
+<script src="__JS__/public.js"></script> 
+<!-- Owl Carousel Assets -->
+<link href="__CSS__/owl.carousel.css" rel="stylesheet">
+<link href="__CSS__/owl.theme.css" rel="stylesheet">
+<script src="__JS__/owl.carousel.js"></script>
+
+<title>首页</title>
+</head>
+
+<body class="wrap-bg">
+	<!--头部-->
+    <header class=" header text-center">
+    	<!--<div class="index-logo"><img src="#" alt="logo" class="img-polaroid"></div>logo-->
+        <a href="javascript:;" class="index-logo"><img src="/Public/{:C('web_logo')}" alt="logo"></a>
+        <a href="{:U('/Goods/search')}" class="pull-right" style="margin-right: 15px"><i class="glyphicon glyphicon-search"></i></a>
+    </header>
+    <!--内容-->
+    <div class="container wrap">
+    	<div class="row">
+			<!--轮播-->
+		 
+			<div id="owl-demo" class="owl-carousel owl-theme">
+				<volist name="tempAdList[0]['adlist']" id="vo">
+					<div class="item">
+						<if condition="$vo['url'] neq '' ">
+						<a href="../{$vo['url']}">
+						</if>
+						<img src="/Public{$vo.images_path|str_replace='./','/',###}" alt="{$vo.title}">
+						<if condition="$vo['url'] neq '' ">
+						</a>
+						</if>
+					</div>
+				</volist>
+			</div>
+			  <!--内容-->
+ 
+			<if condition="$modList_cust['status'] eq 1" >
+			<div class="panel panel-default">
+				<a href="{:U('goods/custom')}">
+			   <div class="panel-body">
+				  <div class="col-xs-4">
+					<if condition="$goodsinfo['thumb']">
+					 <img src="{$goodsinfo['thumb']}" alt="{$goodsinfo['goods_name']}" width="100" height="100">
+					 <else />
+					 <img src="/Public{$modList_cust['img_path']|str_replace='./','/',###}"  width="100" height="100">
+					</if>
+				  </div>
+				 <if condition="$goodsinfo">
+				  <div class="col-xs-8 index-list">
+					<h5>个性定制</h5>
+					<p>{$goodsinfo['goods_name']}</p>
+					<em>￥
+						<in name="goodsinfo['activity_status']" value="0,1">
+							{$goodsinfo['activity_price']}
+						<else/>
+							{$goodsinfo['goods_price']}
+						</in>
+					</em>
+				  </div>
+				  </if>
+			   </div>
+			   </a>
+			</div>
+			</if>
+			<div class="index">
+				<ul>
+				<volist name="modList" id="vo"  >
+					<if condition="$vo['status'] eq 1">
+						<if condition="$key eq zhy1">
+							<li><a href="{:U('LuoZuan/luoZuan')}"><img src="/Public{$modList[zhy1]['img_path']}" ></a></li>      
+						<elseif condition="$key eq zhy3" />
+							<if condition="$modList[zhy3]['status'] eq 1 " >
+								<li>
+								<if condition="$modList[zhy3]['url_id']['0']" >
+								<a href="/Goods/goodsCat/gid/{$modList[zhy3]['url_id']['0']}.html" attr_name="{$modList[zhy3]['url_id']['1']}" class="series_name"><img src="/Public{$modList[zhy3]['img_path']}" ></a></li>
+								<else />
+								<a href="/Goods" attr_name="{$modList[zhy3]['url_id']['1']}" class="series_name"><img src="/Public{$modList[zhy3]['img_path']}" ></a></li>
+								</if>
+							</if>
+						</if>
+					</if>
+				</volist>
+			  </ul>
+			</div>
+		</div>
+	</div>
+	{:W('Frame/footer', array('index'))}
+</body>
+    <style>
+      #owl-demo .item img{
+          display: block;
+          /* width: 100%; */
+          /* height: auto; */
+          /* width: 640px;
+          height: 160px; */
+      }
+    </style>
+
+    <script>
+      $(document).ready(function() {
+        $("#owl-demo").owlCarousel({
+		autoPlay : 3000,
+		stopOnHover : true,
+		navigation:false,
+		paginationSpeed : 1000,
+		goToFirstSpeed : 2000,
+		singleItem : true,
+		autoHeight : true,
+		transitionStyle:"fade"
+
+        });
+      });
+	  
+	  
+	  
+	  
+	var exp = new Date();
+    exp.setTime(exp.getTime() + 3000);
+    document.cookie = 'brand_tip' + "=" + escape('111') + ";expires=" + exp.toGMTString()+";path=/;";
+	
+	$(".series_name").click(function(){
+	 var series_name=($(this).attr("attr_name"));
+	 setCookie('series_name',series_name);	
+	});
+
+	  
+	  
+	  
+	  
+	  
+</script>
+</html>

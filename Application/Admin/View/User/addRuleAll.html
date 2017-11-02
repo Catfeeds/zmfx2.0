@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>新增权限</title>
+    <style>
+        .huise{
+            color:#ccc;
+        }
+    </style>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：新增权限</h3>
+    </div>
+    <form action="{:U('Admin/Admin/addRuleAll')}" method="post">
+    	<div style="padding:10px;">
+            <div class="info">
+                <div class="title">功能类别:</div>
+                <select name="type" onchange="ajax_get_thing()">
+                    <option>请选择</option>
+                    <option value="1">新增1级菜单</option>
+                    <option value="2">新增2级菜单</option>
+                    <option value="3">新增1级权限模块</option>
+                    <option value="4">新增2级权限</option>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">上级:</div>
+                <select name="parent">
+                    <option value="0">请选择</option>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">名称:</div>
+                <input type="text" name="title"  value="">
+                <label>如：订单管理</label>
+            </div>
+            <div class="info">
+                <div class="title">权限地址:</div>
+                <input type="text" name="url"  value="">
+                <label>如：Admin/User/index</label>
+            </div>
+            <div class="info">
+                <div class="title">排序:</div>
+                <input type="number" name="sort"  value="0">
+                <label>如：0</label>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="保存">
+
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    function ajax_get_thing(){
+        var ajax_url = '{:U("Admin/Admin/ajaxRuleAll")}';
+        var obj_data = {
+            type:$('select[name=type]').val(),
+            parent:$('select[name=parent]').val(),
+            title:$('input[name=title]').val(),
+            url:$('input[name=url]').val(),
+        };
+        $.get(ajax_url,obj_data,function(res){
+            var html_string = '<option value="0">请选择</option>';
+            if(res.status==100){
+                for(var i=0;i<res.info.length;i++){
+                    html_string += '<option value="'+res.info[i].pid+'">'+res.info[i].name+'</option>';
+                }
+            }
+            $('select[name=parent]').html(html_string);
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>个人信息-性别</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/public.css">
+	<link rel="stylesheet" href="css/user.css">
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/user.js"></script>
+</head>
+<body class="wrap-bg">
+	<!-- Header -->
+	<header class="header text-center">
+    	性别
+        <a href="javascript:;" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i>个人信息</a>
+    </header>
+    <!-- Header END //-->
+
+	<!-- Main -->
+    <div class="container-fluid user-info">
+
+		<div class="panel panel-default border-radius-none">
+			<div class="panel-body username usbox">
+				<ul class="user-info-sex-ul">
+					<li onclick=""> 
+				  		男 
+					</li>
+					<li onclick=""> 
+				  		女
+				  		<i class="glyphicon glyphicon-ok blue pull-right"></i>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+    <!-- Main END //-->
+
+</body>
+<script>
+	$(function(){
+		$(".user-info-sex-ul li").click(function(){
+			$(".user-info-sex-ul li").find("i").remove();
+			$(this).append("<i class='glyphicon glyphicon-ok blue pull-right'></i>");
+		});
+	});
+</script>
+</html>

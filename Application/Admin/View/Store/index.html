@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>门店列表</title>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：门店列表</h3>
+        <ul>
+            <li><a href="{:U('Admin/Store/info')}" style="border: 1px solid #ccc; padding: 2px 5px;">添加门店</a></li> 
+        </ul>
+    </div>
+    <div class="filter">
+    <form name="search" action="{:U('Admin/Store/index')}" method="GET">
+		<input type="text" name="name" value="{$name}" placeholder="门店名称" class="input" />
+		<div class="fl">&nbsp;</div>
+		
+		<select id="province" class="f1" name="province_id" >
+			<option value="" selected="selected">选择省份</option>
+			<volist name="province" id="val">
+			<option value="{$val['region_id']}" <if condition="$province_id eq $val['region_id']">selected="selected"</if> >{$val['region_name']}</option>
+			</volist>
+		</select>
+		<div class="fl">&nbsp;</div>
+		<select id="city" class="f1" name="city_id" >
+			<option value="" selected="selected">选择城市</option>
+		</select> 
+		<div class="fl">&nbsp;</div>
+		
+		<input type="submit" style="float:left;" value="查询"  class="button"/>
+    </form>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+    	<tr class="top"><th>ID</th><th>门店名称</th><th>所属地区</th><th>所在城市</th><th>排序</th><th>是否显示</th><th>添加日期</th><th>操作</th></tr>
+    	<volist name="storeList" id="vo">
+    	<tr>
+            <td width="5%">{$vo.id}</td>
+            <td class="tdLeft" width="50%"><a href="{:U('Admin/Store/info?id='.$vo['id'])}">{$vo.name}</a></td>
+			<td>{$vo.area}</td>
+            <td>{$vo.city_name}</td>
+            <td>{$vo.sort}</td>
+            <td><eq name="vo['is_show']" value="1">显示<else/>不显示</eq></td>
+            <td>{$vo.addtime|date="Y-m-d",###}</td>
+            <td>
+				<a target="_blank" href="{:U('Home/Store/detail?id='.$vo['id'])}">查看</a> |
+                <a href="{:U('Admin/Store/info?id='.$vo['id'])}">编辑</a> | 
+                <a href="javascript:void(0);" onclick="if(confirm('确认删除此门店吗?')){window.location.href='{:U('Admin/Store/storeDelete?id='.$vo['id'])}'}">删除</a>
+            </td>
+        </tr>
+    	</volist>
+    </table>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>
+<script>
+//获取下级城市或者县区，id: 作为父级ID查询，type：1 查询出城市，2 查询出县区，select_id：选中id
+function getaddress(parent_id,type,select_id=''){
+	$.ajax({
+		type: "get",
+		url : "{:U('Home/Public/getRegion/parent_id/"+parent_id+"')}", 
+		dataType:'json', 
+		success: function(res){
+			if(res){
+				switch(type){
+					case 1:
+						var content = '<option value="" selected="selected">请选择城市</option>';
+						break;
+					case 2:
+						var content = '<option value="" selected="selected">请选择县区</option>';
+						break;
+				}
+				$.each( res, function(index,item){
+					if(select_id && select_id == item.region_id){
+						content +='<option selected value="'+item.region_id+'" >'+item.region_name+'</option>';
+					}else{
+						content +='<option value="'+item.region_id+'" >'+item.region_name+'</option>';
+					}
+					
+				});
+				if(type == 1){
+					$('#city').html(content);
+				}else{
+					$('#district').html(content);
+				}
+				
+			}else{
+				layer.msg('网络错误',{
+					shift :6,
+					icon: 5
+				});
+				return false;
+			}
+		},
+	});
+}
+$(document).ready(function(){
+	var province_id	= "{$province_id}";
+	var city_id		= "{$city_id}";
+	if(province_id){
+		getaddress(province_id,1,city_id);
+	}
+	
+	<!-- 选择省份ajax返回城市地址 -->
+	$('#province').change(function(){
+		var id = $(this).find ("option:selected").val();
+		if(!id){
+			$('#city').html('<option value="" selected="selected">选择城市</option>');
+			return false;
+		}
+		getaddress(id,1);
+	})
+	
+})
+
+
+</script>

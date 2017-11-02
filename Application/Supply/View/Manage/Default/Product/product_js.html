@@ -1,0 +1,606 @@
+<script>
+    
+    
+
+    var luozuan = {
+        args:{
+            page_id:"1",
+            page_size:"10",
+            gid:'',
+            certificate_number:'',
+            product_status:'',
+            time_begin:'',
+            time_end:'',
+        },
+        get_filter_args:function(){
+            l = this;
+            var c_args = {};
+            _.each(this.args,function(value,key){
+                if( _.isEmpty(value) === false ){
+                    c_args[key] = value;
+                }
+            });
+            return c_args;
+        },
+        clear_args:function(){
+            _.each(this.args,function(value,key){
+                if( key!=='page_id' && key!= 'page_size' ) {
+                    this.args[key] = '';
+                }
+            },this)
+        },
+        set_arg:function(key,value){
+            this.args[key] = value;
+        },
+        set_page:function(page_id,page_size){
+            this.args['page_id']   = page_id.toString();
+            this.args['page_size'] = page_size.toString();
+        },
+        get_luozuan:function(){
+            var data = this.get_filter_args();
+            var res  = {};
+            $.ajaxSettings.async = false;
+            $.getJSON("{:U('Product/selectLuozuan')}",data,function(data){
+                res = data;
+            });
+            //this.clear_args();保留查询状态
+            return res;
+        },
+        get_luozuan_info:function(gid){
+            var res={},data = {},re;
+            data.gid = gid;
+            $.ajaxSettings.async = false;
+            $.getJSON("{:U('Product/selectLuozuan')}",data,function(data){
+                res = data;
+            });
+            if(res.ret==100){
+                re = res.data.list[0];
+            }else{
+                re = null;
+            }
+            return re;
+        },
+        on_sale:function(data){
+            var res = {};
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/luozuanOnSale')}",
+                data: {luozuan_goods_ids:data},
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        },
+        off_shelves:function(data){
+            var res = {};
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/luozuanOffShelves')}",
+                data: {luozuan_goods_ids:data},
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        },
+        on_sale_one:function(data){
+            var res = {};
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/luozuanOnSaleOne')}",
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        },
+        off_shelves_one:function(data){
+            var res = {};
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/luozuanOffShelvesOne')}",
+                data: {},
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        },
+        remove_luozuan:function(data){
+            var res = {};
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/luozuanDelete')}",
+                data: {luozuan_goods_ids:data},
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        },
+        modify_luozuan:function(data){
+            var res;
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/luozuanUpdate')}",
+                data: data,
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        },
+        add_luozuan:function(data){
+            var res;
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/luozuanAdd')}",
+                data: data,
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        }
+    };
+    var chengpin_goods = {
+        args:{
+            page_id:"1",
+            page_size:"10",
+            goods_sn:'',
+            goods_id:'',
+            certificate_number:'',
+            product_status:'',
+            time_begin:'',
+            time_end:'',
+        },
+        get_filter_args:function(){
+            l = this;
+            var c_args = {};
+            _.each(this.args,function(value,key){
+                if( _.isEmpty(value) === false ){
+                    c_args[key] = value;
+                }
+            });
+            return c_args;
+        },
+        clear_args:function(){
+            _.each(this.args,function(value,key){
+                if( key!=='page_id' && key!= 'page_size' ) {
+                    this.args[key] = '';
+                }
+            },this)
+        },
+        set_arg:function(key,value){
+            this.args[key] = value;
+        },
+        set_page:function(page_id,page_size){
+            this.args['page_id']   = page_id.toString();
+            this.args['page_size'] = page_size.toString();
+        },
+        get_goods:function(goods_type){
+            var data        = this.get_filter_args();
+            data.goods_type = goods_type;
+            var res  = {};
+            $.ajaxSettings.async = false;
+            $.getJSON("{:U('Product/selectGoods')}",data,function(data){
+                res = data;
+            });
+            return res;
+        },
+        on_sale:function(data){
+            var res = {};
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/goodsOnSale')}",
+                data: {goods_ids:data},
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        },
+        off_shelves:function(data){
+            var res = {};
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/goodsOffShelves')}",
+                data: {goods_ids:data},
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        },
+        remove_goods:function(data){
+            var res = {};
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/goodsDelete')}",
+                data: {goods_ids:data},
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        }
+    };
+    var dingzhi_goods = {
+        args:{
+            page_id:"1",
+            page_size:"10",
+            goods_sn:'',
+            goods_id:'',
+            certificate_number:'',
+            product_status:'',
+            time_begin:'',
+            time_end:'',
+        },
+        get_filter_args:function(){
+            l = this;
+            var c_args = {};
+            _.each(this.args,function(value,key){
+                if( _.isEmpty(value) === false ){
+                    c_args[key] = value;
+                }
+            });
+            return c_args;
+        },
+        clear_args:function(){
+            _.each(this.args,function(value,key){
+                if( key!=='page_id' && key!= 'page_size' ) {
+                    this.args[key] = '';
+                }
+            },this)
+        },
+        set_arg:function(key,value){
+            this.args[key] = value;
+        },
+        set_page:function(page_id,page_size){
+            this.args['page_id']   = page_id.toString();
+            this.args['page_size'] = page_size.toString();
+        },
+        get_goods:function(goods_type){
+            var data        = this.get_filter_args();
+            data.goods_type = goods_type;
+            var res  = {};
+            $.ajaxSettings.async = false;
+            $.getJSON("{:U('Product/selectGoods')}",data,function(data){
+                res = data;
+            });
+            return res;
+        },
+        on_sale:function(data){
+            var res = {};
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/goodsOnSale')}",
+                data: {goods_ids:data},
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        },
+        off_shelves:function(data){
+            var res = {};
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/goodsOffShelves')}",
+                data: {goods_ids:data},
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        },
+        remove_goods:function(data){
+            var res = {};
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/goodsDelete')}",
+                data: {goods_ids:data},
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        }
+    };
+    //定义裸钻查询函数
+    var sanhuo = {
+        args:{
+            page_id:"1",
+            page_size:"10",
+            goods_sn:'',
+            product_status:'',
+            time_begin:'',
+            time_end:'',
+        },
+        get_filter_args:function(){
+            l = this;
+            var c_args = {};
+            _.each(this.args,function(value,key){
+                if( _.isEmpty(value) === false ){
+                    c_args[key] = value;
+                }
+            });
+            return c_args;
+        },
+        clear_args:function(){
+            _.each(this.args,function(value,key){
+                if( key!=='page_id' && key!= 'page_size' ) {
+                    this.args[key] = '';
+                }
+            },this)
+        },
+        set_arg:function(key,value){
+            this.args[key] = value;
+        },
+        set_page:function(page_id,page_size){
+            this.args['page_id']   = page_id.toString();
+            this.args['page_size'] = page_size.toString();
+        },
+        get_sanhuo:function(){
+            var data = this.get_filter_args();
+            var res  = {};
+            $.ajaxSettings.async = false;
+            $.getJSON("{:U('Product/selectSanhuo')}",data,function(data){
+                res = data;
+            });
+            return res;
+        },
+        get_sanhuo_info:function(gid){
+            var res={},data = {},re;
+            data.goods_id = gid;
+            $.ajaxSettings.async = false;
+            $.getJSON("{:U('Product/selectSanhuo')}",data,function(data){
+                res = data;
+            });
+            if(res.ret==100){
+                re = res.data.list[0];
+            }else{
+                re = null;
+            }
+            return re;
+        },
+        get_goods_4c:function(goods_id){
+            var res={},data = {},re;
+            data.goods_id = goods_id;
+            $.ajaxSettings.async = false;
+            $.getJSON("{:U('Product/selectSanhuoInfo4c')}",data,function(data){
+                res = data;
+            });
+            if(res.ret==100){
+                re = res.data;
+            }else{
+                re = null;
+            }
+            return re;
+        },
+        on_sale:function(data){
+            var res = {};
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/SanhuoOnSale')}",
+                data: {sanhuo_goods_ids:data},
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        },
+        off_shelves:function(data){
+            var res = {};
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/SanhuoOffShelves')}",
+                data: {sanhuo_goods_ids:data},
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        },
+        remove_sanhuo:function(data){
+            var res = {};
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/SanhuoDelete')}",
+                data: {sanhuo_goods_ids:data},
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        },
+        modify_sanhuo:function(data){
+            var res;
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/sanhuoUpdate')}",
+                data: data,
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        },
+        add_sanhuo:function(data){
+            var res;
+            $.ajaxSettings.async = false;
+            $.ajax({
+                type: 'POST',
+                url: "{:U('Product/sanhuoAdd')}",
+                data: data,
+                success: function(data){
+                    res = data;
+                },
+                dataType: 'json'
+            });
+            return res;
+        },
+        check_goods_weight:function(goods_weight){
+            var ret = true , v = goods_weight;
+            var reg = /[^\d.]/g;
+            if( reg.test(v)){
+                ret = false;
+            }else{
+                reg = /.*\..*/;
+                if( reg.test(v) ){
+                    var obj = v.toString().split(".");
+                    if( obj.length > 2 ){
+                        ret = false;
+                    }
+                    if( obj[1].length > 3 ){
+                        ret = false;
+                    }
+                }
+                if(v == '.'){
+                    ret = false;
+                }
+            }
+            return ret;
+        }
+    };
+
+    //cc操作
+    var cc = {
+        goods_weight:0,//总重，用于计算的基础
+        //用于存放4c的剩余总量
+        data:{
+            cut:0,
+            color:0,
+            clarity:0,
+            weights:0,
+        },
+        set_goods_weight:function(goods_weight){
+            var v = parseFloat(goods_weight).toFixed(3);
+            this.goods_weight = v;
+        },
+        set_4c_type_goods_weight:function(data,type){
+            var count = 0;
+            _.each(data,function(v,k){
+                if( v !=='' ) {
+                    var c = parseFloat(v).toFixed(3);
+                }else{
+                    var c = 0;
+                }
+                count = count + c;
+            });
+            this.data[type] = this.goods_weight - count;
+            return true;
+        },
+        check_input_4c_data:function(goods_weight,type,old_goods_weight){
+            var ret = true , v = goods_weight;
+            var reg = /[^\d.]/g;
+            if( reg.test(v)){
+                ret = false;
+            }else{
+                reg = /.*\..*/;
+                if( reg.test(v) ){
+                    var obj = v.toString().split(".");
+                    if( obj.length > 2 ){
+                        ret = false;
+                    }
+                    if( obj[1].length > 3 ){
+                        ret = false;
+                    }
+                }
+                if( v == '.' ){
+                    ret = false;
+                }
+                var gw  = parseFloat(goods_weight).toFixed(3);
+                var ogw = parseFloat(old_goods_weight).toFixed(3);
+                var d   = parseFloat(this.data[type]).toFixed(3);
+                if( gw > accAdd(d,ogw)){
+                    ret = false;
+                }
+            }
+            return ret;
+        },
+        set_cc_value:function(v,type){
+            var gw          = parseFloat(v).toFixed(3);
+            this.data[type] = accAdd(this.data[type],-gw);
+            this.data[type] = this.data[type].toFixed(3);
+            return parseFloat(parseFloat((gw/this.goods_weight)).toFixed(4)*100).toFixed(2);
+        },
+        get_sanhuo_4c:function(type,parent_id){
+            var res={},data = {},re;
+            data.type            = type;
+            data.parent_id       = parent_id;
+            $.ajaxSettings.async = false;
+            $.getJSON("{:U('Product/getSanhuo4c')}",data,function(data){
+                res = data;
+            });
+            if(res.ret==100){
+                re = res.data;
+            }else{
+                re = null;
+            }
+            return re;
+        }
+    };
+
+
+    var goods_type = '';
+    if('{$_GET[\'goods_type\']}'){
+        goods_type = '{$_GET[\'goods_type\']}';
+    }else{
+        goods_type = 'luozuan';
+    }
+    
+    $('.nav li').each(function(){                                                  
+        $(this).removeClass("active");                                  
+    });
+
+    $('#luozuan').removeClass("active");
+    if(goods_type == 'luozuan'){
+       $('.nav li:nth-child(1)').addClass("active");
+       $('#luozuan').addClass("active");
+    }else if(goods_type == 'sanhuo'){
+       $('.nav li:nth-child(2)').addClass("active");
+       $('#sanhuo').addClass("active");
+    }else if(goods_type == 'chengpin'){
+       $('.nav li:nth-child(3)').addClass("active");
+       $('#chengpin').addClass("active"); 
+    }else if(goods_type == 'dingzhi'){
+       $('.nav li:nth-child(4)').addClass("active");
+       $('#dingzhi').addClass("active");
+    }
+</script>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>证书查询</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<style>
+	/* 证书查询结果 */
+	.cxbox { border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;}
+	.cxbox { background: #FFF; padding: 10px 5px;}
+	.cxbox table { border: 1px solid #ccc; width: 98%; margin:0; padding:0; border-collapse: collapse; border-spacing: 0; margin: 0 auto;}
+	.cxbox table tr { border: 1px solid #E4E4E4; padding: 5px;}
+	.cxbox table th, table td { padding: 8px 10px; text-align: center;}
+	.cxbox table th { text-transform: uppercase; width: 35%; font-size: 13px; letter-spacing: 1px; border-right: 1px solid #E4E4E4; color: #444;}
+	.cxbox table td { width: 65%; color: #666;}
+	.btn { position: fixed; width: 100%; left: 0; bottom: 0; border: none; border-top: 1px solid #ccc; padding: 10px 0;}
+	a,a:hover{ text-decoration:none; color:#333}
+  .zsquery { margin-bottom: 38px;}
+	</style>
+</head>
+<body class="wrap-bg">
+	<!-- Main -->
+    <div class="user-info sh-progress zsquery">
+      <section class="shouhouxq-sub cxbox">
+        <table>
+          <tbody>  
+            <if condition="$data">
+                <foreach name = "data" item="d" >
+                  <tr>
+					<?php if(strpos($d['title'],'证书下载') ===false){?>
+						<th><?php echo $d['title']?></th>
+					<?php }?>
+
+					
+                    <?php if ($_GET['type'] == '3'){ ?>
+                    <td>
+                      <?php echo strtr($d['value'],">"," ")?>
+                    </td>
+                    <?php }elseif($_GET['type'] == '1'){ ?>
+                    <?php if(strpos($d['value'],'/Home/Search/onlineView/reportNumber') ==true){?>
+ 
+                    <?php }else{ ?>
+                    <td>{$d.value}	<?php if($_GET['type'] == '1' && $key=='0') { ?>	<a href="/Goods/getCertPDF?certNumber=<?php echo $_GET['number'] ?>">下载证书</a>	<?php }?> </td>
+                    <?php }?>
+                    <?php }else{ ?>
+                    <td>{$d.value}</td>
+                    <?php }?>
+                  </tr>
+                </foreach>
+                <p class="alert text-center"><a onclick="window.history.go(-1);" > <button  class="btn btn-block">返回</button></a></p>
+            <else />
+                <p class="alert text-center"><span>没有数据...</span></p>
+                <!-- <p class="alert text-center"><a href="{:U('LuoZuan/zhengshu')}"> <button href="{:U('LuoZuan/zhengshu')}" class="btn">返回重新查询</button></a></p> -->
+            </if>
+          </tbody>
+        </table>
+      </section>
+    </div>
+    <!-- Main END //-->
+
+</body>
+</html>

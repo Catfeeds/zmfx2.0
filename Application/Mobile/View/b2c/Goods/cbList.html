@@ -1,0 +1,127 @@
+<include file="Public:header" />
+
+<body>
+    <section class="custom-jewelry brand-series-list">
+
+		<include file="Public:localHeader"/>
+
+		<!-- 搜索 -->
+		<include file="Public:search" />				
+		
+        <!-- content -->
+        <section class="wrapper">
+            <!-- 广告 -->
+            <div class="pop">
+                <img src="__IMG__/brand_01.png" alt="">
+            </div>
+            <!-- 广告 end -->
+
+            <!-- 筛选 -->
+            <div class="search-sort">
+                <ul>
+                    <li class="active">默认</li>
+                    <li>价格 <img src="__IMG__/down_icon.png" class="down" alt=""></li>
+                    <li>时间 <img src="__IMG__/down_icon.png" class="down" alt=""></li>
+                </ul>
+            </div>
+            <!-- 筛选 end -->
+
+            <!-- 数据列表 -->
+            <div class="item-box">
+                <div class="goods-list clearfix">
+                    <ul class="ajax_goods_list">
+ 
+                    </ul>
+                </div>
+            </div>
+
+            <!-- loading -->
+			<div class="loading" style="display: none"><img src="__IMG__/loading.gif" alt=""></div>
+                <script>
+		
+                    $(function(){
+                        //排序
+                        $('.search-sort ul li').bind('click', function(){
+							if($(this).index()==1)				ThreeAjax.Interactive[0].order = 'goods_price';
+							if($(this).index()==2)				ThreeAjax.Interactive[0].order = 'goods_id';
+                            var down = $(this).find('.down');
+                            if(down.attr('data-lock') == 'true'){
+								ThreeAjax.Interactive[0].desc = 'asc';	//正序 	
+								down.css('transform', 'rotate(180deg)').attr('data-lock', 'false');								
+                            }else{
+								ThreeAjax.Interactive[0].desc = 'desc';	//正序 
+								down.css('transform', '').attr('data-lock', 'true');
+                            }
+								ThreeAjax.Interactive[0].page_id =1;
+								ThreeAjax.Send();							
+                            $('.search-sort ul li').removeClass('active');
+                            $(this).addClass('active');
+                        });
+						
+						
+						$(window).scroll(function(){
+							if($(document).scrollTop() + $(window).height() >= $(document).height()){
+								$('.loading').show();
+								ThreeAjax.Interactive[0].page_id +=1;
+								ThreeAjax.Send();
+							}
+						});
+ 
+                    });
+					
+
+ 
+				  ThreeAjax.Interactive.push({
+										'category_id': '<?php echo $_GET['category_id'];?>',
+										'goods_series_id': '<?php echo $_GET['goods_series_id'];?>',
+										'goods_type': 3,
+										'order': 'goods_id',
+										'page_id':1,
+										'page_size':20,
+										'desc':'desc',
+										'Url' : '/Goods/goodsData'
+						});
+						
+				
+				   ThreeAjax.Interactive.push(function(data){
+												var html = '';
+												if($.isEmptyObject(data.data.data) == false){
+													$.each(data.data.data ,function(k ,v) {
+														if(v){
+															html += '<li class="col-2">';
+															html += '<a href="/Goods/detail/goods_type/'+v.goods_type+'/gid/'+v.goods_id+'">';
+															html += '<p><img src="'+v.thumb+'" alt=""></p>';
+															html += '<p class="good-name">'+v.goods_name+'</p>';
+															if(v.sell_status==null){
+																html += '<p class="rmb">￥'+v.goods_price+'</p>';
+															}else{
+																html += '<p class="rmb">￥'+v.activity_price+'</p>';
+															}
+															html += '</a>';
+															html += '</li>';
+														}
+													})
+													if(ThreeAjax.Interactive[0].page_id==1){
+														$('.ajax_goods_list').html(html);
+													}else{
+														$('.ajax_goods_list').append(html);
+													}
+												}else{
+													if(ThreeAjax.Interactive[0].page_id==1){
+														$('.ajax_goods_list').html('<li><p style="margin-top: 3.5rem"><img src="<?php echo "__IMG__";?>/nodata.png" alt=""></p><h1>很抱歉没能找到您要的商品</h1></li>');
+													}else{
+														$('.loading').html('没有了~~');
+													}
+												}
+										}
+					);
+
+					ThreeAjax.Send();
+                </script>
+			<!-- loading end -->
+        </section>
+        <!-- content end -->
+    </section>
+ 	<include file="Public:foot" />
+</body>
+</html>

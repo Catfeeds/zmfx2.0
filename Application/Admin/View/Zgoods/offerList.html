@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>钻石报价列表</title>
+</head>
+<body>
+<!-- right -->
+<style>
+    .pull-left { float: left;}
+</style>
+<div class="goods page-main">
+    <div class="subMenu">
+        <h3>当前操作：订单列表</h3>
+        <ul>
+            <volist name="menuList[104]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+    </div>
+    <div class="filter">
+        <form action="{:U('/Admin/Zgoods/offerList/')}" method="get">
+            <div class="fl">
+                钻重区间：
+            </div>
+            <select name="carat_section" class="fl" style="width: 166px;">
+                <option value="0">请选择</option>
+                <volist name="banfang_carat_arr" id="carat_arr">
+                    <option value="{$carat_arr['carat_section']}" <if condition="$carat_arr['carat_section'] eq $search['carat_section']">selected</if>>{$carat_arr['name']}</option>
+                </volist>
+            </select>
+            <div class="fl">
+                颜色：
+            </div>
+            <select name="color" class="fl">
+                <option value="">请选择</option>
+                <volist name="setting_param.color_arr" id="color_name">
+                    <option value="{$color_name}" <if condition="$color_name eq $search['color']">selected</if>>{$color_name}</option>
+                </volist>
+            </select>
+            <div class="fl">
+                净度：
+            </div>
+            <select name="clarity" class="fl">
+                <option value="">请选择</option>
+                <volist name="setting_param.clarity_arr" id="clarity_name">
+                    <option value="{$clarity_name}" <if condition="$clarity_name eq $search['clarity']">selected</if>>{$clarity_name}</option>
+                </volist>
+            </select>
+
+            <div class="fl">
+                &nbsp;
+            </div>
+            <input class="button" type="submit" value="查询">
+        </form>
+    </div>
+    <form action="#" method="POST" style="padding: 0 15px">
+        <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+            <tbody>
+            <tr class="top">
+                <th>
+                    <input id="selectThisPage" type="checkbox">
+                </th>
+                <th>钻重</th>
+                <th>颜色</th>
+                <th>净度</th>
+                <th>单粒价格（原价）</th>
+                <th>单粒价格（加价）</th>
+                <th>操作</th>
+            </tr>
+            <volist name="lists" id="list" mod="2">
+                <tr class="{$mod ? 'bg2' : 'bg1'}">
+                    <td><input data-id="chk_716352813" name="tbSelectedId" type="checkbox"></td>
+                    <td>{$list.carat}</td>
+                    <td>{$list.color}</td>
+                    <td>{$list.clarity}</td>
+                    <td>{$list.price}</td>
+                    <td>{$list.add_price}</td>
+                    <td><a href="{:U('Admin/Zgoods/editDiamonds?offer_id='.$list['offer_id'])}">修改</a> <a href="{:U('Admin/Zgoods/offerDelete?offer_id='.$list['offer_id'])}">删除</a></td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+    </form>
+    <div class="page">{$page}</div>
+</div>
+<!-- right end -->
+
+</body>
+</html>

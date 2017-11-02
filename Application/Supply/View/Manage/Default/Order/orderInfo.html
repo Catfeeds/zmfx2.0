@@ -1,0 +1,660 @@
+<extend name="Manage:Default:base" />
+<block name="title">{$L['text_order_detail']}</block>
+<block name="desc"></block>
+	<style>
+		dl { overflow: hidden;}
+		.layui-layer-msg {
+			position: fixed !important;
+		    left: 50% !important;
+		    /* top: 50% !important; */
+		}
+	</style>
+<block name="body">
+        <div class="wrapper">
+            <div class="row">
+             
+                 <div class="sign">
+                    <span><img src="__IMG__/left-top.jpg"></span>
+                    <ul>
+                        <li><a href="/Manage/route/mo/Order/vi/index?lanmu_status={$_GET['lanmu_status']}">{$L['text_return_order_list']}:</a></li>
+                    </ul>
+                </div>            
+            </div>
+            <div class="row"><!--订单详情-->
+                <form action="/Order/orderAction/lanmu_status/{$_GET['lanmu_status']}/order_id/{$_GET['order_id']}.html" method="post">
+                    <div class="order-info" id="order_info"></div>                            
+
+                    <div class="info">
+                        <script type="text/template" id="order_info_tpl" >
+                        <% if(order_info.lanmu_status == 'kehusearch' || order_info.lanmu_status == 'treatment'){ %>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                        <div class="panel-body">
+                                            <span>{$L['text_order_sn']}：</span>
+                                            <span class="red"><%= order_info.order_sn %></span>
+                                        </div>
+                                </div>
+                                <div class="col-xs-12 ">
+                                        <div class="panel-body">
+                                            <span>{$L['text_order_time']}：</span>
+                                            <span><%= order_info.create_time %></span>
+                                        </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="panel-body">
+                                        <span>{$L['text_order_from']}：
+                                        <% if(order_info.lanmu_status == 'treatment'){ %>
+                                        {$L['zuanming']}
+                                        <% }else{ %>
+                                        {$L['fenxiaoshang']}
+                                        <% } %>
+                                        </span>
+                                        <span></span>
+                                    </div>
+                            </div>
+                        </div>
+                        <% }else{ %>        
+                        <div class="row">
+                                <div class="col-xs-12">
+                                        <div class="panel-body">
+                                            <span>{$L['text_order_sn']}：</span>
+                                            <span class="red"><%= order_info.order_sn %></span>
+                                        </div>
+                                </div>
+                                <div class="col-xs-3 ">
+                                        <div class="panel-body">
+                                            <span>{$L['text_order_time']}：</span>
+                                            <span><%= order_info.create_time %></span>
+                                        </div>
+                                </div>
+                                <div class="col-xs-3">
+                                        <div class="panel-body">
+                                            <span>{$L['text_order_totalprice']}：</span>
+                                            <span class="red">￥<%= order_info.order_price %></span>
+                                        </div>
+                                </div>
+                                <div class="col-xs-3">
+                                        <div class="panel-body">
+                                            <span>{$L['text_order_status']}：</span>
+                                            <span><%= order_info.order_status_str %></span>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                    <div class="panel-body">
+                                        <span>{$L['text_order_from']}：{$L['zuanming']}</span>
+                                        <span></span>
+                                    </div>
+                            </div>
+                            <div class="col-xs-3">
+                                    <div class="panel-body">
+                                        <span>{$L['text_product_huilv']}：</span>
+                                        <span><%= order_info.dollar_huilv %></span>
+                                    </div>
+                            </div>
+                            <div class="col-xs-6">
+                                    <div class="panel-body">
+                                        <span>{$L['text_shipping_address']}：</span>
+                                        <span>
+                                            <%= order_info.address_info %>
+                                        </span>
+                                        
+                                    </div>
+                            </div>
+                        </div>
+                        <% } %>
+                        </script>
+
+                        <h4 class="panel-body">{$L['text_goods_info']}</h4>
+                        <!--订单裸钻产品-->                                                   
+                        <include file="./Application/Supply/View/Manage/Default/Public/luozuan.html" />                        
+                        
+
+                        
+                        <!--订单散货产品-->      
+                        <include file="./Application/Supply/View/Manage/Default/Public/sanhuo.html" />
+                        
+                        <!--订单商品-->      
+                        <include file="./Application/Supply/View/Manage/Default/Public/consignment.html" />
+                        
+                        <!--订单日志-->      
+                        <include file="./Application/Supply/View/Manage/Default/Order/log.html" />
+                       
+                        <div class="order-info" id="order_info_note"></div>     
+                        <script type="text/template" id="order_info_note_tpl" >
+                        <% if(order_info.lanmu_status != 'kehusearch' && order_info.lanmu_status != 'treatment'){ %>
+                        <div class="row" style="padding: 10px;">
+                            <div class="col-xs-12">
+                                    <div class="panel-body">
+                                        <span style="vertical-align: top;">{$L['text_order_remarks']}：</span>
+                                        <span> 
+                                            <textarea name="note" style="width:500px;" placeholder="{$L['orderinfo_msg_022']}"></textarea>                                            
+                                        </span>
+                                    </div>
+                            </div>                            
+                        </div>
+                        <% }%>
+                        </script>
+                         
+                       
+
+                        <input type="hidden" name="order_id" value="{$_GET['order_id']}" />
+                        <input type="hidden" name="lanmu_status" value="{$_GET['lanmu_status']}" />
+                        <!--订单操作-->      
+                        <include file="./Application/Supply/View/Manage/Default/Order/action.html" />                       
+
+						
+						<?php  if($_GET['lanmu_status']=='canceled'){ ?>
+							<div class="panel-body">
+								<span>{$L['delete']}{$L['icon_order']}：</span>
+								<span>              
+									  <input type="button" value="{$L['delete']}{$L['icon_order']}" onclick=" order_delete_canceled({$_GET['order_id']}) " >        
+								</span>
+							</div>
+						<?php  } ?>
+                    </div>
+                </form>    
+            </div>
+        </div>
+        
+    </div>
+</block>
+<block name="my_js">
+    <script>       
+        var id = {$_GET['order_id']};
+        var lanmu_status = '{$_GET['lanmu_status']}';        
+        if(lanmu_status != "kehusearch" && lanmu_status != "treatment"){
+            lanmu_status = '_';
+        }
+        var res  = {};
+        var datas;
+
+        $.ajaxSettings.async = false;
+        $.getJSON("{:U('Order/orderInfo/lanmu_status/"+lanmu_status+"/order_id/"+ id +"')}",function(data){  
+
+            if(data.ret == 100){
+                datas    = data['data'];                            
+                var con  = _.template($('#order_info_tpl').html());
+                var html = con(datas);
+                $('#order_info').html(html);
+
+                var note  = _.template($('#order_info_note_tpl').html());
+                var htmlnote = note(datas);
+                $('#order_info_note').html(htmlnote);
+                      
+                if(datas.order_goods_list.luozuan){
+                    $('#luozuan_list_content').html( _.template( $('#luozuan_list_content_tpl').html(), datas) ); 
+                }
+
+                if(datas.order_goods_list.sanhuo){
+                    $('#sanhuo_list_content').html( _.template( $('#sanhuo_list_content_tpl').html(), datas) ); 
+                }
+                if(datas.order_goods_list.consignment){
+                    $('#consignment_list_content').html( _.template( $('#consignment_list_content_tpl').html(), datas) ); 
+                }
+                 if(datas.order_log){
+                     $('#order_log_content').html( _.template( $('#order_log_content_tpl').html(), datas) ); 
+                 }
+                if(datas.order_action){
+                    $('#order_action_content').html( _.template( $('#order_action_content_tpl').html(), datas) ); 
+                }
+
+                if(datas.order_info.order_status ==0){
+                    if(datas.order_goods_list.all_luozuan_price) $('#luozuan_pay_content').html(     _.template( $('#luozuan_pay_content_tpl').html(),     datas) );
+                    if(datas.order_goods_list.all_sanhuo_price) $('#sanhuo_pay_content').html(      _.template( $('#sanhuo_pay_content_tpl').html(),      datas) ); 
+                    if(datas.order_goods_list.all_consignment_price) $('#consignment_pay_content').html( _.template( $('#consignment_pay_content_tpl').html(), datas) );  
+                }else{
+                    if(datas.order_goods_list.all_luozuan_price) $('#luozuan_payList_content').html(     _.template( $('#luozuan_payList_content_tpl').html(),     datas) );
+                    if(datas.order_goods_list.all_sanhuo_price) $('#sanhuo_payList_content').html(      _.template( $('#sanhuo_payList_content_tpl').html(),      datas) ); 
+                    if(datas.order_goods_list.all_consignment_price) $('#consignment_payList_content').html( _.template( $('#consignment_payList_content_tpl').html(), datas) );  
+                }                     
+            }
+
+            if(data.status == 0){
+                alert(data.info);
+            }
+        });
+        //$('#luozuan_list_content').html('ccc');  
+
+
+
+			   
+		//删除订单 zhy 2016年11月15日 18:28:07
+	   function order_delete_canceled(id){
+				layer.confirm('{$L['sure']}{$L['delete']}{$L['icon_order']}', {
+				  btn: ['{$L['sure']}','{$L['cancel']}'] //按钮
+				}, function(){
+					   $.getJSON("{:U('Order/order_delete_canceled/order_id/"+ id +"')}",function(data){    
+										if(data){
+											layer.msg(data.msg,{
+												offset:['260px'],
+												shift :6,
+											});
+											window.parent.location.reload();
+										}else{
+											layer.alert('{$L['failed']}');
+										} 
+					   });
+				})
+				
+				
+
+	   }
+			   
+			   
+			   
+    //修改裸钻折扣
+    $('#luozuan_list_content tr td .discount').bind('change',function(){
+        discount              = $(this).val();        
+        default_discount      = $(this).attr('data-default');//默认的折扣
+        id                    = $(this).attr('data-id');
+        default_price         = $('input[data-id='+id+'].luozuan_price').attr('data-default');//默认的价格
+               
+        if(discount <= 0){
+            alert('{$L["text_discount_notice"]}');           
+            $(this).val(default_discount);
+        }else{
+            luozuan_price = savePointAfterNumber(parseFloat((default_price * discount) / default_discount) ,2);
+            $('input[data-id='+id+'].luozuan_price').val(luozuan_price);             
+        }
+        countLuozuanPrice()             
+    })
+    //修改裸钻价格
+    $('#luozuan_list_content tr td .luozuan_price').bind('change',function(){
+        luozuan_price         = $(this).val();        
+        default_luozuan_price = $(this).attr('data-default');//默认的价格
+        id                    = $(this).attr('data-id');  
+        discount              = $('input[data-id='+id+'].discount').attr('data-default');//默认的折扣      
+        if(luozuan_price <= 0){
+            alert('{$L["text_price_notice"]}');           
+            $(this).val(default_luozuan_price);
+        }else{
+            discount = savePointAfterNumber(parseFloat((luozuan_price * discount)/default_luozuan_price) ,2);
+            $('input[data-id='+id+'].discount').val(discount);             
+        }
+        countLuozuanPrice()             
+    })
+
+    //统计订单中裸钻价格
+    function countLuozuanPrice(){       
+        $.priceTotal = parseFloat(0);
+        $('#luozuan_list_content tr').each(function(index, element) {
+            price = $('#luozuan_list_content tr:eq('+index+') .luozuan_price').val();
+            if(price == undefined || price == NaN){  price = 0; }
+            price = savePointAfterNumber(price,2);
+
+            if(index == 0){
+                $.priceTotal = 0;   //第一行是0 
+            }else{
+                $.priceTotal = savePointAfterNumber($('#luozuanTotal').html(), 2);                   
+            }
+            $.priceTotal = savePointAfterNumber((price + $.priceTotal),2);
+            $('#luozuanTotal').html($.priceTotal);
+        });           
+    }
+
+    //修改散货重量
+    $('#sanhuo_list_content tr td .goods_number').bind('change',function(){
+        goods_number          = $(this).val();        
+        default_goods_number  = $(this).attr('data-default');//默认的重量
+        id                    = $(this).attr('data-id');
+        goods_price           = $('input[data-id='+id+'].goods_price').val();//单价
+        default_goods_price   = $('input[data-id='+id+'].goods_price').attr('data-default');//默认的销售单价
+               
+        if(goods_number <= 0){
+            alert('{$L["text_sanhuo_weight_notice"]}');           
+            $(this).val(default_goods_number);
+        }else{
+            goods_price_xiaoji = savePointAfterNumber(parseFloat(goods_number * goods_price) ,2);
+          
+            $('td[data-id='+id+'].goods_price_xiaoji').html(goods_price_xiaoji);             
+        }
+        countSanhuoPrice() ;            
+    })
+       
+    //修改散货销售每卡单价
+    $('#sanhuo_list_content tr td .goods_price').bind('change',function(){
+        goods_number          = $('input[data-id='+id+'].goods_number').val();        
+        default_goods_number  = $(this).attr('data-default');//默认的重量
+        id                    = $(this).attr('data-id');
+        goods_price           = $(this).val();//单价
+        default_goods_price   = $('input[data-id='+id+'].goods_price').attr('data-default');//默认的销售单价
+               
+        if( goods_price  <= 0){
+            alert('{$L["text_sanhuo_oneprice_notice"]}');           
+            $(this).val(default_goods_price);
+            goods_price = default_goods_price;
+        }            
+        goods_price_xiaoji = savePointAfterNumber(parseFloat(goods_number * goods_price) ,2);
+        $('td[data-id='+id+'].goods_price_xiaoji').html(goods_price_xiaoji);             
+         
+        countSanhuoPrice() ;           
+    })
+
+     //统计订单中散货价格
+    function countSanhuoPrice(){       
+         $.priceTotals = parseFloat(0);
+
+         $('#sanhuo_list_content tr').each(function(index, element) {
+
+            price = $('#sanhuo_list_content tr:eq('+index+') .goods_price').val() * $('#sanhuo_list_content tr:eq('+index+') .goods_number').val();
+            if( !price){  
+                price = 0; 
+            }
+            price = savePointAfterNumber(price,2);
+           
+            
+            if(index == 0){
+                $.priceTotals = 0;   //第一行是0 
+            }else{
+                $.priceTotals = savePointAfterNumber($('#sanhuoTotal').html(), 2);      
+            }
+            $.priceTotals = savePointAfterNumber((price + $.priceTotals),2);
+
+            $('#sanhuoTotal').html($.priceTotals);
+        });           
+    }
+    
+    
+
+    //修改成品数量
+    $('#consignment_list_content tr td .goods_number').bind('change',function(){
+        goods_number          = $(this).val();        
+        default_goods_number  = $(this).attr('data-default');//默认的数量
+        id                    = $(this).attr('data-id');
+        goods_price           = $('input[data-id='+id+'].goods_price').val();//单价
+        default_goods_price   = $('input[data-id='+id+'].goods_price').attr('data-default');//默认的销售单价
+               
+        if(goods_number <= 0){
+            alert('成品重量不能等于小于1!');           
+            $(this).val(default_goods_number);
+        }else{
+            goods_price_xiaoji = savePointAfterNumber(parseFloat(goods_number * goods_price) ,2);
+          
+            $('td[data-id='+id+'].goods_price_xiaoji').html(goods_price_xiaoji); 
+        }             
+        countConsignmentPrice() ;          
+    })
+       
+    //修改散货销售每卡单价
+    $('#consignment_list_content tr td .goods_price').bind('change',function(){
+        goods_number          = $('input[data-id='+id+'].goods_number').val();        
+        default_goods_number  = $(this).attr('data-default');//默认的重量
+        id                    = $(this).attr('data-id');
+        goods_price           = $(this).val();//单价
+        default_goods_price   = $('input[data-id='+id+'].goods_price').attr('data-default');//默认的销售单价
+               
+        if( goods_price  <= 0){
+            $(this).val(default_goods_price);
+            goods_price = default_goods_price;
+            alert(goods_price);
+        }
+        goods_price_xiaoji = savePointAfterNumber(parseFloat(goods_number * goods_price) ,2);
+        $('td[data-id='+id+'].goods_price_xiaoji').html(goods_price_xiaoji); 
+        
+        countConsignmentPrice() ;           
+    })
+
+     //统计订单中成品价格
+    function countConsignmentPrice(){       
+         $.priceTotals = parseFloat(0);
+
+         $('#consignment_list_content tr').each(function(index, element) {
+
+            price = $('#consignment_list_content tr:eq('+index+') .goods_price').val() * $('#consignment_list_content tr:eq('+index+') .goods_number').val();
+            if( !price){  
+                price = 0; 
+            }
+            price = savePointAfterNumber(price,2);
+                       
+            if(index == 0){
+                $.priceTotals = 0;   //第一行是0 
+            }else{
+                $.priceTotals = savePointAfterNumber($('#consignmentTotal').html(), 2);      
+            }
+            $.priceTotals = savePointAfterNumber((price + $.priceTotals),2);
+
+            $('#consignmentTotal').html($.priceTotals);
+        });           
+    }
+
+
+
+
+
+    /////////////////////////////////////////////////////////////
+    // 裸钻分期
+    function period(){
+        val = $("input[name='luozuanPay']:checked").val();
+        period_num = $("#luozuan_period_num").children('option:selected').val();
+        html ='';
+        var luozuanTotal;
+        luozuanTotal = $('#luozuanTotal').html();
+        for(i=0;i<period_num;i++){
+            if(i==0){price = luozuanTotal}else{price=''}
+            html += '<ul>'
+            +'<li><span>{$L["text_number_day"]}：</span><input type="text" class="time" value="" name="luozuan_period['+i+'][time]"></li>'
+            +'<li><span>{$L["text_repayment"]}：</span><input type="text" class="price" value="'+price+'" name="luozuan_period['+i+'][price]"></li>'
+            +'<div class="clear"></div>'
+            +'</ul>';
+        }
+        if(val == 1){
+            $('#luozuan_period_list').html(html);
+        }else{
+            $('#luozuan_period_list').html('');
+        }
+    }
+    period();
+    $("input[name='luozuanPay']").click(period);
+    $("#luozuan_period_num").change(period);
+    //裸钻自动填写分期价格
+    $('#luozuan_period_list .price').live('change',function(){
+        $.price = 0;
+        luozuanTotal = $('#luozuanTotal').html();
+        $('#luozuan_period_list .price').each(function(index){          
+            luozuanTotal = luozuanTotal - $(this).val();
+            luozuanTotal = savePointAfterNumber(luozuanTotal, 2);
+            //luozuanTotal = toDecimal(luozuanTotal);
+            if(!$(this).val() || $(this).val() == '0'){
+                $(this).val(luozuanTotal);
+                $.price = $.price + parseFloat(luozuanTotal);
+                luozuanTotal = '';
+            }else{
+                $.price = $.price + parseFloat($(this).val());
+            }
+        })
+        if($.price != $('#luozuanTotal').html()){
+            alert('{$L["orderinfo_msg_023"]}');
+        }
+    })
+
+    // 散货分期
+    function period2(){
+        val = $("input[name='sanhuoPay']:checked").val();
+        period_num = $("#sanhuo_period_num").children('option:selected').val();
+        html ='';
+        sanhuoTotal = $('#sanhuoTotal').html();
+        for(i=0;i<period_num;i++){
+            if(i==0){price = sanhuoTotal}else{price=''}
+            html += '<ul>'
+            +'<li><span>{$L["text_number_day"]}：</span><input type="text" value="" name="sanhuo_period['+i+'][time]"></li>'
+            +'<li><span>{$L["text_repayment"]}：</span><input type="text" class="price" value="'+price+'" name="sanhuo_period['+i+'][price]"></li>'
+            +'<div class="clear"></div>'
+            +'</ul>';
+        }
+        if(val == 1){
+            $('#sanhuo_period_list').html(html);
+        }else{
+            $('#sanhuo_period_list').html('');
+        }
+    }
+    period2();
+    $("input[name='sanhuoPay']").click(period2);
+    $("#sanhuo_period_num").change(period2);
+    //散货自动填写分期价格
+    $('#sanhuo_period_list .price').live('change',function(){
+        $.price = 0;
+        sanhuoTotal = $('#sanhuoTotal').html();
+        $('#sanhuo_period_list .price').each(function(index){
+
+            sanhuoTotal = sanhuoTotal - $(this).val();
+            sanhuoTotal = savePointAfterNumber(sanhuoTotal, 2);
+            if(!$(this).val() || $(this).val() == '0'){
+                $(this).val(sanhuoTotal);
+                $.price = $.price + parseFloat(sanhuoTotal);
+                sanhuoTotal = '';
+            }else{
+                $.price = $.price + parseFloat($(this).val());
+            }
+        })
+        if($.price != $('#sanhuoTotal').html()){
+            alert('{$L["orderinfo_msg_023"]}');
+        }
+    })
+
+
+    //代销货分期
+    function period4(){
+        val = $("input[name='consignmentPay']:checked").val();
+        period_num = $("#consignment_period_num").children('option:selected').val();
+        html ='';
+        consignmentTotal = $('#consignmentTotal').html();
+        for(i=0;i<period_num;i++){
+            if(i==0){price = consignmentTotal}else{price=''}
+            html += '<ul>'
+            +'<li><span>{$L["text_number_day"]}：</span><input type="text" value="" name="consignment_period['+i+'][time]"></li>'
+            +'<li><span>{$L["text_repayment"]}：</span><input type="text" class="price" value="'+price+'" name="consignment_period['+i+'][price]"></li>'
+            +'<div class="clear"></div>'
+            +'</ul>';
+        }
+        if(val == 1){
+            $('#consignment_period_list').html(html);
+        }else{
+            $('#consignment_period_list').html('');
+        }
+    }
+    period4();
+    $("#consignment_period_num").change(period4);
+    $("input[name='consignmentPay']").click(period4);
+    //代销货填写分期价格
+    $('#consignment_period_list .price').live('change',function(){
+        $.price = 0;
+        consignmentTotal = $('#consignmentTotal').html();
+        $('#consignment_period_list .price').each(function(index){
+            consignmentTotal = consignmentTotal - $(this).val();
+            consignmentTotal = savePointAfterNumber(consignmentTotal, 2);
+            if(!$(this).val() || $(this).val() == '0.00'){
+                $(this).val(consignmentTotal);
+                $.price = $.price + parseFloat(consignmentTotal);
+                consignmentTotal = '';
+            }else{
+                $.price = $.price + parseFloat($(this).val());
+            }
+        })
+        if($.price != $('#consignmentTotal').html()){
+            alert('{$L["orderinfo_msg_023"]}');
+        }
+    })
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    $('input[name="orderConfirm"]').click(function(form){  
+
+
+        var k = 0;
+        var i = 0;  
+        if($("input[name='luozuanPay']").length > 0){
+            if($("input[name='luozuanPay']:checked").val() == 1){               
+                i = $("#luozuan_period_num").val();
+                k = 0;          
+                while(k<i) 
+                {                               
+                    if($("input[name='luozuan_period[" + k + "][time]']").val() == '' || $("input[name='luozuan_period[" + k + "][price]']").val() == ''){
+                        alert('{$L["orderinfo_msg_024"]}');
+                        return false;
+                    }
+                    k=k+1;
+                } 
+            }
+        }
+
+        if($("input[name='sanhuoPay']").length > 0){
+            if($("input[name='sanhuoPay']:checked").val() == 1){                
+
+                i = $("#sanhuo_period_num").val();
+                k = 0;          
+                while(k<i) 
+                {                       
+                    if($("input[name='sanhuo_period[" + k + "][time]']").val() == '' || $("input[name='sanhuo_period[" + k + "][price]']").val() == ''){
+                        alert('{$L["orderinfo_msg_025"]}');
+                        return false;
+                    }
+                    k=k+1;
+                } 
+            }
+        }
+
+        if($("input[name='consignmentPay']").length > 0){
+            if($("input[name='consignmentPay']:checked").val() == 1){               
+
+                i = $("#consignment_period_num").val();
+                k = 0;          
+                while(k<i) 
+                {                       
+                    if($("input[name='consignment_period[" + k + "][time]']").val() == '' || $("input[name='consignment_period[" + k + "][price]']").val() == ''){
+                        alert('{$L["orderinfo_msg_026"]}');
+                        return false;
+                    }
+                    k=k+1;
+                } 
+            }
+        }
+        //return false;
+
+        return true;
+    })
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ///全选或全部取消
+     function invertSelect(classname, checkname){
+        if($("[name='"+checkname+"']").is(':checked')){
+            $("INPUT[class='" + classname + "'][value=1]").each( function() {        
+                $(this).attr('checked', true);
+            });
+           
+        }else{            
+           
+            $("INPUT[class='" + classname + "'][value=2]").each( function() {        
+                $(this).attr('checked', true);
+            });
+           
+        }
+        
+    }
+ 
+       
+
+    
+
+    /////保留小数点后面多少位， num保留的书，savenum保留多少位；
+    function savePointAfterNumber(num, savenum){
+        var beichushu;
+        savenum = Math.floor(savenum);
+        if(savenum < 0){
+            savenum = 0;
+        }
+        if(savenum >4){
+            savenum = 4;
+        }
+        beichushu = Math.pow (10, savenum);
+        return  Math.round(num*beichushu)/beichushu ;
+    }
+
+
+   
+</script>
+</block>

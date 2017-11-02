@@ -1,0 +1,196 @@
+<eq name="type" value="6">
+    <volist name="cart_data['lists']" id="info" key="kkk">
+        <tr class="js_top_cart" cart_id="{$info['id']}">
+            <td><input type="checkbox" class="checks js_my_checks" name="" checked value=""></td>
+            <td>{$kkk}</td>
+            <td>
+                <img src="{$info['main_info']['my_img']}" class="goods-img" alt="">
+            </td>
+            <td class="js_cart_number">{$info['goods_number']}</td>
+            <td><span class="rmb">￥<span class="js_cart_money">{$info['cart_money']}</span></span></td>
+            <td>
+                <span class="view-details">查看详情</span>
+                <span class="delete-gooods">删除</span>
+            </td>
+        </tr>
+        <tr class="child-details" style="display: none;">
+            <td colspan="6" class="padnone">
+                <!-- 情侣对戒 -->
+                <table cellpadding="0" cellspacing="0" class="child-table ql-table">
+                    <thead>
+                    <tr>
+                        <td>序号</td>
+                        <td>款号</td>
+                        <td><span class="red">*</span>材质</td>
+                        <td>品类</td>
+                        <td>手寸</td>
+                        <td><span class="red">*</span>主石重</td>
+                        <td>颜色</td>
+                        <td>净度</td>
+                        <td><span class="red">*</span>数量</td>
+                        <td>预估金额</td>
+                        <td>备注</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <volist name="info.banfang_carts_info.lists" id="vo" key="ban_o">
+                        <tbody banfang_count="{$info['banfang_carts_info']['count']}" class="js_tbody" banfang_id="{$vo['id']}">
+                        <tr>
+                            <td class="bo">{$ban_o}</td>
+                            <td>{$vo['sub_info']['goods_sn']}</td>
+                            <td>
+                                <select class="ajax_val" name="ma_id">
+                                    <?php foreach($vo['sub_info']['factory_lists'][0]['material_lists_arr'] as $material){ ?>
+                                    <option value="{$material['id']}" <if condition="$vo['sub_info']['factory_lists'][0]['material_info']['ma_id'] eq $material['ma_id']">selected</if> >{$material['name']}</option>
+                                    <?php } ?>
+                                </select>
+                            </td>
+                            <td>
+                                {$vo['sub_info']['banfang_jewelry_info']['ca_name']}
+                                <eq name="vo['sub_info']['factory_lists'][0]['factory_info']['sex']" value="1">
+                                    (女戒)
+                                </eq>
+                                <eq name="vo['sub_info']['factory_lists'][0]['factory_info']['sex']" value="2">
+                                    (男戒)
+                                </eq>
+                            </td>
+                            <td>
+                                <if condition="$info['main_info']['banfang_jewelry_info']['is_hand'] eq 1">
+                                    <select class="ajax_val" name="hand">
+                                        <option value="">请选择</option>
+                                        <?php foreach($vo['sub_info']['factory_lists'][0]['hands_lists'] as $hand){ ?>
+                                        <option value="{$hand}" <if condition="$vo['sub_info']['factory_lists'][0]['hand_info'] eq $hand">selected</if> >{$hand}</option>
+                                        <?php } ?>
+                                    </select>
+                                </if>
+                                <!--<input type="text" name="" value="{$vo['goods_attr']['goods_attr']['hand']}" class="w75 edits" readonly>-->
+                            </td>
+                            <td>
+                                <input type="text" name="diamond" value="{$vo['sub_info']['factory_lists'][0]['diamond_info']['carat']}" class="w75 edits ajax_val" readonly>
+                            </td>
+                            <td>
+                                <select class="ajax_val" name="color">
+                                    <option value="">请选择</option>
+                                    <?php foreach($vo['sub_info']['factory_lists'][0]['color_lists'] as $color){ ?>
+                                    <option value="{$color}" <if condition="$vo['sub_info']['factory_lists'][0]['color_info'] eq $color">selected</if> >{$color}</option>
+                                    <?php } ?>
+                                </select>
+                                <!--<input type="text" name="" value="{$vo['goods_attr']['goods_attr']['color']}" class="w75 edits" readonly>-->
+                            </td>
+                            <td>
+                                <select class="ajax_val" name="clarity">
+                                    <option value="">请选择</option>
+                                    <?php foreach($vo['sub_info']['factory_lists'][0]['clarity_lists'] as $clarity){ ?>
+                                    <option value="{$clarity}" <if condition="$vo['sub_info']['factory_lists'][0]['clarity_info'] eq $clarity">selected</if> >{$clarity}</option>
+                                    <?php } ?>
+                                </select>
+                                <!--<input type="text" name="" value="{$vo['goods_attr']['goods_attr']['clarity']}" class="w75 edits" readonly>-->
+                            </td>
+                            <td class="bo">
+                                <div class="customize-box">
+                                    <a href="javascript:;" class="reduction" cart_id={$vo['id']}><img src="__IMG_DZ__/reduction_icon.png" alt=""></a>
+                                    <input type="text" name="goods_number" readonly value="{$vo['goods_number']}" class="number-cust ajax_val js_goods_number">
+                                    <a href="javascript:;" class="add" cart_id={$vo['id']}><img src="__IMG_DZ__/add_icon.png" alt=""></a>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </td>
+                            <td class="bo">
+                                <span style="border: none;" class="w75 js_goods_price">{$vo['sub_info']['goods_price']}</span>
+                            </td>
+                            <td class="bo">
+                                <textarea name="note" rows="2" cols="10" class="miaoshu ajax_val">
+                                    {$vo['sub_info']['factory_lists'][0]['note_info']}
+                                </textarea>
+                            </td>
+                            <td class="bo">
+                                <span class="add-cg">新增</span>
+                                <span class="edit-cg">修改</span>
+                                <span class="delete-cg">删除</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </volist>
+                </table>
+                <!-- 情侣对戒 end -->
+            </td>
+        </tr>
+    </volist>
+</eq>
+
+<eq name="type" value="1">
+    <tbody banfang_count="1" class="js_tbody" banfang_id="{$vo['id']}">
+    <tr>
+        <td class="bo">{$ban_o}</td>
+        <td>{$vo['sub_info']['goods_sn']}</td>
+        <td>
+            <select class="ajax_val" name="ma_id">
+                <?php foreach($vo['sub_info']['factory_lists'][0]['material_lists_arr'] as $material){ ?>
+                <option value="{$material['id']}" <if condition="$vo['sub_info']['factory_lists'][0]['material_info']['ma_id'] eq $material['ma_id']">selected</if> >{$material['name']}</option>
+                <?php } ?>
+            </select>
+        </td>
+        <td>
+            {$vo['sub_info']['banfang_jewelry_info']['ca_name']}
+            <eq name="vo['sub_info']['factory_lists'][0]['factory_info']['sex']" value="1">
+                (女戒)
+            </eq>
+            <eq name="vo['sub_info']['factory_lists'][0]['factory_info']['sex']" value="2">
+                (男戒)
+            </eq>
+        </td>
+        <td>
+            <if condition="$vo['sub_info']['banfang_jewelry_info']['is_hand'] eq 1">
+                <select class="ajax_val" name="hand">
+                    <option value="">请选择</option>
+                    <?php foreach($vo['sub_info']['factory_lists'][0]['hands_lists'] as $hand){ ?>
+                    <option value="{$hand}" <if condition="$vo['sub_info']['factory_lists'][0]['hand_info'] eq $hand">selected</if> >{$hand}</option>
+                    <?php } ?>
+                </select>
+            </if>
+            <!--<input type="text" name="" value="{$vo['goods_attr']['goods_attr']['hand']}" class="w75 edits" readonly>-->
+        </td>
+        <td>
+            <input type="text" class="w75 edits ajax_val" name="diamond" value="{$vo['sub_info']['factory_lists'][0]['diamond_info']['carat']}" readonly>
+        </td>
+        <td>
+            <select class="ajax_val" name="color">
+                <option value="">请选择</option>
+                <?php foreach($vo['sub_info']['factory_lists'][0]['color_lists'] as $color){ ?>
+                <option value="{$color}" <if condition="$vo['sub_info']['factory_lists'][0]['color_info'] eq $color">selected</if> >{$color}</option>
+                <?php } ?>
+            </select>
+            <!--<input type="text" name="" value="{$vo['goods_attr']['goods_attr']['color']}" class="w75 edits" readonly>-->
+        </td>
+        <td>
+            <select class="ajax_val" name="clarity">
+                <option value="">请选择</option>
+                <?php foreach($vo['sub_info']['factory_lists'][0]['clarity_lists'] as $clarity){ ?>
+                <option value="{$clarity}" <if condition="$vo['sub_info']['factory_lists'][0]['clarity_info'] eq $clarity">selected</if> >{$clarity}</option>
+                <?php } ?>
+            </select>
+            <!--<input type="text" name="" value="{$vo['goods_attr']['goods_attr']['clarity']}" class="w75 edits" readonly>-->
+        </td>
+        <td class="bo">
+            <div class="customize-box">
+                <a href="javascript:;" class="reduction" cart_id={$vo['id']}><img src="__IMG_DZ__/reduction_icon.png" alt=""></a>
+                <input type="text" name="goods_number" readonly value="{$vo['goods_number']}" class="number-cust ajax_val js_goods_number" >
+                <a href="javascript:;" class="add" cart_id={$vo['id']}><img src="__IMG_DZ__/add_icon.png" alt=""></a>
+                <div class="clearfix"></div>
+            </div>
+        </td>
+        <td class="bo">
+            <span style="border: none;" class="w75 js_goods_price">{$vo['sub_info']['goods_price']}</span>
+        </td>
+        <td class="bo">
+                                <textarea name="note" rows="2" cols="10" class="miaoshu ajax_val">
+                                    {$vo['sub_info']['factory_lists'][0]['note_info']}
+                                </textarea>
+        </td>
+        <td class="bo">
+            <span class="add-cg">新增</span>
+            <span class="edit-cg">修改</span>
+            <span class="delete-cg">删除</span>
+        </td>
+    </tr>
+    </tbody>
+</eq>

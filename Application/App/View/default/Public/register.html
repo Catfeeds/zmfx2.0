@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+<link rel="stylesheet" href="__CSS__/public.css">
+<link rel="stylesheet" href="__CSS__/style.css">
+<title>注册</title>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script type="text/javascript" src="__JS__/common.js"></script>
+<script src="/Application/App/View/default/js/layer-mobile/layer.js"></script> 
+<script src="/Application/App/View/default/js/public.js"></script> 
+
+
+</head>
+
+<body class="wrap-bg">
+	<!--头部-->
+    <header class=" header text-center">
+    	<a href="/public/login" class="pull-left"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    		注册
+    </header>
+    <!--内容-->
+    <div class="container">
+        <form class="form-horizontal form-signin registr" role="form" id="form_1" style="padding-top: 1em;">
+              <div class="form-group">
+                <label class="iconic-input"></label>
+                <div class="col-sm-12 iconic-input">
+                	<i class="glyphicon glyphicon-user"></i>
+                  <input type="text" class="form-control" name="username" placeholder="用户名">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-12 iconic-input">
+                	<i class="glyphicon glyphicon-lock"></i>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="登录密码">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-12 iconic-input">
+                	<i class="glyphicon glyphicon-lock"></i>
+                  <input type="password" class="form-control" id="confirm_password" placeholder="确认密码">
+                </div>
+              </div>
+               <div class="form-group">
+                <div class="col-sm-12 iconic-input">
+                	<i class="glyphicon glyphicon-earphone"></i>
+                  <input type="text" class="form-control" name="phone" placeholder="手机号">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-12 iconic-input">
+                	<i class="glyphicon glyphicon-envelope"></i>
+                  <input type="text" class="form-control" name="email" placeholder="邮箱">
+                </div>
+              </div>
+
+               <div class="container">
+	            	<div class="col-xs-12">
+	            		 <label class="checkbox">
+			                <input type="checkbox" id="agreement" value="remember-me"> 同意并接受<a href="#">&nbsp;《用户协议》</a>
+			            </label>
+	            	</div>
+	           </div>
+           
+               <button type="button" id ='save_info' class="btn btn-lg btn-block btn-login">确认</button>
+               <p class="text-center">我有用户名&nbsp;<a href="/public/login">登录</a></p>
+		</form>
+    </div>
+</div>
+
+<script>
+	$('input[name="username"]').focus();
+	$(function() {
+		$("#save_info").click(function(){
+			if(!$('#agreement').prop("checked")){
+				$('input[name="agreement"]').focus();
+				tan("您必须同意服务协议才可以进行注册！");
+				return false;
+			}
+			var username = jQuery.trim($('input[name="username"]').val());
+			if(username.length<3 || username.length>20){
+				tan("用户名的长度必须为3-20个字符！");
+				$('input[name="username"]').focus();
+				return false;
+			}
+			if(getLength($('#form_1 input[name="password"]').val())<6 || getLength($('#form_1 input[name="password"]').val())>20){
+				tan("密码的长度必须为6-20个字符！");
+				$('input[name="password"]').focus();
+				return false;
+			}
+			if($('#form_1 input[name="password"]').val()!==$('#form_1 #confirm_password').val()){
+				tan("您输入的新密码和确认密码不一致！");
+				$('input[name="confirm_password"]').focus();
+				return false;
+			}
+			if(check_mobilephone($('#form_1 input[name="phone"]').val())==false ){
+				tan("请填写准确的手机号！");
+				$('input[name="phone"]').focus();
+				return false;
+			}
+			if(check_email($('#form_1 input[name="email"]').val())==false ){
+				$('input[name="email"]').focus();
+				tan("请填写准确的邮箱！");
+				return false;
+			}
+			$.ajax({
+				url:"/public/register.html",
+				type: 'POST',
+				data: $('#form_1').serialize(),
+				success: function(d){
+					//console.log(d);
+					if(d.ret==100){
+						tan("注册成功！");
+						setTimeout("window.location.href='/user'",3000);
+					}else{
+						tan(d.msg);
+					}
+				}
+			});
+		});
+	});
+</script>
+
+</body>
+</html>

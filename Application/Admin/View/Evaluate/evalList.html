@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>评价列表</title>
+</head>
+<style>
+.fl { margin: 0 10px; padding-left: 0;}
+.filter div.fl { padding-left: 0px;}
+.container{
+	width:80%;
+	margin:20px auto;
+}
+.container .span4{
+	height:26px;
+}
+#opinion{
+	height: 30px;
+    margin-left: 150px;
+    margin-top: 20px;
+    width: 150px;
+	cursor:pointer;
+}
+</style>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：评价管理</h3>
+    </div>
+    <div class="filter">
+		<form action="{:U('/Admin/Evaluate/evalList/')}" method="get">
+			<select name="keyword" class="fl" style="width:80px;">
+				<option value="" selected="">请选择</option>
+				<option value="username"  <eq name="keyword" value="username">selected</eq> >用户名</option>
+				<option value="phone" <eq name="keyword" value="phone">selected</eq> >电话</option>
+			</select>
+			<input type="text" name="value" id="value" style="width:120px"  value="{$value}">
+			
+			<div class="fl">评分情况：</div>
+			<select name="start" class="fl" style="width:120px;">
+				<option value="" selected="">请选择</option>
+				<option value="1" <eq name="start" value="1">selected</eq> >☆</option>
+				<option value="2" <eq name="start" value="2">selected</eq> >☆☆</option>
+				<option value="3" <eq name="start" value="3">selected</eq> >☆☆☆</option>
+				<option value="4" <eq name="start" value="4">selected</eq> >☆☆☆☆</option>
+				<option value="5" <eq name="start" value="5">selected</eq> >☆☆☆☆☆</option>
+				
+			</select>
+
+			<input type="text" name="createtime" id="createtime" style="width:120px" placeholder="提交时间"  value="{$createtime}">
+			<input class="button fl" type="submit" value="查询">
+		</form>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse">
+		<tbody>
+			<tr class="top">
+				<th>ID</th>
+				<th>用户名</th>
+				<th>电话</th>
+				<th>评分情况</th>
+				<th>评价等级</th>
+				<th>评价描述</th>
+				<th>提交时间</th>
+				<th>状态</th>
+				<th>操作</th>
+			</tr>
+			<volist name="evaluateList" id="vo">
+
+			<tr class="bg1">
+				<td>
+					{$vo['oe_id']}
+				</td>
+				<td>{$vo['username']}</td>
+				<td>{$vo['phone']}</td>
+				
+				<td>
+					<switch name="vo['start']">
+						<case value="1">☆</case>
+						<case value="2">☆☆</case>
+						<case value="3">☆☆☆</case>
+						<case value="4">☆☆☆☆</case>
+						<case value="5">☆☆☆☆☆</case>
+						<default />
+					</switch>
+				</td>
+				<td>
+					<switch name="vo['start']">
+						<case value="1">差评</case>
+						<case value="2|3">中评</case>
+						<case value="4|5">好评</case>
+						<default />
+					</switch>
+				</td>
+				
+				<td>{$vo['control']}</td>
+				<td>
+					<if condition="$vo['createtime']">
+						{$vo['createtime']|date="Y-m-d",###}
+					</if>
+				</td>
+				<td>
+					<eq name="vo['status']" value="1">
+						显示
+					<else />
+						屏蔽
+					</eq>
+				</td>
+				<td>
+					<a class="detail" href="{:U('Admin/Evaluate/evalInfo',array('oe_id'=>$vo['oe_id']))}">查看</a>
+					<a class="delete" href="javascript:;" onclick="if(confirm('确认删除此评价吗?')){window.location.href='{:U('Admin/Evaluate/evalDelete?oe_id='.$vo['oe_id'])}'}">删除</a>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+    </table>
+	<div class="page">{$page}</div>
+</div>
+<div class="tab-pane" id="feedback" style="display:none;">
+	<div class="container">
+		<dl style="margin-top:10px;">
+			<dt>回访记录：</dt>
+			<br />
+			<dd><textarea id="content" maxlength="1000" name="content" rows="22" cols="78" style="resize:none;"></textarea></dd>
+		</dl>
+		<dl class="text-right">
+			<dd><input id="opinion"  class="btn btn-warning " value="保存" type="submit"></dd>
+		</dl>
+		<input type="hidden" name="id" />
+	</div>
+</div>
+<!-- end -->
+
+<script>
+var start = {
+  elem: '#createtime',
+  format: 'YYYY-MM-DD',
+  istoday: false,
+};
+
+laydate.skin('molv');  //加载皮肤，参数lib为皮肤名 
+laydate(start);
+
+
+</script>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>订单列表</title>
+<link rel="stylesheet" type="text/css" href="__CSS__/admin.css" /> 
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.css" />
+<script type="text/javascript" src="__PUBLIC__/Js/JqueryUI/jquery-ui-1.9.2.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/datepicker-tw.js"></script>
+<script type="text/javascript">
+$(function() {
+	$( "#form" ).datepicker($.datepicker.regional[ "zh-TW" ] );
+	$( "#end" ).datepicker($.datepicker.regional[ "zh-TW" ] );
+});
+
+function selectcheckbox(form){
+	for(var i = 0;i < form.elements.length; i++){
+		var e = form.elements[i];
+		if(e.name != 'chkall' && e.disabled != true) e.checked = form.chkall.checked;
+	}
+} 
+
+function submitForm(){
+	if($("input[type='checkbox']").is(':checked')==false){
+		if(confirm("当没有勾选到任何订单记录时，将打印满足当前查询条件的所有订单记录，确定打印吗？"))return true;
+		else return false;
+	}else{
+		return true;
+	}
+}
+
+
+</script>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：订单列表</h3>
+        <ul>
+            <volist name="menuList[3]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>
+    </div>
+   	<div class="filter">
+    <form action="{:U('Admin/Order/orderList')}" method="get">
+        <input class="input fclass" type="text" placeholder="订单号" name="order_sn" value="{$order_sn}" style='width:120px'>
+        <input class="input fclass" type="text" placeholder="证书号,散货,产品编号" name="certificate_no" value="{$certificate_no}"/ style='width:140px'>
+		<input class="input fclass" type='text' name='userName' placeholder="客户账号或真实姓名" style='width:80px' value='{$userName}'>
+        <if condition="!$is_yewuyuan">
+        <select name="parent_id" class="fl fclass">
+            <option value="0">所属业务员</option>
+            <volist name="businessList" id="vo">
+                <option value="{$vo.user_id}" <eq name="parent_id" value="$vo['user_id']">selected</eq>>{$vo.nickname}</option>
+            </volist>
+        </select>
+        
+        <select name="order_type" class="fl fclass">
+            <option value="0">订单类型(全部)</option>
+            <option value="1" <eq name="order_type" value="1">selected</eq>>客户订单</option>
+            <option value="2" <eq name="order_type" value="2">selected</eq>>采购单</option>
+        </select>
+        </if>
+        <select name='order_status' class="fl fclass">
+			<option value='10' <eq name="order_status" value="10">selected</eq>>订单状态(全部)</option>
+			<option value='0' <eq name="order_status" value="0">selected</eq>>已下单，待确认</option>
+			<option value='1' <eq name="order_status" value="1">selected</eq>>已确认，待支付</option>
+			<option value='2' <eq name="order_status" value="2">selected</eq>>已支付，待配货</option>
+			<option value='3' <eq name="order_status" value="3">selected</eq>>已配货，待发货</option>
+			<option value='4' <eq name="order_status" value="4">selected</eq>>已发货，待收货</option>
+			<option value='5' <eq name="order_status" value="5">selected</eq>>已收货，待完成</option>
+			<option value='6' <eq name="order_status" value="7">selected</eq>>已完成</option>
+			<option value='-1' <eq name="order_status" value="-1">selected</eq>>已取消订单</option>
+		</select>
+		<input class="input fclass" type='text' name='create_time' placeholder="下单时间开始时间" id="form" value="{$time}">
+		<input class="input fclass" type='text' name='end_time' placeholder="下单最后时间" id="end" value="{$end_time}">
+        <div class="fl">&nbsp;</div>
+        <input class="button" type="submit" value="查询" />
+    </form>
+    </div>
+	
+	<form action="{:U('Admin/Excel/exportorderList')}" method="post"   onsubmit="return submitForm();">
+		<table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+			<tr class="top">
+				<th style='width:50px;'>全选:<input onclick="selectcheckbox(this.form)" type="checkbox" name="chkall" id="chkall" value="All" /></th>
+				<th>订单编号</th>
+				<th>订单类型</th>
+				<th>订单对象</th>
+				<th>下单时间</th>
+				<th>订单金额</th>
+				<th>已付金额</th>
+				<th>订单状态</th>
+				<th width="10%">操作</th>
+			</tr>
+			<input type="hidden"  name="orderList_null[]" value="{$orderList_null}" />
+			<volist name="list" id="vo" mod="2">
+			<tr class="{$mod?'bg2':'bg1'}">
+
+			   <td><input type="checkbox" name="orderList[]" value="{$vo.order_id}" /></td>
+				<td>
+				<eq name="vo.is_read" value="0"><span style="color: #0000FF;">新</span></eq>
+				<a href="{:U('Admin/Order/orderInfo?order_id='.$vo['order_id'])}" showOrder="{$vo.order_id}">{$vo.order_sn}</a>
+				</td>
+				<td>{$vo.order_type}</td>
+				<td><a href="{$vo.objUrl}">{$vo.obj}</a></td>
+				<td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+				<td>{$vo.order_price}</td>
+				<td>{$vo.payment_price}</td>
+				<td>{$vo.status}</td>
+				<td>
+					<!--
+						作者：adcbguo@qq.com
+						时间：2015-07-22
+						描述：暂时不要在列表显示应收应付
+					-->
+					<!--<eq name="vo.order_status" value="0">
+					<a href="{:U('Admin/Order/quxiaoAction?order_id='.$vo['order_id'])}" id="isQx">取消订单</a>
+					</eq>
+					<in name="vo.order_status" value="1,2,3,4,5">
+						<a href="{:U('Admin/Business/receivablesList?order_id='.$vo['order_id'])}">应收</a>
+						<a href="{:U('Admin/Business/payment?order_id='.$vo['order_id'])}">收款</a>
+					</in>-->
+					<a href="{:U('Admin/Order/orderInfo?order_id='.$vo['order_id'])}" >查看</a>
+					<if condition="($vo.status eq '已取消订单')">
+					<a href="javascript:if(confirm('确实要删除该订单吗?'))location=&quot;{:U('Admin/Order/orderDelete?order_id='.$vo['order_id'])}&quot;">删除</a>
+					</if>
+				</td>
+			</tr>
+			</volist>
+		</table>
+		<div class="tbl_buttom"><input type="submit" name="export" value="导出数据" /></div>
+	</form>
+	
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>

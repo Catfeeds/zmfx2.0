@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="__PUBLIC__/slide/css/slide.css">
+<script type="text/javascript" src="__PUBLIC__/slide/js/slide.js"></script>
+<div id="ckSlide_{$info.ads_id}" class="ckSlide">
+	<div class="ck-slide slide_{$info.ads_id}">
+		<div class="contain">
+		    <ul class="ck-slide-wrapper">
+    			<volist name="list" id="vo" key="key">
+		        <li style="<if condition="$key ==1">opacity: 1;<else />opacity: 0;</if>" class="imgload"><a href="{$vo.url}"><img src="__PUBLIC__/{$vo.images_path}"></a></li>
+		        </volist>
+		    </ul>
+		    <a href="javascript:" class="ctrl-slide ck-prev">上一张</a>
+		    <a href="javascript:" class="ctrl-slide ck-next">下一张</a>
+		    <div class="ck-slidebox">
+		        <div class="slideWrap">
+		            <ul class="dot-wrap">
+            			<volist name="list" id="vo" key="key">
+            				<li class="<if condition="$key ==1">current<else /></if>"><em>{$key}</em></li>
+            			</volist>
+		            </ul>
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.slide_{$info.ads_id}').ckSlide();
+	$.initIetm = 0;
+	initSlide = function(){
+		$.h = 500;
+		$('.slide_{$info.ads_id} .ck-slide-wrapper li img').each(function(){
+			h = $(this).height();
+			if($.h == 0) $.h = h;
+			else if($.h > h)$.h = h;
+		})
+		$('#ckSlide_{$info.ads_id}').height($.h);
+		$.initIetm ++;
+		if($.initIetm > 100){
+			clearInterval($.init);
+		}
+	}
+	$.init = setInterval(function(){
+		initSlide()
+	},200);
+})
+</script>

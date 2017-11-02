@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>新增权限</title>
+    <style>
+        .huise{
+            color:#ccc;
+        }
+    </style>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：属性修改</h3>
+        <!--<ul>
+            <volist name="menuList[104]['sub']" id="vo">
+                <li class="<eq name="currentUrl" value="$vo['url']">active</eq>"><a href="{:U($vo['url'])}" >{$vo.menu_name}</a></li>
+            </volist>
+        </ul>-->
+    </div>
+    <form action="{$my_all_param['submit_url']}" method="post">
+        <div style="padding:10px;">
+            <div class="info">
+                <div class="title">名称:</div>
+                <if condition="$info['is_base']">
+                    {$info['name']}
+                <else/>
+                    <input type="text" name="name"  value="{$info['name']}">
+                </if>
+            </div>
+            <!--<div class="info">
+                <div class="title">是否有手寸:</div>
+                <if condition="$info['is_base']">
+                    <if condition="$info['is_hand'] eq 1">有<else/>无</if>
+                <else/>
+                    无&nbsp;&nbsp;<input type="radio" name="is_hand"  value="0" <if condition="$info['is_hand'] eq 0">checked</if> >
+                    &nbsp;&nbsp;有&nbsp;&nbsp;<input type="radio" name="is_hand"  value="1" <if condition="$info['is_hand'] eq 1">checked</if> >
+                </if>
+
+            </div>-->
+
+            <div class="info">
+                <div class="title">排序:</div>
+                <input type="number" name="sort"  value="{$info['sort']}">
+                <label>如：0为最前面</label>
+            </div>
+
+            <div class="info">
+                <div class="title">状态:</div>
+                    关闭&nbsp;&nbsp;<input type="radio" name="status"  value="0" <if condition="$info['status'] eq 0">checked</if> >
+                    &nbsp;&nbsp;开启&nbsp;&nbsp;<input type="radio" name="status"  value="1" <if condition="$info['status'] eq 1">checked</if> >
+            </div>
+
+
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="hidden" name="id" value="{$info['id']}">
+                <input type="submit" class="button fl" value="保存">
+
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

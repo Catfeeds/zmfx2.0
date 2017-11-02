@@ -1,0 +1,130 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<script type="text/javascript" src="__PUBLIC__/Js/diamond_sanhuo.js"></script>
+<div class="sanhuo">
+    <div class="slide"><img src="__IMG__/diyBg.gif"></div>
+    <div id="diamond_para" class="filter">
+    	<div class="filterTitle">
+        	<div class="fl"><span>选择钻石</span></div>
+            <button class="fr clearFilter" onclick="clearParameters();">清空已选条件</button>
+            <div class="clear"></div>
+
+        </div>
+		<div class="filterContent">
+   		<table>
+   			<tr><th width="8%">选择货品：</th>
+   				<td><select name="GoodsType" onchange="setGoodsType(this)">
+   					<option value="-1">所有分类</option>
+   			    	<volist name="goodsType" id="vo">
+   			    		<option value="{$vo.tid}">{$vo.type_name}</option>
+   			    	</volist>
+   					</select>
+   					<select id="goods_sn" name="gid" onchange="setGoodsSn(this)"><option value="-1">请选择货号</option></select>
+   				</td>
+   			</tr>
+   			<tr><th>钻石分数：</th>
+   				<td><dl>
+   					<volist name="sanhuoWeights" id="vo">
+   					<dd class='selectList' name="Weight" ref="{$vo.weights_name}">{$vo.weights_name}</dd>
+   					</volist>
+   					</dl>
+   				</td>
+   			</tr>
+   			<tr><th>颜色：</th>
+   				<td>
+   					<dl>
+   				    <volist name="sanhuoColor" id="vo">
+   					<dd class='selectList' name="Color" ref="{$vo.color_contain}">{$vo.color_name}</dd>
+   					</volist>
+   					</dl>
+   				</td>
+   			</tr>
+   			<tr><th>净度：</th>
+   				<td>
+   					<dl>
+   				<volist name="sanhuoClarity" id="vo">
+   				<dd class='selectList' name="Clarity" ref="{$vo.clarity_id}">{$vo.clarity_name}</dd>
+   				</volist>
+   				</dl>
+   				</td>
+   			</tr>
+   			<tr><th>切工：</th>
+   				<td><dl>
+   				<volist name="sanhuoCut" id="vo">
+   				<dd class='selectList' name="Cut" ref="{$vo.cut_name}">{$vo.cut_name}</dd>
+   				</volist>
+   				</dl>
+   				</td>
+   			</tr>
+   			<tr><th>筛选：</th>
+   				<td class="location">
+   					<dl>
+   					<volist name="locationList" id="vo">
+   					<dd class='selectList radio' name="Location" ref="{$vo}">{$vo}</dd>
+   					</volist>
+   					</dl>
+   				</td>
+   			</tr>
+   		</table>
+	   </div>
+	</div>
+	<div id="diamond_data">
+		<div class="diamond_data_count">
+			<table border="0" width="100%"><tr>
+				<td width="900">
+					<div class="" id="" style="padding:0px 10px;font-size:14px;font-weight:700;">实时在线库存</div>
+				</td>
+				<td align="center">
+					<a href="{:U('Order/orderCart')}" class="fc1">
+						<div class="btn_search FR" data-step="20" data-intro="{$Think.lang.L324}">{$Think.lang.L64}(<span id="cart">{$cartNumber}</span>)</div>
+					</a>
+				</td>
+				<td align="center"><div class="btn_search FR" onclick="submitData();" data-step="16" data-intro="{$Think.lang.L320}">{$Think.lang.L65}</div></td>
+			</tr></table>
+		</div>
+		<div class="clear"></div>
+			<table class="sanhuo_data_tbl" border="1">
+				<thead>
+				<tr class="title">
+
+					<th width="100" data-step="4" data-intro="{$Think.lang.L330}">{$Think.lang.L234}</th>
+					<th width="100" data-step="4" data-intro="{$Think.lang.L66}">{$Think.lang.L66}</th>
+					<th width="120" data-step="5" data-intro="{$Think.lang.L331}">{$Think.lang.L235}</th>
+					<th width="90" data-step="6" data-intro="{$Think.lang.L332}">{$Think.lang.L236} &middot; Ct</th>
+					<th width="70">颜色</th>
+					<th width="70">净度</th>
+					<th width="70">切工</th>
+					<th id="sanhuoPriceTH" width="120" data-step="7" data-intro="{$Think.lang.L333}">{$Think.lang.L237} &middot; {$Think.lang.L220}/Ct</th>
+
+					<th width="30" title="{$Think.lang.L85a}" data-step="18" data-intro="{$Think.lang.L322}。"><input name="selectThisPage" type="checkbox" id="selectThisPage" onclick="selectThisPage()" value=""></th>
+					<th width="70">详细4C</th>
+					<th width="100" title="{$Think.lang.L86a}" data-step="19" data-intro="{$Think.lang.L323}"><input name="" type="button"  onclick="addThisPageToCart();"  class="btn_buy" /></th>
+				</tr>
+				</thead>
+				<tbody id="_dataRows">
+					<volist name="sanhuo_goods" id="vo">
+					<tr><td>{$vo.type_name}</td>
+						<td>{$vo.location}</td>
+						<td>{$vo.goods_sn}</td>
+						<td>{$vo.goods_weight}</td>
+						<td>{$vo.color}</td>
+						<td>{$vo.clarity}</td>
+						<td>{$vo.cut}</td>
+						<td><font style="color:red">{$vo.goods_price}</font></td>
+						<td><input type="checkbox" onclick="tbSelectedId({$vo.goods_id})" id="sanhuoCHK_{$vo.goods_id}" name="tbSelectedId" value="{$vo.goods_id}" /></td>
+						<td><span class="buy" onclick="addDiamondsToCart({$vo.goods_id});" style="">购买</span></td>
+					</tr>
+					<tr><td colspan="12">{$vo.goods_4c}</td></tr>
+					</volist>
+				</tbody>
+			</table>
+			<div id="page">{$page}</div>
+		</div>
+    </div>
+</div>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

@@ -1,0 +1,50 @@
+@utf-8;
+/*主页*/
+.header { background: #580303;min-width: 1200px;}
+.header .userInfo { height: 30px; background: #1C0203; border-bottom: 1px solid #1C0203; }
+.header .userInfo ul { width: 1200px; margin: 0 auto; }
+.header .userInfo ul li { margin: 2px 0px 0px; padding: 0 5px; }
+.header .userInfo ul li span { color: #8E603D; font-size: 12px; }
+.header .userInfo ul li a { font-size: 12px; color:#8E603D; height: 20px; }
+.header .headerTop { height: 100px; width: 1200px; margin: 0 auto; padding-left: 10px; }
+.header .headerTop .logo { width: 230px; float: left; padding: 5px 0; }
+.header .headerTop .logo a { display: block; height: 85px; }
+.header .headerTop .logo img { height: 85px; width: 230px; }
+.header .search { height: 405px; height: 60px; float: left; padding: 30px 10px 10px 150px; }
+.header .search a:hover{ text-decoration:underline;color:red;}
+.header .search input { background: #FFFFFF; border: none; padding: 0px; line-height: 21px; }
+.header .search input { width: 300px; height: 21px; padding: 2px 5px;}
+.header .search input[type=submit] { height: 25px; width: 60px;}
+.header .search #go{height: 25px; width: 60px; }
+.header .search ul span, .header .search ul a { color: #8E603D; font-size: 12px; }
+.header .search ul li { float: left; padding-right: 10px; height: 30px; line-height: 30px; }
+/* 菜单 */
+.nav { background:#F2DAAE; height: 40px; border-top: 1px solid #FFFFFF; position: relative; }
+.nav .navContent { width: 1200px; margin: 0 auto;position: relative;  }
+.nav .menu { padding-left: 230px;position: relative;  }
+.nav .menu li { float: left; height: 40px; line-height: 40px;text-align:center;width:138px;}
+.nav .menu li a { font-size: 14px; color: #200500; display: block;text-align:center;}
+.nav .menu li.action a { background: none;color: #8F5622; }
+.nav .menu li a:hover {  background: none;color: #8F5622; }
+.nav .menu li a:visited{text-decoration: none;}
+.nav .nav_zi li{z-index:999;position:relative;background:#fff;height:37px;border-bottom:1px solid black;}
+.nav_zi{display:none;}
+/*页面按钮*/
+.filter .clearFilter {cursor: pointer;height:28px;line-height:28px;border:1px solid #38066A;margin-top:3px;width: 120px;font-weight:bold; background: -moz-linear-gradient(top,#8E4F0B, #F2DAAE); background: -webkit-linear-gradient(top, #8E4F0B, #F2DAAE);background: -ms-linear-gradient(top, #8E4F0B, #F2DAAE); color:#FFF;}
+.info .fr a{ margin-top:3px; height:28px;width:100px;line-height:28px;cursor: pointer; background: -moz-linear-gradient(top, #8E4F0B, #F2DAAE); background: -webkit-linear-gradient(top, #8E4F0B, #F2DAAE);background: -ms-linear-gradient(top, #8E4F0B, #F2DAAE); color:#FFF;text-align: center;display: block;} 
+.sanhuo .btn_search { height:28px;width:100px;line-height:28px;cursor: pointer; background: -moz-linear-gradient(top, #8E4F0B, #F2DAAE); background: -webkit-linear-gradient(top, #8E4F0B, #F2DAAE);background: -ms-linear-gradient(top, #8E4F0B, #F2DAAE); color:#FFF;}
+.bnt_blue_3{ height:28px;width:100px;line-height:28px;cursor: pointer; background: -moz-linear-gradient(top, #8E4F0B, #F2DAAE); background: -webkit-linear-gradient(top, #8E4F0B, #F2DAAE);background: -ms-linear-gradient(top, #8E4F0B, #F2DAAE); color:#FFF;text-align: center;}
+/* 底部 */
+.footer { background:#580303; max-height: 339px; min-width: 1200px;}
+.footer .footerTop { width: 1000px;margin:0 auto;height: 52px; background: url(../../Img/footerTopBg.gif) no-repeat; margin-top:30px;}
+.footer .footerBottom { width: 970px; margin: 0 auto; }
+.footer .help { padding: 60px 0 20px; }
+.footer .help span, .help a, .help div { color: #8E603D; }
+.footer .help .contact { background: url(../../Img/service.png) no-repeat; width: 250px; float: left; }
+.footer .help .contact span { font-size: 22px; padding-top: 10px; display: block; width: 250px; text-align: center; }
+.footer .help .info { width: 720px; float: left; }
+.footer .help .info .infoLi { width: 80px; float: left; padding: 0px 50px; }
+.footer .help .info .infoLi { background: url(../../Img/footerHelpBg.gif) no-repeat; }
+.footer .help ul.info .infoLi .title { font-size: 16px; font-weight: bold; }
+.footer .copyright { text-align: center; padding: 20px 0; }
+.footer .copyright p { font-size: 14px; color: #8E603D;}

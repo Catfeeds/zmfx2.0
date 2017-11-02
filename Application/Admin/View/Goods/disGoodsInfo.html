@@ -1,0 +1,508 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品编辑</title>
+<script type="text/javascript" src="__JS__/ajaxfileupload.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/Jquery/jquery.form.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" src="__JS__/Jquery.SkuAction.js"></script>
+<script type="text/javascript" src="__JS__/product.js"></script>
+</head>
+<style>
+  #productMain .thumbImg:hover .deleteImg { display: block;}
+</style>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：代销货编辑</h3>
+        <a style="color:red;" href="{:U('Admin/Goods/setPublicGoodsDesc')}">公共模版配置</a>
+    </div>
+
+ 
+		<!-- <?php print_r($goods_info);?> -->
+ 
+        <div id="productMain" style="padding:10px 50px;">
+            <div class="info">
+                <div class="title">产品分类:</div>
+                <!--编辑不显示分类-->
+				<input name="goods_sn" class="fl" id="goods_sn" value="<?php echo $goods_info['category_name']?>" type="text" style="width:170px" placeholder="不填写默认生成">
+             
+                <!--编辑不显示类别-->
+            	<div class="fl ml10 mr10">产品类别：</div>
+
+	                <span>珠宝定制</span>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">产品名称:</div>
+                <input name="goods_name" id="goods_name" type="text" value="<?php echo $goods_info['goods_name']?>" style="width:500px" placeholder="例：黄18K金钻石戒指（对戒）" />
+            </div>
+ 
+            <div class="info">
+                <div class="title">产品编号:</div>              
+                <input name="goods_sn" id="goods_sn" value="<?php echo $goods_info['goods_sn']?>" type="text"  style="width:250px" placeholder="不填写默认生成">            	
+            </div>
+
+            <div class="info dn" id="goods_price_div">
+                <div class="title">一口价:</div>
+            	<input name="goods_price" id="goods_price" type="text" value="<?php echo $goods_info['goods_price']?>" style="width:250px" placeholder="价格:人民币" />
+            </div>
+
+			
+ 
+
+            <!--属性数据-->
+			<div class="info dn" id="attrDiv" style="display: block;">
+                <div class="title">产品属性:</div>
+                <div class="attrDivContent" id="attrDivContent">
+
+					<div class="ainfo">
+						<div class="atitle">主石筛选:</div>
+						<div class="acontent">
+									<label>
+									<input type="checkbox" value="44" name="attribute[7][1]">
+									<span>0.2CT以下</span>
+									</label><label>
+									<input type="checkbox" value="45" name="attribute[7][2]">
+									<span>0.2-0.3CT</span>
+									</label><label>
+									<input type="checkbox" value="46" name="attribute[7][4]">
+									<span>0.3-0.49CT</span>
+									</label><label>
+									<input type="checkbox" value="47" name="attribute[7][8]">
+									<span>0.5-0.89CT</span>
+									</label><label>
+									<input type="checkbox" value="48" name="attribute[7][16]">
+									<span>0.9-1.49CT</span>
+									</label><label>
+									<input type="checkbox" value="49" name="attribute[7][32]">
+									<span>1.5-1.99CT</span>
+									</label><label>
+									<input type="checkbox" value="50" name="attribute[7][48]">
+									<span>2-2.99CT</span>
+									</label><label>
+									<input type="checkbox" value="51" name="attribute[7][128]">
+									<span>3-3.99CT</span>
+									</label><label>
+									<input type="checkbox" value="52" name="attribute[7][256]">
+									<span>4CT以上</span>
+									</label>		    </div>
+						<div class="clear"></div>
+					</div>				
+				
+					 <div class="ainfo">
+						<div class="atitle">空托价格:</div>
+							<div class="acontent">
+								<label>
+								<input type="checkbox" value="53" name="attribute[8][1]">
+								<span>400以下</span>
+								</label><label>
+								<input type="checkbox" value="54" name="attribute[8][2]">
+								<span>400-600</span>
+								</label><label>
+								<input type="checkbox" value="55" name="attribute[8][4]">
+								<span>600-800</span>
+								</label><label>
+								<input type="checkbox" value="56" name="attribute[8][8]">
+								<span>800-1000</span>
+								</label><label>
+								<input type="checkbox" value="57" name="attribute[8][16]">
+								<span>1000-1200</span>
+								</label><label>
+								<input type="checkbox" value="58" name="attribute[8][32]">
+								<span>1200-1400</span>
+								</label><label>
+								<input type="checkbox" value="59" name="attribute[8][64]">
+								<span>1400-1600</span>
+								</label><label>
+								<input type="checkbox" value="60" name="attribute[8][128]">
+								<span>1600-2000</span>
+								</label><label>
+								<input type="checkbox" value="61" name="attribute[8][256]">
+								<span>2000以上</span>
+								</label>		    
+							</div>
+						<div class="clear"></div>
+					</div>
+					<div class="ainfo">
+						<div class="atitle">镶嵌类别:</div>
+						<div class="acontent">
+							<label>
+							<input type="checkbox" value="62" name="attribute[9][1]">
+							<span>爪镶</span>
+							</label><label>
+							<input type="checkbox" value="63" name="attribute[9][2]">
+							<span>排镶</span>
+							</label><label>
+							<input type="checkbox" value="64" name="attribute[9][4]">
+							<span>围镶</span>
+							</label><label>
+							<input type="checkbox" value="65" name="attribute[9][8]">
+							<span>微镶</span>
+							</label><label>
+							<input type="checkbox" value="66" name="attribute[9][16]">
+							<span>包镶</span>
+							</label><label>
+							<input type="checkbox" value="67" name="attribute[9][32]">
+							<span>壁镶</span>
+							</label><label>
+							<input type="checkbox" value="68" name="attribute[9][64]">
+							<span>群镶</span>
+							</label><label>
+							<input type="checkbox" value="69" name="attribute[9][128]">
+							<span>槽镶</span>
+							</label><label>
+							<input type="checkbox" value="70" name="attribute[9][256]">
+							<span>组合镶</span>
+							</label><label>
+							<input type="checkbox" value="159" name="attribute[9][]">
+							<span>未镶嵌</span>
+							</label>		    
+						</div>
+						<div class="clear"></div>
+					</div>
+					
+					<div class="ainfo">
+						<div class="atitle">镶口类型:</div>
+						<div class="acontent">
+							<label>
+							<input type="checkbox" value="71" name="attribute[10][1]">
+							<span>三爪镶</span>
+							</label><label>
+							<input type="checkbox" value="72" name="attribute[10][2]">
+							<span>四爪镶</span>
+							</label><label>
+							<input type="checkbox" value="73" name="attribute[10][4]">
+							<span>五爪镶</span>
+							</label><label>
+							<input type="checkbox" value="74" name="attribute[10][8]">
+							<span>六爪镶</span>
+							</label><label>
+							<input type="checkbox" value="75" name="attribute[10][16]">
+							<span>八爪镶</span>
+							</label><label>
+							<input type="checkbox" value="76" name="attribute[10][32]">
+							<span>六围一</span>
+							</label><label>
+							<input type="checkbox" value="77" name="attribute[10][64]">
+							<span>八围一</span>
+							</label><label>
+							<input type="checkbox" value="78" name="attribute[10][128]">
+							<span>车花片</span>
+							</label><label>
+							<input type="checkbox" value="79" name="attribute[10][256]">
+							<span>天使之吻</span>
+							</label><label>
+							<input type="checkbox" value="186" name="attribute[10][]">
+							<span>未镶嵌</span>
+							</label>		    
+						</div>
+						<div class="clear"></div>
+					</div>
+					
+ 
+					<div class="ainfo">
+						<div class="atitle">生产工艺:</div>
+						<div class="acontent">
+							<label>
+							<input type="checkbox" value="89" name="attribute[12][1]">
+							<span>CNC</span>
+							</label><label>
+							<input type="checkbox" value="90" name="attribute[12][2]">
+							<span>真分色</span>
+							</label><label>
+							<input type="checkbox" value="91" name="attribute[12][]">
+							<span>喷拉沙</span>
+							</label><label>
+							<input type="checkbox" value="92" name="attribute[12][]">
+							<span>冲压</span>
+							</label><label>
+							<input type="checkbox" value="93" name="attribute[12][]">
+							<span>铸造</span>
+							</label><label>
+							<input type="checkbox" value="94" name="attribute[12][]">
+							<span>电铸</span>
+							</label><label>
+							<input type="checkbox" value="95" name="attribute[12][]">
+							<span>金银错</span>
+							</label><label>
+							<input type="checkbox" value="96" name="attribute[12][]">
+							<span>金玉错</span>
+							</label><label>
+							<input type="checkbox" value="97" name="attribute[12][]">
+							<span>劈花</span>
+							</label>		    
+						</div>
+					<div class="clear"></div>
+					</div>
+					
+ 
+				
+				</div>
+                <div class="clear"></div>
+            </div>
+
+
+			
+            <!--珠宝成品-->
+            <div class="info dn" id="specDiv">
+                <div class="title">产品规格:</div>
+                <div class="specDivContent" id="specDivContent"></div>
+                <div class="clear"></div>
+            </div>
+			
+			
+			
+            <!--珠宝定制-->
+            <div class="dingzhi_div info">
+                <div class="title">产品定制规格： </div>
+                <div class="">
+                    <input type="radio" name="price_model" value='0' class="metalworking" checked >金工石 
+                    &nbsp; &nbsp;
+                    <input type="radio" name="price_model" value='1' class="custom">自定义   
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+            <!-- 金工石 -->
+            <div class="dingzhi_div info dn metalworking_box"  style="display: block;">
+	            <div class="title">
+                    &nbsp;
+                </div>
+    			<div class="luozuanMatchBox" id="luozuanMatchBox">
+ 
+					
+					 <div class="luozuanTiao">
+						<div class="luozuanTile">材质：</div>
+						<div class="luozuanContent">
+							<label>
+									<input type="checkbox" value="700001" data-category-id="98" checked="checked">
+									<span>白18K金</span>
+								</label><label>
+									<input type="checkbox" value="700002" data-category-id="98" checked="checked">
+									<span>黄18K金</span>
+								</label><label>
+									<input type="checkbox" value="700003" data-category-id="98" checked="checked">
+									<span>红18K金</span>
+								</label><label>
+									<input type="checkbox" value="700004" data-category-id="98" name="700004_3">
+									<span>PT950</span>
+								</label><label>
+									<input type="checkbox" value="700005" data-category-id="98" name="700004_4">
+									<span>PT900</span>
+								</label><label>
+									<input type="checkbox" value="700006" data-category-id="98">
+									<span>白9K金</span>
+								</label><label>
+									<input type="checkbox" value="700007" data-category-id="98">
+									<span>黄9K金</span>
+								</label><label>
+									<input type="checkbox" value="700008" data-category-id="98">
+									<span>红9K金</span>
+								</label><label>
+									<input type="checkbox" value="700009" data-category-id="98">
+									<span>足金</span>
+								</label><label>
+									<input type="checkbox" value="700028" data-category-id="98" name="700004_28">
+									<span>18K真分色</span>
+								</label>	</div>
+						<div class="clear"></div>
+					</div>
+					
+					<script>
+						<?php if ($goods_info['Attribu'] == true): ?>
+							<?php foreach($goods_info['Attribu'] as $val):?>
+									$("[name='attribute[<?php echo $val['attr_id']?>][<?php echo $val['attr_code']?>]']").attr("checked",'true');//全选
+							<?php endforeach; ?>
+						<?php endif; ?>
+
+						<?php if ($goods_info['LuozuanInfo'] == true): ?>
+							<?php if(count($goods_info['LuozuanInfo']) == 4): ?>
+									$("[name='700004_28']").attr("checked",'true');
+							<?php elseif (count($goods_info['LuozuanInfo']) == 5): ?>
+									$("[name='700004_3']").attr("checked",'true');
+									$("[name='700004_4']").attr("checked",'true');
+							<?php elseif(count($goods_info['LuozuanInfo']) == 6): ?>
+									$("[name='700004_3']").attr("checked",'true');
+									$("[name='700004_4']").attr("checked",'true');
+									$("[name='700004_28']").attr("checked",'true');							
+							<?php endif; ?> 
+						<?php endif; ?> 
+ 
+					</script>
+			
+			
+					<div class="luozuanTiao">
+						<div class="luozuanTile">副石：</div>
+						<div class="luozuanContent">
+							<div class="luozuan_match2">
+								<?php if ($goods_info['Deputystone'] == true): ?>
+									<?php foreach($goods_info['Deputystone'] as $val):?>
+										<div class="tiao">
+											<input type="text" value="<?php echo $val['deputystone_name']; ?>" style="width: 120px;" name="material[deputystone][943737][deputystone_name]" placeholder="名称">
+											<input type="text" value="<?php echo $val['deputystone_price']; ?>" name="material[deputystone][943737][deputystone_price]" placeholder="价格">
+											<button type="button" class="luozuan_button del">删除</button>
+										</div>
+									<?php endforeach; ?>
+								<?php endif; ?>
+							</div>
+							<button type="button" class="luozuan_button add2">添加匹配副石</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+					
+					
+					<div class="luozuanTiao" id="material">
+								<?php if ($goods_info['LuozuanInfo'] == true): ?>
+									<?php foreach($goods_info['LuozuanInfo'] as $key=>$val):?>
+										<div class="material" id="material_700001">
+											<div class="materialTitle">
+													<?php if ($key == 0){	echo '白18K金：'; };?>
+													<?php if ($key == 1){	echo '黄18K金：'; };?>
+													<?php if ($key == 2){	echo '红18K金：'; };?>
+												
+													<?php if(count($goods_info['LuozuanInfo']) == 4): ?>
+														<?php if ($key == 3){	echo '18K真分色：'; };?>
+													<?php elseif (count($goods_info['LuozuanInfo']) == 5): ?>
+														<?php if ($key == 3){	echo 'PT950：'	; };?>
+														<?php if ($key == 4){	echo 'PT900：'	; };?>
+													<?php elseif(count($goods_info['LuozuanInfo']) == 6): ?>
+														<?php if ($key == 3){	echo 'PT950：'	; };?>
+														<?php if ($key == 4){	echo 'PT900：'	; };?>
+														<?php if ($key == 5){	echo '18K真分色：'; };?>						
+													<?php endif; ?>
+											</div>
+											<div class="materialContent">
+												<div class="materialTop">
+													<span>预估金重：</span>
+													<input type="text" style="width: 80px;" value="<?php 	 echo $val['weights_name']; ?>" name="material[info][700001][weights_name]" placeholder="(单位：G)">
+													<span>损耗：</span>
+														<input type="text" style="width: 60px;" value="<?php echo $val['loss_name']; ?>" name="material[info][700001][loss_name]" placeholder="(单位：%)">
+														<span>基本工费：</span>
+														<input type="text" style="width: 80px;" value="<?php echo $val['basic_cost']; ?>" name="material[info][700001][basic_cost]" placeholder="(单位：￥)">
+														<span>附加工费：</span>
+														<input type="text" style="width: 50px;" value="<?php echo $val['additional_price']; ?>" name="material[info][700001][additional_price]" placeholder="(单位：G)">
+												</div>
+												<div class="materialBottom">
+													<div class="materialBottomTitle">匹配钻石：</div>
+													<div class="luozuan_match">
+													<?php foreach($goods_info['Luozuan'] as $key1=>$val1):?>
+														<?php if ($val['material_id'] == $val1['material_id']): ?>
+															<div class="tiao">
+																<input type="text" value="<?php echo $val1['shape_name']; ?>" name="material[luozuan][700001][7566654][weights_name]" placeholder="单位CT">
+																<input type="text" value="<?php echo $val1['weights_name']; ?>" name="material[luozuan][700001][7566654][weights_name]" placeholder="单位CT">
+																<input type="text" value="<?php echo $val1['price']; ?>" name="material[luozuan][700001][7566654][price]" placeholder="主石保险费">						<button type="button" class="luozuan_button del">删除</button>
+															</div>
+														<?php endif; ?>
+													<?php endforeach; ?>
+													</div>
+													
+													<button type="button" class="luozuan_button add" data-id="700001">添加匹配</button>
+													<div class="clear"></div>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</div>
+									<?php endforeach; ?>
+								<?php endif; ?>
+					</div>
+					
+					
+                </div>
+                <div class="clear"></div>
+            </div>
+ 
+			
+
+            
+            <div class="info">
+                <div class="title">&nbsp;&nbsp;</div>
+                <div class="red">注释：参考尺寸80*80px，大小不得超过1M</div>
+            </div>
+            
+            <div class="info" id='firstImgDiv'>
+                <div class="title">产品图片:</div>
+                <div id="imgsDiv">
+					<?php if ($goods_info['imgsList'] == true): ?>
+						<?php foreach($goods_info['imgsList'] as $val):?>
+							<div class="thumbImg">
+								<a value="<?php echo $val['images_id']?>" id="deleteImg"><img src="__IMG__/mail_delete.png"/ width="25"></a>
+								<input type="hidden" value="<?php echo $val['images_id']?>" name="images[]">
+								<img src="<?php echo C('ZMALL_URL').'/Public'.ltrim($val['small_path'], ".");?>" width="100%" />
+							</div>
+						<?php endforeach; ?>
+					<?php endif; ?>				
+ 
+                    <a href="#" id="firstImg">
+                    	<img src="__IMG__/list_add.png" width="100" />
+                        <input type="file" name="product_img">
+                    </a>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+	              <div class="title">&nbsp;&nbsp;</div>
+	              <div class="red">注释：参考尺寸800*800px，等比例放大缩小，大小不得超过3M，支持jpg/png，六张以内效果最佳。</div> <!-- 商品详情产品图片 -->
+	        </div>
+ 
+
+			<div class="info" >
+                <div class="title">&nbsp;&nbsp;</div>
+                <div id="imgsDiv">
+                    <volist name="vdesList" id="video">
+					  <div class="thumbImg  video_div_{$video.videos_id}" style="width: 280px; height: auto; margin-right: 10px;">
+						<if condition="($video['video_adds'] neq '') && ($video['video_adds'] neq '-') ">
+                            <a href=" javascript:void(0)" class="deleteImg" onclick="deleteVideo({$video.videos_id})"><img src="__IMG__/mail_delete.png"/ width="25" style="background: #FFF;"></a> 
+                            <?php if(strpos($video['video_adds'],'http')===false){?>
+                                <iframe src="<?php echo C('agent_domain_once').'/Public/'.$video['video_adds']?>"  style="max-width:280px;height:auto;"></iframe>
+                            <?php }else{?>
+                                <iframe src="<?php echo $video['video_adds']?>"  		style="max-width:280px;height:auto;"></iframe>
+                            <?php }?>
+						</if>
+					 </div>
+                    </volist> 
+                </div>
+                <div class="clear"></div>
+            </div>
+			  
+
+            <div class="info">
+                <div class="title">商品详情:</div>
+                <div class="fl" style="width: 60%;"><textarea style="width: 100%;" name="content" id="content"><?php echo $goods_info['content']?></textarea></div>
+                <div class="clear"></div>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="hidden" id="goods_id" value="{$info.goods_id}" name="goods_id" />
+                <input type="submit" class="button fl" value="无权修改">
+                <input type="button" class="button fl ml10" value="返回" onclick="window.history.back();">
+                <div class="clear"></div>
+            </div>
+            <if condition="$info['goods_id']">
+                <div id='public_goods_desc_down'>
+                    <p><strong>公共内容(详情补充)</strong>&nbsp;<a href="{:U('Admin/Goods/setPublicGoodsDesc')}?goods_type={$info['goods_type']}&category_id={$info['category_id']}">编辑</a></p>
+                    <div class="info">
+                        <div class="title">&nbsp;</div>
+                        <div class="fl" style="width: 60%;">
+                            {$public_gooda_desc_down|htmlspecialchars_decode}
+                        </div>
+                    </div>
+                </div>
+            </if>
+        </div>
+        <br/>
+		<?php if($_GET['goods_id']):?>
+			 <input type="hidden" id="back_url" value="" name="back_url" />
+			 <script>$("#back_url").val(document.referrer);</script>
+		<?php endif;?>	
+		
+ 
+</div>
+ 
+</body>
+
+ 
+
+</html>

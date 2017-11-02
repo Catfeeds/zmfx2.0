@@ -1,0 +1,513 @@
+<div class="select-tab">
+    <h3 class="text-center">
+        <div class="col-md-12">
+                <span class="select-tab-left tabactive">
+                    挑选祼钻 <span class="caret"></span>
+                </span>
+                <span class="hidden-xs">|</span>
+                <span class="select-tab-right" onclick="javascript:location.href='{:U('/Home/Goods/goodsCategory')}?gcid=60';" >
+                    挑选戒托 <span></span>
+                </span>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </h3>
+</div>
+<div class="diamond-banner">
+    <if condition="$customAdList[0]['url'] neq '' ">
+        <a href="{$customAdList[0]['url']}">
+    </if>
+    <if condition="$customAdList[0]['images_path'] neq '' ">
+        <img src="/Public{$customAdList[0]['images_path']}">
+    <else/>
+        <img src="__IMG__/jt_steps_03.jpg">
+    </if>
+    <if condition="$customAdList[0]['url'] neq '' ">
+        </a>
+    </if>
+</div>
+
+<div class="tiaoxuan" id='k'>
+    <ul>
+        <li onclick="location.href='#listbox'">
+            <button type="button" class="btn btn-default" style="visibility:hidden; position: absolute; right: 30px; top: 22px; z-index: 999; ">重选</button>
+            <div class="tiaoxuan-left">
+                <ul class="tiaoxuan-list">
+                    <li><img src="__IMG__/tiaoxuanimg_03.jpg" alt=""></li>
+                    <li id="selected_luozuan" ></li>
+                    <li></li>
+                </ul>
+            </div>
+            <img src="__IMG__/pjt_03.jpg" alt="">
+        </li>
+        <li id="sellist" >
+            <button type="button" class="btn btn-default" id="reset_select_goods" style="position: absolute; right: 65px; top: 22px; z-index: 999;">重选</button>
+            <div class="tiaoxuan-center">
+                <ul></ul>
+            </div>
+            <img src="__IMG__/pjt_04.jpg" alt="">
+        </li>
+        <li>
+            <div class="tiaoxuan-right">
+                <p><h5 class="red">总价:¥<span id="price"></span></h5></p>
+                <p><img src="__IMG__/srdz_03.jpg" class="btn btn-link" style="padding: 0" id="addCart"></p>
+            </div>
+            <img src="__IMG__/pjt_05.jpg" alt="">
+        </li>
+        <div class="clearfix"></div>
+    </ul>
+</div>
+
+<script>
+    $(function(){
+        dingzhi.get_luozuan_info(func_selected_luozuan_info);
+		dingzhi.get_jietuo_info(func_selected_jietuo_info);
+        $('#reset_select_goods').click(function(){
+            dingzhi.clear_jietuo_info();
+            location.href='{:U('/Home/Goods/goodsCategory')}?gcid=60';
+        });
+        $('#addCart').click(function(){
+            dingzhi.submit();
+        });
+        var count_num = dingzhi.count_total_price();
+        if( count_num == 0 ){
+            $('.tiaoxuan').hide();
+        }
+    });
+</script>
+
+
+<div class="diamond-para">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="panel panel-default border-radiusno margin-bottom-no">
+                <div class="panel-heading">
+                    <h5 class="pull-left"><strong>选择钻石</strong></h5>
+                    <button class="btn btn-warning border-radiusno pull-right deselect">清空己选条件</button>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="panel-body">
+                    <div id="gmap-street-view">
+                        <div class="col-md-12">
+                            <div class="diamond-listbox">
+                            <strong>裸钻颜色</strong>
+                            <span class="d-list w5">
+                                <a href="{:U('/Home/Goods/goodsDiy/')}" <eq name="ACTION_NAME" value="goodsDiy" > class="chose" </eq>  >白钻</a>
+								<if condition="$templateSetting['caizuan_show'] neq 1 ">
+                                <a href="{:U('/Home/Goods/goodsDiyColor')}" <eq name="ACTION_NAME" value="goodsDiyColor" > class="chose" </eq> >彩钻</a>
+								</if>
+                            </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="diamond-list">
+                                <strong>颜色</strong>
+                                <span class="pc-select">
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Color" data-value="YELLOW"><img src="__IMG__/c_06.gif"    alt=""> <br> 黄钻</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Color" data-value="PINK"><img src="__IMG__/c_08.gif"     alt=""> <br> 粉钻</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Color" data-value="ORANGE"><img src="__IMG__/c_12.gif"  alt=""> <br> 橙钻</a>
+                                    <!-- <a href="javascript:void(0);" class="condition_item" data-type="Color" data-value="CHAMPAGNE"><img src="__IMG__/c_10.gif"    alt=""> <br> 香槟钻</a> -->
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Color" data-value="GREEN"><img src="__IMG__/c_14.gif"     alt=""> <br> 绿钻</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Color" data-value="BROWN"><img src="__IMG__/c_16.gif" alt=""> <br> 棕色</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Color" data-value="VIOLET"><img src="__IMG__/c_18.gif"  alt=""> <br> 紫罗兰</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Color" data-value="PURPLE"><img src="__IMG__/c_20.gif"  alt=""> <br> 紫钻</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Color" data-value="GRAY"><img src="__IMG__/c_03.gif"  alt=""> <br> 灰钻</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Color" data-value="BLACK"><img src="__IMG__/c_23.gif" alt=""> <br> 黑钻</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Color" data-value="RED"><img src="__IMG__/c_25.gif"  alt=""> <br> 红钻</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Color" data-value="BLUE"><img src="__IMG__/c_27.gif"  alt=""> <br> 蓝钻</a>
+                                    <!-- <a href="javascript:void(0);" class="condition_item" data-type="Color" data-value="CHARMELEON"><img src="__IMG__/c_29.gif" alt=""> <br> 变色龙</a> -->
+                                </span>
+
+                                <div class="mi-select phone-select">
+                                    <h5>-请选择- <span class="caret"></span></h5>
+                                    <ul style="display: none;">
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Color" data-value="YELLOW" data-string="黄钻"/>黄钻</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Color" data-value="PINK" data-string="粉钻" />粉钻</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Color" data-value="ORANGE" data-string="橙钻" />橙钻</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Color" data-value="CHAMPAGNE" data-string="香槟钻" />香槟钻</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Color" data-value="GREEN" data-string="绿钻" />绿钻</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Color" data-value="BROWN"  data-string="棕色"/>棕色</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Color" data-value="VIOLET"  data-string="紫罗兰"/>紫罗兰</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Color" data-value="PURPLE" data-string="紫钻"/>紫钻</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Color" data-value="GRAY" data-string="灰钻" />灰钻</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Color" data-value="BLACK" data-string="黑钻" />黑钻</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Color" data-value="BLUE" data-string="蓝钻"/>蓝钻</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Color" data-value="CHARMELEON" data-string="变色龙"/>变色龙</li>
+                                        <div class="clearfix"></div>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="diamond-list">
+                                <strong>形状</strong>
+                                <span class="pc-select">
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Shape" data-value="ROUND"><img src="__IMG__/101.gif"    alt=""> <br> 圆形</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Shape" data-value="OVAL"><img src="__IMG__/102.gif"     alt=""> <br> 椭圆</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Shape" data-value="MARQUISE"><img src="__IMG__/103.gif"  alt=""> <br> 马眼</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Shape" data-value="HEART"><img src="__IMG__/104.gif"    alt=""> <br> 心形</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Shape" data-value="PEAR"><img src="__IMG__/105.gif"     alt=""> <br> 水滴</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Shape" data-value="PRINCESS"><img src="__IMG__/106.gif" alt=""> <br> 方形</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Shape" data-value="EMERALD"><img src="__IMG__/107.gif"  alt=""> <br> 祖母绿</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Shape" data-value="CUSHION"><img src="__IMG__/108.gif"  alt=""> <br> 枕形</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Shape" data-value="RADIANT"><img src="__IMG__/109.gif"  alt=""> <br> 蕾蒂恩</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Shape" data-value="BAGUETTE"><img src="__IMG__/111.gif" alt=""> <br> 梯方</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Shape" data-value="SQUARE EMERALD"><img src="__IMG__/112.gif" alt=""> <br> 方形祖母绿</a>
+                                </span>
+                                <div class="mi-select phone-select">
+                                    <h5>-请选择- <span class="caret"></span></h5>
+                                    <ul style="display: none;">
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Shape" data-value="ROUND" data-string="圆形" />圆形</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Shape" data-value="OVAL" data-string="椭圆" />椭圆</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Shape" data-value="MARQUIS" data-string="马眼"/>马眼</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Shape" data-value="HEART"  data-string="心形"/>心形</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Shape" data-value="PEAR"  data-string="水滴"/>水滴</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Shape" data-value="PRINCESS" data-string="方形"/>方形</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Shape" data-value="EMERALD"  data-string="祖母绿"/>祖母绿</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Shape" data-value="CUSHION"  data-string="枕形"/>枕形</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Shape" data-value="RADIANT"  data-string="蕾蒂恩"/>蕾蒂恩</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Shape" data-value="BAGUETTE" data-string="梯方"/>梯方</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Shape" data-value="SQUARE EMERALD" data-string="方形祖母绿"/>方形祖母绿</li>
+                                        <div class="clearfix"></div>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="diamond-list">
+                                <strong>色度</strong>
+                                <span class="pc-select">
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Intensity" data-value="FAINT">微 <br> FAINT</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Intensity" data-value="VERY LIGHT">很淡 <br> VERY LIGHT</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Intensity" data-value="LIGHT">淡 <br> LIGHT</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Intensity" data-value="FANCY LIGHT">淡彩 <br> FANCY LIGHT</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Intensity" data-value="FANCY">彩 <br> FANCY</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Intensity" data-value="FANCY INTENSE">浓彩 <br> FANCY INTENSE</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Intensity" data-value="FANCY DEEP">深彩 <br> FANCY DEEP</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Intensity" data-value="FANCY DARK">暗彩 <br> FANCY DARK</a>
+                                    <a href="javascript:void(0);" class="condition_item" data-type="Intensity" data-value="FANCY VIVID">艳彩 <br> FANCY VIVID</a>
+                                </span>
+
+                                <div class="mi-select phone-select">
+                                    <h5>-请选择- <span class="caret"></span></h5>
+                                    <ul style="display: none;">
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Intensity" data-value="FAINT" data-string="微 FAINT" />微 FAINT</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Intensity" data-value="VERY LIGHT" data-string="很淡 VERY LIGHT"/>很淡 VERY LIGHT</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Intensity" data-value="LIGHT" data-string="淡 LIGHT"/>淡 LIGHT</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Intensity" data-value="FANCY LIGHT" data-string="淡彩 FANCY LIGHT"/>淡彩 FANCY LIGHT</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Intensity" data-value="FANCY" data-string="彩 FANCY"/>彩 FANCY</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Intensity" data-value="FANCY INTENSE" data-string="浓彩 FANCY INTENSE"/>浓彩 FANCY INTENSE</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Intensity" data-value="FANCY DEEP" data-string="深彩 FANCY DEEP"/>深彩 FANCY DEEP</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Intensity" data-value="FANCY DARK" data-string="暗彩 FANCY DARK" />暗彩 FANCY DARK</li>
+                                        <li><input type="checkbox" class="condition_item_mobile" data-type="Intensity" data-value="FANCY VIVID" data-string="艳彩 FANCY VIVID" />艳彩 FANCY VIVID</li>
+                                        <div class="clearfix"></div>
+                                    </ul>
+                                </div>
+                            </div>
+                            <script>
+                                $(function(){
+                                    $('.phone-select').find('h5').bind('click', function(){
+                                        if($(this).next('ul').css('display') == "block"){
+                                            $(this).next('ul').hide();
+                                        }else{
+                                            $('.phone-select').find('ul').hide();
+                                            $(this).next('ul').show();
+                                        }
+                                    });
+                                });
+                            </script>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="diamond-listbox">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <strong>钻重</strong>
+                                        <span class="d-list w1">
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Weight" data-value="0.30-0.49">0.30-0.49CT</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Weight" data-value="0.50-0.79">0.50-0.79CT</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Weight" data-value="0.80-0.99">0.80-0.99CT</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Weight" data-value="1">1克拉或以上</a>
+                                            <!-- <a href="javascript:void(0);" class="zdy" data-type="Weight" data-value="">自定义</a> -->
+
+                                            <div class="diamond-custom">
+                                                <div class="pull-left" style="font-size:12px;">
+                                                    <input type="text" id="minWeight"  class="input-one Weight">
+                                                    &nbsp;&nbsp;至&nbsp;&nbsp;
+                                                    <input type="text" id="maxWeight" class="input-two Weight">
+                                                    &nbsp;克拉
+                                                </div>
+                                                <!-- <div class="pull-right"><input type="button" class="zzzdy-btn" value="确定"></div> -->
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <strong>价格</strong>
+                                        <span class="d-list w2">
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Price" data-value="2000-4999">2000-4999</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Price" data-value="5000-7999">5000-7999</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Price" data-value="8000-9999">8000-9999</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Price" data-value="10000">1万或以上</a>
+                                            <!-- <a href="javascript:void(0);" class="zdy" data-type="Price" data-value="">自定义</a> -->
+                                            <div class="diamond-custom">
+                                                <div class="pull-left" style="font-size:12px;">
+                                                    <input type="text" id="minPrice" class="input-one Price">
+                                                    &nbsp;&nbsp;至&nbsp;&nbsp;
+                                                    <input type="text" id="maxPrice" class="input-two Price">
+                                                    &nbsp;元
+                                                </div>
+                                                <!-- <div class="pull-right"><input type="button" class="jgzdy-btn" value="确定"></div> -->
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <strong>净度</strong>
+                                        <span class="d-list w4">
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Clarity" data-value="FL">FL</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Clarity" data-value="IF">IF</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Clarity" data-value="VVS1">VVS1</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Clarity" data-value="VVS2">VVS2</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Clarity" data-value="VS1">VS1</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Clarity" data-value="VS2">VS2</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Clarity" data-value="SI1">SI1</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Clarity" data-value="SI2">SI2</a>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <strong>证书</strong>
+                                        <span class="d-list w9">
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Cert" data-value="GIA">GIA</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Cert" data-value="HRD">HRD</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Cert" data-value="IGI">IGI</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Cert" data-value="NGTC">国检</a>
+                                        </span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="diamond-listbox">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <strong>荧光</strong>
+                                        <span class="d-list w7">
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Fluor" data-value="N">N</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Fluor" data-value="F">F</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Fluor" data-value="M">M</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Fluor" data-value="S">S</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Fluor" data-value="VS">VS</a>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <strong>抛光</strong>
+                                        <span class="d-list w8">
+                                            <a href="javascript:void(0);" class="condition_item hidden" data-type="Polish" data-value="I">Ideal</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Polish" data-value="EX">EX</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Polish" data-value="VG">VG</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Polish" data-value="GD">GOOD</a>
+                                            <a href="javascript:void(0);" class="condition_item hidden" data-type="Polish" data-value="F">Fair</a>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <strong>对称</strong>
+                                        <span class="d-list w9">
+                                            <a href="javascript:void(0);" class="condition_item hidden" data-type="Symmetry" data-value="I">Ideal</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Symmetry" data-value="EX">EX</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Symmetry" data-value="VG">VG</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Symmetry" data-value="GD">GOOD</a>
+                                            <a href="javascript:void(0);" class="condition_item hidden" data-type="Symmetry" data-value="F">Fair</a>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <strong>来源</strong>
+                                        <span class="d-list w5">
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Location" data-value="现货">现货</a>
+                                            <a href="javascript:void(0);" class="condition_item" data-type="Location" data-value="订货">订货</a>
+                                        </span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        luozuan.condition['luozuan_type'] = [1];
+        load_selected();
+        $('.condition_item').click(function(){
+            luozuan.set_page(1);
+            var type  = $(this).attr('data-type');
+            var value = $(this).attr('data-value');
+            if( type == 'Weight' || type == 'Price' ){
+				if(type == 'Weight'){
+					$('#minWeight').val('');
+					$('#maxWeight').val('');
+				}
+				if(type == 'Price'){
+					$('#minPrice').val('');
+					$('#maxPrice').val('');
+				}
+                $(this).nextAll('a').removeClass('actives');
+                $(this).prevAll('a').removeClass('actives');
+                luozuan.condition[type]     = new Array();//清空
+            }
+            if( $(this).hasClass('actives') == false ){
+                //选中
+                luozuan.set_condition(type,value);
+                $(this).addClass('actives');
+            } else {
+                //不选中
+                luozuan.clear_condition(type,value);
+                $(this).removeClass('actives');
+            }
+            luozuan.get_list(func_display_luozuan_data);
+        });
+
+        $('.condition_item_mobile').change(function(){
+            luozuan.set_page(1);
+            var type  = $(this).attr('data-type');
+            var value = $(this).attr('data-value');
+            if( $(this).prop("checked") ){
+                luozuan.set_condition(type,value);
+            } else {
+                luozuan.clear_condition(type,value);
+            }
+            var html = '';
+            $(this).closest('.phone-select').find('input[type=checkbox]:checked').each(function(){
+                if( html != '' ){
+                    html += ',';
+                }
+                html += $(this).attr('data-string');
+            });
+            if( html == '' ){
+                $(this).closest('.phone-select').find('h5').html('-请选择- <span class="caret"></span>');
+            } else {
+                html += '<span class="caret"></span>';
+                $(this).closest('.phone-select').find('h5').html(html);
+            }
+            luozuan.get_list(func_display_luozuan_data);
+        });
+
+        //钻重和价格单选
+        /*$('.w1 a,.w2 a').bind('click', function(){
+            if($(this).hasClass('zdy') == false){
+                $(this).parent('.d-list').find('.diamond-custom').hide();
+            }
+        });
+
+        //显示隐藏自定义
+        $('.zdy').bind('click', function(){
+            $(this).nextAll('a').removeClass('actives');
+            $(this).prevAll('a').removeClass('actives');
+            var type                = $(this).attr('data-type');
+            luozuan.condition[type] = new Array();//清空
+            if( $(this).hasClass('actives') == false ){
+                //选中
+                $(this).addClass('actives');
+            } else {
+                //不选中
+                $(this).removeClass('actives');
+            }
+            $(this).next('.diamond-custom').toggle();
+        });
+
+        $('.zzzdy-btn,.jgzdy-btn').bind('click', function(){
+            var oneVal = $(this).parent('.pull-right').prev('.pull-left').find('.input-one').val();
+            var twoVal = $(this).parent('.pull-right').prev('.pull-left').find('.input-two').val();
+
+            if(oneVal.length > 8 || twoVal.length > 8 ){
+                layer.msg("自定义的每项输入长度最多为八个！",{
+                    shift:6,
+                });
+                $(this).parents('.diamond-custom').show();
+            }else{
+                if( oneVal == '' || twoVal == '' ){
+                    var _value = '';
+                    var _text  = "自定义";
+                }else{
+                    var _value = oneVal + "-" + twoVal;
+                    var _text  = _value;
+                }
+                $(this).parents('.diamond-custom').hide();
+            }
+
+            $(this).parents('.diamond-custom').prev('.zdy').text(_text);
+            $(this).parents('.diamond-custom').prev('.zdy').attr('data-value',_value);
+            var type                = $(this).parents('.diamond-custom').prev('.zdy').attr('data-type');
+            luozuan.condition[type] = new Array();//清空
+            luozuan.set_condition(type,_value);
+            luozuan.set_page(1);
+            luozuan.get_list(func_display_luozuan_data);
+	    });*/
+
+		$('.Weight').blur(function(){
+			var minWeight = parseFloat($('#minWeight').val());
+			var maxWeight = parseFloat($('#maxWeight').val());
+			var _value	  = '';
+			if(minWeight.length > 8 || maxWeight.length > 8 ){
+				layer.msg("自定义的每项输入长度最多为八个！",{
+					shift:6,
+				});
+				return false;
+			}
+			if(minWeight && maxWeight){
+				_value = minWeight + "-" + maxWeight;
+			}else if (minWeight){
+				_value = minWeight + "-500";
+			}else if (maxWeight){
+				_value = "0-" + maxWeight;
+			}
+			$(this).parents('.d-list').find('.condition_item').removeClass('actives');
+			luozuan.condition['Weight'] = new Array();//清空
+			luozuan.set_condition('Weight',_value);
+            luozuan.set_page(1);
+            luozuan.get_list(func_display_luozuan_data);
+		})
+
+		$('.Price').blur(function(){
+			var minPrice = parseFloat($('#minPrice').val());
+			var maxPrice = parseFloat($('#maxPrice').val());
+			var _value	  = '';
+			if(minPrice.length > 8 || maxPrice.length > 8 ){
+				layer.msg("自定义的每项输入长度最多为八个！",{
+					shift:6,
+				});
+				return false;
+			}
+			if(minPrice && maxPrice){
+				_value = minPrice + "-" + maxPrice;
+			}else if (minPrice){
+				_value = minPrice + "-99999999";
+			}else if (maxPrice){
+				_value = "0-" + maxPrice;
+			}
+			$(this).parents('.d-list').find('.condition_item').removeClass('actives');
+			luozuan.condition['Price'] = new Array();//清空
+			luozuan.set_condition('Price',_value);
+            luozuan.set_page(1);
+            luozuan.get_list(func_display_luozuan_data);
+		})
+
+        //清空己选条件
+        $('.deselect').bind('click', function(){
+            $('.panel-body a').removeClass('actives');
+            $('.condition_item_mobile').prop('checked',false);
+            luozuan.clear_condition_all();
+            luozuan.set_page(1);
+            luozuan.get_list(func_display_luozuan_data);
+        });
+
+        $('.all-checkbox').bind('click',function(){
+            func_select_all('gid',this);
+        });
+
+        $('#addCartAll').bind('click',function(){
+            luozuan.addThisPageToCart();
+        });
+    });
+</script>

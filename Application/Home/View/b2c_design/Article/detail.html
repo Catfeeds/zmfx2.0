@@ -1,0 +1,9 @@
+<!-- jewelry-new -->
+<div class="jewelry-new jewelry-new-details">
+	<if condition="$info['art_mode'] eq 1 ">
+		{$info['content']|htmlspecialchars_decode}
+	<else />
+		<include file=".:Com:b2c:article:article_info" />
+	</if>	
+</div>
+<!-- jewelry-new end //-->

@@ -1,0 +1,52 @@
+
+	<!-- jewelry-new -->
+	<div class="jewelry-new jewelry-new-details">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="path">
+						<ol class="breadcrumb">
+							当前位置：
+						  <li><a href="/">首页</a></li>
+						  <li><a href="{:U('Store/index')}">门店管理</a></li>
+						  <li class="active">{$storeInfo.name}</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+
+			<style>
+				.new_details { max-width: 870px; margin: 0 auto;}
+				.fg { width: 60%; border-bottom: 1px solid #A6937C; margin: 15px auto;}
+				blockquote { padding: 20px 0;}
+			</style>
+
+			<div class="new">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="new_details text-center">
+							<h3 class="text-center">{$storeInfo.name}</h3>
+							<p class="text-cneter about">发布时间：{$storeInfo.addtime|date="Y-m-d H:i",###} &nbsp;&nbsp;&nbsp; 浏览量：{$storeInfo.click}</p>
+							<div style="margin-bottom: 20px;"><img src="__PUBLIC__/Uploads/store/{$storeInfo['thumb']}" alt=""></div>
+							<blockquote>
+								<h3 class="text-center">{$storeInfo.name}</h3>
+								<p  class="fg"></p>
+								<p class="text-center">电话：{$storeInfo.phone}</p>
+								<p class="text-center">联系人：{$storeInfo.contacts}</p>
+								<p class="text-center">地址：{$storeInfo.province_name}{$storeInfo.city_name}市{$storeInfo.district_name}{$storeInfo.address}</p>
+							</blockquote>
+							<div class="contbox">
+								<p>
+									<strong>店面描述：</strong>{$storeInfo.content|htmlspecialchars_decode}
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="clearfix"></div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- jewelry-new end //-->

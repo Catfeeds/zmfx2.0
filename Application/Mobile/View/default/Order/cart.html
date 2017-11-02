@@ -1,0 +1,124 @@
+<include file="Public:header" />
+<script src="__JS__/cart.js"></script>
+<!-- Header -->
+	<header data-am-widget="header" class="am-header am-serch cat">
+		<div class="am-header-left am-header-nav">
+			<a href="javascript:;" onclick="javascript:history.go(-1);" class="">
+				<img class="am-header-icon-custom" src="__ASS__/Img/search_01.png" alt=""/>
+			</a>
+		</div>
+		<h1 class="am-header-title">
+			购物车
+		</h1>
+	</header>
+<div class="wrap">
+	<if condition="!empty($data['luozuan']) || !empty($data['sanhuo']) || !empty($data['product'])">
+		<div class="sign"><p>您选购的商品如下：</p><a href="javascript:void(0)" onclick="cartClear()">清空购物车</a></div>
+	</if>
+	<!--选购的商品-->
+	<if condition="!empty($data['luozuan']) || !empty($data['sanhuo']) || !empty($data['product'])">
+	<form action="{:U('Order/orderConfirm')}" onsubmit="return confirmOrder()" method="get">
+	<div class="am-list-news-bd shop">
+		<ul class="am-list cartList">             
+			<if condition="$data['luozuan']">
+			<volist name="data['luozuan']['data']" id="vo">
+			<li class="am-g am-list-item-dated">
+				<div class="content">
+					<b>
+						{$vo.goods_attrs.goods_name} 
+						<if condition="$vo['have_goods'] lt 1">【<span style="color:red;">无货</span>】 </if>
+						<eq name="vo['goods_attrs']['luozuan_type']" value="1" >彩钻</eq> 
+						{$vo.goods_attrs.certificate_type} {$vo.goods_attrs.certificate_number} 
+						<span color="red">[裸钻]</span>
+					</b>
+					<br>
+					{$vo.goods_attrs.weight}克拉，{$vo.goods_attrs.color}色，{$vo.goods_attrs.clarity}净度，{$vo.goods_attrs.cut}切工
+					<br>
+					<big>
+						单粒价格：&yen;{$vo.goods_attrs.price}
+					</big>
+				</div>                                                                                                
+				<span class="am-list-date"><input type="button"  onclick="cartDelete({$vo.id})" value="删除"></span>
+			</li>
+			</volist>
+			</if>
+			<if condition="$data['sanhuo']">
+			<volist name="data['sanhuo']['data']" id="vo">
+			<li class="am-g am-list-item-dated">
+				<div class="content">
+					<b>{$vo.goods_attrs.goods_sn} <if condition="$vo['have_goods'] lt 1">【<span style="color:red;">无货</span>】 </if> 
+					{$vo.goods_attrs.type_name} 库存：{$vo.goods_attrs.goods_weight}CT <span color="red">[散货]</span></b><br>
+					颜色：{$vo.goods_attrs.color}净度，{$vo.goods_attrs.clarity} 切工：{$vo.goods_attrs.cut}<br>
+					<big>每卡单价：&yen;{$vo.goods_attrs.goods_price}</big><br>
+					<input type="text" name="goods_number"  value="{$vo.goods_number}" onblur="changeGoodsNumber(this,{$vo['id']},2)" id="weight_{$vo.goods_id}"  placeholder="请输入购买重量，单位（CT）"  />&nbsp;CT
+
+					<input type="hidden" name="{$vo['id']}_stock" value="{$vo.goods_attrs.goods_weight}" cartId="{$vo['id']}" default_val="{$vo.goods_number}">
+					<br>
+					<big>现金小计：&yen;{$vo.goods_attrs.goods_price2}</big>
+				</div>                                                                                               
+				<span class="am-list-date"><input type="button"  onclick="cartDelete({$vo.id})" value="删除"></span>
+			</li>      
+			</volist>
+			</if> 
+			<if condition="$data['product']">
+			<volist name="data['product']['data']" id="vo">
+			<li class="am-g am-list-item-dated">
+				<div class="content">
+					<div class="cartImg"><img src="{$vo.goods_attrs.thumb}" /></div>          
+					<div class="cartAttrs">
+						<b>{$vo.goods_attrs.goods_name}</b><if condition="$vo['have_goods'] lt 1">【<span style="color:red;">无货</span>】 </if><br>					
+
+						<if condition="$vo['goods_attrs']['associateInfo']">{$vo.goods_attrs.associateInfo.material_name}
+							金重：{$vo.goods_attrs.associateInfo.weights_name}g 主石：{$vo.goods_attrs.luozuanInfo.weights_name}CT
+							{$vo.goods_attrs.luozuanInfo.shape_name} 
+							副石：{$vo.goods_attrs.deputystone.deputystone_name}
+							手寸：{$vo.goods_attrs.hand}  
+							刻字：{$vo.goods_attrs.word}
+							<if condition="$vo['goods_attrs']['sd_images']">
+								刻字个性符号：<img src="{$vo.goods_attrs.sd_images} " style="width: 50px;" />
+							</if>
+							<if condition="$vo['goods_attrs']['hand1']">
+								手寸1：{$vo.goods_attrs.hand1}  
+							</if>
+							<if condition="$vo['goods_attrs']['word1']">
+								刻字1：{$vo.goods_attrs.word1}
+							</if>
+							<if condition="$vo['goods_attrs']['sd_images1']">
+								刻字个性符号1：<img src="{$vo.goods_attrs.sd_images1} " style="width: 50px;" />
+							</if>
+						<elseif condition="$vo['specification']" />
+							<p>{$vo.specification}</p>
+						<else />
+							{$vo.goods_attrs.category_name}
+						</if>
+						<br>
+						<big>价格：&yen;
+							<in name="vo['goods_attrs']['activity_status']" value="0,1">
+								{$vo.goods_attrs.activity_price}
+							<else/>
+								{$vo.goods_attrs.goods_price}
+							</in>
+						</big>
+					</div>
+				</div>                                                                                               
+				<span class="am-list-date"><input type="button"  onclick="cartDelete({$vo.id})" value="删除"></span>
+			</li>
+			</volist>
+			</if>  
+		</ul>
+	</div>
+	<div class="sign"><p>订单总金额：<font style="color:red;font-weight:bold;font-size:14px;">￥<label id="total">{$data.total}</label></font></p></div>
+	<div class="am-pace">
+		<a href="{:U('/Index/index')}"><button type="button" class="am-btn am-btn-blue am-radius">继续挑选</button></a>
+		<button type="submit" class="am-btn am-btn-blue am-radius">确认订单</button>
+	</div>
+	</form>
+	<else />
+	<div class="cart-null">
+		<img src="__ASS__/Img/cart-bg.png" alt="" width="100"/>
+		<p>您购物车还是空的，快去采购吧！</p>
+		<a href="{:U('/Index/index')}"><button type="button" class="am-btn am-btn-blue am-radius">挑选商品</button></a></div>
+	</if>
+</div>
+</div>
+<include file="Public:footer" />

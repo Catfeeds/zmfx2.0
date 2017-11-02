@@ -1,0 +1,233 @@
+<block name="header">
+    <include file=".:Base:layout_header" />
+</block>
+<block name="body">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Css/jquery-ui.css" />
+<script type="text/javascript" src="__PUBLIC__/Js/jquery.10.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/jquery.ui.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/datepicker-tw.js"></script>
+
+<script>
+  $(function() {
+    $( "#from" ).datepicker( $.datepicker.regional[ "zh-TW" ] );
+  });
+  $(function() {
+    $( "#to" ).datepicker( $.datepicker.regional[ "zh-TW" ] );
+  });
+</script>
+<div id="UserInfo">
+	<div class="navigation"><a href="{:U('/Home/Index/index')}">首页 </a>&gt;<a href="{:U('/Home/User/index')}"> 用户中心 </a>&gt; 用户中心首页</div>
+    <include file=".:Base:User:menu" />
+   	<div id="user_right">
+   		<div class="user_orders">
+   			<form method="GET" action="{:U('/Home/User/orderList')}">
+   				<table class="tbl_order_search">
+   					<thead>
+   						<tr class="top"><th colspan="4">{$Think.lang.L135}</th></tr>
+   					</thead>
+   					<tbody>
+   						<tr><th width="20%">订单状态</th><td class="tdLeft" width="30%">
+							<select name="order_status">
+								<option value="-2" selected="selected" >所有订单</option>
+								<volist name="orderStatus" id="vo">
+									<option value="{$key}">{$vo}</option>
+								</volist>
+							</select>
+							<script>$("select[name='order_status']").val('{$order_status}');</script>
+   							</td>
+   							<th width="20%">订单日期</th><td class="tdLeft" width="30%"><input id="from" type="text" class="datepicker" name="dateFrom" value="{$dateFrom}" /> - <input id="to" type="text" value="{$dateTo}" class="datepicker" name="dateTo" /></td>
+   						</tr>
+   						<tr><th>订单号</th><td class="tdLeft"><input type="text" value="{$order_sn}" class="order_sn" name="order_sn" /></td>
+   							 <th>证书号</th><td class="tdLeft"><input type="text" name="certificate_number" value="{$certificate_no}" class="order_sn" /></td>
+   						</tr>
+   						<tr><td colspan="4" class="tdRight"><input type="submit" class="bnt_bonus" value="查询" /></td></tr>
+   					</tbody>
+   				</table>
+   			</form>
+   			<table class="mt10" border="1" cellpadding="1" cellspacing="1">
+   				<thead>
+					<tr class="title">
+						<th width="18%">{$Think.lang.L144}</th>
+						<th width="16%">{$Think.lang.L145}</th>
+						<th width="15%">{$Think.lang.L146}</th>
+						<th width="15%">已支付金额</th>
+						<th width="20%">{$Think.lang.L147}</th>
+						<th width="26%">{$Think.lang.L148}</th>
+					</tr>
+				</thead>
+				<tbody id="orderList">
+					<volist name="orderList" id="vo">
+						<tr><td><a href="{:U('Home/User/orderInfo/order_id/'.$vo['order_id'])}">{$vo.order_sn}</a></td>
+							<td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+							<td>{$vo.price}</td>
+							<td>{$vo.payment_price}</td>
+							<td>{$vo.status_txt}</td>
+							<td>
+								<if condition="$vo.order_status eq 0 OR $vo.order_status eq 1"><a href="javascript:void(0)" onclick="pay_it('{$vo.order_id}','{$vo.price}')">去支付</a></if>
+								<if condition="$vo.order_status eq 0"><a href="javascript:void(0)" onclick="if(confirm('确定取消订单？')){updateOrder({$vo.order_id},{$vo.order_status})}">取消订单</a></if>
+							    <if condition="$vo.order_status eq -1"><a href="javascript:void(0)" onclick="if(confirm('确定删除订单？')){updateOrder({$vo.order_id},{$vo.order_status})}">删除订单</a></if>
+								<if condition="$vo.order_status eq 4"><a href="{:U('Home/User/orderInfo/order_id/'.$vo['order_id'])}">确认收货</a></if>
+							</td>
+						</tr>
+					</volist>
+				</tbody>
+   			</table>
+   			<div id="page" class="page">{$page}</div>
+   		</div>
+  </div>
+</div>
+
+<!-- 提示 -->
+<style>
+  .modal {
+    position: fixed;
+    top: 20%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+  }
+  .modal-content {
+    width: 900px;
+    margin: 30px auto;
+    position: relative;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    box-shadow: 0 3px 9px rgba(0,0,0,.5);
+  }
+  .modal-header {
+    min-height: 16.43px;
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .modal-dl p {
+    margin: 5px;
+  }
+  .modal-dl h5 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .text-center {
+    text-align: center;
+    margin: 50px 0;
+  }
+  .btn {
+    display: inline-block;
+  }
+  .closes {
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+    filter: alpha(opacity=50);
+    opacity: .5;
+  }
+  .closes span { 
+    font-size: 21px;
+  }
+  .modal-bg {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+    z-index: 999;
+  }
+</style>
+<div class="modal-bg" style="display:none;"></div>
+<div class="modal" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="closes" data-dismiss="modal" aria-label="Close"><span class="close-btn">×</span></button>
+      <h5 class="modal-title" id="gridSystemModalLabel">订单支付</h5>
+    </div>
+    <div class="container-fluid">
+      <div class="modal-dl">
+        <div class="col-md-12">
+            <h5>订单总额: <span class="red total_price">￥2709.23</span></h5>
+            <p>支付方式：线下支付</p>
+			<volist name="LinePayMode" id="vo">
+				<p >账户名称：	{$vo.aname}</p>
+				<p >账号：		{$vo.abank}</p>
+				<p >开户行：	{$vo.tback}</p>
+				<br/> 
+			</volist>
+
+            <p>您可以联系公司财务，完成线下转账支付电话：{:C('site_contact')}  <br></p>
+            <div class="text-center" style="margin: 50px 0;">
+              <a id="pay_online" href="#" class="btn btn-warning" target="_blank">在线支付</a> &nbsp;
+              <a href="#" class="btn btn-warning close-btn" data-dismiss="modal" aria-label="Close">关 闭</a>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(function(){
+    //关闭
+    $('.close-btn').bind('click', function(){
+      $('.modal, .modal-bg').fadeOut();
+    });
+
+  });
+</script>
+<!-- 提示 end -->
+
+<script>
+var alipay = '{$alipay}';	//支付宝开启关闭标志
+function updateOrder(order_id,order_status){
+	$.post('/Home/User/updateOrder',{order_id:order_id,order_status:order_status,href:window.location.href},function(data){
+		alert(data.msg);
+		window.location.reload();
+	});
+}
+
+function deleteOrder(order_id){
+	$.post('/Home/User/deleteOrder',{order_id:order_id,href:window.location.href},function(data){
+		alert(data.msg);
+		window.location.reload();
+	});
+}
+
+function pay_it(order_id, total_price){
+	if(alipay=='1'){
+		$('#pay_online').attr('href',"/Home/Pay/online/order_id/"+order_id);
+	}else{
+		$('#pay_online').hide();
+	}
+	$(".total_price").text('￥'+total_price);
+	$('.modal, .modal-bg').fadeIn();
+}
+
+</script>
+</block>
+<block name="footer">
+    <include file=".:Base:layout_footer" />
+</block>

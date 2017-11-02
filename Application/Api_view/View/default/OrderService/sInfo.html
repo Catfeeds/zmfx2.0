@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>售后进度</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="__CSS__/bootstrap.min.css">
+	<link rel="stylesheet" href="__CSS__/public.css">
+	<link rel="stylesheet" href="__CSS__/aftersales.css">
+	<script src="__JS__/jquery.min.js"></script>
+	<script src="__JS__/bootstrap.min.js"></script>
+	<script src="__JS__/layer-mobile/layer.js"></script> 
+</head>
+<body class="wrap-bg">
+	<!-- Main -->
+    <div class="user-info sh-progress">
+			<section class="after-sales-list btnone">
+				<div class="shlx">
+					<span class="pull-left" style="line-height: 30px;">订单号：{$info.order_sn}</span>
+					<span class="pull-right red" style="line-height: 30px;">
+						<if condition = " $info.status eq '1' ">
+							<button type="button" id='imok' class="service_type_option btn btn-default btn-sm btn-red">确认解决</button>
+						<elseif condition = " $info.status eq '0' " />
+							进行中...
+						<elseif condition = " $info.status eq '2' " />
+							已完成
+						</if>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+			</section>
+
+			<section class="after-sales-list">
+				<div class="shlx">
+					<h4>问题描述</h4>
+					<div class="miaoshu">
+						<p>{$info.description}</p>
+						<small class="times">{$info.create_time}</small>
+					</div>
+				</div>
+			</section>
+
+			<section class="after-sales-list">
+				<div class="shlx">
+					<h4>审核留言</h4>
+					<if condition = " $info.status ">
+						<p class="shlyz">{$info.admin_reply}</p>
+					<else />
+						<p class="shenhezhong">正在审核中......</p>
+					</if>
+				</div>
+			</section>
+
+			<section class="after-sales-list">
+				<div class="shlx sl">
+					<h4>受理结果</h4>
+					<if condition = " $info.status ">
+						<div class="">
+							<p class="text-left">服务结果：
+							<span class="shlyz">
+								<if condition=" $info.result_type eq '1' ">
+									同意换货
+								<elseif condition=" $info.result_type eq '2' " />
+									不同意换货
+								<elseif condition=" $info.result_type eq '3' " />
+									同意退货退款
+								<elseif condition=" $info.result_type eq '4' " />
+									不同意退货退款
+								</if>
+							</span>
+							</p>
+							<p class="text-left">快递公司：<span class="shlyz">{$info.express_company}</span></p>
+							<p class="text-left">快递单号：<span class="shlyz">{$info.express_number}</span></p>
+							<p class="text-left">快递运费：<span class="shlyz">{$info.express_price}</span></p>
+						</div>
+					<else />
+						<p class="shenhezhong">正在审核中......</p>
+					</if>
+				</div>
+			</section>
+
+    </div>
+	<!-- Main END //-->
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#imok").click(function(){
+				layer.open({
+					content: '要结束售后服务嘛？',
+					btn: ['确定', '取消'],
+					yes: function(index){
+						layer.close(index);
+						$.ajax({
+							url:"/OrderService/overService?<?php echo '&agent_id='.C('agent_id').'&token='.C('token').'&uid='.C('uid')?>",							
+							type: 'POST',
+							data: {order_service_id:'{$info.order_service_id}'},
+							success: function(d){
+								if(d.ret==100){
+									layer.open({	content: d.msg,	time: 2		});
+									setTimeout("window.location.href='/OrderService/sList?<?php echo '&agent_id='.C('agent_id').'&token='.C('token').'&uid='.C('uid')?>'",2000);
+								}else{
+									layer.open({	content: d.msg,	time: 2		});
+								}
+							}
+						});
+					}
+				});
+			});
+		});
+	</script>
+</body>
+</html>

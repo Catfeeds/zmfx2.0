@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+</head>
+<body>
+<div class="page-main edit">
+    <div class="subMenu">
+        <h3>当前操作：{$operation}</h3>
+        <ul>
+            <li><a href="{:U('Admin/System/h5')}">返回列表</a></li>
+        </ul>
+    </div>
+    <div style="padding:10px 20px;width:600px;margin:auto;">
+        <form id="adInfo" action="{:U('Admin/System/h5Save?id='.$info['id'])}" method="POST" enctype="multipart/form-data">
+            <div class="info">
+                <div class="title">模块名称：</div>
+                {$info.name}
+            </div>
+            <div class="info">
+                <div class="title">模块别名：</div>
+                <input type="text" name="name_notes" value="{$info.name_notes}" style="width:300px;"/>
+            </div>
+            <if condition="I('get.id') eq '3'">
+                <div class="info">
+                    <div class="title">请选择相应模块位：</div>
+                    <select name="url_id"  class="select_series">
+                        <volist name="series_array" id="vo">
+                            <option value="{$vo.goods_series_id},{$vo.series_name}"
+                            <eq name="info['url_other_id']" value="$vo['goods_series_id']">selected</eq>>{$vo.series_name}</option>
+                        </volist>
+                    </select>
+                </div>
+                <div class="info">
+                    <div class="title">广告位链接地址：</div>
+                    <if condition="$info.url_id gt 0">
+                        <input  disabled="true"  type="text" name="link_name" value="/Goods/goodsCat/gid/<?php echo strtok($info['url_id'],',')?>.html" style="width:300px;"/>
+                        <else />
+                        <input  disabled="true"  type="text" name="link_name" value="" style="width:300px;"/>
+                    </if>
+                </div>
+            </if>
+            <!--<div class="info">
+                <div class="title">B2B_H5图片地址：</div>
+                <input type="file" name="img_path" value="{$info.img_path}" style="width:300px;"/>
+                <br /><span style="color:red; margin-left:170px;line-height:40px;">注：图片尺寸比例3:1,参考尺寸750*250px，支持PNG/JPG，小于2M</span>
+            </div>
+            <if condition="$info.img_path neq ''">
+                <div class="info">
+                    <div class="title">B2B_H5效果展示：</div>
+                    <a href="/Public/{$info.img_path}" target="_blank"><img src="/Public/{$info.img_path}" width="300"></a>
+                    <div class="clear"></div>
+                </div>
+            </if>-->
+            <input type="hidden" name="img_path" value="" />
+            <div class="info">
+                <div class="title">B2C H5图片地址：</div>
+                <input type="file" name="ico_img_path" value="{$info.ico_img_path}" style="width:300px;"/>
+                <br /><span style="color:red; margin-left:170px;line-height:40px;">注：图片尺寸比例1:1,参考尺寸150*150px，支持PNG/JPG，小于2M</span>
+            </div>
+            <if condition="$info.ico_img_path neq ''">
+                <div class="info">
+                    <div class="title">B2C H5效果展示：</div>
+                    <a href="/Public/{$info.ico_img_path}" target="_blank"><img src="/Public/{$info.ico_img_path}" width="150"></a>
+                    <div class="clear"></div>
+                </div>
+            </if>
+            <div class="info">
+                <div class="title">排序：</div>
+                <input type="text" name="sort" value="{$info.sort}" style="width:80px;"/>
+            </div>
+            <div class="info">
+                <div class="title">是否启用：</div>
+                <select name="status" id="status" class="select">
+                    <option value="1" <if condition="$info['status'] eq 1">selected</if> >启用</option>
+                    <option value="0" <if condition="$info['status'] eq 0">selected</if> >停用</option>
+                </select>
+            </div>
+            <div class="info">
+                <div class="title">&nbsp;</div>
+                <input type="submit" class="button fl" value="保存">
+                <input type="reset" class="button fl ml10" value="重置">
+                <div class="clear"></div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(".select_series").change(function(){
+        var val_id = $(this).val();
+        var val_id = val_id.split(',');
+        $('input[name="link_name"]').val('/Goods/goodsCat/gid/'+ val_id [0]+'.html');
+    });
+</script>
+</body>
+</html>

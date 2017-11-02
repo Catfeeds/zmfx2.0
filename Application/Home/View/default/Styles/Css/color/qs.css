@@ -1,0 +1,51 @@
+@utf-8;
+/* 头部 */
+body{background: #fff;}
+.header {background:url(../../Img/logo-qs.jpg)repeat center; height:172px; min-width:1200px; background-size:162%;}
+.header .userInfo { height: 30px; background:transparent; border-bottom: 1px solid transparent; }
+.header .userInfo ul { width: 1200px; margin: 0 auto; }
+.header .userInfo ul li { margin: 2px 0px 0px; padding: 0 5px; }
+.header .userInfo ul li span { color: #C2B19A; font-size: 12px; }
+.header .userInfo ul li a { font-size: 12px; color: #C2B19A; height: 20px; }
+.header .headerTop { height: 100px; width: 1200px; margin: 0 auto; padding-left: 10px; }
+.header .headerTop .logo { width: 230px; float: left; padding: 5px 0; }
+.header .headerTop .logo a { display: block; height: 85px; }
+.header .headerTop .logo img { height: 85px; width: 230px; }
+.header .search { height: 405px; height: 60px; float: left; padding: 30px 10px 10px 250px; }
+.header .search input { background: #FFFFFF; border: none; padding: 0px; line-height: 21px; }
+.header .search input { width: 300px; height: 21px; padding: 2px 5px; }
+.header .search input[type="submit"] { height: 25px; width: 60px; }
+.header .search ul span, .header .search ul a { color: #FFF; font-size: 12px; }
+.header .search ul li { float: left; padding-right: 10px; height: 30px; line-height: 30px; }
+/* 菜单 */
+.nav { background: #785C5A; height: 40px; border-top: 1px solid #FFFFFF; position: relative; }
+.nav .navContent { width: 1200px; margin: 0 auto;position: relative;  }
+.nav .menu { padding-left: 230px;position: relative;  }
+.nav .menu li { float: left; height: 40px; line-height: 40px;text-align:center;width:138px;}
+.nav .menu li a { font-size: 14px; color: #FFFFFF; display: block;text-align:center;}
+.nav .menu li.action a { background: #C2B19A; }
+.nav .menu li a:hover { background: #C2B19A; }
+.nav .menu li a:visited{text-decoration: none;}
+.nav .nav_zi li{z-index:999;position:relative;background: #AF9593;height:37px;border-bottom:1px solid black;}
+.nav_zi{display:none;}
+/* 分类*/
+.index .box .title{background: #785C5A;color: #fff;}
+.box span{color: #fff;}
+#catMenu .mt{background: #785C5A;}
+#catMenu .mt h2{color: #fff;}
+#catMenu .item h3{background: #C2B19A;color: #fff;}
+#catMenu .item{background: #FDF4ED;}
+/* 底部 */
+.footer { background:#2E272F; max-height: 339px; width: 100%;min-width:1200px;}
+.footer .footerTop { width: 1000px;margin:0 auto;height: 52px; background: url(../../Img/footer-in.jpg) no-repeat; margin-top:30px;}
+.footer .footerBottom { width: 970px; margin: 0 auto; }
+.footer .help { padding: 60px 0 20px; }
+.footer .help span, .help a, .help div { color:#C2B19A; }
+.footer .help .contact {background: url(../../Img/qingshi-bg.png) no-repeat; width: 250px; float: left; }
+.footer .help .contact span { font-size: 22px; padding-top: 10px; display: block; width: 250px; text-align: center; }
+.footer .help .info { width: 720px; float: left; }
+.footer .help .info .infoLi { width: 80px; float: left; padding: 0px 50px; }
+.footer .help .info .infoLi { background: url(../../Img/footerHelpBg.gif) no-repeat; }
+.footer .help ul.info .infoLi .title { font-size: 16px; font-weight: bold; }
+.footer .copyright { text-align: center; padding: 20px 0; }
+.footer .copyright p { font-size: 14px; color: #C2B19A; }

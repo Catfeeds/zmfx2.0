@@ -1,0 +1,91 @@
+<li>
+    <h2>{$sizeLabel}：</h2>
+    <div class="spec-box">
+        <div class="select-box">
+            <span id="hand" name="hand" class="mr">请选择{$sizeLabel}</span>
+            <img src="__IMG__/down_icon.png" alt="">
+        </div>
+    </div>
+
+    <script>
+        //手寸
+        var arr1 = [{$handSize}];
+        var sizeSelect = new MobileSelect({
+            trigger: '#hand',
+            title: '请选择{$sizeLabel}',
+            wheels: [
+                {data: arr1}
+            ],
+            position:[0] //初始化定位
+        });
+    </script>
+</li>
+<li>
+    <h2>刻字：</h2>
+    <div class="spec-box">
+        <div class="mb"><input id="word" type="text" name="word" value="" placeholder="最多可写十个字" class="kz-text"></div>
+        <div class="mb">
+            <div class="select-box">
+                <div class="show-tuan">
+                    <input type="hidden" name="symbolDesignId">
+                    <span class="mr tuan-btn va">可选图案符号</span>
+                    <img src="__IMG__/down_icon.png" alt="">
+                </div>
+                <div class="tuan" style="display: none;">
+                    <ul>
+                        <volist name="symbolDesignList" id="vo">
+                            <li data-index="1" data-sd-id="{$vo.sd_id}"><img src="{$vo.images_path}"/></li>
+                        </volist>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>
+<!-- 情侣对戒（女戒）-->
+<eq name="productType" value="coupleRing">
+    <li>
+        <h2>手寸(女戒)：</h2>
+        <div class="spec-box">
+            <div class="select-box">
+                <span id="hand1" name="hand1" class="mr">请选择手寸(女戒)</span>
+                <img src="__IMG__/down_icon.png" alt="">
+            </div>
+        </div>
+
+        <script>
+            //手寸
+            var arr2 = [{$handSize}];
+            var sizeSelect = new MobileSelect({
+                trigger: '#hand1',
+                title: '请选择手寸(女戒)',
+                wheels: [
+                    {data: arr2}
+                ],
+                position:[0] //初始化定位
+            });
+        </script>
+    </li>
+    <li>
+        <h2>刻字：</h2>
+        <div class="spec-box">
+            <div class="mb"><input id="word1" type="text" name="word1" value="" placeholder="最多可写十个字" class="kz-text"></div>
+            <div class="mb">
+                <div class="select-box">
+                    <div class="show-tuan">
+                        <input type="hidden" name="symbolDesignId1">
+                        <span class="mr tuan-btn va">可选图案符号</span>
+                        <img src="__IMG__/down_icon.png" alt="">
+                    </div>
+                    <div class="tuan" style="display: none;">
+                        <ul>
+                            <volist name="symbolDesignList" id="vo">
+                                <li data-index="2" data-sd-id="{$vo.sd_id}"><img src="{$vo.images_path}"/></li>
+                            </volist>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+</eq>

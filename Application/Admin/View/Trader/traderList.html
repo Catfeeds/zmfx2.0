@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>分销商列表</title>
+</head>
+<body>
+<div class="page-main">
+    <div class="subMenu">
+        <h3>当前操作：分销商列表</h3>
+    </div>
+    <table class="listTbl" border="1" bordercolor="#000" cellspacing="0px" style="border-collapse:collapse"> 
+        <tr class="top">
+        	<th width="7%">分销商ID</th>
+            <th width="20%">分销商名称</th>
+            <th width="23%">公司名称</th>
+            <th width="10%">联系人</th>
+            <th width="10%">联系电话</th>
+            <th width="10%">状态</th>
+            <th width="10%">操作</th>
+        </tr>
+        <volist name="traderList" id="vo" mod="2">
+        <tr class="{$mod?'bg2':'bg1'}">
+        	<td>{$vo.tid}</td>
+            <td><a href="http://{$vo.domain}/" target="_blank">{$vo.trader_name}</a></td>
+            <td>{$vo.company_name}</td>
+            <td>{$vo.contacts}</td>
+            <td>{$vo.phone}</td>
+            <td>
+            	<eq name="vo.status" value="0"><span class="red">未审核</span></eq>
+            	<eq name="vo.status" value="1">已审核开通</eq>
+            <td>
+                <a href="{:U('Admin/Trader/traderInfo?tid='.$vo['tid'])}" >编辑</a>
+                <eq name="vo.status" value="1">
+                <!--a href="{:U('Admin/Trader/traderSet?tid='.$vo['tid'])}" >配置</a---->
+                </eq>
+                <eq name="vo.status" value="0">
+                <a href="{:U('Admin/Trader/traderCheck?tid='.$vo['tid'])}" >审核</a>
+                <a href="{:U('Admin/Trader/traderDel?tid='.$vo['tid'])}" id="isDel">删除</a>
+                </eq>
+            </td>
+        </tr>
+		</volist>
+    </table>
+    <div class="page">{$page}</div>
+</div>
+</body>
+</html>

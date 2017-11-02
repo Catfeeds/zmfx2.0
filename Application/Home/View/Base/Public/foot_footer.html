@@ -1,0 +1,286 @@
+<div class="footer">
+	<div class="footerBottom">
+		<div class="help">
+			<div class="contact">
+				<img src="__PUBLIC__/{:C('contact_img')}">
+				<span>{:C('site_contact')}</span>
+			</div>
+			<ul class="info">
+				<volist name="helpArticleList" id="vo">
+				<li class="infoLi">
+					<div class="title">{$vo['catname']}</div>
+					<ul>
+						<volist name="vo['articleList']" id="v" >
+							<li>
+								<a href="{:U('Home/Article/help',array('aid'=>$v['aid']))}">
+									{$v['title']}
+								</a>
+							</li>
+						</volist>
+					</ul>
+				</li>
+				</volist>
+			</ul>
+			<div class="clear"></div>
+		</div>
+		<div class="copyright">
+			<p class="copy-link">友情链接：
+				<volist name="linkList" id="vo">
+					<a href="{$vo['link_url']}" target="{$vo['link_target']}" title="{$vo['link_description']}">{$vo['link_name']}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				</volist>
+			</p>
+			<p>&copy; <span class="time-start" style="color: #FFF;">2010-</span><span id="fullyear" class="time-end" style="color: #FFF;">2016</span> {:C('site_name')} 版权所有,并保留所有权利</p>
+			<p><a href="http://www.miibeian.gov.cn/" target="_blank">{:C('case_number')}</a></p>
+		</div>
+	</div>
+</div>
+<!-- Quick login -->
+<div class="quick-login" style="display: none;">
+	<div class="login">
+		<div class="loginM">
+			<form action="" method="post" class="loginK" onsubmit="return false;">
+				<div class="title mb10"><span>欢迎登录{:C('site_name')}官网官方网站</span></div>
+				<div><span>用户名:</span></div>
+				<div class="mb10">
+					<input type="text" id="commonusername" name="commonusername" value="">
+				</div>
+				<div><span>登录密码:</span></div>
+				<div class="mb10">
+					<input type="password" id="commonpassword" name="commonpassword" value="">
+				</div>
+				<div class="mb10">
+					<label>
+						<input type="checkbox" id="commonrememberuser" value="1" name="commonrememberuser"><span>记住用户名</span>
+					</label>
+					<!--<label>
+                        <input type="checkbox" id="autologin" value="1" name='autologin'><span>7天自动登录</span>
+                    </label>-->
+					<br>
+				</div>
+				<div class="mb10">
+					<input type="submit" id="commonloginsubmit" value="登录">
+					<a href="/Home/Public/regist.html" class="loginRegist">注册</a>
+					<div class="clear"></div>
+				</div>
+				<div class="info mb10"><span>温馨提示:如果你是{:C('site_name')}的会员,可以采用用户名/手机/Email的方式登录</span></div>
+				<!--<div class="info mb10"><span>使用合作网站登录钻丰珠宝官网网络旗舰店</span></div>
+                <div class="info">
+                    <a href="#"><img src="/Application/Home/View/default/Styles/Img/weibo.gif"></a>
+                    <a href="#"><img src="/Application/Home/View/default/Styles/Img/qq.gif"></a>
+                </div>-->
+			</form>
+		</div>
+	</div>
+</div>
+<div class="qubg" style="display: none;"></div>
+<script>
+	$(function(){
+		$('.qubg').bind('click', function(){
+			$('.quick-login').hide();
+			$(this).hide();
+		});
+	});
+</script>
+<script type="text/javascript">
+	//这里会把登录地方的部分方法覆盖
+	/* 判断值是否为空 */
+	function isEmpty(val) {
+		var result = true;
+		switch (typeof val) {
+			case 'string':
+				if (val === '0') {
+					result = true;
+				} else {
+					result = val.trim().length === 0 ? true : false;
+				}
+				break;
+			case 'number':
+				result = val === 0;
+				break;
+			case 'object':
+				result = val === null;
+				break;
+			case 'array':
+				result = val.length === 0;
+				break;
+			default:
+				result = true;
+		}
+		return result;
+	}
+	// 检查用户名长度
+	function commoncheckuser() {
+		var user = $('#commonusername');
+		if (user.val().length <= 2) {
+			layer.msg("{$Think.lang.L9011}",{
+				shift:6,
+			});
+			return false;
+		}
+		return true;
+	}
+	// 检查密码长度
+	function commoncheckpas() {
+		var ps = $('#commonpassword');
+		if (ps.val().length < 6) {
+			layer.msg("{$Think.lang.L9010}",{
+				shift:6,
+			});
+			return false;
+		}
+		return true;
+	}
+	//加密后才存cookie
+	function setEncodeCookie(key, plain){
+		var code = strToASC(plain);
+		$.cookie(key, code, { expires: 7, path:'/'});
+	}
+
+	function getEncodeCookie(key){
+		var arr = JSON.parse($.cookie(key));
+		return ASCToStr(arr);
+	}
+
+	function ASCToStr(arr){
+		var temp = '';
+		if(arr){
+			for(var i = 0 ; i < arr.length ; i++)
+				temp += String.fromCharCode(arr[i]-8);
+		}
+		return temp;
+	}
+
+	function strToASC(plain){
+		var arr = new Array();
+		for(var i = 0 ; i < plain.length ; i++)
+			arr[i] = plain.charCodeAt(i)+8; 	//每个ascii码加8以加密
+		return JSON.stringify(arr);
+	}
+
+	function commoninit(){
+		// 记住用户名
+		if ($.cookie('commonrememberuser')) {
+			$('#commonrememberuser').attr('checked', true);
+			$('#commonusername').val(getEncodeCookie('commonusername'));
+		}
+		// 自动登陆
+		/*if ($.cookie('commonautologin')) {
+		 $('#commonusername').val(getEncodeCookie('commonusername'));
+		 $('#commonpassword').val(getEncodeCookie('commonpassword'));
+		 $('#commonautologin').attr('checked', true);
+		 $('#commonrememberuser').attr('checked', true);
+		 //$('#commonloginsubmit').trigger('click');
+		 }*/
+		//如果cookie同时有用户名和密码，则勾上"自动登录","记住用户名"
+		/*if($.cookie('commonusername') && $.cookie('commonpassword')){
+		 $('#commonusername').val(getEncodeCookie('commonusername'));
+		 $('#commonpassword').val(getEncodeCookie('commonpassword'));
+		 $('#commonautologin').trigger('click');
+		 }*/
+	}
+
+	$(document).ready(function () {
+		// cookie 记录
+		$('#commonrememberuser').click(function () {
+			var name = $('#commonusername');
+			if ($(this).is(':checked')) {
+				if (isEmpty(name.val())) {
+					layer.msg('{$Think.lang.L9096}',{
+						shift:6,
+					});
+					$(this).attr('checked', false);
+				} else {
+					setEncodeCookie('commonusername',name.val());
+					$.cookie('commonrememberuser', 1, {expires: 30,path:'/'});
+				}
+			} else {
+				$.cookie('commonrememberuser', null, {path:'/'});
+				$.cookie('commonusername', null, {path:'/'});
+			}
+		});
+		/*$('#commonautologin').click(function () {
+		 var ru = $('#commonrememberuser'), name = $('#commonusername'), pass = $('#commonpassword');
+		 if (isEmpty(pass.val()) || isEmpty(name.val())) {
+		 layer.msg('{$Think.lang.L9097}',{
+		 shift:6,
+		 });
+		 $(this).attr('checked', false);
+		 } else {
+		 if ($(this).is(':checked')) {
+		 ru.attr('checked', true);
+		 //$.cookie('commonautologin', 1, { expires: 7 });
+		 $.cookie('commonautologin', 1, { expires: 7, path:'/' });
+		 $.cookie('commonrememberuser', 1, {expires: 30,path:'/'});
+		 setEncodeCookie('commonusername',name.val());	//以asc码+8的方式加密cookie
+		 setEncodeCookie('commonpassword',pass.val());
+		 //$.cookie('commonusername', name.val(), { expires: 7, path:'/'});
+		 //$.cookie('commonpassword', pass.val(), { expires: 7, path:'/' });
+		 } else {
+		 ru.attr('checked', false);
+		 $.cookie('commonusername', null, {path:'/'});
+		 $.cookie('commonautologin', null, {path:'/'});
+		 $.cookie('commonpassword', null, {path:'/'});
+		 }
+		 }
+		 });*/
+		// 登陆
+		$('#commonloginsubmit').click(function () {
+			var name = $('#commonusername'), pass = $('#commonpassword');
+			if($('#commonrememberuser').is(':checked')){
+				$.cookie('commonrememberuser', 1, {expires: 30,path:'/'});
+				setEncodeCookie('commonusername',name.val());
+			}
+			/*if($('#commonautologin').is(':checked')){
+			 $.cookie('commonautologin', 1, { expires: 7, path:'/' });
+			 setEncodeCookie('commonusername',name.val());	//以asc码+8的方式加密cookie
+			 setEncodeCookie('commonpassword',pass.val());
+			 }*/
+			if (!isEmpty(name.val()) && !isEmpty(pass.val())) {
+				if (commoncheckuser() && commoncheckpas()) {
+					$.ajax({
+						url: "{:U('Home/Public/login')}",
+						type: 'post',
+						dataType: 'json',
+						data: {'username': name.val(), 'password': pass.val()},
+						success: function (result, a, g) {
+							if (result.success) {
+								//window.location.href = result.url;
+								window.location.reload();
+							} else {
+								layer.msg(result.msg,{
+									shift:6,
+								});
+							}
+						},
+						error: function (e) {
+							console.log(e);
+						}
+					});
+				} else {
+					layer.msg('用户名和密码没有通过验证！',{
+						shift:6,
+					});
+				}
+			} else {
+				layer.msg('{$Think.lang.L9097}',{
+					shift:6,
+				});
+				$('#username').focus();
+			}
+		});
+		$('.pwd').click(function(){
+			layer.alert('为了账户安全请联系客服帮助修改！<br />客服电话：{:C('site_contact')}');
+		});
+		commoninit();
+	});
+
+</script>
+<!-- Quick login end -->
+<script>
+$(function(){
+  var myDate = new Date();
+  var getFullYear = myDate.getFullYear();
+  $('#fullyear').html(getFullYear);
+});
+</script>
+<div style="display: none;">{:htmlspecialchars_decode(C('site_statistics_code'))}</div>

@@ -1,0 +1,93 @@
+<!-- header -->
+<div class="header">
+    <div class="top">
+        <div class="w1200">
+            <div class="top-left">
+                <!-- 您好，欢迎访问{:C('site_name')} -->
+                {:C('site_name')}订单管理系统
+                <if condition="$Think.session.web.uid eq ''">
+                    [ <a href="/" class="red">会员登陆</a> ]
+                <else/>
+                    <a href="{:U('/Home/User/index')}">{$Think.session.web.username}</a>
+                    <a href="javascript:void(0)" onClick="loginout();">退出</a>
+                </if>
+            </div>
+            <div class="top-right">
+                <ul class="clearfix">
+                    <li><a href="/">首页</a></li>
+                    <li><a href="{:U('/Home/Order/orderCart')}">购物车（<span class="sum">{$cartNumber}</span>）件</a></li>
+                    <!--<li><a href="{:U('/Home/Goods/getCollectionList')}">我的收藏</a></li>-->
+                    <li><a href="{:U('/Home/User/orderList')}">我的订单</a></li>
+                    <!--<li><a href="{:U('/Home/Article/help')}">帮助中心</a></li>-->
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="top-wrap">
+        <div class="w1200">
+            <div class="logo">
+                <a href="{:U('/Home/Index/index')}"><img src="__PUBLIC__/{:C('web_logo')}" alt=""></a>
+            </div>
+            <div class="top-search">
+
+                    <input type="text" name="" value="{$_GET['content']}" class="search-input js_search_input">
+                    <button type="submit" onclick="search_goods(0,0,0,0,$('.js_search_input').val());" class="search-btn"><img src="__IMG_DZ__/zlfzb_index_06.png" alt=""></button>
+                    <div class="clearfix"></div>
+
+                <p class="key-words">
+                    <a href="javascript:;" onclick="search_goods(0,0,0,401,'');">女戒</a>
+                    <a href="javascript:;" onclick="search_goods(0,0,0,402,'')">男戒</a>
+                    <a href="javascript:;" onclick="search_goods(0,0,0,404,'')">情侣对戒</a>
+                    <a href="javascript:;" onclick="search_goods(0,0,0,403,'')">吊坠</a>
+                    <!--<a href="javascript:;" onclick="search_goods('手链')">手链</a>
+                    <a href="javascript:;" onclick="search_goods('项链')">项链</a>-->
+                </p>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="nav" style="display: none">
+        <div class="w1200">
+            <ul>
+                <li class="active"><a href="#">首页</a></li>
+                <li><a href="#">祼钻查询</a></li>
+                <li><a href="#">珠宝成品</a></li>
+                <li><a href="#">关于我们</a></li>
+                <li><a href="#">门店预约</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    function loginout() {
+        $.ajax({
+            url: '/Home/Public/loginout',
+            type: 'get',
+            dataType: 'json',
+            success: function (result) {
+                /*if (result.success) {
+                    layer.msg(result.msg,{
+                        shift:6,
+                    });
+                    delCookie('password');
+                    delCookie('autologin');
+
+                }*/
+                /*setTimeout(function(){
+                    window.location.href="/Home/Index/index.html";
+                },500);*/
+                window.location.href="/Home/Index/index.html";
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    }
+
+    function search_goods(rank_one,rank_two,rank_three,attr_id,content){
+
+        window.location.href="/Home/Goods/goodsCat.html?rank_one="+rank_one+"&rank_two="+rank_two+"&rank_three="+rank_three+"&attr_id="+attr_id+"&content="+content;
+    }
+</script>
+<!-- header end -->

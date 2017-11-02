@@ -1,0 +1,68 @@
+<footer>
+    <div class="footer-box">
+        <ul>				
+		
+            <li <?php if(CONTROLLER_NAME=='Index'){	echo 'class="active"';}?>>
+                <a href="/" >
+                    <p>
+                        <if condition="$themeConfig['icon_index_active']">
+                            <img src="/Public{$themeConfig['icon_index_active']}" alt="首页">
+                            <else />
+                            <img src="__IMG__/footer_active_icon_01.png" alt="首页">
+                        </if>
+                    </p>
+                    <p>首页</p>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('/Diamond/goodsDiy')}">
+                    <p>
+                        <if condition="$themeConfig['icon_diamond']">
+                            <img src="/Public{$themeConfig['icon_diamond']}" alt="钻石专区">
+                            <else />
+                            <img src="__IMG__/footer_icon_02.png" alt="钻石专区">
+                        </if>
+                    </p>
+                    <p>钻石专区</p>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('/Goods/category')}">
+                    <p>
+                        <if condition="$themeConfig['icon_category']">
+                            <img src="/Public{$themeConfig['icon_category']}" alt="分类">
+                            <else />
+                            <img src="__IMG__/footer_icon_03.png" alt="分类">
+                        </if>
+                    </p>
+                    <p>分类</p>
+                </a>
+            </li>
+            <li <?php if(CONTROLLER_NAME=='Order'){	echo 'class="active"';}?>>
+                <a href="{:U('/Order/orderCart')}">
+                    <p>
+                        <if condition="$themeConfig['icon_cart']">
+                            <img src="/Public{$themeConfig['icon_cart']}" alt="购物车">
+                            <else />
+                            <img src="__IMG__/footer_icon_04.png" alt="购物车">
+                        </if>
+                    </p>
+                    <p>购物车</p>
+                </a>
+            </li>
+            <li <?php if(CONTROLLER_NAME=='User'){	echo 'class="active"';}?>>
+                <a href="{:U('/User/index')}">
+                    <p>
+                        <if condition="$themeConfig['icon_my']">
+                            <img src="/Public{$themeConfig['icon_my']}" alt="我的">
+                            <else />
+                            <img src="__IMG__/footer_icon_05.png" alt="我的">
+                        </if>
+                    </p>
+                    <p>我的</p>
+                </a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+</footer>
